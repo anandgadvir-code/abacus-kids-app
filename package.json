@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "mkdir -p www && cp index.html logo.jpg www/"
+    "build": "mkdir -p www && cp index.html logo.jpeg www/"
   },
   "dependencies": {
     "@capacitor/android": "^6.0.0",
