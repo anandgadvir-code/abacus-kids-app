@@ -21,7 +21,7 @@ jobs:
           npm install
           npm run build
           npx cap add android
-          cp logo.jpg android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png || true
+          cp logo.jpeg android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png || true
           cp logo.jpg android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png || true
           npx cap sync android
       - name: Build Debug APK
