@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#FF6B6B" />
-  <meta name="description" content="Abacus Kids - The Abacus Academy, Jodhpur: Colorful, interactive offline-ready kids learning app for Nursery, LKG, UKG, Picture World, and Brain Booster." />
+  <meta name="theme-color" content="#FF5252" />
+  <meta name="description" content="Abacus Kids - The Abacus Academy, Jodhpur: High-grade IXL & NCERT Balvatika learning app with Hybrid Native TTS, Phonics, Pre-Math, Matras, and Brain Boosters." />
   <title>Abacus Kids - The Abacus Academy, Jodhpur</title>
   <style>
     :root {
@@ -47,6 +47,7 @@
       box-shadow: 0 0 25px rgba(0,0,0,0.08);
       overflow-x: hidden;
     }
+
     /* Sticky Top Header */
     .app-header {
       position: sticky;
@@ -73,6 +74,7 @@
       object-fit: contain;
       background: #FFF9C4;
       border: 2px solid #FBC02D;
+      pointer-events: none;
     }
     .academy-badge {
       font-size: 10px;
@@ -81,12 +83,14 @@
       letter-spacing: 0.5px;
       text-transform: uppercase;
       line-height: 1.1;
+      pointer-events: none;
     }
     .app-title {
       font-size: 19px;
       font-weight: 900;
       color: #D84315;
       line-height: 1.2;
+      pointer-events: none;
     }
     .header-actions {
       display: flex;
@@ -105,6 +109,7 @@
       align-items: center;
       gap: 4px;
       box-shadow: 0 2px 5px rgba(255, 213, 79, 0.3);
+      cursor: pointer;
     }
     .nav-icon-btn {
       background: #FFFFFF;
@@ -158,6 +163,39 @@
       transform: translateY(-1px);
     }
 
+    /* Horizontal Filter Pills */
+    .filter-pills-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 6px 14px 10px;
+      background: #FAFAFA;
+      border-bottom: 1px solid #ECEFF1;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .filter-pills-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .filter-pill {
+      padding: 5px 12px;
+      border-radius: 14px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      border: 1.5px solid #CFD8DC;
+      background: #FFFFFF;
+      color: #455A64;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-pill.active {
+      background: #FF9800;
+      color: #FFFFFF;
+      border-color: #F57C00;
+      box-shadow: 0 2px 6px rgba(255, 152, 0, 0.3);
+    }
+
     /* Main Container Content */
     .main-content {
       flex: 1;
@@ -188,6 +226,12 @@
     }
     .touch-speak-item:active {
       transform: scale(0.95);
+    }
+
+    /* All inner emojis have pointer-events: none so clicks reliably hit the parent card */
+    .safe-emoji {
+      pointer-events: none;
+      display: inline-block;
     }
 
     /* Big Hero Screen Card */
@@ -234,16 +278,19 @@
       border-radius: 12px;
       color: #fff;
       margin-bottom: 4px;
+      pointer-events: none;
     }
     .section-name {
       font-size: 21px;
       font-weight: 900;
       line-height: 1.2;
+      pointer-events: none;
     }
     .section-desc {
       font-size: 12px;
       font-weight: 600;
       margin-top: 3px;
+      pointer-events: none;
     }
 
     /* Nursery Button Colors */
@@ -312,7 +359,8 @@
       padding: 24px 16px;
       text-align: center;
       margin: 10px auto;
-      max-width: 320px;
+      max-width: 330px;
+      width: 100%;
       box-shadow: 0 8px 24px rgba(33, 150, 243, 0.15);
       cursor: pointer;
       position: relative;
@@ -321,27 +369,25 @@
       transform: scale(0.97);
     }
     .flashcard-emoji {
-      font-size: 84px;
+      font-size: 80px;
       line-height: 1.1;
       margin-bottom: 8px;
       filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
       display: inline-block;
-      transition: transform 0.12s ease;
-      cursor: pointer;
-    }
-    .flashcard-emoji:active {
-      transform: scale(1.15);
+      pointer-events: none;
     }
     .flashcard-title {
       font-size: 26px;
       font-weight: 900;
       color: #1976D2;
+      pointer-events: none;
     }
     .flashcard-sub {
       font-size: 15px;
       font-weight: 700;
       color: #546E7A;
       margin-top: 4px;
+      pointer-events: none;
     }
     .audio-hint {
       display: inline-flex;
@@ -354,6 +400,7 @@
       font-size: 12px;
       font-weight: 800;
       margin-top: 10px;
+      pointer-events: none;
     }
 
     /* Option Grids */
@@ -399,9 +446,9 @@
     /* Small Grid items (A-Z & Swar Grid) */
     .grid-items-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
       gap: 8px;
-      max-height: calc(100vh - 210px);
+      max-height: calc(100vh - 220px);
       overflow-y: auto;
       padding: 4px;
       -webkit-overflow-scrolling: touch;
@@ -423,15 +470,13 @@
       font-size: 22px;
       font-weight: 900;
       color: #2E7D32;
+      pointer-events: none;
     }
     .chip-emoji {
       font-size: 32px;
       margin: 4px 0;
       display: inline-block;
-      transition: transform 0.12s;
-    }
-    .chip-emoji:active {
-      transform: scale(1.2);
+      pointer-events: none;
     }
     .chip-word {
       font-size: 10px;
@@ -440,6 +485,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      pointer-events: none;
     }
 
     /* Word Building & Puzzle Chips */
@@ -534,6 +580,7 @@
       border-radius: 18px;
       font-size: 32px;
       border: 3px solid transparent;
+      pointer-events: none;
     }
     .memory-front {
       background: linear-gradient(135deg, #FF80AB 0%, #FF4081 100%);
@@ -586,9 +633,11 @@
       border-radius: 18px;
       margin-bottom: 14px;
       gap: 6px;
+      flex-wrap: wrap;
     }
     .mode-btn {
       flex: 1;
+      min-width: 100px;
       padding: 8px 12px;
       border: none;
       background: transparent;
@@ -597,6 +646,7 @@
       font-size: 13px;
       color: #546E7A;
       cursor: pointer;
+      text-align: center;
     }
     .mode-btn.active {
       background: #FFFFFF;
@@ -623,6 +673,7 @@
       font-weight: 900;
       color: #E65100;
       margin: 0 6px;
+      pointer-events: none;
     }
 
     /* Dash Prompt Styling for Fill-in-the-blank */
@@ -636,6 +687,7 @@
       text-align: center;
       padding: 0 4px;
       line-height: 1;
+      pointer-events: none;
     }
 
     /* Confetti Canvas */
@@ -656,7 +708,7 @@
 
     <!-- Top Sticky Header -->
     <header class="app-header">
-      <div class="header-left" onclick="speak('Abacus Kids. The Abacus Academy Jodhpur', 'hi-IN')">
+      <div class="header-left" onclick="safeAction(function() { speak('Abacus Kids. The Abacus Academy Jodhpur', 'hi-IN'); })" ontouchend="safeAction(function() { speak('Abacus Kids. The Abacus Academy Jodhpur', 'hi-IN'); }, event)">
         <img src="logo.jpeg" alt="Logo" class="logo-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23FF9800\'/><text x=\'50\' y=\'62\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-weight=\'bold\'>A</text></svg>';" />
         <div>
           <div class="academy-badge">The Abacus Academy, Jodhpur</div>
@@ -664,20 +716,23 @@
         </div>
       </div>
       <div class="header-actions">
-        <div class="star-counter" id="star-badge" onclick="speak(appState.stars + ' Stars! शाबाश!', 'hi-IN')" title="Earned Stars" style="cursor:pointer;">
-          <span>⭐</span> <span id="star-count">0</span>
+        <div class="star-counter" id="star-badge" onclick="safeAction(function() { speak(appState.stars + ' Stars! शाबाश!', 'hi-IN'); })" ontouchend="safeAction(function() { speak(appState.stars + ' Stars! शाबाश!', 'hi-IN'); }, event)" title="Earned Stars">
+          <span class="safe-emoji">⭐</span> <span id="star-count">0</span>
         </div>
-        <button id="btn-sound-toggle" class="nav-icon-btn" onclick="toggleSound()" title="Sound On/Off">
-          <span id="sound-icon">🔊</span>
+        <button id="btn-sound-toggle" class="nav-icon-btn" onclick="safeAction(toggleSound)" ontouchend="safeAction(toggleSound, event)" title="Sound On/Off">
+          <span id="sound-icon" class="safe-emoji">🔊</span>
         </button>
-        <button id="btn-home-nav" class="nav-icon-btn" onclick="goHome()" style="display:none;" title="Home">
-          <span>🏠</span>
+        <button id="btn-home-nav" class="nav-icon-btn" onclick="safeAction(goHome)" ontouchend="safeAction(goHome, event)" style="display:none;" title="Home">
+          <span class="safe-emoji">🏠</span>
         </button>
       </div>
     </header>
 
     <!-- Sub Navigation Tabs Bar (Rendered dynamically when inside a section) -->
     <div id="subtabs-bar" class="subtabs-bar" style="display:none;"></div>
+
+    <!-- Filter Pills Bar (For Phonics vowels, Matras, etc.) -->
+    <div id="filter-pills-bar" class="filter-pills-bar" style="display:none;"></div>
 
     <!-- Main Dynamic Content Container -->
     <main id="main-view" class="main-content">
@@ -690,13 +745,27 @@
 
   <script>
     /* =========================================================
-       AUDIO & SPEECH SYNTHESIS ENGINE (100% Offline & WebView Safe)
+       AUDIO & SPEECH SYNTHESIS ENGINE (Capacitor Native TTS + Web Audio Pop)
        ========================================================= */
     var appSoundEnabled = true;
     var lastUtteranceKey = "";
     var currentSpeechTimeout = null;
+    var lastActionTimestamp = 0;
 
-    // Web Audio Synthesizer for rich playful sound effects
+    // Touch and click deduplicator to guarantee instant reaction on both ontouchend and onclick
+    function safeAction(fn, event) {
+      var now = Date.now();
+      if (now - lastActionTimestamp < 180) {
+        if (event) { event.preventDefault(); event.stopPropagation(); }
+        return;
+      }
+      lastActionTimestamp = now;
+      unlockAudioContext();
+      playTone("pop");
+      if (fn) fn();
+    }
+
+    // Web Audio Synthesizer: 100% reliable sound on all devices & WebViews
     var audioCtx = null;
     function getAudioContext() {
       if (!audioCtx) {
@@ -705,17 +774,27 @@
           audioCtx = new AudioContextClass();
         }
       }
-      if (audioCtx && audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
       return audioCtx;
     }
+
+    function unlockAudioContext() {
+      var ctx = getAudioContext();
+      if (ctx && ctx.state === 'suspended') {
+        ctx.resume();
+      }
+    }
+
+    // Unlock on all primary gestures
+    ['touchstart', 'touchend', 'click', 'pointerdown'].forEach(function(ev) {
+      window.addEventListener(ev, unlockAudioContext, { passive: true });
+    });
 
     function playTone(type) {
       if (!appSoundEnabled) return;
       try {
         var ctx = getAudioContext();
         if (!ctx) return;
+        if (ctx.state === 'suspended') ctx.resume();
         var now = ctx.currentTime;
         var osc = ctx.createOscillator();
         var gain = ctx.createGain();
@@ -724,23 +803,22 @@
 
         if (type === "pop") {
           osc.type = "sine";
-          osc.frequency.setValueAtTime(400, now);
-          osc.frequency.exponentialRampToValueAtTime(700, now + 0.08);
-          gain.gain.setValueAtTime(0.2, now);
+          osc.frequency.setValueAtTime(420, now);
+          osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+          gain.gain.setValueAtTime(0.22, now);
           gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
           osc.start(now);
           osc.stop(now + 0.08);
         } else if (type === "success") {
-          // Cheerful chime chord
           osc.type = "triangle";
-          osc.frequency.setValueAtTime(523.25, now); // C5
-          osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
-          osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
-          osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.09);
+          osc.frequency.setValueAtTime(783.99, now + 0.18);
+          osc.frequency.setValueAtTime(1046.50, now + 0.28);
           gain.gain.setValueAtTime(0.25, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.42);
           osc.start(now);
-          osc.stop(now + 0.45);
+          osc.stop(now + 0.42);
         } else if (type === "wrong") {
           osc.type = "sawtooth";
           osc.frequency.setValueAtTime(220, now);
@@ -750,22 +828,19 @@
           osc.start(now);
           osc.stop(now + 0.22);
         } else if (type === "win") {
-          // Victory fanfare
           osc.type = "sine";
-          osc.frequency.setValueAtTime(587.33, now); // D5
-          osc.frequency.setValueAtTime(880, now + 0.12); // A5
-          osc.frequency.setValueAtTime(1174.66, now + 0.25); // D6
+          osc.frequency.setValueAtTime(587.33, now);
+          osc.frequency.setValueAtTime(880, now + 0.12);
+          osc.frequency.setValueAtTime(1174.66, now + 0.25);
           gain.gain.setValueAtTime(0.3, now);
           gain.gain.exponentialRampToValueAtTime(0.01, now + 0.55);
           osc.start(now);
           osc.stop(now + 0.55);
         }
-      } catch (e) {
-        // Safe fallback
-      }
+      } catch (e) {}
     }
 
-    // Web Speech API
+    // Hybrid TTS: Capacitor Native TTS first, Web Speech API fallback
     var availableVoices = [];
     function loadVoices() {
       if (window.speechSynthesis) {
@@ -777,17 +852,50 @@
       loadVoices();
     }
 
+    function containsHindi(str) {
+      return /[\u0900-\u097F]/.test(str);
+    }
+
     function speak(text, lang) {
-      if (!appSoundEnabled || !window.speechSynthesis || !text) return;
+      if (!appSoundEnabled || !text) return;
+      var cleanText = String(text).replace(/___+/g, 'blank');
+      var targetLang = lang || (containsHindi(cleanText) ? "hi-IN" : "en-IN");
+
+      // 1. Try Capacitor Native TextToSpeech plugin if available in Android APK
+      var cap = window.Capacitor;
+      var ttsPlugin = (cap && cap.Plugins && cap.Plugins.TextToSpeech) || (window.plugins && window.plugins.tts);
+      if (ttsPlugin) {
+        try {
+          if (ttsPlugin.stop) ttsPlugin.stop().catch(function(){});
+          ttsPlugin.speak({
+            text: cleanText,
+            lang: targetLang,
+            rate: 0.9,
+            pitch: 1.0,
+            volume: 1.0,
+            category: 'ambient'
+          }).catch(function() {
+            fallbackWebSpeech(cleanText, targetLang);
+          });
+          return;
+        } catch(err) {
+          // Fall through to Web Speech
+        }
+      }
+
+      // 2. Fallback to window.speechSynthesis
+      fallbackWebSpeech(cleanText, targetLang);
+    }
+
+    function fallbackWebSpeech(text, targetLang) {
+      if (!window.speechSynthesis) return;
       try {
         window.speechSynthesis.cancel();
-        var utterance = new SpeechSynthesisUtterance(String(text));
-        var targetLang = lang || (containsHindi(text) ? "hi-IN" : "en-IN");
+        var utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = targetLang;
         utterance.rate = 0.88;
         utterance.pitch = 1.05;
 
-        // Try to pick matching voice
         if (availableVoices.length > 0) {
           var matchedVoice = availableVoices.find(function(v) {
             return v.lang && v.lang.toLowerCase().indexOf(targetLang.toLowerCase().slice(0, 2)) !== -1;
@@ -796,9 +904,7 @@
         }
 
         window.speechSynthesis.speak(utterance);
-      } catch (e) {
-        // Ignore speech error
-      }
+      } catch (e) {}
     }
 
     function autoSpeak(key, text, lang) {
@@ -810,16 +916,12 @@
       }, 300);
     }
 
-    function containsHindi(str) {
-      return /[\u0900-\u097F]/.test(str);
-    }
-
     function toggleSound() {
       appSoundEnabled = !appSoundEnabled;
       document.getElementById("sound-icon").textContent = appSoundEnabled ? "🔊" : "🔇";
-      if (!appSoundEnabled && window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-      } else if (appSoundEnabled) {
+      if (!appSoundEnabled) {
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+      } else {
         playTone("pop");
         speak("Sound On", "en-IN");
       }
@@ -895,30 +997,28 @@
     var appState = {
       section: "home", // home, nursery, lkg, ukg, picture_world, brain_booster
       tabIndex: 0,
-      mode: "learn", // learn, quiz
+      mode: "learn", // learn, quiz_pic_to_let, quiz_let_to_pic
       quizIndex: 0,
       stars: 0,
-      userAnswerGiven: false,
-      // Section-specific states
-      nurseryLetterLang: "A-Z", // "A-Z" or "Swar"
+      // UKG Phonics
+      phonicsVowel: "a", // a, e, i, o, u
+      // UKG Matra Filter
+      matraFilter: "all",
+      // Counting
       countTargetNumber: 5,
       // LKG Word building
       wordCurrentIndex: 0,
       wordSlots: [],
-      // Math
-      mathA: 3,
-      mathB: 2,
-      mathOp: "+",
+      // LKG Pre-math & Senses
+      preMathIndex: 0,
+      oppositeIndex: 0,
       // Picture World
       picCategory: "Animals",
-      picQuizItem: null,
-      picQuizOptions: [],
-      // Brain Booster Memory
+      // Brain Booster
+      brainIndex: 0,
       memCards: [],
       memFlipped: [],
-      memMatched: [],
-      // Brain Booster Shadow & Odd
-      brainIndex: 0
+      memMatched: []
     };
 
     function addStar(message, speechText, speechLang) {
@@ -950,7 +1050,7 @@
     }
 
     /* ---------------------------------------------------------
-       DATA: NURSERY (A-Z, Swar, 1-50, Shapes, Before/After)
+       DATA: NURSERY (A-Z, Swar, 1-50, Shapes)
        --------------------------------------------------------- */
     var DATA_AZ = [
       { letter: "A", word: "Apple", hindi: "सेब", emoji: "🍎", phonics: "A for Apple" },
@@ -1008,20 +1108,8 @@
       { name: "Oval", hindi: "अंडाकार", emoji: "🥚", desc: "Egg shape" }
     ];
 
-    // Note: All '?' are replaced with '___' for clear fill-in-the-blank visuals!
-    var DATA_BEFORE_AFTER = [
-      { q: "What comes AFTER B?", prompt: "A, B, ___", ans: "C", options: ["C", "D", "E"], lang: "en-IN", speak: "A, B, blank. What comes after B?" },
-      { q: "What comes BEFORE E?", prompt: "___, E, F", ans: "D", options: ["B", "D", "G"], lang: "en-IN", speak: "Blank, E, F. What comes before E?" },
-      { q: "What comes BETWEEN G and I?", prompt: "G, ___, I", ans: "H", options: ["H", "J", "F"], lang: "en-IN", speak: "G, blank, I. What comes between G and I?" },
-      { q: "अ, आ के बाद क्या आता है?", prompt: "अ, आ, ___", ans: "इ", options: ["इ", "उ", "ई"], lang: "hi-IN", speak: "अ, आ, खाली जगह. बाद में क्या आता है?" },
-      { q: "इ और उ के बीच क्या आता है?", prompt: "इ, ___, उ", ans: "ई", options: ["ई", "ऋ", "ओ"], lang: "hi-IN", speak: "इ, खाली जगह, उ. बीच में क्या आता है?" },
-      { q: "What comes AFTER 7?", prompt: "6, 7, ___", ans: "8", options: ["8", "9", "5"], lang: "en-IN", speak: "6, 7, blank. What comes after 7?" },
-      { q: "What comes BEFORE 15?", prompt: "___, 15, 16", ans: "14", options: ["13", "14", "17"], lang: "en-IN", speak: "Blank, 15, 16. What comes before 15?" },
-      { q: "What comes BETWEEN 19 and 21?", prompt: "19, ___, 21", ans: "20", options: ["18", "20", "22"], lang: "en-IN", speak: "19, blank, 21. What comes between 19 and 21?" }
-    ];
-
     /* ---------------------------------------------------------
-       DATA: LKG (Vyanjan, 1-100 Names, More/Less, Shabda Nirman)
+       DATA: LKG (Vyanjan, 1-100 Names, Pre-Math, Opposites, Shabda)
        --------------------------------------------------------- */
     var DATA_VYANJAN = [
       { letter: "क", word: "कबूतर", emoji: "🕊️", sound: "क से कबूतर" },
@@ -1086,36 +1174,341 @@
       { word: "सड़क", letters: ["स", "ड़", "क"], pool: ["क", "स", "ड़", "म"], emoji: "🛣️", sound: "स-ड़-क, सड़क" }
     ];
 
-    /* ---------------------------------------------------------
-       DATA: UKG (CVC Words, Matras, Addition/Subtraction)
-       --------------------------------------------------------- */
-    var DATA_CVC = [
-      { word: "CAT", missing: 1, pre: "C", post: "T", ans: "A", vowel: "A", emoji: "🐱", sound: "C A T, Cat" },
-      { word: "DOG", missing: 1, pre: "D", post: "G", ans: "O", vowel: "O", emoji: "🐶", sound: "D O G, Dog" },
-      { word: "SUN", missing: 1, pre: "S", post: "N", ans: "U", vowel: "U", emoji: "☀️", sound: "S U N, Sun" },
-      { word: "PEN", missing: 1, pre: "P", post: "N", ans: "E", vowel: "E", emoji: "🖊️", sound: "P E N, Pen" },
-      { word: "PIG", missing: 1, pre: "P", post: "G", ans: "I", vowel: "I", emoji: "🐷", sound: "P I G, Pig" },
-      { word: "BAT", missing: 1, pre: "B", post: "T", ans: "A", vowel: "A", emoji: "🦇", sound: "B A T, Bat" },
-      { word: "BED", missing: 1, pre: "B", post: "D", ans: "E", vowel: "E", emoji: "🛏️", sound: "B E D, Bed" },
-      { word: "CUP", missing: 1, pre: "C", post: "P", ans: "U", vowel: "U", emoji: "☕", sound: "C U P, Cup" },
-      { word: "FOX", missing: 1, pre: "F", post: "X", ans: "O", vowel: "O", emoji: "🦊", sound: "F O X, Fox" },
-      { word: "LIP", missing: 1, pre: "L", post: "P", ans: "I", vowel: "I", emoji: "👄", sound: "L I P, Lip" }
+    // Pre-Math Concepts (NCERT Balvatika: Big/Small, Tall/Short, Inside/Outside, Pattern)
+    var DATA_PRE_MATH = [
+      {
+        concept: "Big vs Small (बड़ा और छोटा)",
+        prompt: "Which one is BIG? (बड़ा कौन सा है?)",
+        speak: "Which one is big? बड़ा कौन सा है?",
+        optA: { name: "Elephant (बड़ा)", emoji: "🐘", correct: true },
+        optB: { name: "Mouse (छोटा)", emoji: "🐭", correct: false }
+      },
+      {
+        concept: "Tall vs Short (लंबा और छोटा)",
+        prompt: "Which one is TALL? (लंबा कौन सा है?)",
+        speak: "Which one is tall? लंबा कौन सा है?",
+        optA: { name: "Giraffe (लंबा)", emoji: "🦒", correct: true },
+        optB: { name: "Puppy (छोटा)", emoji: "🐶", correct: false }
+      },
+      {
+        concept: "Inside vs Outside (अंदर और बाहर)",
+        prompt: "Where is the bird? (चिड़िया घोंसले के अंदर है)",
+        speak: "The bird is inside the nest. घोंसले के अंदर",
+        optA: { name: "Inside (अंदर)", emoji: "🪺", correct: true },
+        optB: { name: "Outside (बाहर)", emoji: "🌳", correct: false }
+      },
+      {
+        concept: "Pattern Completion (पैटर्न पूरा करें)",
+        prompt: "🍎 🍌 🍎 🍌 <span class=\"dash-blank\">___</span>",
+        speak: "Apple, Banana, Apple, Banana, what comes next?",
+        optA: { name: "Apple (🍎)", emoji: "🍎", correct: true },
+        optB: { name: "Grapes (🍇)", emoji: "🍇", correct: false }
+      },
+      {
+        concept: "Pattern Completion (पैटर्न पूरा करें)",
+        prompt: "🔴 🟦 🔴 🟦 <span class=\"dash-blank\">___</span>",
+        speak: "Red Circle, Blue Square, Red Circle, Blue Square, what comes next?",
+        optA: { name: "Red Circle (🔴)", emoji: "🔴", correct: true },
+        optB: { name: "Green (🟩)", emoji: "🟩", correct: false }
+      }
     ];
 
-    // Note: All [?] are replaced with '___' for clear fill-in-the-blank!
-    var DATA_MATRA = [
-      { name: "आ की मात्रा (ा)", symbol: "ा", example: "कार", base: "क", full: "कार", emoji: "🚗", sound: "क + आ = का, कार", missingPart: "क___र", ans: "ा", options: ["ा", "ि", "ी"] },
-      { name: "इ की मात्रा (ि)", symbol: "ि", example: "किताब", base: "क", full: "किताब", emoji: "📖", sound: "क + इ = कि, किताब", missingPart: "___कताब", ans: "ि", options: ["ि", "ी", "ु"] },
-      { name: "ई की मात्रा (ी)", symbol: "ी", example: "मछली", base: "ल", full: "मछली", emoji: "🐟", sound: "ल + ई = ली, मछली", missingPart: "मछल___", ans: "ी", options: ["ि", "ी", "े"] },
-      { name: "उ की मात्रा (ु)", symbol: "ु", example: "गुलाब", base: "ग", full: "गुलाब", emoji: "🌹", sound: "ग + उ = गु, गुलाब", missingPart: "ग___लाब", ans: "ु", options: ["ु", "ू", "ो"] },
-      { name: "ऊ की मात्रा (ू)", symbol: "ू", example: "सूरज", base: "स", full: "सूरज", emoji: "☀️", sound: "स + ऊ = सू, सूरज", missingPart: "स___रज", ans: "ू", options: ["ु", "ू", "ा"] },
-      { name: "ऋ की मात्रा (ृ)", symbol: "ृ", example: "वृक्ष", base: "व", full: "वृक्ष", emoji: "🌳", sound: "व + ऋ = वृ, वृक्ष", missingPart: "व___क्ष", ans: "ृ", options: ["ृ", "े", "ै"] },
-      { name: "ए की मात्रा (े)", symbol: "े", example: "केला", base: "क", full: "केला", emoji: "🍌", sound: "क + ए = के, केला", missingPart: "क___ला", ans: "े", options: ["े", "ै", "ी"] },
-      { name: "ऐ की मात्रा (ै)", symbol: "ै", example: "थैला", base: "थ", full: "थैला", emoji: "🛍️", sound: "थ + ऐ = थै, थैला", missingPart: "थ___ला", ans: "ै", options: ["े", "ै", "ो"] },
-      { name: "ओ की मात्रा (ो)", symbol: "ो", example: "मोर", base: "म", full: "मोर", emoji: "🦚", sound: "म + ओ = मो, मोर", missingPart: "म___र", ans: "ो", options: ["ो", "ौ", "ा"] },
-      { name: "औ की मात्रा (ौ)", symbol: "ौ", example: "नौका", base: "न", full: "नौका", emoji: "⛵", sound: "न + औ = नौ, नौका", missingPart: "न___का", ans: "ौ", options: ["ो", "ौ", "ं"] },
-      { name: "अं की मात्रा (ं)", symbol: "ं", example: "पतंग", base: "त", full: "पतंग", emoji: "🪁", sound: "त + अं = तं, पतंग", missingPart: "पत___ग", ans: "ं", options: ["ं", "ः", "ा"] }
+    // 16 Pairs of Opposites
+    var DATA_OPPOSITES = [
+      { a: "Hot (गर्म)", eA: "☕", b: "Cold (ठंडा)", eB: "🍦" },
+      { a: "Day (दिन)", eA: "☀️", b: "Night (रात)", eB: "🌙" },
+      { a: "Happy (खुश)", eA: "😊", b: "Sad (उदास)", eB: "😢" },
+      { a: "Big (बड़ा)", eA: "🐘", b: "Small (छोटा)", eB: "🐜" },
+      { a: "Fast (तेज़)", eA: "🏎️", b: "Slow (धीमा)", eB: "🐢" },
+      { a: "Up (ऊपर)", eA: "🎈", b: "Down (नीचे)", eB: "⚓" },
+      { a: "In (अंदर)", eA: "📥", b: "Out (बाहर)", eB: "📤" },
+      { a: "Open (खुला)", eA: "📖", b: "Closed (बंद)", eB: "📕" },
+      { a: "Clean (साफ़)", eA: "✨", b: "Dirty (गंदा)", eB: "🧦" },
+      { a: "Heavy (भारी)", eA: "🪨", b: "Light (हल्का)", eB: "🪶" },
+      { a: "Hard (कठोर)", eA: "🧱", b: "Soft (मुलायम)", eB: "🧸" },
+      { a: "Near (पास)", eA: "📍", b: "Far (दूर)", eB: "🔭" },
+      { a: "Wet (गीला)", eA: "🌧️", b: "Dry (सूखा)", eB: "🏜️" },
+      { a: "Strong (ताकतवर)", eA: "💪", b: "Weak (कमज़ोर)", eB: "🩹" },
+      { a: "Full (भरा)", eA: "🥛", b: "Empty (खाली)", eB: "🫙" },
+      { a: "Sweet (मीठा)", eA: "🍬", b: "Sour (खट्टा)", eB: "🍋" }
     ];
+
+    // Five Senses
+    var DATA_FIVE_SENSES = [
+      { sense: "Eyes (आँखें)", action: "Sight / देखना", emoji: "👀", sound: "Eyes are for seeing, आँखें देखने के लिए हैं", sample: "🌈 Beautiful Rainbow" },
+      { sense: "Ears (कान)", action: "Hearing / सुनना", emoji: "👂", sound: "Ears are for hearing, कान सुनने के लिए हैं", sample: "🔔 Ringing Bell" },
+      { sense: "Nose (नाक)", action: "Smell / सूंघना", emoji: "👃", sound: "Nose is for smelling, नाक सूंघने के लिए है", sample: "🌹 Sweet Rose" },
+      { sense: "Tongue (जीभ)", action: "Taste / स्वाद", emoji: "👅", sound: "Tongue is for tasting, जीभ स्वाद चखने के लिए है", sample: "🍦 Yummy Ice Cream" },
+      { sense: "Hands (हाथ)", action: "Touch / छूना", emoji: "✋", sound: "Hands are for touching, हाथ छूकर महसूस करने के लिए हैं", sample: "🧸 Soft Teddy" }
+    ];
+
+    /* ---------------------------------------------------------
+       DATA: UKG PHONICS (5 Separate Vowel Tabs: 10 words each) + Rhyming
+       --------------------------------------------------------- */
+    var DATA_PHONICS_5 = {
+      a: [
+        { word: "CAT", pre: "C", post: "T", ans: "A", emoji: "🐱", sound: "C-A-T, Cat" },
+        { word: "BAT", pre: "B", post: "T", ans: "A", emoji: "🦇", sound: "B-A-T, Bat" },
+        { word: "MAT", pre: "M", post: "T", ans: "A", emoji: "🧘", sound: "M-A-T, Mat" },
+        { word: "RAT", pre: "R", post: "T", ans: "A", emoji: "🐀", sound: "R-A-T, Rat" },
+        { word: "HAT", pre: "H", post: "T", ans: "A", emoji: "👒", sound: "H-A-T, Hat" },
+        { word: "BAG", pre: "B", post: "G", ans: "A", emoji: "🎒", sound: "B-A-G, Bag" },
+        { word: "TAG", pre: "T", post: "G", ans: "A", emoji: "🏷️", sound: "T-A-G, Tag" },
+        { word: "PAN", pre: "P", post: "N", ans: "A", emoji: "🍳", sound: "P-A-N, Pan" },
+        { word: "FAN", pre: "F", post: "N", ans: "A", emoji: "🪭", sound: "F-A-N, Fan" },
+        { word: "VAN", pre: "V", post: "N", ans: "A", emoji: "🚐", sound: "V-A-N, Van" }
+      ],
+      e: [
+        { word: "BED", pre: "B", post: "D", ans: "E", emoji: "🛏️", sound: "B-E-D, Bed" },
+        { word: "RED", pre: "R", post: "D", ans: "E", emoji: "🔴", sound: "R-E-D, Red" },
+        { word: "HEN", pre: "H", post: "N", ans: "E", emoji: "🐔", sound: "H-E-N, Hen" },
+        { word: "PEN", pre: "P", post: "N", ans: "E", emoji: "🖊️", sound: "P-E-N, Pen" },
+        { word: "TEN", pre: "T", post: "N", ans: "E", emoji: "🔟", sound: "T-E-N, Ten" },
+        { word: "NET", pre: "N", post: "T", ans: "E", emoji: "🕸️", sound: "N-E-T, Net" },
+        { word: "JET", pre: "J", post: "T", ans: "E", emoji: "✈️", sound: "J-E-T, Jet" },
+        { word: "WET", pre: "W", post: "T", ans: "E", emoji: "💧", sound: "W-E-T, Wet" },
+        { word: "LEG", pre: "L", post: "G", ans: "E", emoji: "🦵", sound: "L-E-G, Leg" },
+        { word: "WEB", pre: "W", post: "B", ans: "E", emoji: "🕸️", sound: "W-E-B, Web" }
+      ],
+      i: [
+        { word: "PIG", pre: "P", post: "G", ans: "I", emoji: "🐷", sound: "P-I-G, Pig" },
+        { word: "WIG", pre: "W", post: "G", ans: "I", emoji: "💇", sound: "W-I-G, Wig" },
+        { word: "DIG", pre: "D", post: "G", ans: "I", emoji: "⛏️", sound: "D-I-G, Dig" },
+        { word: "BIN", pre: "B", post: "N", ans: "I", emoji: "🗑️", sound: "B-I-N, Bin" },
+        { word: "PIN", pre: "P", post: "N", ans: "I", emoji: "📌", sound: "P-I-N, Pin" },
+        { word: "TIN", pre: "T", post: "N", ans: "I", emoji: "🥫", sound: "T-I-N, Tin" },
+        { word: "LIP", pre: "L", post: "P", ans: "I", emoji: "👄", sound: "L-I-P, Lip" },
+        { word: "ZIP", pre: "Z", post: "P", ans: "I", emoji: "🤐", sound: "Z-I-P, Zip" },
+        { word: "SIT", pre: "S", post: "T", ans: "I", emoji: "🪑", sound: "S-I-T, Sit" },
+        { word: "SIX", pre: "S", post: "X", ans: "I", emoji: "6️⃣", sound: "S-I-X, Six" }
+      ],
+      o: [
+        { word: "DOG", pre: "D", post: "G", ans: "O", emoji: "🐶", sound: "D-O-G, Dog" },
+        { word: "LOG", pre: "L", post: "G", ans: "O", emoji: "🪵", sound: "L-O-G, Log" },
+        { word: "FOX", pre: "F", post: "X", ans: "O", emoji: "🦊", sound: "F-O-X, Fox" },
+        { word: "BOX", pre: "B", post: "X", ans: "O", emoji: "📦", sound: "B-O-X, Box" },
+        { word: "POT", pre: "P", post: "T", ans: "O", emoji: "🍯", sound: "P-O-T, Pot" },
+        { word: "HOT", pre: "H", post: "T", ans: "O", emoji: "☕", sound: "H-O-T, Hot" },
+        { word: "DOT", pre: "D", post: "T", ans: "O", emoji: "🔴", sound: "D-O-T, Dot" },
+        { word: "TOP", pre: "T", post: "P", ans: "O", emoji: "🪀", sound: "T-O-P, Top" },
+        { word: "MOP", pre: "M", post: "P", ans: "O", emoji: "🧹", sound: "M-O-P, Mop" },
+        { word: "COT", pre: "C", post: "T", ans: "O", emoji: "🛌", sound: "C-O-T, Cot" }
+      ],
+      u: [
+        { word: "SUN", pre: "S", post: "N", ans: "U", emoji: "☀️", sound: "S-U-N, Sun" },
+        { word: "BUN", pre: "B", post: "N", ans: "U", emoji: "🥯", sound: "B-U-N, Bun" },
+        { word: "RUN", pre: "R", post: "N", ans: "U", emoji: "🏃", sound: "R-U-N, Run" },
+        { word: "CUP", pre: "C", post: "P", ans: "U", emoji: "☕", sound: "C-U-P, Cup" },
+        { word: "PUP", pre: "P", post: "P", ans: "U", emoji: "🐶", sound: "P-U-P, Pup" },
+        { word: "BUG", pre: "B", post: "G", ans: "U", emoji: "🪲", sound: "B-U-G, Bug" },
+        { word: "RUG", pre: "R", post: "G", ans: "U", emoji: "🧶", sound: "R-U-G, Rug" },
+        { word: "JUG", pre: "J", post: "G", ans: "U", emoji: "🏺", sound: "J-U-G, Jug" },
+        { word: "TUB", pre: "T", post: "B", ans: "U", emoji: "🛁", sound: "T-U-B, Tub" },
+        { word: "NUT", pre: "N", post: "T", ans: "U", emoji: "🥜", sound: "N-U-T, Nut" }
+      ]
+    };
+
+    // 16 Pairs of Rhyming Words
+    var DATA_RHYMING = [
+      { w1: "Cat", e1: "🐱", w2: "Bat", e2: "🦇" },
+      { w1: "Bed", e1: "🛏️", w2: "Red", e2: "🔴" },
+      { w1: "Dog", e1: "🐶", w2: "Log", e2: "🪵" },
+      { w1: "Sun", e1: "☀️", w2: "Run", e2: "🏃" },
+      { w1: "Pen", e1: "🖊️", w2: "Hen", e2: "🐔" },
+      { w1: "Pin", e1: "📌", w2: "Bin", e2: "🗑️" },
+      { w1: "Fox", e1: "🦊", w2: "Box", e2: "📦" },
+      { w1: "Hot", e1: "☕", w2: "Pot", e2: "🍯" },
+      { w1: "Mug", e1: "🍺", w2: "Bug", e2: "🪲" },
+      { w1: "Van", e1: "🚐", w2: "Fan", e2: "🪭" },
+      { w1: "Net", e1: "🕸️", w2: "Jet", e2: "✈️" },
+      { w1: "Lip", e1: "👄", w2: "Zip", e2: "🤐" },
+      { w1: "Pig", e1: "🐷", w2: "Wig", e2: "💇" },
+      { w1: "Hat", e1: "👒", w2: "Mat", e2: "🧘" },
+      { w1: "Tub", e1: "🛁", w2: "Rub", e2: "🧼" },
+      { w1: "Top", e1: "🪀", w2: "Mop", e2: "🧹" }
+    ];
+
+    /* ---------------------------------------------------------
+       DATA: UKG HINDI MATRAS (45+ Words with Separate Filter Tabs)
+       --------------------------------------------------------- */
+    var DATA_MATRA_TABS = {
+      "aa": {
+        name: "आ (ा)",
+        words: [
+          { full: "कार", missing: "क<span class=\"dash-blank\">___</span>र", ans: "ा", emoji: "🚗", sound: "क + आ = का, कार" },
+          { full: "आम", missing: "<span class=\"dash-blank\">___</span>म", ans: "आ", emoji: "🥭", sound: "आ + म = आम" },
+          { full: "तारा", missing: "त<span class=\"dash-blank\">___</span>रा", ans: "ा", emoji: "⭐", sound: "ता + रा = तारा" },
+          { full: "राजा", missing: "र<span class=\"dash-blank\">___</span>जा", ans: "ा", emoji: "👑", sound: "रा + जा = राजा" },
+          { full: "नाव", missing: "न<span class=\"dash-blank\">___</span>व", ans: "ा", emoji: "⛵", sound: "ना + व = नाव" }
+        ]
+      },
+      "i": {
+        name: "इ (ि)",
+        words: [
+          { full: "किताब", missing: "<span class=\"dash-blank\">___</span>कताब", ans: "ि", emoji: "📖", sound: "क + इ = कि, किताब" },
+          { full: "हिरण", missing: "<span class=\"dash-blank\">___</span>हरण", ans: "ि", emoji: "🦌", sound: "ह + इ = हि, हिरण" },
+          { full: "किसान", missing: "<span class=\"dash-blank\">___</span>कसान", ans: "ि", emoji: "🧑‍🌾", sound: "क + इ = कि, किसान" },
+          { full: "गिलास", missing: "<span class=\"dash-blank\">___</span>गलास", ans: "ि", emoji: "🥛", sound: "ग + इ = गि, गिलास" },
+          { full: "दिन", missing: "<span class=\"dash-blank\">___</span>दन", ans: "ि", emoji: "☀️", sound: "द + इ = दि, दिन" }
+        ]
+      },
+      "ee": {
+        name: "ई (ी)",
+        words: [
+          { full: "मछली", missing: "मछल<span class=\"dash-blank\">___</span>", ans: "ी", emoji: "🐟", sound: "ल + ई = ली, मछली" },
+          { full: "हाथी", missing: "हाथ<span class=\"dash-blank\">___</span>", ans: "ी", emoji: "🐘", sound: "थ + ई = थी, हाथी" },
+          { full: "तीर", missing: "त<span class=\"dash-blank\">___</span>र", ans: "ी", emoji: "🏹", sound: "त + ई = ती, तीर" },
+          { full: "घड़ी", missing: "घड़<span class=\"dash-blank\">___</span>", ans: "ी", emoji: "⌚", sound: "ड़ + ई = ड़ी, घड़ी" },
+          { full: "पानी", missing: "पान<span class=\"dash-blank\">___</span>", ans: "ी", emoji: "💧", sound: "न + ई = नी, पानी" }
+        ]
+      },
+      "u": {
+        name: "उ (ु)",
+        words: [
+          { full: "गुलाब", missing: "ग<span class=\"dash-blank\">___</span>लाब", ans: "ु", emoji: "🌹", sound: "ग + उ = गु, गुलाब" },
+          { full: "पुल", missing: "प<span class=\"dash-blank\">___</span>ल", ans: "ु", emoji: "🌉", sound: "प + उ = पु, पुल" },
+          { full: "धनुष", missing: "ध<span class=\"dash-blank\">___</span>नुष", ans: "ु", emoji: "🏹", sound: "ध + उ = धु, धनुष" },
+          { full: "साबुन", missing: "साब<span class=\"dash-blank\">___</span>न", ans: "ु", emoji: "🧼", sound: "ब + उ = बु, साबुन" },
+          { full: "कुर्सी", missing: "क<span class=\"dash-blank\">___</span>र्सी", ans: "ु", emoji: "🪑", sound: "क + उ = कु, कुर्सी" }
+        ]
+      },
+      "oo": {
+        name: "ऊ (ू)",
+        words: [
+          { full: "सूरज", missing: "स<span class=\"dash-blank\">___</span>रज", ans: "ू", emoji: "☀️", sound: "स + ऊ = सू, सूरज" },
+          { full: "भालू", missing: "भाल<span class=\"dash-blank\">___</span>", ans: "ू", emoji: "🐻", sound: "ल + ऊ = लू, भालू" },
+          { full: "चूहा", missing: "च<span class=\"dash-blank\">___</span>हा", ans: "ू", emoji: "🐭", sound: "च + ऊ = चू, चूहा" },
+          { full: "तराजू", missing: "तराज<span class=\"dash-blank\">___</span>", ans: "ू", emoji: "⚖️", sound: "ज + ऊ = जू, तराजू" },
+          { full: "फूल", missing: "फ<span class=\"dash-blank\">___</span>ल", ans: "ू", emoji: "🌸", sound: "फ + ऊ = फू, फूल" }
+        ]
+      },
+      "e": {
+        name: "ए (े)",
+        words: [
+          { full: "केला", missing: "क<span class=\"dash-blank\">___</span>ला", ans: "े", emoji: "🍌", sound: "क + ए = के, केला" },
+          { full: "सेब", missing: "स<span class=\"dash-blank\">___</span>ब", ans: "े", emoji: "🍎", sound: "स + ए = से, सेब" },
+          { full: "पेड़", missing: "प<span class=\"dash-blank\">___</span>ड़", ans: "े", emoji: "🌳", sound: "प + ए = पे, पेड़" },
+          { full: "शेर", missing: "श<span class=\"dash-blank\">___</span>र", ans: "े", emoji: "🦁", sound: "श + ए = शे, शेर" },
+          { full: "मेला", missing: "म<span class=\"dash-blank\">___</span>ला", ans: "े", emoji: "🎡", sound: "म + ए = मे, मेला" }
+        ]
+      },
+      "ai": {
+        name: "ऐ (ै)",
+        words: [
+          { full: "थैला", missing: "थ<span class=\"dash-blank\">___</span>ला", ans: "ै", emoji: "🛍️", sound: "थ + ऐ = थै, थैला" },
+          { full: "बैल", missing: "ब<span class=\"dash-blank\">___</span>ल", ans: "ै", emoji: "🐂", sound: "ब + ऐ = बै, बैल" },
+          { full: "सैनिक", missing: "स<span class=\"dash-blank\">___</span>निक", ans: "ै", emoji: "💂", sound: "स + ऐ = सै, सैनिक" },
+          { full: "पैसा", missing: "प<span class=\"dash-blank\">___</span>सा", ans: "ै", emoji: "💰", sound: "प + ऐ = पै, पैसा" },
+          { full: "पैर", missing: "प<span class=\"dash-blank\">___</span>र", ans: "ै", emoji: "🦶", sound: "प + ऐ = पै, पैर" }
+        ]
+      },
+      "o": {
+        name: "ओ (ो)",
+        words: [
+          { full: "मोर", missing: "म<span class=\"dash-blank\">___</span>र", ans: "ो", emoji: "🦚", sound: "म + ओ = मो, मोर" },
+          { full: "तोता", missing: "त<span class=\"dash-blank\">___</span>ता", ans: "ो", emoji: "🦜", sound: "त + ओ = तो, तोता" },
+          { full: "ढोलक", missing: "ढ<span class=\"dash-blank\">___</span>लक", ans: "ो", emoji: "🥁", sound: "ढ + ओ = ढो, ढोलक" },
+          { full: "कोट", missing: "क<span class=\"dash-blank\">___</span>ट", ans: "ो", emoji: "🧥", sound: "क + ओ = को, कोट" },
+          { full: "बोतल", missing: "ब<span class=\"dash-blank\">___</span>तल", ans: "ो", emoji: "🍾", sound: "ब + ओ = बो, बोतल" }
+        ]
+      },
+      "au": {
+        name: "औ (ौ)",
+        words: [
+          { full: "नौका", missing: "न<span class=\"dash-blank\">___</span>का", ans: "ौ", emoji: "⛵", sound: "न + औ = नौ, नौका" },
+          { full: "औरत", missing: "<span class=\"dash-blank\">___</span>रत", ans: "औ", emoji: "👩", sound: "औ + र + त = औरत" },
+          { full: "खिलौना", missing: "खिल<span class=\"dash-blank\">___</span>ना", ans: "ौ", emoji: "🧸", sound: "ल + औ = लौ, खिलौना" },
+          { full: "पौधा", missing: "प<span class=\"dash-blank\">___</span>धा", ans: "ौ", emoji: "🌱", sound: "प + औ = पौ, पौधा" },
+          { full: "हथौड़ा", missing: "हथ<span class=\"dash-blank\">___</span>ड़ा", ans: "ौ", emoji: "🔨", sound: "थ + औ = थौ, हथौड़ा" }
+        ]
+      }
+    };
+
+    /* ---------------------------------------------------------
+       DATA: BEFORE, AFTER, BETWEEN (Unlimited 50+ procedural engine)
+       --------------------------------------------------------- */
+    function generateBeforeAfterList() {
+      var list = [];
+      // 1. Numbers (1-50): Before, After, Between
+      for (var n = 2; n <= 48; n += 2) {
+        // After
+        list.push({
+          q: "What comes AFTER " + n + "?",
+          prompt: n + ", " + (n+1) + ", <span class=\"dash-blank\">___</span>",
+          ans: String(n + 2),
+          options: [String(n + 2), String(n + 3), String(n - 1)],
+          lang: "en-IN",
+          speak: n + ", " + (n+1) + ", blank. What comes after " + (n+1) + "?"
+        });
+        // Before
+        list.push({
+          q: "What comes BEFORE " + (n+1) + "?",
+          prompt: "<span class=\"dash-blank\">___</span>, " + (n+1) + ", " + (n+2),
+          ans: String(n),
+          options: [String(n), String(n + 3), String(Math.max(1, n - 2))],
+          lang: "en-IN",
+          speak: "Blank, " + (n+1) + ", " + (n+2) + ". What comes before " + (n+1) + "?"
+        });
+        // Between
+        list.push({
+          q: "What comes BETWEEN " + n + " and " + (n+2) + "?",
+          prompt: n + ", <span class=\"dash-blank\">___</span>, " + (n+2),
+          ans: String(n + 1),
+          options: [String(n + 1), String(n - 1), String(n + 3)],
+          lang: "en-IN",
+          speak: n + ", blank, " + (n+2) + ". What comes between " + n + " and " + (n+2) + "?"
+        });
+      }
+
+      // 2. Alphabets A-Z
+      var azPairs = [
+        { seq: ["A", "B", "___"], ans: "C", q: "What comes after B?", sp: "A, B, blank. What comes after B?" },
+        { seq: ["___", "E", "F"], ans: "D", q: "What comes before E?", sp: "Blank, E, F. What comes before E?" },
+        { seq: ["G", "___", "I"], ans: "H", q: "What comes between G and I?", sp: "G, blank, I. What comes between G and I?" },
+        { seq: ["J", "K", "___"], ans: "L", q: "What comes after K?", sp: "J, K, blank. What comes after K?" },
+        { seq: ["___", "N", "O"], ans: "M", q: "What comes before N?", sp: "Blank, N, O. What comes before N?" },
+        { seq: ["P", "___", "R"], ans: "Q", q: "What comes between P and R?", sp: "P, blank, R. What comes between P and R?" },
+        { seq: ["S", "T", "___"], ans: "U", q: "What comes after T?", sp: "S, T, blank. What comes after T?" },
+        { seq: ["___", "W", "X"], ans: "V", q: "What comes before W?", sp: "Blank, W, X. What comes before W?" },
+        { seq: ["X", "___", "Z"], ans: "Y", q: "What comes between X and Z?", sp: "X, blank, Z. What comes between X and Z?" }
+      ];
+      azPairs.forEach(function(item) {
+        list.push({
+          q: item.q,
+          prompt: item.seq[0] + ", " + item.seq[1] + ", " + item.seq[2],
+          ans: item.ans,
+          options: [item.ans, String.fromCharCode(item.ans.charCodeAt(0) + 1), String.fromCharCode(item.ans.charCodeAt(0) - 1)],
+          lang: "en-IN",
+          speak: item.sp
+        });
+      });
+
+      // 3. Hindi Swar & Vyanjan
+      var hiPairs = [
+        { seq: ["अ", "आ", "___"], ans: "इ", q: "अ, आ के बाद क्या आता है?", sp: "अ, आ, खाली जगह. बाद में क्या आता है?" },
+        { seq: ["इ", "___", "उ"], ans: "ई", q: "इ और उ के बीच क्या आता है?", sp: "इ, खाली जगह, उ. बीच में क्या आता है?" },
+        { seq: ["___", "ऊ", "ऋ"], ans: "उ", q: "ऊ से पहले क्या आता है?", sp: "खाली जगह, ऊ, ऋ. पहले क्या आता है?" },
+        { seq: ["क", "ख", "___"], ans: "ग", q: "क, ख के बाद क्या आता है?", sp: "क, ख, खाली जगह. बाद में क्या आता है?" },
+        { seq: ["च", "___", "ज"], ans: "छ", q: "च और ज के बीच क्या आता है?", sp: "च, खाली जगह, ज. बीच में क्या आता है?" },
+        { seq: ["ट", "ठ", "___"], ans: "ड", q: "ट, ठ के बाद क्या आता है?", sp: "ट, ठ, खाली जगह. बाद में क्या आता है?" },
+        { seq: ["त", "___", "द"], ans: "थ", q: "त और द के बीच क्या आता है?", sp: "त, खाली जगह, द. बीच में क्या आता है?" },
+        { seq: ["प", "फ", "___"], ans: "ब", q: "प, फ के बाद क्या आता है?", sp: "प, फ, खाली जगह. बाद में क्या आता है?" }
+      ];
+      hiPairs.forEach(function(item) {
+        list.push({
+          q: item.q,
+          prompt: item.seq[0] + ", " + item.seq[1] + ", " + item.seq[2],
+          ans: item.ans,
+          options: [item.ans, "म", "स"].sort(function(){ return Math.random()-0.5; }),
+          lang: "hi-IN",
+          speak: item.sp
+        });
+      });
+
+      return list;
+    }
+
+    var DATA_BEFORE_AFTER = generateBeforeAfterList();
 
     /* ---------------------------------------------------------
        DATA: PICTURE WORLD (6 Categories, Learn & Quiz)
@@ -1266,23 +1659,21 @@
        NAVIGATION & VIEW CONTROLLERS
        ========================================================= */
     function goHome() {
-      playTone("pop");
       lastUtteranceKey = "";
       appState.section = "home";
       document.getElementById("btn-home-nav").style.display = "none";
       document.getElementById("subtabs-bar").style.display = "none";
+      document.getElementById("filter-pills-bar").style.display = "none";
       renderHome();
       speak("Abacus Kids. The Abacus Academy Jodhpur में आपका स्वागत है!", "hi-IN");
     }
 
     function openSection(secName, tabIdx) {
-      playTone("pop");
       lastUtteranceKey = "";
       appState.section = secName;
       appState.tabIndex = typeof tabIdx === "number" ? tabIdx : 0;
       appState.mode = "learn";
       appState.quizIndex = 0;
-      appState.userAnswerGiven = false;
       document.getElementById("btn-home-nav").style.display = "flex";
 
       renderSubtabs();
@@ -1290,12 +1681,11 @@
     }
 
     function setTab(idx) {
-      playTone("pop");
       lastUtteranceKey = "";
       appState.tabIndex = idx;
       appState.quizIndex = 0;
-      appState.userAnswerGiven = false;
-      if (appState.section === "lkg" && idx === 3) {
+      appState.mode = "learn";
+      if (appState.section === "lkg" && idx === 4) {
         initShabdaNirman();
       } else if (appState.section === "brain_booster" && idx === 2) {
         initMemoryGame();
@@ -1305,30 +1695,43 @@
     }
 
     function setMode(mode) {
-      playTone("pop");
       lastUtteranceKey = "";
       appState.mode = mode;
       appState.quizIndex = 0;
-      appState.userAnswerGiven = false;
+      renderCurrentView();
+    }
+
+    function setPhonicsVowel(v) {
+      appState.phonicsVowel = v;
+      appState.quizIndex = 0;
+      renderCurrentView();
+    }
+
+    function setMatraFilter(f) {
+      appState.matraFilter = f;
+      appState.quizIndex = 0;
       renderCurrentView();
     }
 
     /* =========================================================
-       RENDER SUBTABS
+       RENDER SUBTABS & FILTER BARS
        ========================================================= */
     function renderSubtabs() {
       var tabsContainer = document.getElementById("subtabs-bar");
+      var filterBar = document.getElementById("filter-pills-bar");
+      filterBar.style.display = "none";
+
       var tabs = [];
       var activeColor = "#2196F3";
 
       if (appState.section === "nursery") {
-        tabs = ["🔤 A-Z English", "🕉️ अ-अः Swar", "🔢 1-50 Counting", "🔷 Shapes", "🔄 Before/After"];
+        tabs = ["🔤 A-Z English", "🕉️ अ-अः Swar", "🔢 1-50 Counting", "🔷 Shapes", "🔄 Before/After (50+)"];
         activeColor = "#0288D1";
       } else if (appState.section === "lkg") {
-        tabs = ["🪔 क-ज्ञ व्यंजन", "🔠 1-100 Names", "⚖️ More/Less", "🧩 शब्द निर्माण"];
+        tabs = ["🪔 क-ज्ञ व्यंजन", "🔠 1-100 Names", "📐 Pre-Math & Senses", "↔️ Opposites (16)", "🧩 शब्द निर्माण"];
         activeColor = "#689F38";
       } else if (appState.section === "ukg") {
-        tabs = ["🔤 CVC Words", "✍️ सभी मात्राएं", "➕➖ Math (+ / -)"];
+        tabs = ["🔤 Short Vowels Phonics", "🎶 Rhyming Words (16)", "✍️ सभी मात्राएं (45+)", "➕➖ Math (+ / -)"];
         activeColor = "#F57C00";
       } else if (appState.section === "picture_world") {
         tabs = ["🦁 Animals", "🦜 Birds", "🍎 Fruits", "🥕 Vegetables", "🚗 Vehicles", "👀 Body Parts"];
@@ -1343,7 +1746,7 @@
       var html = "";
       for (var i = 0; i < tabs.length; i++) {
         var cls = "subtab-chip" + (appState.tabIndex === i ? " active" : "");
-        html += '<button class="' + cls + '" onclick="setTab(' + i + ')">' + tabs[i] + '</button>';
+        html += '<button class="' + cls + '" onclick="safeAction(function(){ setTab(' + i + '); })" ontouchend="safeAction(function(){ setTab(' + i + '); }, event)">' + tabs[i] + '</button>';
       }
       tabsContainer.innerHTML = html;
     }
@@ -1355,9 +1758,8 @@
       var view = document.getElementById("main-view");
       var html = '';
 
-      // Welcome Banner
-      html += '<div class="hero-banner" onclick="speak(\'Abacus Kids. The Abacus Academy Jodhpur. अपनी क्लास चुनें\', \'hi-IN\')">';
-      html += '  <div style="font-size: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">🎓</div>';
+      html += '<div class="hero-banner" onclick="safeAction(function(){ speak(\'Abacus Kids. The Abacus Academy Jodhpur. अपनी क्लास चुनें\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'Abacus Kids. The Abacus Academy Jodhpur. अपनी क्लास चुनें\', \'hi-IN\'); }, event)">';
+      html += '  <div class="safe-emoji" style="font-size: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">🎓</div>';
       html += '  <div>';
       html += '    <div class="academy-badge">Smart Kids Learning</div>';
       html += '    <div style="font-size: 20px; font-weight: 900; color: #BF360C;">बच्चों की पसंदीदा ऐप</div>';
@@ -1365,95 +1767,99 @@
       html += '  </div>';
       html += '</div>';
 
-      // Section Cards
       html += '<div class="home-grid">';
 
       // Nursery
-      html += '<div class="home-section-btn btn-nursery" onclick="openSection(\'nursery\', 0)">';
+      html += '<div class="home-section-btn btn-nursery" onclick="safeAction(function(){ openSection(\'nursery\', 0); })" ontouchend="safeAction(function(){ openSection(\'nursery\', 0); }, event)">';
       html += '  <div>';
       html += '    <span class="section-badge" style="background:#0288D1;">Age 3-4 Years</span>';
       html += '    <div class="section-name">Nursery Class</div>';
       html += '    <div class="section-desc">Full A-Z • अ से अः • 1-50 Counting • Shapes • Before/After</div>';
       html += '  </div>';
-      html += '  <div style="font-size: 44px;">🧸</div>';
+      html += '  <div class="safe-emoji" style="font-size: 44px;">🧸</div>';
       html += '</div>';
 
       // LKG
-      html += '<div class="home-section-btn btn-lkg" onclick="openSection(\'lkg\', 0)">';
+      html += '<div class="home-section-btn btn-lkg" onclick="safeAction(function(){ openSection(\'lkg\', 0); })" ontouchend="safeAction(function(){ openSection(\'lkg\', 0); }, event)">';
       html += '  <div>';
       html += '    <span class="section-badge" style="background:#689F38;">Age 4-5 Years</span>';
       html += '    <div class="section-name">LKG Class</div>';
-      html += '    <div class="section-desc">क-ज्ञ व्यंजन • 1-100 Names • More/Less • शब्द निर्माण</div>';
+      html += '    <div class="section-desc">क-ज्ञ व्यंजन • 1-100 Names • Pre-Math &amp; Opposites • शब्द निर्माण</div>';
       html += '  </div>';
-      html += '  <div style="font-size: 44px;">🚂</div>';
+      html += '  <div class="safe-emoji" style="font-size: 44px;">🚂</div>';
       html += '</div>';
 
       // UKG
-      html += '<div class="home-section-btn btn-ukg" onclick="openSection(\'ukg\', 0)">';
+      html += '<div class="home-section-btn btn-ukg" onclick="safeAction(function(){ openSection(\'ukg\', 0); })" ontouchend="safeAction(function(){ openSection(\'ukg\', 0); }, event)">';
       html += '  <div>';
       html += '    <span class="section-badge" style="background:#F57C00;">Age 5-6 Years</span>';
       html += '    <div class="section-name">UKG Class</div>';
-      html += '    <div class="section-desc">CVC Words • सभी हिंदी मात्राएं • Addition/Subtraction</div>';
+      html += '    <div class="section-desc">5 Short Vowels • Rhyming • 45+ हिंदी मात्राएं • Math (+/-)</div>';
       html += '  </div>';
-      html += '  <div style="font-size: 44px;">🚀</div>';
+      html += '  <div class="safe-emoji" style="font-size: 44px;">🚀</div>';
       html += '</div>';
 
       // Dual Row: Picture World & Brain Booster
       html += '<div class="dual-grid">';
-      html += '  <div class="btn-picworld" onclick="openSection(\'picture_world\', 0)">';
-      html += '    <div style="font-size: 36px; margin-bottom: 4px;">🦁</div>';
+      html += '  <div class="btn-picworld" onclick="safeAction(function(){ openSection(\'picture_world\', 0); })" ontouchend="safeAction(function(){ openSection(\'picture_world\', 0); }, event)">';
+      html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🦁</div>';
       html += '    <div class="section-name">Picture World</div>';
       html += '    <div class="section-desc">Animals, Birds, Fruits, Veggies, Vehicles, Body</div>';
       html += '  </div>';
 
-      html += '  <div class="btn-brain" onclick="openSection(\'brain_booster\', 0)">';
-      html += '    <div style="font-size: 36px; margin-bottom: 4px;">🧠</div>';
+      html += '  <div class="btn-brain" onclick="safeAction(function(){ openSection(\'brain_booster\', 0); })" ontouchend="safeAction(function(){ openSection(\'brain_booster\', 0); }, event)">';
+      html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🧠</div>';
       html += '    <div class="section-name">Brain Booster</div>';
       html += '    <div class="section-desc">Shadow Match • Odd One Out • Memory Flip</div>';
       html += '  </div>';
       html += '</div>';
 
-      html += '</div>'; // end home-grid
+      html += '</div>';
 
       view.innerHTML = html;
     }
 
     /* =========================================================
-       SECTION 1: NURSERY VIEW
+       SECTION 1: NURSERY VIEW (Picture -> Letter AND Letter -> Picture)
        ========================================================= */
     function renderNurseryView() {
       var view = document.getElementById("main-view");
       var html = "";
 
-      // Mode Switcher for A-Z, Swar, Shapes
-      if (appState.tabIndex === 0 || appState.tabIndex === 1 || appState.tabIndex === 2 || appState.tabIndex === 3) {
+      // Mode Switcher for A-Z & Swar: 3 modes!
+      if (appState.tabIndex === 0 || appState.tabIndex === 1) {
         html += '<div class="mode-switch">';
-        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 Learn Mode (सीखें)</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 Quiz Mode (प्रश्नोत्तरी)</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn Cards</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz_pic_to_let" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_pic_to_let\'); })" ontouchend="safeAction(function(){ setMode(\'quiz_pic_to_let\'); }, event)">🎯 चित्र → अक्षर</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz_let_to_pic" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_let_to_pic\'); })" ontouchend="safeAction(function(){ setMode(\'quiz_let_to_pic\'); }, event)">🖼️ अक्षर → चित्र</button>';
+        html += '</div>';
+      } else if (appState.tabIndex === 2 || appState.tabIndex === 3) {
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn Mode</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 Quiz Mode</button>';
         html += '</div>';
       }
 
       // TAB 0: A-Z English
       if (appState.tabIndex === 0) {
         if (appState.mode === "learn") {
-          autoSpeak("nursery_az_learn", "English Alphabets. A to Z. Tap any card or picture to listen!", "en-IN");
-          html += '<div class="touch-speak-item" onclick="speak(\'English Alphabets. A to Z. Tap any card to listen!\', \'en-IN\')" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any card or picture to hear pronunciation 🔊</div>';
+          autoSpeak("nursery_az_learn", "English Alphabets. A to Z. Tap any card or picture to hear sound!", "en-IN");
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'English Alphabets. A to Z. Tap any card to listen!\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'English Alphabets. A to Z. Tap any card to listen!\', \'en-IN\'); }, event)" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any card or picture to hear pronunciation 🔊</div>';
           html += '<div class="grid-items-container">';
           for (var i = 0; i < DATA_AZ.length; i++) {
             var item = DATA_AZ[i];
-            html += '<div class="item-chip-card" onclick="speak(\'' + item.phonics + ', ' + item.word + '\', \'en-IN\')">';
+            html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + item.phonics + ', ' + item.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + item.phonics + ', ' + item.word + '\', \'en-IN\'); }, event)">';
             html += '  <div class="chip-letter">' + item.letter + '</div>';
             html += '  <div class="chip-emoji">' + item.emoji + '</div>';
             html += '  <div class="chip-word">' + item.word + '</div>';
             html += '</div>';
           }
           html += '</div>';
-        } else {
-          // Quiz Mode
+        } else if (appState.mode === "quiz_pic_to_let") {
+          // Quiz 1: Picture -> Letter
           var qItem = DATA_AZ[appState.quizIndex % DATA_AZ.length];
-          autoSpeak("nursery_az_q_" + appState.quizIndex, "Tap on " + qItem.letter + " for " + qItem.word, "en-IN");
+          autoSpeak("nursery_az_q1_" + appState.quizIndex, "Look at the picture. Which letter does " + qItem.word + " start with?", "en-IN");
 
-          // Build 3 options
           var opts = [qItem.letter];
           while (opts.length < 3) {
             var randLetter = DATA_AZ[Math.floor(Math.random() * DATA_AZ.length)].letter;
@@ -1461,18 +1867,43 @@
           }
           opts.sort(function() { return Math.random() - 0.5; });
 
-          html += '<div class="flashcard">';
-          // Touch picture sound
-          html += '  <div class="flashcard-emoji" onclick="speak(\'' + qItem.word + '! ' + qItem.phonics + '\', \'en-IN\')">' + qItem.emoji + '</div>';
-          html += '  <div class="flashcard-title touch-speak-item" onclick="speak(\'' + qItem.word + '\', \'en-IN\')">' + qItem.word + '</div>';
-          html += '  <div class="audio-hint" onclick="speak(\'' + qItem.phonics + '\', \'en-IN\')">🔊 ' + qItem.phonics + '</div>';
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + qItem.word + '! ' + qItem.phonics + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + qItem.word + '! ' + qItem.phonics + '\', \'en-IN\'); }, event)">';
+          html += '  <div class="flashcard-emoji">' + qItem.emoji + '</div>';
+          html += '  <div class="flashcard-title">' + qItem.word + '</div>';
+          html += '  <div class="audio-hint">🔊 ' + qItem.phonics + '</div>';
           html += '</div>';
 
-          html += '<div class="touch-speak-item" onclick="speak(\'Which letter does ' + qItem.word + ' start with?\', \'en-IN\')" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Which letter does this start with? 🔊</div>';
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Which letter does this start with?\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Which letter does this start with?\', \'en-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Which letter does this start with? 🔊</div>';
           html += '<div class="options-grid-3">';
           for (var o = 0; o < opts.length; o++) {
             var isCorrect = (opts[o] === qItem.letter);
-            html += '<button class="opt-btn" onclick="handleNurseryLetterAns(' + isCorrect + ', \'' + qItem.phonics + '\', \'en-IN\')">' + opts[o] + '</button>';
+            html += '<button class="opt-btn" onclick="safeAction(function(){ handleNurseryLetterAns(' + isCorrect + ', \'' + qItem.phonics + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ handleNurseryLetterAns(' + isCorrect + ', \'' + qItem.phonics + '\', \'en-IN\'); }, event)">' + opts[o] + '</button>';
+          }
+          html += '</div>';
+        } else {
+          // Quiz 2: Letter -> Picture
+          var qItem2 = DATA_AZ[appState.quizIndex % DATA_AZ.length];
+          autoSpeak("nursery_az_q2_" + appState.quizIndex, "Letter " + qItem2.letter + ". Which picture starts with " + qItem2.letter + "?", "en-IN");
+
+          var picOpts = [qItem2];
+          while (picOpts.length < 4) {
+            var rItem = DATA_AZ[Math.floor(Math.random() * DATA_AZ.length)];
+            if (picOpts.indexOf(rItem) === -1) picOpts.push(rItem);
+          }
+          picOpts.sort(function() { return Math.random() - 0.5; });
+
+          html += '<div style="text-align: center; margin: 10px 0;">';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Letter ' + qItem2.letter + '. ' + qItem2.phonics + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Letter ' + qItem2.letter + '. ' + qItem2.phonics + '\', \'en-IN\'); }, event)" style="font-size: 72px; font-weight: 900; color: #0288D1; background: #E1F5FE; border-radius: 24px; padding: 10px 24px; display: inline-block;">' + qItem2.letter + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Tap the picture for letter ' + qItem2.letter + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Tap the picture for letter ' + qItem2.letter + '\', \'en-IN\'); }, event)" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">Tap the picture for letter ' + qItem2.letter + ' 🔊</div>';
+          html += '</div>';
+
+          html += '<div class="options-grid-4">';
+          for (var po = 0; po < picOpts.length; po++) {
+            var isPOk = (picOpts[po].letter === qItem2.letter);
+            html += '<button class="opt-btn" onclick="safeAction(function(){ handleNurseryPicAns(' + isPOk + ', \'' + picOpts[po].word + '\', \'' + qItem2.phonics + '\'); })" ontouchend="safeAction(function(){ handleNurseryPicAns(' + isPOk + ', \'' + picOpts[po].word + '\', \'' + qItem2.phonics + '\'); }, event)">';
+            html += '  <span class="safe-emoji" style="font-size: 48px;">' + picOpts[po].emoji + '</span>';
+            html += '  <span style="font-size: 13px; font-weight: 700; color: #455A64; margin-top: 4px;">' + picOpts[po].word + '</span>';
+            html += '</button>';
           }
           html += '</div>';
         }
@@ -1482,21 +1913,20 @@
       else if (appState.tabIndex === 1) {
         if (appState.mode === "learn") {
           autoSpeak("nursery_swar_learn", "हिंदी स्वर. अ से अः. किसी भी कार्ड या चित्र पर टैप करें!", "hi-IN");
-          html += '<div class="touch-speak-item" onclick="speak(\'हिंदी स्वर. अ से अः. किसी भी कार्ड पर टैप करें!\', \'hi-IN\')" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">किसी भी अक्षर या चित्र पर टैप करके आवाज़ सुनें 🔊</div>';
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'हिंदी स्वर. अ से अः. किसी भी कार्ड पर टैप करें!\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'हिंदी स्वर. अ से अः. किसी भी कार्ड पर टैप करें!\', \'hi-IN\'); }, event)" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">किसी भी अक्षर या चित्र पर टैप करके आवाज़ सुनें 🔊</div>';
           html += '<div class="grid-items-container">';
           for (var s = 0; s < DATA_SWAR.length; s++) {
             var sItem = DATA_SWAR[s];
-            html += '<div class="item-chip-card" onclick="speak(\'' + sItem.phonics + ', ' + sItem.word + '\', \'hi-IN\')">';
+            html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + sItem.phonics + ', ' + sItem.word + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + sItem.phonics + ', ' + sItem.word + '\', \'hi-IN\'); }, event)">';
             html += '  <div class="chip-letter" style="color:#C2185B;">' + sItem.letter + '</div>';
             html += '  <div class="chip-emoji">' + sItem.emoji + '</div>';
             html += '  <div class="chip-word">' + sItem.word + '</div>';
             html += '</div>';
           }
           html += '</div>';
-        } else {
-          // Swar Quiz
+        } else if (appState.mode === "quiz_pic_to_let") {
           var sqItem = DATA_SWAR[appState.quizIndex % DATA_SWAR.length];
-          autoSpeak("nursery_swar_q_" + appState.quizIndex, sqItem.phonics + " पर टैप करें", "hi-IN");
+          autoSpeak("nursery_swar_q1_" + appState.quizIndex, sqItem.word + ". " + sqItem.phonics + " पर टैप करें", "hi-IN");
 
           var sOpts = [sqItem.letter];
           while (sOpts.length < 3) {
@@ -1505,18 +1935,43 @@
           }
           sOpts.sort(function() { return Math.random() - 0.5; });
 
-          html += '<div class="flashcard">';
-          // Touch picture sound
-          html += '  <div class="flashcard-emoji" onclick="speak(\'' + sqItem.word + '! ' + sqItem.phonics + '\', \'hi-IN\')">' + sqItem.emoji + '</div>';
-          html += '  <div class="flashcard-title touch-speak-item" style="color:#C2185B;" onclick="speak(\'' + sqItem.word + '\', \'hi-IN\')">' + sqItem.word + '</div>';
-          html += '  <div class="audio-hint" style="background:#FCE4EC;color:#880E4F;" onclick="speak(\'' + sqItem.phonics + '\', \'hi-IN\')">🔊 ' + sqItem.phonics + '</div>';
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + sqItem.word + '! ' + sqItem.phonics + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + sqItem.word + '! ' + sqItem.phonics + '\', \'hi-IN\'); }, event)">';
+          html += '  <div class="flashcard-emoji">' + sqItem.emoji + '</div>';
+          html += '  <div class="flashcard-title" style="color:#C2185B;">' + sqItem.word + '</div>';
+          html += '  <div class="audio-hint" style="background:#FCE4EC;color:#880E4F;">🔊 ' + sqItem.phonics + '</div>';
           html += '</div>';
 
-          html += '<div class="touch-speak-item" onclick="speak(\'सही स्वर पर टैप करें\', \'hi-IN\')" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">सही स्वर पर टैप करें: 🔊</div>';
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'सही स्वर पर टैप करें\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'सही स्वर पर टैप करें\', \'hi-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">सही स्वर पर टैप करें: 🔊</div>';
           html += '<div class="options-grid-3">';
           for (var so = 0; so < sOpts.length; so++) {
             var sCorrect = (sOpts[so] === sqItem.letter);
-            html += '<button class="opt-btn" style="border-color:#F48FB1;box-shadow:0 5px 0 #EC407A;color:#880E4F;" onclick="handleNurseryLetterAns(' + sCorrect + ', \'' + sqItem.phonics + '\', \'hi-IN\')">' + sOpts[so] + '</button>';
+            html += '<button class="opt-btn" style="border-color:#F48FB1;box-shadow:0 5px 0 #EC407A;color:#880E4F;" onclick="safeAction(function(){ handleNurseryLetterAns(' + sCorrect + ', \'' + sqItem.phonics + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ handleNurseryLetterAns(' + sCorrect + ', \'' + sqItem.phonics + '\', \'hi-IN\'); }, event)">' + sOpts[so] + '</button>';
+          }
+          html += '</div>';
+        } else {
+          // Swar -> Picture
+          var sqItem2 = DATA_SWAR[appState.quizIndex % DATA_SWAR.length];
+          autoSpeak("nursery_swar_q2_" + appState.quizIndex, sqItem2.letter + " से क्या होता है?", "hi-IN");
+
+          var sPicOpts = [sqItem2];
+          while (sPicOpts.length < 4) {
+            var rSw = DATA_SWAR[Math.floor(Math.random() * DATA_SWAR.length)];
+            if (sPicOpts.indexOf(rSw) === -1) sPicOpts.push(rSw);
+          }
+          sPicOpts.sort(function() { return Math.random() - 0.5; });
+
+          html += '<div style="text-align: center; margin: 10px 0;">';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'स्वर ' + sqItem2.letter + '. ' + sqItem2.phonics + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'स्वर ' + sqItem2.letter + '. ' + sqItem2.phonics + '\', \'hi-IN\'); }, event)" style="font-size: 72px; font-weight: 900; color: #C2185B; background: #FCE4EC; border-radius: 24px; padding: 10px 24px; display: inline-block;">' + sqItem2.letter + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + sqItem2.letter + ' से क्या होता है? सही चित्र चुनो\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + sqItem2.letter + ' से क्या होता है? सही चित्र चुनो\', \'hi-IN\'); }, event)" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">' + sqItem2.letter + ' से क्या होता है? सही चित्र चुनो 🔊</div>';
+          html += '</div>';
+
+          html += '<div class="options-grid-4">';
+          for (var spo = 0; spo < sPicOpts.length; spo++) {
+            var isSwOk = (sPicOpts[spo].letter === sqItem2.letter);
+            html += '<button class="opt-btn" style="border-color:#F48FB1;" onclick="safeAction(function(){ handleNurseryPicAns(' + isSwOk + ', \'' + sPicOpts[spo].word + '\', \'' + sqItem2.phonics + '\'); })" ontouchend="safeAction(function(){ handleNurseryPicAns(' + isSwOk + ', \'' + sPicOpts[spo].word + '\', \'' + sqItem2.phonics + '\'); }, event)">';
+            html += '  <span class="safe-emoji" style="font-size: 48px;">' + sPicOpts[spo].emoji + '</span>';
+            html += '  <span style="font-size: 13px; font-weight: 700; color: #880E4F; margin-top: 4px;">' + sPicOpts[spo].word + '</span>';
+            html += '</button>';
           }
           html += '</div>';
         }
@@ -1530,38 +1985,33 @@
           autoSpeak("count_learn_" + num, num + ". " + numWord, "en-IN");
 
           html += '<div style="text-align:center;margin-bottom:12px;">';
-          html += '  <div class="touch-speak-item" onclick="speak(\'' + num + '. ' + numWord + '\', \'en-IN\')" style="font-size: 54px; font-weight: 900; color: #E65100; line-height: 1;">' + num + '</div>';
-          html += '  <div class="touch-speak-item" onclick="speak(\'' + numWord + '\', \'en-IN\')" style="font-size: 22px; font-weight: 800; color: #F57C00;">' + numWord + '</div>';
-          html += '  <div><button class="nav-icon-btn" style="margin: 8px auto 0;" onclick="speak(\'' + num + '. ' + numWord + '\', \'en-IN\')">🔊 Listen</button></div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + num + '. ' + numWord + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + num + '. ' + numWord + '\', \'en-IN\'); }, event)" style="font-size: 54px; font-weight: 900; color: #E65100; line-height: 1;">' + num + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + numWord + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + numWord + '\', \'en-IN\'); }, event)" style="font-size: 22px; font-weight: 800; color: #F57C00;">' + numWord + '</div>';
           html += '</div>';
 
-          // Visual items with touch sound
-          html += '<div class="math-counters-row" style="max-height: 140px; overflow-y: auto;" onclick="speak(\'' + num + ' balloons! ' + numWord + '\', \'en-IN\')">';
+          html += '<div class="math-counters-row" style="max-height: 130px; overflow-y: auto;" onclick="safeAction(function(){ speak(\'' + num + ' balloons! ' + numWord + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + num + ' balloons! ' + numWord + '\', \'en-IN\'); }, event)">';
           for (var c = 0; c < num; c++) {
-            html += '<span class="touch-speak-item" style="font-size: 28px;" onclick="event.stopPropagation(); speak(\'' + (c+1) + '\', \'en-IN\')" title="' + (c+1) + '">🎈</span>';
+            html += '<span class="touch-speak-item safe-emoji" style="font-size: 28px;" title="' + (c+1) + '">🎈</span>';
           }
           html += '</div>';
 
-          // 1 to 50 Quick selector chips
-          html += '<div class="touch-speak-item" onclick="speak(\'Select any number from 1 to 50\', \'en-IN\')" style="font-size: 13px; font-weight: 800; color: #546E7A; margin: 12px 0 6px;">Select any number (1 to 50): 🔊</div>';
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Select any number from 1 to 50\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Select any number from 1 to 50\', \'en-IN\'); }, event)" style="font-size: 13px; font-weight: 800; color: #546E7A; margin: 12px 0 6px;">Select any number (1 to 50): 🔊</div>';
           html += '<div style="display: flex; flex-wrap: wrap; gap: 6px; max-height: calc(100vh - 360px); overflow-y: auto; padding: 4px;">';
           for (var n = 1; n <= 50; n++) {
             var activeStyle = (n === num) ? 'background:#FF9800;color:#fff;border-color:#F57C00;' : 'background:#fff;color:#E65100;border:1px solid #FFE0B2;';
-            html += '<button onclick="appState.countTargetNumber=' + n + ';renderCurrentView();" style="width: 44px; height: 44px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer;' + activeStyle + '">' + n + '</button>';
+            html += '<button onclick="safeAction(function(){ appState.countTargetNumber=' + n + ';renderCurrentView(); })" ontouchend="safeAction(function(){ appState.countTargetNumber=' + n + ';renderCurrentView(); }, event)" style="width: 44px; height: 44px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer;' + activeStyle + '">' + n + '</button>';
           }
           html += '</div>';
         } else {
-          // Counting Quiz
-          var quizNum = (appState.quizIndex % 15) + 2; // numbers 2 to 16
+          var quizNum = (appState.quizIndex % 15) + 2;
           autoSpeak("count_quiz_" + appState.quizIndex, "Count the objects and tap the right number!", "en-IN");
-
           var countOpts = [quizNum, quizNum + 1, Math.max(1, quizNum - 1)].sort(function() { return Math.random() - 0.5; });
 
           html += '<div style="text-align:center;margin: 10px 0;">';
-          html += '  <div class="touch-speak-item" onclick="speak(\'Count the items. गिनती करो\', \'hi-IN\')" style="font-size: 16px; font-weight: 800; color: #455A64;">Count the items (गिनती करो): 🔊</div>';
-          html += '  <div class="math-counters-row" style="margin: 14px auto; max-width: 320px;" onclick="speak(\'Count all ' + quizNum + ' stars!\', \'en-IN\')">';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Count the items. गिनती करो\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'Count the items. गिनती करो\', \'hi-IN\'); }, event)" style="font-size: 16px; font-weight: 800; color: #455A64;">Count the items (गिनती करो): 🔊</div>';
+          html += '  <div class="math-counters-row" style="margin: 14px auto; max-width: 320px;" onclick="safeAction(function(){ speak(\'Count all ' + quizNum + ' stars!\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Count all ' + quizNum + ' stars!\', \'en-IN\'); }, event)">';
           for (var qi = 0; qi < quizNum; qi++) {
-            html += '<span class="touch-speak-item" style="font-size: 32px;" onclick="event.stopPropagation(); speak(\'' + (qi+1) + '\', \'en-IN\')">⭐</span>';
+            html += '<span class="touch-speak-item safe-emoji" style="font-size: 32px;">⭐</span>';
           }
           html += '  </div>';
           html += '</div>';
@@ -1569,7 +2019,7 @@
           html += '<div class="options-grid-3">';
           for (var co = 0; co < countOpts.length; co++) {
             var isCountOk = (countOpts[co] === quizNum);
-            html += '<button class="opt-btn" onclick="handleNurseryCountAns(' + isCountOk + ', ' + quizNum + ')">' + countOpts[co] + '</button>';
+            html += '<button class="opt-btn" onclick="safeAction(function(){ handleNurseryCountAns(' + isCountOk + ', ' + quizNum + '); })" ontouchend="safeAction(function(){ handleNurseryCountAns(' + isCountOk + ', ' + quizNum + '); }, event)">' + countOpts[co] + '</button>';
           }
           html += '</div>';
         }
@@ -1582,18 +2032,16 @@
           html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px;">';
           for (var sh = 0; sh < DATA_SHAPES.length; sh++) {
             var sItemObj = DATA_SHAPES[sh];
-            html += '<div class="interactive-card" style="padding: 16px; text-align: center;" onclick="speak(\'' + sItemObj.name + ', ' + sItemObj.hindi + '\', \'en-IN\')">';
-            html += '  <div class="touch-speak-item" style="font-size: 48px; margin-bottom: 6px;">' + sItemObj.emoji + '</div>';
+            html += '<div class="interactive-card" style="padding: 16px; text-align: center;" onclick="safeAction(function(){ speak(\'' + sItemObj.name + ', ' + sItemObj.hindi + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + sItemObj.name + ', ' + sItemObj.hindi + '\', \'en-IN\'); }, event)">';
+            html += '  <div class="safe-emoji" style="font-size: 48px; margin-bottom: 6px;">' + sItemObj.emoji + '</div>';
             html += '  <div style="font-size: 18px; font-weight: 900; color: #2C3E50;">' + sItemObj.name + '</div>';
             html += '  <div style="font-size: 13px; font-weight: 700; color: #78909C;">' + sItemObj.hindi + '</div>';
             html += '</div>';
           }
           html += '</div>';
         } else {
-          // Shapes Quiz
           var shapeTarget = DATA_SHAPES[appState.quizIndex % DATA_SHAPES.length];
           autoSpeak("shape_quiz_" + appState.quizIndex, "Find the " + shapeTarget.name, "en-IN");
-
           var shapeOpts = [shapeTarget];
           while (shapeOpts.length < 3) {
             var rShape = DATA_SHAPES[Math.floor(Math.random() * DATA_SHAPES.length)];
@@ -1601,7 +2049,7 @@
           }
           shapeOpts.sort(function() { return Math.random() - 0.5; });
 
-          html += '<div class="touch-speak-item" onclick="speak(\'Find the ' + shapeTarget.name + ', ' + shapeTarget.hindi + '\', \'en-IN\')" style="text-align: center; margin: 18px 0; width: 100%;">';
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Find the ' + shapeTarget.name + ', ' + shapeTarget.hindi + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Find the ' + shapeTarget.name + ', ' + shapeTarget.hindi + '\', \'en-IN\'); }, event)" style="text-align: center; margin: 18px 0; width: 100%;">';
           html += '  <div style="font-size: 15px; font-weight: bold; color: #546E7A;">Tap on: 🔊</div>';
           html += '  <div style="font-size: 28px; font-weight: 900; color: #D84315;">' + shapeTarget.name + '</div>';
           html += '  <div style="font-size: 16px; font-weight: 700; color: #FF7043;">(' + shapeTarget.hindi + ')</div>';
@@ -1610,29 +2058,28 @@
           html += '<div class="options-grid-3">';
           for (var sho = 0; sho < shapeOpts.length; sho++) {
             var isShapeOk = (shapeOpts[sho].name === shapeTarget.name);
-            html += '<button class="opt-btn" onclick="handleNurseryShapeAns(' + isShapeOk + ', \'' + shapeTarget.name + '\')">';
-            html += '  <span style="font-size: 44px;">' + shapeOpts[sho].emoji + '</span>';
+            html += '<button class="opt-btn" onclick="safeAction(function(){ handleNurseryShapeAns(' + isShapeOk + ', \'' + shapeTarget.name + '\'); })" ontouchend="safeAction(function(){ handleNurseryShapeAns(' + isShapeOk + ', \'' + shapeTarget.name + '\'); }, event)">';
+            html += '  <span class="safe-emoji" style="font-size: 44px;">' + shapeOpts[sho].emoji + '</span>';
             html += '</button>';
           }
           html += '</div>';
         }
       }
 
-      // TAB 4: Before / After (Dashes '___' instead of '?')
+      // TAB 4: Before / After (50+ procedural engine)
       else if (appState.tabIndex === 4) {
         var baItem = DATA_BEFORE_AFTER[appState.quizIndex % DATA_BEFORE_AFTER.length];
         autoSpeak("ba_q_" + appState.quizIndex, baItem.speak, baItem.lang);
 
         html += '<div style="text-align:center;margin: 14px 0 20px;">';
-        html += '  <div class="touch-speak-item" onclick="speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\')" style="font-size: 18px; font-weight: 800; color: #0277BD; margin-bottom: 12px;">' + baItem.q + ' 🔊</div>';
-        // Touching the sequence speaks it
-        html += '  <div class="touch-speak-item" onclick="speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\')" style="font-size: 34px; font-weight: 900; letter-spacing: 4px; background: #E1F5FE; border: 3px solid #0288D1; border-radius: 20px; padding: 14px 20px; display: inline-block; color: #01579B;">' + baItem.prompt + '</div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\'); })" ontouchend="safeAction(function(){ speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\'); }, event)" style="font-size: 18px; font-weight: 800; color: #0277BD; margin-bottom: 12px;">' + baItem.q + ' 🔊</div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\'); })" ontouchend="safeAction(function(){ speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\'); }, event)" style="font-size: 34px; font-weight: 900; letter-spacing: 4px; background: #E1F5FE; border: 3px solid #0288D1; border-radius: 20px; padding: 14px 20px; display: inline-block; color: #01579B;">' + baItem.prompt + '</div>';
         html += '</div>';
 
         html += '<div class="options-grid-3">';
         for (var bao = 0; bao < baItem.options.length; bao++) {
           var isBaOk = (baItem.options[bao] === baItem.ans);
-          html += '<button class="opt-btn" onclick="handleBeforeAfterAns(' + isBaOk + ', \'' + baItem.ans + '\', \'' + baItem.lang + '\')">' + baItem.options[bao] + '</button>';
+          html += '<button class="opt-btn" onclick="safeAction(function(){ handleBeforeAfterAns(' + isBaOk + ', \'' + baItem.ans + '\', \'' + baItem.lang + '\'); })" ontouchend="safeAction(function(){ handleBeforeAfterAns(' + isBaOk + ', \'' + baItem.ans + '\', \'' + baItem.lang + '\'); }, event)">' + baItem.options[bao] + '</button>';
         }
         html += '</div>';
       }
@@ -1649,6 +2096,19 @@
         }, 1200);
       } else {
         markWrong("गलत जवाब, फिर कोशिश करो");
+      }
+    }
+
+    function handleNurseryPicAns(isCorrect, word, phonics) {
+      if (isCorrect) {
+        addStar("शानदार! " + word, phonics + "! " + word, "en-IN");
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        speak(word, "en-IN");
+        markWrong("यह " + word + " है, सही चित्र पहचानें");
       }
     }
 
@@ -1689,17 +2149,18 @@
     }
 
     /* =========================================================
-       SECTION 2: LKG VIEW
+       SECTION 2: LKG VIEW (Vyanjan Double Quiz, Pre-Math, Opposites)
        ========================================================= */
     function renderLkgView() {
       var view = document.getElementById("main-view");
       var html = "";
 
-      // TAB 0: क-ज्ञ व्यंजन
+      // TAB 0: क-ज्ञ व्यंजन (Double Quiz)
       if (appState.tabIndex === 0) {
         html += '<div class="mode-switch">';
-        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 Learn Grid (सभी ३६ व्यंजन)</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 Vyanjan Quiz</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn व्यंजन</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz_pic_to_let" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_pic_to_let\'); })" ontouchend="safeAction(function(){ setMode(\'quiz_pic_to_let\'); }, event)">🎯 चित्र → व्यंजन</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz_let_to_pic" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_let_to_pic\'); })" ontouchend="safeAction(function(){ setMode(\'quiz_let_to_pic\'); }, event)">🖼️ व्यंजन → चित्र</button>';
         html += '</div>';
 
         if (appState.mode === "learn") {
@@ -1707,17 +2168,16 @@
           html += '<div class="grid-items-container">';
           for (var v = 0; v < DATA_VYANJAN.length; v++) {
             var vItem = DATA_VYANJAN[v];
-            html += '<div class="item-chip-card" onclick="speak(\'' + vItem.sound + ', ' + vItem.word + '\', \'hi-IN\')">';
+            html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + vItem.sound + ', ' + vItem.word + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + vItem.sound + ', ' + vItem.word + '\', \'hi-IN\'); }, event)">';
             html += '  <div class="chip-letter" style="color:#2E7D32;">' + vItem.letter + '</div>';
             html += '  <div class="chip-emoji">' + vItem.emoji + '</div>';
             html += '  <div class="chip-word">' + vItem.word + '</div>';
             html += '</div>';
           }
           html += '</div>';
-        } else {
-          // Vyanjan Quiz
+        } else if (appState.mode === "quiz_pic_to_let") {
           var vTarget = DATA_VYANJAN[appState.quizIndex % DATA_VYANJAN.length];
-          autoSpeak("lkg_vyanjan_q_" + appState.quizIndex, vTarget.sound + " पर टैप करें", "hi-IN");
+          autoSpeak("lkg_vyanjan_q1_" + appState.quizIndex, vTarget.word + ". " + vTarget.sound + " पर टैप करें", "hi-IN");
 
           var vOpts = [vTarget.letter];
           while (vOpts.length < 3) {
@@ -1726,18 +2186,43 @@
           }
           vOpts.sort(function() { return Math.random() - 0.5; });
 
-          html += '<div class="flashcard">';
-          // Touch picture sound
-          html += '  <div class="flashcard-emoji" onclick="speak(\'' + vTarget.word + '! ' + vTarget.sound + '\', \'hi-IN\')">' + vTarget.emoji + '</div>';
-          html += '  <div class="flashcard-title touch-speak-item" style="color:#2E7D32;" onclick="speak(\'' + vTarget.word + '\', \'hi-IN\')">' + vTarget.word + '</div>';
-          html += '  <div class="audio-hint" style="background:#E8F5E9;color:#1B5E20;" onclick="speak(\'' + vTarget.sound + '\', \'hi-IN\')">🔊 ' + vTarget.sound + '</div>';
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + vTarget.word + '! ' + vTarget.sound + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + vTarget.word + '! ' + vTarget.sound + '\', \'hi-IN\'); }, event)">';
+          html += '  <div class="flashcard-emoji">' + vTarget.emoji + '</div>';
+          html += '  <div class="flashcard-title" style="color:#2E7D32;">' + vTarget.word + '</div>';
+          html += '  <div class="audio-hint" style="background:#E8F5E9;color:#1B5E20;">🔊 ' + vTarget.sound + '</div>';
           html += '</div>';
 
-          html += '<div class="touch-speak-item" onclick="speak(\'सही व्यंजन पर टैप करें\', \'hi-IN\')" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">सही व्यंजन पर टैप करें: 🔊</div>';
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'सही व्यंजन पर टैप करें\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'सही व्यंजन पर टैप करें\', \'hi-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">सही व्यंजन पर टैप करें: 🔊</div>';
           html += '<div class="options-grid-3">';
           for (var vo = 0; vo < vOpts.length; vo++) {
             var isVOk = (vOpts[vo] === vTarget.letter);
-            html += '<button class="opt-btn" style="border-color:#A5D6A7;box-shadow:0 5px 0 #66BB6A;color:#1B5E20;" onclick="handleVyanjanAns(' + isVOk + ', \'' + vTarget.sound + '\')">' + vOpts[vo] + '</button>';
+            html += '<button class="opt-btn" style="border-color:#A5D6A7;box-shadow:0 5px 0 #66BB6A;color:#1B5E20;" onclick="safeAction(function(){ handleVyanjanAns(' + isVOk + ', \'' + vTarget.sound + '\'); })" ontouchend="safeAction(function(){ handleVyanjanAns(' + isVOk + ', \'' + vTarget.sound + '\'); }, event)">' + vOpts[vo] + '</button>';
+          }
+          html += '</div>';
+        } else {
+          // Vyanjan -> Picture
+          var vTarget2 = DATA_VYANJAN[appState.quizIndex % DATA_VYANJAN.length];
+          autoSpeak("lkg_vyanjan_q2_" + appState.quizIndex, vTarget2.letter + " से क्या होता है?", "hi-IN");
+
+          var vPicOpts = [vTarget2];
+          while (vPicOpts.length < 4) {
+            var rVp = DATA_VYANJAN[Math.floor(Math.random() * DATA_VYANJAN.length)];
+            if (vPicOpts.indexOf(rVp) === -1) vPicOpts.push(rVp);
+          }
+          vPicOpts.sort(function() { return Math.random() - 0.5; });
+
+          html += '<div style="text-align: center; margin: 10px 0;">';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'व्यंजन ' + vTarget2.letter + '. ' + vTarget2.sound + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'व्यंजन ' + vTarget2.letter + '. ' + vTarget2.sound + '\', \'hi-IN\'); }, event)" style="font-size: 72px; font-weight: 900; color: #2E7D32; background: #E8F5E9; border-radius: 24px; padding: 10px 24px; display: inline-block;">' + vTarget2.letter + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + vTarget2.letter + ' से क्या होता है? सही चित्र चुनो\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + vTarget2.letter + ' से क्या होता है? सही चित्र चुनो\', \'hi-IN\'); }, event)" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">' + vTarget2.letter + ' से क्या होता है? सही चित्र चुनो 🔊</div>';
+          html += '</div>';
+
+          html += '<div class="options-grid-4">';
+          for (var vpo = 0; vpo < vPicOpts.length; vpo++) {
+            var isVpOk = (vPicOpts[vpo].letter === vTarget2.letter);
+            html += '<button class="opt-btn" style="border-color:#A5D6A7;" onclick="safeAction(function(){ handleNurseryPicAns(' + isVpOk + ', \'' + vPicOpts[vpo].word + '\', \'' + vTarget2.sound + '\'); })" ontouchend="safeAction(function(){ handleNurseryPicAns(' + isVpOk + ', \'' + vPicOpts[vpo].word + '\', \'' + vTarget2.sound + '\'); }, event)">';
+            html += '  <span class="safe-emoji" style="font-size: 48px;">' + vPicOpts[vpo].emoji + '</span>';
+            html += '  <span style="font-size: 13px; font-weight: 700; color: #1B5E20; margin-top: 4px;">' + vPicOpts[vpo].word + '</span>';
+            html += '</button>';
           }
           html += '</div>';
         }
@@ -1746,8 +2231,8 @@
       // TAB 1: 1-100 Number Names
       else if (appState.tabIndex === 1) {
         html += '<div class="mode-switch">';
-        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 Explore 1 to 100</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 Spelling Quiz</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Explore 1 to 100</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 Spelling Quiz</button>';
         html += '</div>';
 
         if (appState.mode === "learn") {
@@ -1755,7 +2240,7 @@
           html += '<div style="max-height: calc(100vh - 210px); overflow-y: auto; padding-right: 4px;">';
           for (var nn = 1; nn <= 100; nn++) {
             var spelling = getNumberWord(nn);
-            html += '<div class="interactive-card" style="padding: 10px 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;" onclick="speak(\'' + nn + ', ' + spelling + '\', \'en-IN\')">';
+            html += '<div class="interactive-card" style="padding: 10px 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;" onclick="safeAction(function(){ speak(\'' + nn + ', ' + spelling + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + nn + ', ' + spelling + '\', \'en-IN\'); }, event)">';
             html += '  <div style="display: flex; align-items: center; gap: 12px;">';
             html += '    <div style="width: 40px; height: 40px; border-radius: 12px; background: #E8F5E9; color: #2E7D32; font-weight: 900; font-size: 18px; display: flex; align-items: center; justify-content: center;">' + nn + '</div>';
             html += '    <div style="font-size: 17px; font-weight: 800; color: #1B5E20;">' + spelling + '</div>';
@@ -1765,7 +2250,6 @@
           }
           html += '</div>';
         } else {
-          // Number Names Quiz
           var targetNum = Math.floor(Math.random() * 99) + 1;
           var correctSpelling = getNumberWord(targetNum);
           autoSpeak("num_name_quiz_" + appState.quizIndex, "What is the spelling of " + targetNum + "?", "en-IN");
@@ -1781,73 +2265,95 @@
           spellingOpts.sort(function() { return Math.random() - 0.5; });
 
           html += '<div style="text-align:center;margin: 14px 0 20px;">';
-          html += '  <div class="touch-speak-item" onclick="speak(\'Choose correct spelling for ' + targetNum + '\', \'en-IN\')" style="font-size: 15px; font-weight: bold; color: #546E7A;">Choose correct spelling for: 🔊</div>';
-          html += '  <div class="touch-speak-item" onclick="speak(\'' + targetNum + ', ' + correctSpelling + '\', \'en-IN\')" style="font-size: 64px; font-weight: 900; color: #2E7D32; margin: 4px 0;">' + targetNum + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose correct spelling for ' + targetNum + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Choose correct spelling for ' + targetNum + '\', \'en-IN\'); }, event)" style="font-size: 15px; font-weight: bold; color: #546E7A;">Choose correct spelling for: 🔊</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + targetNum + ', ' + correctSpelling + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + targetNum + ', ' + correctSpelling + '\', \'en-IN\'); }, event)" style="font-size: 64px; font-weight: 900; color: #2E7D32; margin: 4px 0;">' + targetNum + '</div>';
           html += '</div>';
 
           html += '<div style="display: flex; flex-direction: column; gap: 10px;">';
           for (var spo = 0; spo < spellingOpts.length; spo++) {
             var isSpellOk = (spellingOpts[spo] === correctSpelling);
-            html += '<button class="opt-btn" style="padding: 14px 10px; font-size: 20px; color: #2E7D32; border-color: #A5D6A7;" onclick="handleNumNameAns(' + isSpellOk + ', \'' + correctSpelling + '\')">' + spellingOpts[spo] + '</button>';
+            html += '<button class="opt-btn" style="padding: 14px 10px; font-size: 20px; color: #2E7D32; border-color: #A5D6A7;" onclick="safeAction(function(){ handleNumNameAns(' + isSpellOk + ', \'' + correctSpelling + '\'); })" ontouchend="safeAction(function(){ handleNumNameAns(' + isSpellOk + ', \'' + correctSpelling + '\'); }, event)">' + spellingOpts[spo] + '</button>';
           }
           html += '</div>';
         }
       }
 
-      // TAB 2: More / Less (ज्यादा / कम)
+      // TAB 2: Pre-Math & Five Senses
       else if (appState.tabIndex === 2) {
-        var isAskingMore = (appState.quizIndex % 2 === 0);
-        var countL = Math.floor(Math.random() * 5) + 3; // 3 to 7
-        var countR = Math.floor(Math.random() * 5) + 3;
-        while (countL === countR) {
-          countR = Math.floor(Math.random() * 5) + 3;
-        }
+        var pm = DATA_PRE_MATH[appState.preMathIndex % DATA_PRE_MATH.length];
+        autoSpeak("premath_" + appState.preMathIndex, pm.speak, "en-IN");
 
-        var correctSide = isAskingMore ? (countL > countR ? "left" : "right") : (countL < countR ? "left" : "right");
-        var qPrompt = isAskingMore ? "Which side has MORE? (ज्यादा)" : "Which side has LESS? (कम)";
-        autoSpeak("more_less_" + appState.quizIndex, isAskingMore ? "Which side has more? ज्यादा किस तरफ हैं?" : "Which side has less? कम किस तरफ हैं?", "hi-IN");
-
-        html += '<div class="touch-speak-item" onclick="speak(\'' + (isAskingMore ? "Which side has more? ज्यादा किस तरफ हैं?" : "Which side has less? कम किस तरफ हैं?") + '\', \'hi-IN\')" style="text-align: center; margin: 10px 0 16px; width: 100%;">';
-        html += '  <div style="font-size: 20px; font-weight: 900; color: #2E7D32;">' + qPrompt + ' 🔊</div>';
-        html += '  <div style="font-size: 12px; color: #546E7A; font-weight: bold;">Tap on the correct group!</div>';
+        html += '<div style="text-align: center; margin: 10px 0 16px;">';
+        html += '  <span class="section-badge" style="background:#689F38;">' + pm.concept + '</span>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + pm.speak + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + pm.speak + '\', \'en-IN\'); }, event)" style="font-size: 22px; font-weight: 900; color: #33691E; margin-top: 4px;">' + pm.prompt + ' 🔊</div>';
         html += '</div>';
 
         html += '<div class="dual-grid" style="align-items: stretch;">';
-        // Left Box
-        html += '<div class="interactive-card" style="padding: 16px; text-align: center; border-color: #81C784;" onclick="handleMoreLessAns(\'left\', \'' + correctSide + '\')">';
-        html += '  <div style="font-size: 13px; font-weight: 800; color: #388E3C; margin-bottom: 8px;">Group A (' + countL + ')</div>';
-        html += '  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; font-size: 28px;">';
-        for (var l = 0; l < countL; l++) html += '<span>🍎</span>';
-        html += '  </div>';
+        // Opt A
+        html += '<div class="interactive-card" style="padding: 20px; text-align: center; border-color: #81C784;" onclick="safeAction(function(){ handlePreMathAns(' + pm.optA.correct + ', \'' + pm.optA.name + '\'); })" ontouchend="safeAction(function(){ handlePreMathAns(' + pm.optA.correct + ', \'' + pm.optA.name + '\'); }, event)">';
+        html += '  <div class="safe-emoji" style="font-size: 60px;">' + pm.optA.emoji + '</div>';
+        html += '  <div style="font-size: 16px; font-weight: 800; color: #2E7D32; margin-top: 8px;">' + pm.optA.name + '</div>';
+        html += '</div>';
+        // Opt B
+        html += '<div class="interactive-card" style="padding: 20px; text-align: center; border-color: #81C784;" onclick="safeAction(function(){ handlePreMathAns(' + pm.optB.correct + ', \'' + pm.optB.name + '\'); })" ontouchend="safeAction(function(){ handlePreMathAns(' + pm.optB.correct + ', \'' + pm.optB.name + '\'); }, event)">';
+        html += '  <div class="safe-emoji" style="font-size: 60px;">' + pm.optB.emoji + '</div>';
+        html += '  <div style="font-size: 16px; font-weight: 800; color: #2E7D32; margin-top: 8px;">' + pm.optB.name + '</div>';
+        html += '</div>';
         html += '</div>';
 
-        // Right Box
-        html += '<div class="interactive-card" style="padding: 16px; text-align: center; border-color: #81C784;" onclick="handleMoreLessAns(\'right\', \'' + correctSide + '\')">';
-        html += '  <div style="font-size: 13px; font-weight: 800; color: #388E3C; margin-bottom: 8px;">Group B (' + countR + ')</div>';
-        html += '  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; font-size: 28px;">';
-        for (var r = 0; r < countR; r++) html += '<span>🍎</span>';
+        // Five Senses Quick Section
+        html += '<div style="margin-top: 24px; border-top: 2px dashed #DCEDC8; padding-top: 14px;">';
+        html += '  <div style="font-size: 15px; font-weight: 900; color: #33691E; text-align: center; margin-bottom: 8px;">Five Senses (हमारी 5 इंद्रियां) 🔊</div>';
+        html += '  <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;">';
+        for (var fs = 0; fs < DATA_FIVE_SENSES.length; fs++) {
+          var fSense = DATA_FIVE_SENSES[fs];
+          html += '<div class="interactive-card" style="padding: 8px 2px; text-align: center;" onclick="safeAction(function(){ speak(\'' + fSense.sound + ', ' + fSense.sample + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + fSense.sound + ', ' + fSense.sample + '\', \'hi-IN\'); }, event)">';
+          html += '  <div class="safe-emoji" style="font-size: 30px;">' + fSense.emoji + '</div>';
+          html += '  <div style="font-size: 10px; font-weight: 800; color: #33691E;">' + fSense.action.split('/')[0] + '</div>';
+          html += '</div>';
+        }
         html += '  </div>';
-        html += '</div>';
         html += '</div>';
       }
 
-      // TAB 3: शब्द निर्माण (Word Building)
+      // TAB 3: 16 Opposites
       else if (appState.tabIndex === 3) {
+        autoSpeak("opp_learn", "Opposites. 16 pairs of opposites. Tap any card to hear pronunciation!", "en-IN");
+        html += '<div style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center;">Tap any opposite pair to hear voice 🔊</div>';
+        html += '<div style="max-height: calc(100vh - 210px); overflow-y: auto;">';
+        for (var op = 0; op < DATA_OPPOSITES.length; op++) {
+          var oPair = DATA_OPPOSITES[op];
+          html += '<div class="interactive-card" style="padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-around; border-color: #C5E1A5;" onclick="safeAction(function(){ speak(\'' + oPair.a + ' opposite is ' + oPair.b + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + oPair.a + ' opposite is ' + oPair.b + '\', \'en-IN\'); }, event)">';
+          html += '  <div style="text-align: center;">';
+          html += '    <div class="safe-emoji" style="font-size: 36px;">' + oPair.eA + '</div>';
+          html += '    <div style="font-size: 13px; font-weight: 800; color: #33691E;">' + oPair.a + '</div>';
+          html += '  </div>';
+          html += '  <div style="font-size: 20px; font-weight: 900; color: #E65100;">⚡</div>';
+          html += '  <div style="text-align: center;">';
+          html += '    <div class="safe-emoji" style="font-size: 36px;">' + oPair.eB + '</div>';
+          html += '    <div style="font-size: 13px; font-weight: 800; color: #33691E;">' + oPair.b + '</div>';
+          html += '  </div>';
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+
+      // TAB 4: शब्द निर्माण (Word Building)
+      else if (appState.tabIndex === 4) {
         var wordObj = DATA_SHABDA[appState.wordCurrentIndex % DATA_SHABDA.length];
         autoSpeak("shabda_" + appState.wordCurrentIndex, wordObj.sound + ". चित्र देखकर अक्षर जोड़ें", "hi-IN");
 
         html += '<div style="text-align: center; margin: 10px 0;">';
-        // Touch picture sound
-        html += '  <div class="touch-speak-item" onclick="speak(\'' + wordObj.word + '! ' + wordObj.sound + '\', \'hi-IN\')" style="font-size: 64px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">' + wordObj.emoji + '</div>';
-        html += '  <div class="touch-speak-item" onclick="speak(\'' + wordObj.sound + '\', \'hi-IN\')" style="font-size: 14px; font-weight: bold; color: #546E7A; margin-top: 4px;">अक्षर चुनकर शब्द बनाओ: 🔊</div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + wordObj.word + '! ' + wordObj.sound + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + wordObj.word + '! ' + wordObj.sound + '\', \'hi-IN\'); }, event)" style="font-size: 64px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));"><span class="safe-emoji">' + wordObj.emoji + '</span></div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + wordObj.sound + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + wordObj.sound + '\', \'hi-IN\'); }, event)" style="font-size: 14px; font-weight: bold; color: #546E7A; margin-top: 4px;">अक्षर चुनकर शब्द बनाओ: 🔊</div>';
         html += '</div>';
 
         // Word Slots
         html += '<div class="word-slots">';
         for (var ws = 0; ws < wordObj.letters.length; ws++) {
-          var val = appState.wordSlots[ws] || "___";
-          var filledCls = (val !== "___") ? " filled" : "";
-          html += '<div class="slot-box' + filledCls + '" onclick="speak(\'' + (val !== "___" ? val : "खाली जगह") + '\', \'hi-IN\')">' + val + '</div>';
+          var val = appState.wordSlots[ws] || "<span class=\"dash-blank\">___</span>";
+          var filledCls = (val.indexOf("___") === -1) ? " filled" : "";
+          html += '<div class="slot-box' + filledCls + '" onclick="safeAction(function(){ speak(\'' + (val.indexOf("___") === -1 ? val : "खाली जगह") + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + (val.indexOf("___") === -1 ? val : "खाली जगह") + '\', \'hi-IN\'); }, event)">' + val + '</div>';
         }
         html += '</div>';
 
@@ -1855,14 +2361,13 @@
         html += '<div class="letters-tray">';
         for (var lp = 0; lp < wordObj.pool.length; lp++) {
           var letterChar = wordObj.pool[lp];
-          html += '<button class="letter-bubble" onclick="tapWordLetter(\'' + letterChar + '\')">' + letterChar + '</button>';
+          html += '<button class="letter-bubble" onclick="safeAction(function(){ tapWordLetter(\'' + letterChar + '\'); })" ontouchend="safeAction(function(){ tapWordLetter(\'' + letterChar + '\'); }, event)">' + letterChar + '</button>';
         }
         html += '</div>';
 
-        // Controls
         html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">';
-        html += '  <button class="nav-icon-btn" onclick="initShabdaNirman()">🔄 Reset (हटाएं)</button>';
-        html += '  <button class="nav-icon-btn" onclick="speak(\'' + wordObj.sound + '\', \'hi-IN\')">🔊 सुनिए (' + wordObj.word + ')</button>';
+        html += '  <button class="nav-icon-btn" onclick="safeAction(initShabdaNirman)" ontouchend="safeAction(initShabdaNirman, event)">🔄 Reset</button>';
+        html += '  <button class="nav-icon-btn" onclick="safeAction(function(){ speak(\'' + wordObj.sound + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + wordObj.sound + '\', \'hi-IN\'); }, event)">🔊 सुनिए (' + wordObj.word + ')</button>';
         html += '</div>';
       }
 
@@ -1875,14 +2380,12 @@
     }
 
     function tapWordLetter(char) {
-      playTone("pop");
       speak(char, "hi-IN");
       var wordObj = DATA_SHABDA[appState.wordCurrentIndex % DATA_SHABDA.length];
       if (appState.wordSlots.length < wordObj.letters.length) {
         appState.wordSlots.push(char);
         renderCurrentView();
 
-        // Check if finished
         if (appState.wordSlots.length === wordObj.letters.length) {
           var builtWord = appState.wordSlots.join("");
           if (builtWord === wordObj.word) {
@@ -1927,120 +2430,178 @@
       }
     }
 
-    function handleMoreLessAns(chosen, correct) {
-      if (chosen === correct) {
-        addStar("बिल्कुल सही! (Correct!)", "Very good! Correct answer!", "en-IN");
+    function handlePreMathAns(isCorrect, name) {
+      if (isCorrect) {
+        addStar("Very Good! " + name, "Correct! " + name, "en-IN");
         setTimeout(function() {
-          appState.quizIndex++;
+          appState.preMathIndex++;
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("फिर से गिन कर देखो");
+        markWrong("गलत जवाब, ध्यान से देखो");
       }
     }
 
     /* =========================================================
-       SECTION 3: UKG VIEW
+       SECTION 3: UKG VIEW (5 Short Vowels, Rhyming, 45+ Matras, Math)
        ========================================================= */
     function renderUkgView() {
       var view = document.getElementById("main-view");
+      var filterBar = document.getElementById("filter-pills-bar");
       var html = "";
 
-      // TAB 0: CVC Words
+      // TAB 0: Short Vowels Phonics (5 Vowels: a, e, i, o, u)
       if (appState.tabIndex === 0) {
+        // Show Vowel Filter Bar
+        filterBar.style.display = "flex";
+        var vowels = ["a", "e", "i", "o", "u"];
+        var vHtml = "";
+        for (var vi = 0; vi < vowels.length; vi++) {
+          var vChar = vowels[vi];
+          var vCls = "filter-pill" + (appState.phonicsVowel === vChar ? " active" : "");
+          vHtml += '<button class="' + vCls + '" onclick="safeAction(function(){ setPhonicsVowel(\'' + vChar + '\'); })" ontouchend="safeAction(function(){ setPhonicsVowel(\'' + vChar + '\'); }, event)">Short \'' + vChar + '\' (10 Words)</button>';
+        }
+        filterBar.innerHTML = vHtml;
+
         html += '<div class="mode-switch">';
-        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 Phonics Learn</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 Missing Vowel Quiz</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn Words</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 Missing Vowel Quiz</button>';
         html += '</div>';
 
+        var wordList = DATA_PHONICS_5[appState.phonicsVowel] || DATA_PHONICS_5.a;
+
         if (appState.mode === "learn") {
-          autoSpeak("cvc_learn", "CVC Words Phonics. Three letter words. Tap any card or picture to hear each sound!", "en-IN");
-          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">';
-          for (var cv = 0; cv < DATA_CVC.length; cv++) {
-            var cvcItem = DATA_CVC[cv];
-            html += '<div class="interactive-card" style="padding: 14px; text-align: center; border-color: #FFCC80;" onclick="speak(\'' + cvcItem.word + '! ' + cvcItem.sound + '\', \'en-IN\')">';
-            html += '  <div class="touch-speak-item" style="font-size: 40px; margin-bottom: 4px;">' + cvcItem.emoji + '</div>';
+          autoSpeak("cvc_learn_" + appState.phonicsVowel, "Short " + appState.phonicsVowel + " words. Tap any card or picture to hear sound!", "en-IN");
+          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 250px); overflow-y: auto;">';
+          for (var cv = 0; cv < wordList.length; cv++) {
+            var cvcItem = wordList[cv];
+            html += '<div class="interactive-card" style="padding: 14px; text-align: center; border-color: #FFCC80;" onclick="safeAction(function(){ speak(\'' + cvcItem.word + '! ' + cvcItem.sound + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcItem.word + '! ' + cvcItem.sound + '\', \'en-IN\'); }, event)">';
+            html += '  <div class="safe-emoji" style="font-size: 40px; margin-bottom: 4px;">' + cvcItem.emoji + '</div>';
             html += '  <div style="font-size: 22px; font-weight: 900; color: #E65100;">' + cvcItem.word + '</div>';
-            html += '  <div style="font-size: 11px; font-weight: 700; color: #795548;">Vowel: ' + cvcItem.vowel + '</div>';
+            html += '  <div style="font-size: 11px; font-weight: 700; color: #795548;">Vowel: ' + appState.phonicsVowel.toUpperCase() + '</div>';
             html += '</div>';
           }
           html += '</div>';
         } else {
-          // Missing Vowel Quiz (Dash '___' instead of '[?]')
-          var cvcQ = DATA_CVC[appState.quizIndex % DATA_CVC.length];
+          // Missing Vowel Quiz
+          var cvcQ = wordList[appState.quizIndex % wordList.length];
           autoSpeak("cvc_q_" + appState.quizIndex, cvcQ.word + ". What vowel is missing in " + cvcQ.word + "?", "en-IN");
 
-          html += '<div class="flashcard">';
-          // Touch picture sound
-          html += '  <div class="flashcard-emoji" onclick="speak(\'' + cvcQ.word + '! ' + cvcQ.sound + '\', \'en-IN\')">' + cvcQ.emoji + '</div>';
-          // Touch word prompt sound
-          html += '  <div class="touch-speak-item" onclick="speak(\'' + cvcQ.pre + ', blank, ' + cvcQ.post + '. ' + cvcQ.word + '\', \'en-IN\')" style="font-size: 38px; font-weight: 900; color: #E65100; letter-spacing: 4px;">' + cvcQ.pre + ' <span class="dash-blank">___</span> ' + cvcQ.post + '</div>';
-          html += '  <div class="audio-hint" style="background:#FFF3E0;color:#E65100;" onclick="speak(\'' + cvcQ.sound + '\', \'en-IN\')">🔊 ' + cvcQ.sound + '</div>';
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + cvcQ.word + '! ' + cvcQ.sound + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcQ.word + '! ' + cvcQ.sound + '\', \'en-IN\'); }, event)">';
+          html += '  <div class="flashcard-emoji">' + cvcQ.emoji + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + cvcQ.pre + ', blank, ' + cvcQ.post + '. ' + cvcQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcQ.pre + ', blank, ' + cvcQ.post + '. ' + cvcQ.word + '\', \'en-IN\'); }, event)" style="font-size: 38px; font-weight: 900; color: #E65100; letter-spacing: 4px;">' + cvcQ.pre + ' <span class="dash-blank">___</span> ' + cvcQ.post + '</div>';
+          html += '  <div class="audio-hint" style="background:#FFF3E0;color:#E65100;">🔊 ' + cvcQ.sound + '</div>';
           html += '</div>';
 
-          html += '<div class="touch-speak-item" onclick="speak(\'Pick the correct vowel for ' + cvcQ.word + '\', \'en-IN\')" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Pick the correct vowel: 🔊</div>';
-          var vowels = ["A", "E", "I", "O", "U"];
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Pick the correct vowel for ' + cvcQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Pick the correct vowel for ' + cvcQ.word + '\', \'en-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Pick the correct vowel: 🔊</div>';
+          var vOptsArr = ["A", "E", "I", "O", "U"];
           html += '<div style="display: flex; justify-content: center; gap: 8px; margin-top: 14px; flex-wrap: wrap;">';
-          for (var v = 0; v < vowels.length; v++) {
-            var isVowelOk = (vowels[v] === cvcQ.ans);
-            html += '<button class="letter-bubble" style="background:#FFF3E0;border-color:#FF9800;color:#BF360C;" onclick="handleCvcAns(' + isVowelOk + ', \'' + cvcQ.sound + '\', \'' + vowels[v] + '\')">' + vowels[v] + '</button>';
+          for (var voi = 0; voi < vOptsArr.length; voi++) {
+            var isVowelOk = (vOptsArr[voi] === cvcQ.ans);
+            html += '<button class="letter-bubble" style="background:#FFF3E0;border-color:#FF9800;color:#BF360C;" onclick="safeAction(function(){ handleCvcAns(' + isVowelOk + ', \'' + cvcQ.sound + '\', \'' + vOptsArr[voi] + '\'); })" ontouchend="safeAction(function(){ handleCvcAns(' + isVowelOk + ', \'' + cvcQ.sound + '\', \'' + vOptsArr[voi] + '\'); }, event)">' + vOptsArr[voi] + '</button>';
           }
           html += '</div>';
         }
       }
 
-      // TAB 1: सभी हिंदी मात्राएं
+      // TAB 1: 16 Pairs of Rhyming Words
       else if (appState.tabIndex === 1) {
+        filterBar.style.display = "none";
+        autoSpeak("rhyme_learn", "Rhyming Words. 16 pairs. Tap any pair to hear them rhyme!", "en-IN");
+        html += '<div style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center;">Tap any rhyming pair to listen 🔊</div>';
+        html += '<div style="max-height: calc(100vh - 210px); overflow-y: auto;">';
+        for (var rh = 0; rh < DATA_RHYMING.length; rh++) {
+          var rPair = DATA_RHYMING[rh];
+          html += '<div class="interactive-card" style="padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-around; border-color: #FFE082;" onclick="safeAction(function(){ speak(\'' + rPair.w1 + ' and ' + rPair.w2 + ' rhyme!\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + rPair.w1 + ' and ' + rPair.w2 + ' rhyme!\', \'en-IN\'); }, event)">';
+          html += '  <div style="text-align: center;">';
+          html += '    <div class="safe-emoji" style="font-size: 36px;">' + rPair.e1 + '</div>';
+          html += '    <div style="font-size: 16px; font-weight: 900; color: #E65100;">' + rPair.w1 + '</div>';
+          html += '  </div>';
+          html += '  <div style="font-size: 16px; font-weight: 900; color: #F57C00;">🎶 Rhymes with</div>';
+          html += '  <div style="text-align: center;">';
+          html += '    <div class="safe-emoji" style="font-size: 36px;">' + rPair.e2 + '</div>';
+          html += '    <div style="font-size: 16px; font-weight: 900; color: #E65100;">' + rPair.w2 + '</div>';
+          html += '  </div>';
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+
+      // TAB 2: सभी मात्राएं (45+ Words with Separate Filter Tabs)
+      else if (appState.tabIndex === 2) {
+        filterBar.style.display = "flex";
+        var mKeys = ["all", "aa", "i", "ee", "u", "oo", "e", "ai", "o", "au"];
+        var mLabels = { "all": "सभी (45+)", "aa": "आ (ा)", "i": "इ (ि)", "ee": "ई (ी)", "u": "उ (ु)", "oo": "ऊ (ू)", "e": "ए (े)", "ai": "ऐ (ै)", "o": "ओ (ो)", "au": "औ (ौ)" };
+        var fHtml = "";
+        for (var mi = 0; mi < mKeys.length; mi++) {
+          var k = mKeys[mi];
+          var fCls = "filter-pill" + (appState.matraFilter === k ? " active" : "");
+          fHtml += '<button class="' + fCls + '" onclick="safeAction(function(){ setMatraFilter(\'' + k + '\'); })" ontouchend="safeAction(function(){ setMatraFilter(\'' + k + '\'); }, event)">' + mLabels[k] + '</button>';
+        }
+        filterBar.innerHTML = fHtml;
+
         html += '<div class="mode-switch">';
-        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 सभी मात्राएं सीखें</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 मात्रा Quiz</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn Mode</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 मात्रा Quiz</button>';
         html += '</div>';
 
+        // Gather words based on filter
+        var mWordList = [];
+        if (appState.matraFilter === "all") {
+          for (var mk in DATA_MATRA_TABS) {
+            mWordList = mWordList.concat(DATA_MATRA_TABS[mk].words);
+          }
+        } else if (DATA_MATRA_TABS[appState.matraFilter]) {
+          mWordList = DATA_MATRA_TABS[appState.matraFilter].words;
+        }
+
         if (appState.mode === "learn") {
-          autoSpeak("matra_learn", "हिंदी की सभी प्रमुख मात्राएं. किसी भी मात्रा या चित्र पर टैप करें!", "hi-IN");
-          html += '<div style="max-height: calc(100vh - 210px); overflow-y: auto;">';
-          for (var m = 0; m < DATA_MATRA.length; m++) {
-            var mItem = DATA_MATRA[m];
-            html += '<div class="interactive-card" style="padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; border-color: #FFCC80;" onclick="speak(\'' + mItem.example + ', ' + mItem.sound + '\', \'hi-IN\')">';
+          autoSpeak("matra_learn_" + appState.matraFilter, "हिंदी की मात्राएं. किसी भी शब्द या चित्र पर टैप करें!", "hi-IN");
+          html += '<div style="max-height: calc(100vh - 250px); overflow-y: auto;">';
+          for (var mw = 0; mw < mWordList.length; mw++) {
+            var mWItem = mWordList[mw];
+            html += '<div class="interactive-card" style="padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; border-color: #FFCC80;" onclick="safeAction(function(){ speak(\'' + mWItem.full + ', ' + mWItem.sound + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + mWItem.full + ', ' + mWItem.sound + '\', \'hi-IN\'); }, event)">';
             html += '  <div style="display: flex; align-items: center; gap: 12px;">';
-            html += '    <div class="touch-speak-item" style="font-size: 32px;">' + mItem.emoji + '</div>';
+            html += '    <div class="safe-emoji" style="font-size: 34px;">' + mWItem.emoji + '</div>';
             html += '    <div>';
-            html += '      <div style="font-size: 17px; font-weight: 900; color: #E65100;">' + mItem.name + '</div>';
-            html += '      <div style="font-size: 12px; font-weight: 700; color: #795548;">' + mItem.sound + '</div>';
+            html += '      <div style="font-size: 20px; font-weight: 900; color: #D84315;">' + mWItem.full + '</div>';
+            html += '      <div style="font-size: 12px; font-weight: 700; color: #795548;">' + mWItem.sound + '</div>';
             html += '    </div>';
             html += '  </div>';
-            html += '  <div style="font-size: 24px; font-weight: 900; color: #D84315;">' + mItem.example + '</div>';
+            html += '  <div style="font-size: 20px;">🔊</div>';
             html += '</div>';
           }
           html += '</div>';
         } else {
-          // Matra Quiz (Dash '___' instead of '[?]')
-          var mqItem = DATA_MATRA[appState.quizIndex % DATA_MATRA.length];
+          var mqItem = mWordList[appState.quizIndex % mWordList.length];
           autoSpeak("matra_q_" + appState.quizIndex, mqItem.full + " में कौन सी मात्रा लगेगी?", "hi-IN");
 
-          html += '<div class="flashcard">';
-          // Touch picture sound
-          html += '  <div class="flashcard-emoji" onclick="speak(\'' + mqItem.full + '! ' + mqItem.sound + '\', \'hi-IN\')">' + mqItem.emoji + '</div>';
-          // Touch word with dash sound
-          html += '  <div class="touch-speak-item" onclick="speak(\'' + mqItem.full + '\', \'hi-IN\')" style="font-size: 32px; font-weight: 900; color: #D84315;">' + mqItem.missingPart + '</div>';
-          html += '  <div class="audio-hint" style="background:#FFF3E0;color:#E65100;" onclick="speak(\'' + mqItem.full + '\', \'hi-IN\')">🔊 ' + mqItem.full + '</div>';
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + mqItem.full + '! ' + mqItem.sound + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + mqItem.full + '! ' + mqItem.sound + '\', \'hi-IN\'); }, event)">';
+          html += '  <div class="flashcard-emoji">' + mqItem.emoji + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + mqItem.full + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + mqItem.full + '\', \'hi-IN\'); }, event)" style="font-size: 34px; font-weight: 900; color: #D84315;">' + mqItem.missing + '</div>';
+          html += '  <div class="audio-hint" style="background:#FFF3E0;color:#E65100;">🔊 ' + mqItem.full + '</div>';
           html += '</div>';
 
-          html += '<div class="touch-speak-item" onclick="speak(\'सही मात्रा चुनो\', \'hi-IN\')" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">सही मात्रा चुनो: 🔊</div>';
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'सही मात्रा चुनो\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'सही मात्रा चुनो\', \'hi-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">सही मात्रा चुनो: 🔊</div>';
+          var matraOpts = [mqItem.ans, "ि", "ी", "ु", "े", "ो"].filter(function(x, pos, self) {
+            return self.indexOf(x) === pos;
+          }).slice(0, 3).sort(function() { return Math.random() - 0.5; });
+
           html += '<div class="options-grid-3">';
-          for (var mo = 0; mo < mqItem.options.length; mo++) {
-            var isMatraOk = (mqItem.options[mo] === mqItem.ans);
-            html += '<button class="opt-btn" style="border-color:#FFB74D;color:#E65100;font-size:32px;" onclick="handleMatraAns(' + isMatraOk + ', \'' + mqItem.sound + '\')">' + mqItem.options[mo] + '</button>';
+          for (var mo = 0; mo < matraOpts.length; mo++) {
+            var isMatraOk = (matraOpts[mo] === mqItem.ans);
+            html += '<button class="opt-btn" style="border-color:#FFB74D;color:#E65100;font-size:32px;" onclick="safeAction(function(){ handleMatraAns(' + isMatraOk + ', \'' + mqItem.sound + '\'); })" ontouchend="safeAction(function(){ handleMatraAns(' + isMatraOk + ', \'' + mqItem.sound + '\'); }, event)">' + matraOpts[mo] + '</button>';
           }
           html += '</div>';
         }
       }
 
-      // TAB 2: Addition & Subtraction (Dash '___' instead of '?')
-      else if (appState.tabIndex === 2) {
+      // TAB 3: Addition & Subtraction
+      else if (appState.tabIndex === 3) {
+        filterBar.style.display = "none";
         var op = (appState.quizIndex % 2 === 0) ? "+" : "-";
-        var a = Math.floor(Math.random() * 4) + 3; // 3 to 6
-        var b = Math.floor(Math.random() * 3) + 1; // 1 to 3
+        var a = Math.floor(Math.random() * 4) + 3;
+        var b = Math.floor(Math.random() * 3) + 1;
         if (op === "-" && a < b) {
           var tmp = a; a = b; b = tmp;
         }
@@ -2049,22 +2610,18 @@
         autoSpeak("math_q_" + appState.quizIndex, mathSpoken, "en-IN");
 
         html += '<div style="text-align:center;margin: 12px 0;">';
-        // Touching equation speaks it
-        html += '  <div class="touch-speak-item" onclick="speak(\'' + mathSpoken + '\', \'en-IN\')" style="font-size: 40px; font-weight: 900; color: #E65100;">' + a + ' ' + op + ' ' + b + ' = <span class="dash-blank">___</span></div>';
-        html += '  <div class="touch-speak-item" onclick="speak(\'Count the objects below\', \'en-IN\')" style="font-size: 13px; font-weight: bold; color: #795548;">Count the objects below: 🔊</div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + mathSpoken + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + mathSpoken + '\', \'en-IN\'); }, event)" style="font-size: 40px; font-weight: 900; color: #E65100;">' + a + ' ' + op + ' ' + b + ' = <span class="dash-blank">___</span></div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Count the objects below\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Count the objects below\', \'en-IN\'); }, event)" style="font-size: 13px; font-weight: bold; color: #795548;">Count the objects below: 🔊</div>';
         html += '</div>';
 
-        // Visual Representation with tap sounds
-        html += '<div class="math-counters-row" style="max-width: 340px; margin: 10px auto;" onclick="speak(\'' + mathSpoken + '\', \'en-IN\')">';
-        // Group A
+        html += '<div class="math-counters-row" style="max-width: 340px; margin: 10px auto;" onclick="safeAction(function(){ speak(\'' + mathSpoken + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + mathSpoken + '\', \'en-IN\'); }, event)">';
         for (var ga = 0; ga < a; ga++) {
-          html += '<span class="touch-speak-item" style="font-size: 32px;" onclick="event.stopPropagation(); speak(\'Apple ' + (ga+1) + '\', \'en-IN\')">🍎</span>';
+          html += '<span class="touch-speak-item safe-emoji" style="font-size: 32px;">🍎</span>';
         }
         html += '<span class="math-symbol">' + op + '</span>';
-        // Group B
         for (var gb = 0; gb < b; gb++) {
           var cross = (op === "-") ? ' style="filter: grayscale(1); opacity: 0.5;"' : '';
-          html += '<span class="touch-speak-item" style="font-size: 32px;"' + cross + ' onclick="event.stopPropagation(); speak(\'Apple ' + (gb+1) + '\', \'en-IN\')">🍎</span>';
+          html += '<span class="touch-speak-item safe-emoji" style="font-size: 32px;"' + cross + '>🍎</span>';
         }
         html += '</div>';
 
@@ -2073,7 +2630,7 @@
         html += '<div class="options-grid-3" style="max-width: 320px; margin: 18px auto 0;">';
         for (var mopt = 0; mopt < mathOpts.length; mopt++) {
           var isMathOk = (mathOpts[mopt] === correctMath);
-          html += '<button class="opt-btn" onclick="handleMathAns(' + isMathOk + ', ' + correctMath + ')">' + mathOpts[mopt] + '</button>';
+          html += '<button class="opt-btn" onclick="safeAction(function(){ handleMathAns(' + isMathOk + ', ' + correctMath + '); })" ontouchend="safeAction(function(){ handleMathAns(' + isMathOk + ', ' + correctMath + '); }, event)">' + mathOpts[mopt] + '</button>';
         }
         html += '</div>';
       }
@@ -2123,14 +2680,17 @@
        ========================================================= */
     function renderPictureWorldView() {
       var view = document.getElementById("main-view");
+      var filterBar = document.getElementById("filter-pills-bar");
+      filterBar.style.display = "none";
+
       var categories = ["Animals", "Birds", "Fruits", "Vegetables", "Vehicles", "BodyParts"];
       var catName = categories[appState.tabIndex] || "Animals";
       var items = DATA_PICTURE_WORLD[catName] || [];
 
       var html = "";
       html += '<div class="mode-switch">';
-      html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 Picture Cards (सीखें)</button>';
-      html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 Picture Quiz</button>';
+      html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Picture Cards (सीखें)</button>';
+      html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 Picture Quiz</button>';
       html += '</div>';
 
       if (appState.mode === "learn") {
@@ -2138,15 +2698,14 @@
         html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 210px); overflow-y: auto; padding: 4px;">';
         for (var p = 0; p < items.length; p++) {
           var pItem = items[p];
-          html += '<div class="interactive-card" style="padding: 14px; text-align: center; border-color: #CE93D8;" onclick="speak(\'' + pItem.en + ', ' + pItem.hi + '\', \'en-IN\')">';
-          html += '  <div class="touch-speak-item" style="font-size: 52px; margin-bottom: 6px;">' + pItem.emoji + '</div>';
+          html += '<div class="interactive-card" style="padding: 14px; text-align: center; border-color: #CE93D8;" onclick="safeAction(function(){ speak(\'' + pItem.en + ', ' + pItem.hi + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + pItem.en + ', ' + pItem.hi + '\', \'en-IN\'); }, event)">';
+          html += '  <div class="safe-emoji" style="font-size: 52px; margin-bottom: 6px;">' + pItem.emoji + '</div>';
           html += '  <div style="font-size: 18px; font-weight: 900; color: #4A148C;">' + pItem.en + '</div>';
           html += '  <div style="font-size: 13px; font-weight: 700; color: #7B1FA2;">' + pItem.hi + '</div>';
           html += '</div>';
         }
         html += '</div>';
       } else {
-        // Picture Quiz
         var targetPic = items[appState.quizIndex % items.length];
         autoSpeak("pw_q_" + appState.quizIndex, "Where is the " + targetPic.en + "? " + targetPic.hi + " कहाँ है?", "hi-IN");
 
@@ -2157,7 +2716,7 @@
         }
         pOpts.sort(function() { return Math.random() - 0.5; });
 
-        html += '<div class="touch-speak-item" onclick="speak(\'Where is the ' + targetPic.en + '? ' + targetPic.hi + ' कहाँ है?\', \'hi-IN\')" style="text-align: center; margin: 12px 0 16px; width: 100%;">';
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Where is the ' + targetPic.en + '? ' + targetPic.hi + ' कहाँ है?\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'Where is the ' + targetPic.en + '? ' + targetPic.hi + ' कहाँ है?\', \'hi-IN\'); }, event)" style="text-align: center; margin: 12px 0 16px; width: 100%;">';
         html += '  <div style="font-size: 14px; font-weight: bold; color: #546E7A;">Find this picture (पहचानो): 🔊</div>';
         html += '  <div style="font-size: 30px; font-weight: 900; color: #6A1B9A;">' + targetPic.en + '</div>';
         html += '  <div style="font-size: 18px; font-weight: 700; color: #8E24AA;">(' + targetPic.hi + ')</div>';
@@ -2167,9 +2726,8 @@
         for (var po = 0; po < pOpts.length; po++) {
           var optItem = pOpts[po];
           var isPicOk = (optItem.en === targetPic.en);
-          // Picture touch speaks its name immediately
-          html += '<button class="opt-btn" style="border-color:#BA68C8;box-shadow:0 5px 0 #8E24AA;padding:18px 8px;" onclick="handlePicWorldAns(' + isPicOk + ', \'' + optItem.en + '\', \'' + optItem.hi + '\')">';
-          html += '  <span style="font-size: 52px;">' + optItem.emoji + '</span>';
+          html += '<button class="opt-btn" style="border-color:#BA68C8;box-shadow:0 5px 0 #8E24AA;padding:18px 8px;" onclick="safeAction(function(){ handlePicWorldAns(' + isPicOk + ', \'' + optItem.en + '\', \'' + optItem.hi + '\'); })" ontouchend="safeAction(function(){ handlePicWorldAns(' + isPicOk + ', \'' + optItem.en + '\', \'' + optItem.hi + '\'); }, event)">';
+          html += '  <span class="safe-emoji" style="font-size: 52px;">' + optItem.emoji + '</span>';
           html += '</button>';
         }
         html += '</div>';
@@ -2196,6 +2754,8 @@
        ========================================================= */
     function renderBrainBoosterView() {
       var view = document.getElementById("main-view");
+      var filterBar = document.getElementById("filter-pills-bar");
+      filterBar.style.display = "none";
       var html = "";
 
       // TAB 0: Shadow Match
@@ -2204,18 +2764,16 @@
         autoSpeak("shadow_q_" + appState.brainIndex, sTarget.sound, "hi-IN");
 
         html += '<div style="text-align: center; margin: 10px 0;">';
-        html += '  <div class="touch-speak-item" onclick="speak(\'इस चित्र की सही परछाई चुनो\', \'hi-IN\')" style="font-size: 14px; font-weight: bold; color: #546E7A;">इस चित्र की सही परछाई (Shadow) चुनो: 🔊</div>';
-        // Touch target picture sound
-        html += '  <div class="touch-speak-item" onclick="speak(\'' + sTarget.name + '\', \'en-IN\')" style="font-size: 74px; margin: 10px 0; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));">' + sTarget.emoji + '</div>';
-        html += '  <div class="touch-speak-item" onclick="speak(\'' + sTarget.name + '\', \'en-IN\')" style="font-size: 20px; font-weight: 900; color: #880E4F;">' + sTarget.name + '</div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'इस चित्र की सही परछाई चुनो\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'इस चित्र की सही परछाई चुनो\', \'hi-IN\'); }, event)" style="font-size: 14px; font-weight: bold; color: #546E7A;">इस चित्र की सही परछाई (Shadow) चुनो: 🔊</div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + sTarget.name + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + sTarget.name + '\', \'en-IN\'); }, event)" style="font-size: 74px; margin: 10px 0; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><span class="safe-emoji">' + sTarget.emoji + '</span></div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + sTarget.name + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + sTarget.name + '\', \'en-IN\'); }, event)" style="font-size: 20px; font-weight: 900; color: #880E4F;">' + sTarget.name + '</div>';
         html += '</div>';
 
         html += '<div class="options-grid-3">';
         for (var so = 0; so < sTarget.options.length; so++) {
           var isShadowOk = (sTarget.options[so] === sTarget.correct);
-          html += '<button class="opt-btn" style="border-color:#F48FB1;box-shadow:0 5px 0 #D81B60;" onclick="handleShadowAns(' + isShadowOk + ', \'' + sTarget.name + '\')">';
-          // CSS Silhouette shadow filter
-          html += '  <span style="font-size: 48px; filter: brightness(0) opacity(0.85);">' + sTarget.options[so] + '</span>';
+          html += '<button class="opt-btn" style="border-color:#F48FB1;box-shadow:0 5px 0 #D81B60;" onclick="safeAction(function(){ handleShadowAns(' + isShadowOk + ', \'' + sTarget.name + '\'); })" ontouchend="safeAction(function(){ handleShadowAns(' + isShadowOk + ', \'' + sTarget.name + '\'); }, event)">';
+          html += '  <span class="safe-emoji" style="font-size: 48px; filter: brightness(0) opacity(0.85);">' + sTarget.options[so] + '</span>';
           html += '</button>';
         }
         html += '</div>';
@@ -2226,7 +2784,7 @@
         var oddObj = DATA_ODD_OUT[appState.brainIndex % DATA_ODD_OUT.length];
         autoSpeak("odd_q_" + appState.brainIndex, oddObj.speakQ, "hi-IN");
 
-        html += '<div class="touch-speak-item" onclick="speak(\'' + oddObj.speakQ + '\', \'hi-IN\')" style="text-align: center; margin: 12px 0 16px; width: 100%;">';
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + oddObj.speakQ + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + oddObj.speakQ + '\', \'hi-IN\'); }, event)" style="text-align: center; margin: 12px 0 16px; width: 100%;">';
         html += '  <div style="font-size: 18px; font-weight: 900; color: #880E4F;">' + oddObj.question + ' 🔊</div>';
         html += '  <div style="font-size: 12px; font-weight: bold; color: #546E7A;">जो सबसे अलग है, उस पर टैप करें:</div>';
         html += '</div>';
@@ -2234,9 +2792,8 @@
         html += '<div class="options-grid-4">';
         for (var oi = 0; oi < oddObj.items.length; oi++) {
           var itm = oddObj.items[oi];
-          // Touch picture immediately speaks its name
-          html += '<button class="opt-btn" style="border-color:#F48FB1;box-shadow:0 5px 0 #D81B60;padding:20px 8px;" onclick="handleOddAns(' + itm.isOdd + ', \'' + (itm.reason || "Good job!") + '\', \'' + itm.name + '\')">';
-          html += '  <span style="font-size: 52px;">' + itm.emoji + '</span>';
+          html += '<button class="opt-btn" style="border-color:#F48FB1;box-shadow:0 5px 0 #D81B60;padding:20px 8px;" onclick="safeAction(function(){ handleOddAns(' + itm.isOdd + ', \'' + (itm.reason || "Good job!") + '\', \'' + itm.name + '\'); })" ontouchend="safeAction(function(){ handleOddAns(' + itm.isOdd + ', \'' + (itm.reason || "Good job!") + '\', \'' + itm.name + '\'); }, event)">';
+          html += '  <span class="safe-emoji" style="font-size: 52px;">' + itm.emoji + '</span>';
           html += '</button>';
         }
         html += '</div>';
@@ -2248,7 +2805,7 @@
           initMemoryGame();
         }
 
-        html += '<div class="touch-speak-item" onclick="speak(\'Memory Flip Game. जोड़ी मिलाओ\', \'hi-IN\')" style="text-align: center; margin-bottom: 8px; width: 100%;">';
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Memory Flip Game. जोड़ी मिलाओ\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'Memory Flip Game. जोड़ी मिलाओ\', \'hi-IN\'); }, event)" style="text-align: center; margin-bottom: 8px; width: 100%;">';
         html += '  <div style="font-size: 18px; font-weight: 900; color: #880E4F;">Memory Flip Game (जोड़ी मिलाओ) 🔊</div>';
         html += '  <div style="font-size: 12px; font-weight: bold; color: #546E7A;">Matched: ' + appState.memMatched.length + ' / ' + (appState.memCards.length / 2) + ' pairs</div>';
         html += '</div>';
@@ -2258,7 +2815,7 @@
           var cardIcon = appState.memCards[mi];
           var isFlipped = (appState.memFlipped.indexOf(mi) !== -1 || appState.memMatched.indexOf(cardIcon) !== -1);
           var flipCls = isFlipped ? " flipped" : "";
-          html += '<div class="memory-card' + flipCls + '" onclick="tapMemoryCard(' + mi + ')">';
+          html += '<div class="memory-card' + flipCls + '" onclick="safeAction(function(){ tapMemoryCard(' + mi + '); })" ontouchend="safeAction(function(){ tapMemoryCard(' + mi + '); }, event)">';
           html += '  <div class="memory-card-inner">';
           html += '    <div class="memory-front">⭐</div>';
           html += '    <div class="memory-back">' + cardIcon + '</div>';
@@ -2268,7 +2825,7 @@
         html += '</div>';
 
         html += '<div style="text-align: center; margin-top: 10px;">';
-        html += '  <button class="nav-icon-btn" style="margin: 0 auto;" onclick="initMemoryGame()">🔄 New Game (नया खेल)</button>';
+        html += '  <button class="nav-icon-btn" style="margin: 0 auto;" onclick="safeAction(initMemoryGame)" ontouchend="safeAction(initMemoryGame, event)">🔄 New Game (नया खेल)</button>';
         html += '</div>';
       }
 
@@ -2300,7 +2857,6 @@
       var cardIcon = appState.memCards[idx];
       if (appState.memMatched.indexOf(cardIcon) !== -1) return;
 
-      playTone("pop");
       speak(MEM_NAMES[cardIcon] || "Card", "en-IN");
       appState.memFlipped.push(idx);
       renderCurrentView();
@@ -2379,11 +2935,7 @@
 
     // Initial load
     window.addEventListener("DOMContentLoaded", function() {
-      // Unlock audio on first user gesture
-      document.body.addEventListener("click", function() {
-        getAudioContext();
-      }, { once: true });
-
+      unlockAudioContext();
       goHome();
     });
   </script>
