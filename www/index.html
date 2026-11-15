@@ -1806,27 +1806,33 @@
     function getCurriculumModulesForClass(className) {
       if (className === "UKG") {
         return [
-          { key: "ukg_phonics_a", title: "UKG Phonics: Short 'a' Missing Vowels (C___T, F___N)", section: "ukg", tab: 0, mode: "quiz", vowel: "a" },
-          { key: "ukg_phonics_e", title: "UKG Phonics: Short 'e' Missing Vowels (P___N, H___N)", section: "ukg", tab: 0, mode: "quiz", vowel: "e" },
-          { key: "ukg_evs_helpers", title: "UKG EVS: Community Helpers (Doctor, Teacher, Police)", section: "ukg", tab: 1, mode: "quiz", topic: "helpers" },
-          { key: "ukg_evs_transport", title: "UKG EVS: Means of Transport (Land, Water, Air)", section: "ukg", tab: 1, mode: "quiz", topic: "transport" },
-          { key: "ukg_math_addition", title: "UKG Math: Addition Fun (1-10 Quiz)", section: "ukg", tab: 2, mode: "quiz" },
-          { key: "ukg_hindi_matra", title: "UKG Hindi: Matra Quiz (ा, ि, ी, ु, ू)", section: "ukg", tab: 3, mode: "quiz" }
+          { key: "ukg_phonics_4let_a", title: "UKG Phonics: 4-Letter 'A' Words (STAR, CART, HAND)", section: "ukg", tab: 0, mode: "quiz", vowel: "a" },
+          { key: "ukg_phonics_4let_e", title: "UKG Phonics: 4-Letter 'E' Words (TREE, JEEP, BELL)", section: "ukg", tab: 0, mode: "quiz", vowel: "e" },
+          { key: "ukg_phonics_4let_i", title: "UKG Phonics: 4-Letter 'I' Words (FISH, SHIP, RING)", section: "ukg", tab: 0, mode: "quiz", vowel: "i" },
+          { key: "ukg_eng_world_days", title: "UKG English World: Days of the Week", section: "ukg", tab: 1, mode: "quiz", cat: "days" },
+          { key: "ukg_eng_world_colors", title: "UKG English World: Colors Around Us", section: "ukg", tab: 1, mode: "quiz", cat: "colors" },
+          { key: "ukg_evs_helpers", title: "UKG EVS: Community Helpers (Doctor, Teacher, Police)", section: "ukg", tab: 3, mode: "quiz", topic: "helpers" },
+          { key: "ukg_math_addition", title: "UKG Math: Addition Fun (1-10 Quiz)", section: "ukg", tab: 5, mode: "quiz" },
+          { key: "ukg_hindi_matra", title: "UKG Hindi: Matra Quiz (ा, ि, ी, ु, ू)", section: "ukg", tab: 4, mode: "quiz" }
         ];
       } else if (className === "LKG") {
         return [
-          { key: "lkg_evs_animals", title: "LKG EVS: Domestic vs Wild Animals Quiz", section: "lkg", tab: 0, mode: "quiz", topic: "animals" },
-          { key: "lkg_evs_body", title: "LKG EVS: My Body & Five Senses", section: "lkg", tab: 0, mode: "quiz", topic: "body" },
+          { key: "lkg_phonics_2letter", title: "LKG Phonics: 2-Letter Words (AT, IN, ON, GO)", section: "lkg", tab: 0, mode: "quiz", vowel: "two" },
+          { key: "lkg_phonics_cvc_a", title: "LKG Phonics: 3-Letter CVC Short 'a' (CAT, BAT, MAT)", section: "lkg", tab: 0, mode: "quiz", vowel: "a" },
+          { key: "lkg_phonics_cvc_e", title: "LKG Phonics: 3-Letter CVC Short 'e' (PEN, HEN, BED)", section: "lkg", tab: 0, mode: "quiz", vowel: "e" },
+          { key: "lkg_hindi_vyanjan", title: "LKG Hindi: क-ज्ञ Vyanjan Picture Quiz", section: "lkg", tab: 1, mode: "quiz_pic_to_let" },
           { key: "lkg_math_numbers", title: "LKG Math: Numbers 1-50 Missing Numbers", section: "lkg", tab: 2, mode: "quiz" },
-          { key: "lkg_premath_moreless", title: "LKG Pre-Math: More vs Less Quiz", section: "lkg", tab: 3, mode: "quiz" },
-          { key: "lkg_hindi_vyanjan", title: "LKG Hindi: क-ज्ञ Vyanjan Picture Quiz", section: "lkg", tab: 1, mode: "quiz_pic_to_let" }
+          { key: "lkg_evs_animals", title: "LKG EVS: Domestic vs Wild Animals Quiz", section: "lkg", tab: 3, mode: "quiz", topic: "animals" },
+          { key: "lkg_evs_body", title: "LKG EVS: My Body & Five Senses", section: "lkg", tab: 3, mode: "quiz", topic: "body" },
+          { key: "lkg_premath_moreless", title: "LKG Pre-Math: More vs Less Quiz", section: "lkg", tab: 4, mode: "quiz" }
         ];
       } else {
         return [
           { key: "nursery_letters_quiz", title: "Nursery English: Letters A-Z Picture Quiz", section: "nursery", tab: 0, mode: "quiz_pic_to_let" },
-          { key: "nursery_swar_quiz", title: "Nursery Hindi: Swar अ-अः Picture Quiz", section: "nursery", tab: 1, mode: "quiz_pic_to_let" },
-          { key: "nursery_math_counting", title: "Nursery Math: Counting 1-20 Quiz", section: "nursery", tab: 2, mode: "quiz" },
-          { key: "nursery_shapes_quiz", title: "Nursery Pre-Math: Shapes Identification Quiz", section: "nursery", tab: 3, mode: "quiz" }
+          { key: "nursery_phonics_sounds", title: "Nursery Phonics: Initial Sound Match Quiz", section: "nursery", tab: 1, mode: "quiz" },
+          { key: "nursery_swar_quiz", title: "Nursery Hindi: Swar अ-अः Picture Quiz", section: "nursery", tab: 2, mode: "quiz_pic_to_let" },
+          { key: "nursery_math_counting", title: "Nursery Math: Counting 1-20 Quiz", section: "nursery", tab: 3, mode: "quiz" },
+          { key: "nursery_shapes_quiz", title: "Nursery Pre-Math: Shapes Identification Quiz", section: "nursery", tab: 4, mode: "quiz" }
         ];
       }
     }
@@ -2013,6 +2019,9 @@
         if (appSession.student.class_name === "LKG") appState.lkgEvsTopic = mod.topic;
         if (appSession.student.class_name === "UKG") appState.ukgEvsTopic = mod.topic;
       }
+      if (mod.cat) {
+        appState.ukgEnglishWorldCat = mod.cat;
+      }
 
       openSection(mod.section, mod.tab);
       setMode(mod.mode || "quiz");
@@ -2093,7 +2102,12 @@
       mode: "learn", // learn, quiz_pic_to_let, quiz_let_to_pic, quiz
       quizIndex: 0,
       stars: 0,
-      // UKG Phonics
+      // Scientific Phonics Curriculum States
+      nurseryPhonicsFilter: "all", // "all", "az", "extra"
+      lkgPhonicsVowel: "two", // "two", "a", "e", "i", "o", "u"
+      ukgPhonicsVowel: "two", // "two", "cvc", "a", "e", "i", "o", "u"
+      ukgEnglishWorldCat: "days", // 14 categories
+      // UKG Phonics legacy
       phonicsVowel: "a", // a, e, i, o, u
       // UKG Matra Filter
       matraFilter: "all",
@@ -2143,6 +2157,2776 @@
       showToast("❌ Try Again!", "wrong");
       speak(speechText || "Try again!", lang || "en-IN");
     }
+
+    /* ---------------------------------------------------------
+       DATA: SCIENTIFIC PHONICS & ENGLISH CURRICULUM
+       --------------------------------------------------------- */
+    var DATA_NURSERY_PHONICS_AZ = [
+      {
+            "letter": "A",
+            "word": "Apple",
+            "emoji": "🍎",
+            "sound": "A says /æ/ for Apple"
+      },
+      {
+            "letter": "A",
+            "word": "Ant",
+            "emoji": "🐜",
+            "sound": "A says /æ/ for Ant"
+      },
+      {
+            "letter": "B",
+            "word": "Ball",
+            "emoji": "⚽",
+            "sound": "B says /b/ for Ball"
+      },
+      {
+            "letter": "B",
+            "word": "Bat",
+            "emoji": "🦇",
+            "sound": "B says /b/ for Bat"
+      },
+      {
+            "letter": "C",
+            "word": "Cat",
+            "emoji": "🐱",
+            "sound": "C says /k/ for Cat"
+      },
+      {
+            "letter": "C",
+            "word": "Car",
+            "emoji": "🚗",
+            "sound": "C says /k/ for Car"
+      },
+      {
+            "letter": "D",
+            "word": "Dog",
+            "emoji": "🐶",
+            "sound": "D says /d/ for Dog"
+      },
+      {
+            "letter": "D",
+            "word": "Duck",
+            "emoji": "🦆",
+            "sound": "D says /d/ for Duck"
+      },
+      {
+            "letter": "E",
+            "word": "Elephant",
+            "emoji": "🐘",
+            "sound": "E says /e/ for Elephant"
+      },
+      {
+            "letter": "E",
+            "word": "Egg",
+            "emoji": "🥚",
+            "sound": "E says /e/ for Egg"
+      },
+      {
+            "letter": "F",
+            "word": "Fish",
+            "emoji": "🐟",
+            "sound": "F says /f/ for Fish"
+      },
+      {
+            "letter": "F",
+            "word": "Frog",
+            "emoji": "🐸",
+            "sound": "F says /f/ for Frog"
+      },
+      {
+            "letter": "G",
+            "word": "Grapes",
+            "emoji": "🍇",
+            "sound": "G says /g/ for Grapes"
+      },
+      {
+            "letter": "G",
+            "word": "Giraffe",
+            "emoji": "🦒",
+            "sound": "G says /g/ for Giraffe"
+      },
+      {
+            "letter": "H",
+            "word": "Horse",
+            "emoji": "🐴",
+            "sound": "H says /h/ for Horse"
+      },
+      {
+            "letter": "H",
+            "word": "Hat",
+            "emoji": "🎩",
+            "sound": "H says /h/ for Hat"
+      },
+      {
+            "letter": "I",
+            "word": "Ice Cream",
+            "emoji": "🍦",
+            "sound": "I says /ɪ/ for Ice Cream"
+      },
+      {
+            "letter": "I",
+            "word": "Iguana",
+            "emoji": "🦎",
+            "sound": "I says /ɪ/ for Iguana"
+      },
+      {
+            "letter": "J",
+            "word": "Juice",
+            "emoji": "🧃",
+            "sound": "J says /dʒ/ for Juice"
+      },
+      {
+            "letter": "J",
+            "word": "Jellyfish",
+            "emoji": "🪼",
+            "sound": "J says /dʒ/ for Jellyfish"
+      },
+      {
+            "letter": "K",
+            "word": "Kite",
+            "emoji": "🪁",
+            "sound": "K says /k/ for Kite"
+      },
+      {
+            "letter": "K",
+            "word": "Kangaroo",
+            "emoji": "🦘",
+            "sound": "K says /k/ for Kangaroo"
+      },
+      {
+            "letter": "L",
+            "word": "Lion",
+            "emoji": "🦁",
+            "sound": "L says /l/ for Lion"
+      },
+      {
+            "letter": "L",
+            "word": "Lemon",
+            "emoji": "🍋",
+            "sound": "L says /l/ for Lemon"
+      },
+      {
+            "letter": "M",
+            "word": "Monkey",
+            "emoji": "🐒",
+            "sound": "M says /m/ for Monkey"
+      },
+      {
+            "letter": "M",
+            "word": "Moon",
+            "emoji": "🌙",
+            "sound": "M says /m/ for Moon"
+      },
+      {
+            "letter": "N",
+            "word": "Nest",
+            "emoji": "🪺",
+            "sound": "N says /n/ for Nest"
+      },
+      {
+            "letter": "N",
+            "word": "Nut",
+            "emoji": "🥜",
+            "sound": "N says /n/ for Nut"
+      },
+      {
+            "letter": "O",
+            "word": "Owl",
+            "emoji": "🦉",
+            "sound": "O says /ɒ/ for Owl"
+      },
+      {
+            "letter": "O",
+            "word": "Orange",
+            "emoji": "🍊",
+            "sound": "O says /ɒ/ for Orange"
+      },
+      {
+            "letter": "P",
+            "word": "Penguin",
+            "emoji": "🐧",
+            "sound": "P says /p/ for Penguin"
+      },
+      {
+            "letter": "P",
+            "word": "Pizza",
+            "emoji": "🍕",
+            "sound": "P says /p/ for Pizza"
+      },
+      {
+            "letter": "Q",
+            "word": "Queen",
+            "emoji": "👑",
+            "sound": "Q says /kw/ for Queen"
+      },
+      {
+            "letter": "Q",
+            "word": "Quill",
+            "emoji": "🪶",
+            "sound": "Q says /kw/ for Quill"
+      },
+      {
+            "letter": "R",
+            "word": "Rabbit",
+            "emoji": "🐰",
+            "sound": "R says /r/ for Rabbit"
+      },
+      {
+            "letter": "R",
+            "word": "Rainbow",
+            "emoji": "🌈",
+            "sound": "R says /r/ for Rainbow"
+      },
+      {
+            "letter": "S",
+            "word": "Sun",
+            "emoji": "☀️",
+            "sound": "S says /s/ for Sun"
+      },
+      {
+            "letter": "S",
+            "word": "Snake",
+            "emoji": "🐍",
+            "sound": "S says /s/ for Snake"
+      },
+      {
+            "letter": "T",
+            "word": "Tiger",
+            "emoji": "🐯",
+            "sound": "T says /t/ for Tiger"
+      },
+      {
+            "letter": "T",
+            "word": "Tomato",
+            "emoji": "🍅",
+            "sound": "T says /t/ for Tomato"
+      },
+      {
+            "letter": "U",
+            "word": "Umbrella",
+            "emoji": "☂️",
+            "sound": "U says /ʌ/ for Umbrella"
+      },
+      {
+            "letter": "U",
+            "word": "Unicorn",
+            "emoji": "🦄",
+            "sound": "U says /juː/ for Unicorn"
+      },
+      {
+            "letter": "V",
+            "word": "Van",
+            "emoji": "🚐",
+            "sound": "V says /v/ for Van"
+      },
+      {
+            "letter": "V",
+            "word": "Violin",
+            "emoji": "🎻",
+            "sound": "V says /v/ for Violin"
+      },
+      {
+            "letter": "W",
+            "word": "Watch",
+            "emoji": "⌚",
+            "sound": "W says /w/ for Watch"
+      },
+      {
+            "letter": "W",
+            "word": "Watermelon",
+            "emoji": "🍉",
+            "sound": "W says /w/ for Watermelon"
+      },
+      {
+            "letter": "X",
+            "word": "Xylophone",
+            "emoji": "🎼",
+            "sound": "X says /z/ for Xylophone"
+      },
+      {
+            "letter": "X",
+            "word": "X-ray",
+            "emoji": "🩻",
+            "sound": "X says /eks/ for X-ray"
+      },
+      {
+            "letter": "Y",
+            "word": "Yo-yo",
+            "emoji": "🪀",
+            "sound": "Y says /j/ for Yo-yo"
+      },
+      {
+            "letter": "Y",
+            "word": "Yarn",
+            "emoji": "🧶",
+            "sound": "Y says /j/ for Yarn"
+      },
+      {
+            "letter": "Z",
+            "word": "Zebra",
+            "emoji": "🦓",
+            "sound": "Z says /z/ for Zebra"
+      },
+      {
+            "letter": "Z",
+            "word": "Zipper",
+            "emoji": "🤐",
+            "sound": "Z says /z/ for Zipper"
+      }
+];
+
+    var DATA_NURSERY_PHONICS_EXTRA = [
+      {
+            "sound": "Sh",
+            "word": "Ship",
+            "emoji": "🚢",
+            "spoken": "Sh says /ʃ/ for Ship"
+      },
+      {
+            "sound": "Sh",
+            "word": "Fish",
+            "emoji": "🐟",
+            "spoken": "Ending sound Sh in Fish"
+      },
+      {
+            "sound": "Sh",
+            "word": "Shark",
+            "emoji": "🦈",
+            "spoken": "Sh says /ʃ/ for Shark"
+      },
+      {
+            "sound": "Ch",
+            "word": "Chair",
+            "emoji": "🪑",
+            "spoken": "Ch says /tʃ/ for Chair"
+      },
+      {
+            "sound": "Ch",
+            "word": "Cheese",
+            "emoji": "🧀",
+            "spoken": "Ch says /tʃ/ for Cheese"
+      },
+      {
+            "sound": "Ch",
+            "word": "Cherry",
+            "emoji": "🍒",
+            "spoken": "Ch says /tʃ/ for Cherry"
+      },
+      {
+            "sound": "Th",
+            "word": "Thumb",
+            "emoji": "👍",
+            "spoken": "Th says /θ/ for Thumb"
+      },
+      {
+            "sound": "Th",
+            "word": "Three",
+            "emoji": "3️⃣",
+            "spoken": "Th says /θ/ for Three"
+      },
+      {
+            "sound": "Th",
+            "word": "Thread",
+            "emoji": "🧵",
+            "spoken": "Th says /θ/ for Thread"
+      },
+      {
+            "sound": "Wh",
+            "word": "Whale",
+            "emoji": "🐋",
+            "spoken": "Wh says /w/ for Whale"
+      },
+      {
+            "sound": "Wh",
+            "word": "Wheel",
+            "emoji": "🛞",
+            "spoken": "Wh says /w/ for Wheel"
+      },
+      {
+            "sound": "Wh",
+            "word": "Whistle",
+            "emoji": "🌪️",
+            "spoken": "Wh says /w/ for Whistle"
+      }
+];
+
+    var DATA_2LETTER_WORDS = [
+      {
+            "word": "am",
+            "l1": "a",
+            "l2": "m",
+            "blend": "a - m ... am",
+            "emoji": "🙋",
+            "sentence": "I am happy"
+      },
+      {
+            "word": "an",
+            "l1": "a",
+            "l2": "n",
+            "blend": "a - n ... an",
+            "emoji": "🍎",
+            "sentence": "An apple"
+      },
+      {
+            "word": "as",
+            "l1": "a",
+            "l2": "s",
+            "blend": "a - s ... as",
+            "emoji": "🧊",
+            "sentence": "Cold as ice"
+      },
+      {
+            "word": "at",
+            "l1": "a",
+            "l2": "t",
+            "blend": "a - t ... at",
+            "emoji": "🏠",
+            "sentence": "Look at home"
+      },
+      {
+            "word": "in",
+            "l1": "i",
+            "l2": "n",
+            "blend": "i - n ... in",
+            "emoji": "📦",
+            "sentence": "Toys in box"
+      },
+      {
+            "word": "is",
+            "l1": "i",
+            "l2": "s",
+            "blend": "i - s ... is",
+            "emoji": "☀️",
+            "sentence": "Sun is hot"
+      },
+      {
+            "word": "it",
+            "l1": "i",
+            "l2": "t",
+            "blend": "i - t ... it",
+            "emoji": "🐶",
+            "sentence": "It is a puppy"
+      },
+      {
+            "word": "if",
+            "l1": "i",
+            "l2": "f",
+            "blend": "i - f ... if",
+            "emoji": "🤔",
+            "sentence": "Ask if you can"
+      },
+      {
+            "word": "on",
+            "l1": "o",
+            "l2": "n",
+            "blend": "o - n ... on",
+            "emoji": "💡",
+            "sentence": "Light is on"
+      },
+      {
+            "word": "of",
+            "l1": "o",
+            "l2": "f",
+            "blend": "o - f ... of",
+            "emoji": "🥛",
+            "sentence": "Glass of milk"
+      },
+      {
+            "word": "ox",
+            "l1": "o",
+            "l2": "x",
+            "blend": "o - x ... ox",
+            "emoji": "🐂",
+            "sentence": "Big strong ox"
+      },
+      {
+            "word": "or",
+            "l1": "o",
+            "l2": "r",
+            "blend": "o - r ... or",
+            "emoji": "⚖️",
+            "sentence": "Tea or milk"
+      },
+      {
+            "word": "up",
+            "l1": "u",
+            "l2": "p",
+            "blend": "u - p ... up",
+            "emoji": "🎈",
+            "sentence": "Balloon goes up"
+      },
+      {
+            "word": "us",
+            "l1": "u",
+            "l2": "s",
+            "blend": "u - s ... us",
+            "emoji": "👨‍👩‍👧",
+            "sentence": "Come with us"
+      },
+      {
+            "word": "go",
+            "l1": "g",
+            "l2": "o",
+            "blend": "g - o ... go",
+            "emoji": "🟢",
+            "sentence": "Ready, set, go!"
+      },
+      {
+            "word": "no",
+            "l1": "n",
+            "l2": "o",
+            "blend": "n - o ... no",
+            "emoji": "🔴",
+            "sentence": "Say no to waste"
+      },
+      {
+            "word": "so",
+            "l1": "s",
+            "l2": "o",
+            "blend": "s - o ... so",
+            "emoji": "✨",
+            "sentence": "So sweet and nice"
+      },
+      {
+            "word": "to",
+            "l1": "t",
+            "l2": "o",
+            "blend": "t - o ... to",
+            "emoji": "🏫",
+            "sentence": "Go to school"
+      },
+      {
+            "word": "do",
+            "l1": "d",
+            "l2": "o",
+            "blend": "d - o ... do",
+            "emoji": "✍️",
+            "sentence": "Do your best"
+      },
+      {
+            "word": "me",
+            "l1": "m",
+            "l2": "e",
+            "blend": "m - e ... me",
+            "emoji": "🧒",
+            "sentence": "Give it to me"
+      },
+      {
+            "word": "we",
+            "l1": "w",
+            "l2": "e",
+            "blend": "w - e ... we",
+            "emoji": "👫",
+            "sentence": "We are friends"
+      },
+      {
+            "word": "he",
+            "l1": "h",
+            "l2": "e",
+            "blend": "h - e ... he",
+            "emoji": "👦",
+            "sentence": "He is smiling"
+      },
+      {
+            "word": "be",
+            "l1": "b",
+            "l2": "e",
+            "blend": "b - e ... be",
+            "emoji": "🐝",
+            "sentence": "Be kind to all"
+      },
+      {
+            "word": "my",
+            "l1": "m",
+            "l2": "y",
+            "blend": "m - y ... my",
+            "emoji": "🧸",
+            "sentence": "This is my toy"
+      },
+      {
+            "word": "by",
+            "l1": "b",
+            "l2": "y",
+            "blend": "b - y ... by",
+            "emoji": "🚗",
+            "sentence": "Travel by car"
+      }
+];
+
+    var DATA_3LETTER_CVC = {
+      "a": [
+            {
+                  "word": "CAT",
+                  "letters": [
+                        "C",
+                        "A",
+                        "T"
+                  ],
+                  "emoji": "🐱",
+                  "blend": "c - a - t ... Cat!"
+            },
+            {
+                  "word": "BAT",
+                  "letters": [
+                        "B",
+                        "A",
+                        "T"
+                  ],
+                  "emoji": "🦇",
+                  "blend": "b - a - t ... Bat!"
+            },
+            {
+                  "word": "MAT",
+                  "letters": [
+                        "M",
+                        "A",
+                        "T"
+                  ],
+                  "emoji": "🧘",
+                  "blend": "m - a - t ... Mat!"
+            },
+            {
+                  "word": "RAT",
+                  "letters": [
+                        "R",
+                        "A",
+                        "T"
+                  ],
+                  "emoji": "🐀",
+                  "blend": "r - a - t ... Rat!"
+            },
+            {
+                  "word": "HAT",
+                  "letters": [
+                        "H",
+                        "A",
+                        "T"
+                  ],
+                  "emoji": "🎩",
+                  "blend": "h - a - t ... Hat!"
+            },
+            {
+                  "word": "FAT",
+                  "letters": [
+                        "F",
+                        "A",
+                        "T"
+                  ],
+                  "emoji": "🐷",
+                  "blend": "f - a - t ... Fat!"
+            },
+            {
+                  "word": "SAT",
+                  "letters": [
+                        "S",
+                        "A",
+                        "T"
+                  ],
+                  "emoji": "🪑",
+                  "blend": "s - a - t ... Sat!"
+            },
+            {
+                  "word": "PAT",
+                  "letters": [
+                        "P",
+                        "A",
+                        "T"
+                  ],
+                  "emoji": "👋",
+                  "blend": "p - a - t ... Pat!"
+            },
+            {
+                  "word": "CAP",
+                  "letters": [
+                        "C",
+                        "A",
+                        "P"
+                  ],
+                  "emoji": "🧢",
+                  "blend": "c - a - p ... Cap!"
+            },
+            {
+                  "word": "TAP",
+                  "letters": [
+                        "T",
+                        "A",
+                        "P"
+                  ],
+                  "emoji": "🚰",
+                  "blend": "t - a - p ... Tap!"
+            },
+            {
+                  "word": "MAP",
+                  "letters": [
+                        "M",
+                        "A",
+                        "P"
+                  ],
+                  "emoji": "🗺️",
+                  "blend": "m - a - p ... Map!"
+            },
+            {
+                  "word": "NAP",
+                  "letters": [
+                        "N",
+                        "A",
+                        "P"
+                  ],
+                  "emoji": "😴",
+                  "blend": "n - a - p ... Nap!"
+            },
+            {
+                  "word": "FAN",
+                  "letters": [
+                        "F",
+                        "A",
+                        "N"
+                  ],
+                  "emoji": "🪭",
+                  "blend": "f - a - n ... Fan!"
+            },
+            {
+                  "word": "MAN",
+                  "letters": [
+                        "M",
+                        "A",
+                        "N"
+                  ],
+                  "emoji": "👨",
+                  "blend": "m - a - n ... Man!"
+            },
+            {
+                  "word": "VAN",
+                  "letters": [
+                        "V",
+                        "A",
+                        "N"
+                  ],
+                  "emoji": "🚐",
+                  "blend": "v - a - n ... Van!"
+            },
+            {
+                  "word": "PAN",
+                  "letters": [
+                        "P",
+                        "A",
+                        "N"
+                  ],
+                  "emoji": "🍳",
+                  "blend": "p - a - n ... Pan!"
+            }
+      ],
+      "e": [
+            {
+                  "word": "PEN",
+                  "letters": [
+                        "P",
+                        "E",
+                        "N"
+                  ],
+                  "emoji": "🖊️",
+                  "blend": "p - e - n ... Pen!"
+            },
+            {
+                  "word": "HEN",
+                  "letters": [
+                        "H",
+                        "E",
+                        "N"
+                  ],
+                  "emoji": "🐔",
+                  "blend": "h - e - n ... Hen!"
+            },
+            {
+                  "word": "TEN",
+                  "letters": [
+                        "T",
+                        "E",
+                        "N"
+                  ],
+                  "emoji": "🔟",
+                  "blend": "t - e - n ... Ten!"
+            },
+            {
+                  "word": "MEN",
+                  "letters": [
+                        "M",
+                        "E",
+                        "N"
+                  ],
+                  "emoji": "👥",
+                  "blend": "m - e - n ... Men!"
+            },
+            {
+                  "word": "DEN",
+                  "letters": [
+                        "D",
+                        "E",
+                        "N"
+                  ],
+                  "emoji": "🦁",
+                  "blend": "d - e - n ... Den!"
+            },
+            {
+                  "word": "BED",
+                  "letters": [
+                        "B",
+                        "E",
+                        "D"
+                  ],
+                  "emoji": "🛏️",
+                  "blend": "b - e - d ... Bed!"
+            },
+            {
+                  "word": "RED",
+                  "letters": [
+                        "R",
+                        "E",
+                        "D"
+                  ],
+                  "emoji": "🔴",
+                  "blend": "r - e - d ... Red!"
+            },
+            {
+                  "word": "FED",
+                  "letters": [
+                        "F",
+                        "E",
+                        "D"
+                  ],
+                  "emoji": "🥣",
+                  "blend": "f - e - d ... Fed!"
+            },
+            {
+                  "word": "WED",
+                  "letters": [
+                        "W",
+                        "E",
+                        "D"
+                  ],
+                  "emoji": "💍",
+                  "blend": "w - e - d ... Wed!"
+            },
+            {
+                  "word": "NET",
+                  "letters": [
+                        "N",
+                        "E",
+                        "T"
+                  ],
+                  "emoji": "🥅",
+                  "blend": "n - e - t ... Net!"
+            },
+            {
+                  "word": "JET",
+                  "letters": [
+                        "J",
+                        "E",
+                        "T"
+                  ],
+                  "emoji": "✈️",
+                  "blend": "j - e - t ... Jet!"
+            },
+            {
+                  "word": "PET",
+                  "letters": [
+                        "P",
+                        "E",
+                        "T"
+                  ],
+                  "emoji": "🐶",
+                  "blend": "p - e - t ... Pet!"
+            },
+            {
+                  "word": "WET",
+                  "letters": [
+                        "W",
+                        "E",
+                        "T"
+                  ],
+                  "emoji": "💧",
+                  "blend": "w - e - t ... Wet!"
+            },
+            {
+                  "word": "LEG",
+                  "letters": [
+                        "L",
+                        "E",
+                        "G"
+                  ],
+                  "emoji": "🦵",
+                  "blend": "l - e - g ... Leg!"
+            }
+      ],
+      "i": [
+            {
+                  "word": "PIG",
+                  "letters": [
+                        "P",
+                        "I",
+                        "G"
+                  ],
+                  "emoji": "🐷",
+                  "blend": "p - i - g ... Pig!"
+            },
+            {
+                  "word": "BIG",
+                  "letters": [
+                        "B",
+                        "I",
+                        "G"
+                  ],
+                  "emoji": "🐘",
+                  "blend": "b - i - g ... Big!"
+            },
+            {
+                  "word": "DIG",
+                  "letters": [
+                        "D",
+                        "I",
+                        "G"
+                  ],
+                  "emoji": "⛏️",
+                  "blend": "d - i - g ... Dig!"
+            },
+            {
+                  "word": "WIG",
+                  "letters": [
+                        "W",
+                        "I",
+                        "G"
+                  ],
+                  "emoji": "💇",
+                  "blend": "w - i - g ... Wig!"
+            },
+            {
+                  "word": "FIG",
+                  "letters": [
+                        "F",
+                        "I",
+                        "G"
+                  ],
+                  "emoji": "🫐",
+                  "blend": "f - i - g ... Fig!"
+            },
+            {
+                  "word": "PIN",
+                  "letters": [
+                        "P",
+                        "I",
+                        "N"
+                  ],
+                  "emoji": "📌",
+                  "blend": "p - i - n ... Pin!"
+            },
+            {
+                  "word": "BIN",
+                  "letters": [
+                        "B",
+                        "I",
+                        "N"
+                  ],
+                  "emoji": "🗑️",
+                  "blend": "b - i - n ... Bin!"
+            },
+            {
+                  "word": "TIN",
+                  "letters": [
+                        "T",
+                        "I",
+                        "N"
+                  ],
+                  "emoji": "🥫",
+                  "blend": "t - i - n ... Tin!"
+            },
+            {
+                  "word": "WIN",
+                  "letters": [
+                        "W",
+                        "I",
+                        "N"
+                  ],
+                  "emoji": "🏆",
+                  "blend": "w - i - n ... Win!"
+            },
+            {
+                  "word": "LIP",
+                  "letters": [
+                        "L",
+                        "I",
+                        "P"
+                  ],
+                  "emoji": "👄",
+                  "blend": "l - i - p ... Lip!"
+            },
+            {
+                  "word": "ZIP",
+                  "letters": [
+                        "Z",
+                        "I",
+                        "P"
+                  ],
+                  "emoji": "🤐",
+                  "blend": "z - i - p ... Zip!"
+            },
+            {
+                  "word": "SIP",
+                  "letters": [
+                        "S",
+                        "I",
+                        "P"
+                  ],
+                  "emoji": "🥤",
+                  "blend": "s - i - p ... Sip!"
+            },
+            {
+                  "word": "SIT",
+                  "letters": [
+                        "S",
+                        "I",
+                        "T"
+                  ],
+                  "emoji": "🪑",
+                  "blend": "s - i - t ... Sit!"
+            },
+            {
+                  "word": "HIT",
+                  "letters": [
+                        "H",
+                        "I",
+                        "T"
+                  ],
+                  "emoji": "🏏",
+                  "blend": "h - i - t ... Hit!"
+            }
+      ],
+      "o": [
+            {
+                  "word": "DOG",
+                  "letters": [
+                        "D",
+                        "O",
+                        "G"
+                  ],
+                  "emoji": "🐶",
+                  "blend": "d - o - g ... Dog!"
+            },
+            {
+                  "word": "LOG",
+                  "letters": [
+                        "L",
+                        "O",
+                        "G"
+                  ],
+                  "emoji": "🪵",
+                  "blend": "l - o - g ... Log!"
+            },
+            {
+                  "word": "FOG",
+                  "letters": [
+                        "F",
+                        "O",
+                        "G"
+                  ],
+                  "emoji": "🌫️",
+                  "blend": "f - o - g ... Fog!"
+            },
+            {
+                  "word": "JOG",
+                  "letters": [
+                        "J",
+                        "O",
+                        "G"
+                  ],
+                  "emoji": "🏃",
+                  "blend": "j - o - g ... Jog!"
+            },
+            {
+                  "word": "POT",
+                  "letters": [
+                        "P",
+                        "O",
+                        "T"
+                  ],
+                  "emoji": "🏺",
+                  "blend": "p - o - t ... Pot!"
+            },
+            {
+                  "word": "HOT",
+                  "letters": [
+                        "H",
+                        "O",
+                        "T"
+                  ],
+                  "emoji": "♨️",
+                  "blend": "h - o - t ... Hot!"
+            },
+            {
+                  "word": "COT",
+                  "letters": [
+                        "C",
+                        "O",
+                        "T"
+                  ],
+                  "emoji": "🛏️",
+                  "blend": "c - o - t ... Cot!"
+            },
+            {
+                  "word": "DOT",
+                  "letters": [
+                        "D",
+                        "O",
+                        "T"
+                  ],
+                  "emoji": "🔴",
+                  "blend": "d - o - t ... Dot!"
+            },
+            {
+                  "word": "BOX",
+                  "letters": [
+                        "B",
+                        "O",
+                        "X"
+                  ],
+                  "emoji": "📦",
+                  "blend": "b - o - x ... Box!"
+            },
+            {
+                  "word": "FOX",
+                  "letters": [
+                        "F",
+                        "O",
+                        "X"
+                  ],
+                  "emoji": "🦊",
+                  "blend": "f - o - x ... Fox!"
+            },
+            {
+                  "word": "TOP",
+                  "letters": [
+                        "T",
+                        "O",
+                        "P"
+                  ],
+                  "emoji": "🪀",
+                  "blend": "t - o - p ... Top!"
+            },
+            {
+                  "word": "MOP",
+                  "letters": [
+                        "M",
+                        "O",
+                        "P"
+                  ],
+                  "emoji": "🧹",
+                  "blend": "m - o - p ... Mop!"
+            },
+            {
+                  "word": "HOP",
+                  "letters": [
+                        "H",
+                        "O",
+                        "P"
+                  ],
+                  "emoji": "🦘",
+                  "blend": "h - o - p ... Hop!"
+            },
+            {
+                  "word": "COP",
+                  "letters": [
+                        "C",
+                        "O",
+                        "P"
+                  ],
+                  "emoji": "👮",
+                  "blend": "c - o - p ... Cop!"
+            }
+      ],
+      "u": [
+            {
+                  "word": "SUN",
+                  "letters": [
+                        "S",
+                        "U",
+                        "N"
+                  ],
+                  "emoji": "☀️",
+                  "blend": "s - u - n ... Sun!"
+            },
+            {
+                  "word": "RUN",
+                  "letters": [
+                        "R",
+                        "U",
+                        "N"
+                  ],
+                  "emoji": "🏃",
+                  "blend": "r - u - n ... Run!"
+            },
+            {
+                  "word": "FUN",
+                  "letters": [
+                        "F",
+                        "U",
+                        "N"
+                  ],
+                  "emoji": "🎉",
+                  "blend": "f - u - n ... Fun!"
+            },
+            {
+                  "word": "BUN",
+                  "letters": [
+                        "B",
+                        "U",
+                        "N"
+                  ],
+                  "emoji": "🥖",
+                  "blend": "b - u - n ... Bun!"
+            },
+            {
+                  "word": "CUP",
+                  "letters": [
+                        "C",
+                        "U",
+                        "P"
+                  ],
+                  "emoji": "☕",
+                  "blend": "c - u - p ... Cup!"
+            },
+            {
+                  "word": "PUP",
+                  "letters": [
+                        "P",
+                        "U",
+                        "P"
+                  ],
+                  "emoji": "🐶",
+                  "blend": "p - u - p ... Pup!"
+            },
+            {
+                  "word": "BUS",
+                  "letters": [
+                        "B",
+                        "U",
+                        "S"
+                  ],
+                  "emoji": "🚌",
+                  "blend": "b - u - s ... Bus!"
+            },
+            {
+                  "word": "TUB",
+                  "letters": [
+                        "T",
+                        "U",
+                        "B"
+                  ],
+                  "emoji": "🛁",
+                  "blend": "t - u - b ... Tub!"
+            },
+            {
+                  "word": "RUB",
+                  "letters": [
+                        "R",
+                        "U",
+                        "B"
+                  ],
+                  "emoji": "🧼",
+                  "blend": "r - u - b ... Rub!"
+            },
+            {
+                  "word": "HUT",
+                  "letters": [
+                        "H",
+                        "U",
+                        "T"
+                  ],
+                  "emoji": "🛖",
+                  "blend": "h - u - t ... Hut!"
+            },
+            {
+                  "word": "NUT",
+                  "letters": [
+                        "N",
+                        "U",
+                        "T"
+                  ],
+                  "emoji": "🥜",
+                  "blend": "n - u - t ... Nut!"
+            },
+            {
+                  "word": "CUT",
+                  "letters": [
+                        "C",
+                        "U",
+                        "T"
+                  ],
+                  "emoji": "✂️",
+                  "blend": "c - u - t ... Cut!"
+            },
+            {
+                  "word": "BUG",
+                  "letters": [
+                        "B",
+                        "U",
+                        "G"
+                  ],
+                  "emoji": "🐛",
+                  "blend": "b - u - g ... Bug!"
+            },
+            {
+                  "word": "RUG",
+                  "letters": [
+                        "R",
+                        "U",
+                        "G"
+                  ],
+                  "emoji": "🧶",
+                  "blend": "r - u - g ... Rug!"
+            }
+      ]
+};
+
+    var DATA_4LETTER_WORDS = {
+      "a": [
+            {
+                  "word": "STAR",
+                  "letters": [
+                        "S",
+                        "T",
+                        "A",
+                        "R"
+                  ],
+                  "emoji": "⭐",
+                  "blend": "s - t - a - r ... Star!"
+            },
+            {
+                  "word": "CART",
+                  "letters": [
+                        "C",
+                        "A",
+                        "R",
+                        "T"
+                  ],
+                  "emoji": "🛒",
+                  "blend": "c - a - r - t ... Cart!"
+            },
+            {
+                  "word": "HAND",
+                  "letters": [
+                        "H",
+                        "A",
+                        "N",
+                        "D"
+                  ],
+                  "emoji": "✋",
+                  "blend": "h - a - n - d ... Hand!"
+            },
+            {
+                  "word": "SAND",
+                  "letters": [
+                        "S",
+                        "A",
+                        "N",
+                        "D"
+                  ],
+                  "emoji": "🏖️",
+                  "blend": "s - a - n - d ... Sand!"
+            },
+            {
+                  "word": "LAMP",
+                  "letters": [
+                        "L",
+                        "A",
+                        "M",
+                        "P"
+                  ],
+                  "emoji": "🪔",
+                  "blend": "l - a - m - p ... Lamp!"
+            },
+            {
+                  "word": "CAMP",
+                  "letters": [
+                        "C",
+                        "A",
+                        "M",
+                        "P"
+                  ],
+                  "emoji": "⛺",
+                  "blend": "c - a - m - p ... Camp!"
+            },
+            {
+                  "word": "FLAG",
+                  "letters": [
+                        "F",
+                        "L",
+                        "A",
+                        "G"
+                  ],
+                  "emoji": "🚩",
+                  "blend": "f - l - a - g ... Flag!"
+            },
+            {
+                  "word": "CRAB",
+                  "letters": [
+                        "C",
+                        "R",
+                        "A",
+                        "B"
+                  ],
+                  "emoji": "🦀",
+                  "blend": "c - r - a - b ... Crab!"
+            },
+            {
+                  "word": "TRAM",
+                  "letters": [
+                        "T",
+                        "R",
+                        "A",
+                        "M"
+                  ],
+                  "emoji": "🚊",
+                  "blend": "t - r - a - m ... Tram!"
+            },
+            {
+                  "word": "CAKE",
+                  "letters": [
+                        "C",
+                        "A",
+                        "K",
+                        "E"
+                  ],
+                  "emoji": "🎂",
+                  "blend": "c - a - k - e ... Cake!"
+            },
+            {
+                  "word": "LAKE",
+                  "letters": [
+                        "L",
+                        "A",
+                        "K",
+                        "E"
+                  ],
+                  "emoji": "🏞️",
+                  "blend": "l - a - k - e ... Lake!"
+            },
+            {
+                  "word": "GATE",
+                  "letters": [
+                        "G",
+                        "A",
+                        "T",
+                        "E"
+                  ],
+                  "emoji": "⛩️",
+                  "blend": "g - a - t - e ... Gate!"
+            },
+            {
+                  "word": "RAIN",
+                  "letters": [
+                        "R",
+                        "A",
+                        "I",
+                        "N"
+                  ],
+                  "emoji": "🌧️",
+                  "blend": "r - a - i - n ... Rain!"
+            },
+            {
+                  "word": "TAIL",
+                  "letters": [
+                        "T",
+                        "A",
+                        "I",
+                        "L"
+                  ],
+                  "emoji": "🦊",
+                  "blend": "t - a - i - l ... Tail!"
+            }
+      ],
+      "e": [
+            {
+                  "word": "TREE",
+                  "letters": [
+                        "T",
+                        "R",
+                        "E",
+                        "E"
+                  ],
+                  "emoji": "🌳",
+                  "blend": "t - r - e - e ... Tree!"
+            },
+            {
+                  "word": "FREE",
+                  "letters": [
+                        "F",
+                        "R",
+                        "E",
+                        "E"
+                  ],
+                  "emoji": "🕊️",
+                  "blend": "f - r - e - e ... Free!"
+            },
+            {
+                  "word": "SEED",
+                  "letters": [
+                        "S",
+                        "E",
+                        "E",
+                        "D"
+                  ],
+                  "emoji": "🌱",
+                  "blend": "s - e - e - d ... Seed!"
+            },
+            {
+                  "word": "JEEP",
+                  "letters": [
+                        "J",
+                        "E",
+                        "E",
+                        "P"
+                  ],
+                  "emoji": "🚙",
+                  "blend": "j - e - e - p ... Jeep!"
+            },
+            {
+                  "word": "FEET",
+                  "letters": [
+                        "F",
+                        "E",
+                        "E",
+                        "T"
+                  ],
+                  "emoji": "🦶",
+                  "blend": "f - e - e - t ... Feet!"
+            },
+            {
+                  "word": "NEST",
+                  "letters": [
+                        "N",
+                        "E",
+                        "S",
+                        "T"
+                  ],
+                  "emoji": "🪺",
+                  "blend": "n - e - s - t ... Nest!"
+            },
+            {
+                  "word": "BEST",
+                  "letters": [
+                        "B",
+                        "E",
+                        "S",
+                        "T"
+                  ],
+                  "emoji": "🥇",
+                  "blend": "b - e - s - t ... Best!"
+            },
+            {
+                  "word": "TENT",
+                  "letters": [
+                        "T",
+                        "E",
+                        "N",
+                        "T"
+                  ],
+                  "emoji": "⛺",
+                  "blend": "t - e - n - t ... Tent!"
+            },
+            {
+                  "word": "BELT",
+                  "letters": [
+                        "B",
+                        "E",
+                        "L",
+                        "T"
+                  ],
+                  "emoji": "🥋",
+                  "blend": "b - e - l - t ... Belt!"
+            },
+            {
+                  "word": "DESK",
+                  "letters": [
+                        "D",
+                        "E",
+                        "S",
+                        "K"
+                  ],
+                  "emoji": "🪑",
+                  "blend": "d - e - s - k ... Desk!"
+            },
+            {
+                  "word": "BELL",
+                  "letters": [
+                        "B",
+                        "E",
+                        "L",
+                        "L"
+                  ],
+                  "emoji": "🔔",
+                  "blend": "b - e - l - l ... Bell!"
+            },
+            {
+                  "word": "WELL",
+                  "letters": [
+                        "W",
+                        "E",
+                        "L",
+                        "L"
+                  ],
+                  "emoji": "🧱",
+                  "blend": "w - e - l - l ... Well!"
+            },
+            {
+                  "word": "DEER",
+                  "letters": [
+                        "D",
+                        "E",
+                        "E",
+                        "R"
+                  ],
+                  "emoji": "🦌",
+                  "blend": "d - e - e - r ... Deer!"
+            },
+            {
+                  "word": "LEAF",
+                  "letters": [
+                        "L",
+                        "E",
+                        "A",
+                        "F"
+                  ],
+                  "emoji": "🍃",
+                  "blend": "l - e - a - f ... Leaf!"
+            }
+      ],
+      "i": [
+            {
+                  "word": "FISH",
+                  "letters": [
+                        "F",
+                        "I",
+                        "S",
+                        "H"
+                  ],
+                  "emoji": "🐟",
+                  "blend": "f - i - s - h ... Fish!"
+            },
+            {
+                  "word": "DISH",
+                  "letters": [
+                        "D",
+                        "I",
+                        "S",
+                        "H"
+                  ],
+                  "emoji": "🍽️",
+                  "blend": "d - i - s - h ... Dish!"
+            },
+            {
+                  "word": "SHIP",
+                  "letters": [
+                        "S",
+                        "H",
+                        "I",
+                        "P"
+                  ],
+                  "emoji": "🚢",
+                  "blend": "s - h - i - p ... Ship!"
+            },
+            {
+                  "word": "RING",
+                  "letters": [
+                        "R",
+                        "I",
+                        "N",
+                        "G"
+                  ],
+                  "emoji": "💍",
+                  "blend": "r - i - n - g ... Ring!"
+            },
+            {
+                  "word": "KING",
+                  "letters": [
+                        "K",
+                        "I",
+                        "N",
+                        "G"
+                  ],
+                  "emoji": "👑",
+                  "blend": "k - i - n - g ... King!"
+            },
+            {
+                  "word": "WING",
+                  "letters": [
+                        "W",
+                        "I",
+                        "N",
+                        "G"
+                  ],
+                  "emoji": "🪽",
+                  "blend": "w - i - n - g ... Wing!"
+            },
+            {
+                  "word": "SING",
+                  "letters": [
+                        "S",
+                        "I",
+                        "N",
+                        "G"
+                  ],
+                  "emoji": "🎤",
+                  "blend": "s - i - n - g ... Sing!"
+            },
+            {
+                  "word": "MILK",
+                  "letters": [
+                        "M",
+                        "I",
+                        "L",
+                        "K"
+                  ],
+                  "emoji": "🥛",
+                  "blend": "m - i - l - k ... Milk!"
+            },
+            {
+                  "word": "SILK",
+                  "letters": [
+                        "S",
+                        "I",
+                        "L",
+                        "K"
+                  ],
+                  "emoji": "🧣",
+                  "blend": "s - i - l - k ... Silk!"
+            },
+            {
+                  "word": "KITE",
+                  "letters": [
+                        "K",
+                        "I",
+                        "T",
+                        "E"
+                  ],
+                  "emoji": "🪁",
+                  "blend": "k - i - t - e ... Kite!"
+            },
+            {
+                  "word": "BIKE",
+                  "letters": [
+                        "B",
+                        "I",
+                        "K",
+                        "E"
+                  ],
+                  "emoji": "🚲",
+                  "blend": "b - i - k - e ... Bike!"
+            },
+            {
+                  "word": "FIVE",
+                  "letters": [
+                        "F",
+                        "I",
+                        "V",
+                        "E"
+                  ],
+                  "emoji": "5️⃣",
+                  "blend": "f - i - v - e ... Five!"
+            },
+            {
+                  "word": "LION",
+                  "letters": [
+                        "L",
+                        "I",
+                        "O",
+                        "N"
+                  ],
+                  "emoji": "🦁",
+                  "blend": "l - i - o - n ... Lion!"
+            },
+            {
+                  "word": "GIFT",
+                  "letters": [
+                        "G",
+                        "I",
+                        "F",
+                        "T"
+                  ],
+                  "emoji": "🎁",
+                  "blend": "g - i - f - t ... Gift!"
+            }
+      ],
+      "o": [
+            {
+                  "word": "FROG",
+                  "letters": [
+                        "F",
+                        "R",
+                        "O",
+                        "G"
+                  ],
+                  "emoji": "🐸",
+                  "blend": "f - r - o - g ... Frog!"
+            },
+            {
+                  "word": "LOCK",
+                  "letters": [
+                        "L",
+                        "O",
+                        "C",
+                        "K"
+                  ],
+                  "emoji": "🔒",
+                  "blend": "l - o - c - k ... Lock!"
+            },
+            {
+                  "word": "SOCK",
+                  "letters": [
+                        "S",
+                        "O",
+                        "C",
+                        "K"
+                  ],
+                  "emoji": "🧦",
+                  "blend": "s - o - c - k ... Sock!"
+            },
+            {
+                  "word": "ROCK",
+                  "letters": [
+                        "R",
+                        "O",
+                        "C",
+                        "K"
+                  ],
+                  "emoji": "🪨",
+                  "blend": "r - o - c - k ... Rock!"
+            },
+            {
+                  "word": "BOAT",
+                  "letters": [
+                        "B",
+                        "O",
+                        "A",
+                        "T"
+                  ],
+                  "emoji": "⛵",
+                  "blend": "b - o - a - t ... Boat!"
+            },
+            {
+                  "word": "COAT",
+                  "letters": [
+                        "C",
+                        "O",
+                        "A",
+                        "T"
+                  ],
+                  "emoji": "🧥",
+                  "blend": "c - o - a - t ... Coat!"
+            },
+            {
+                  "word": "GOAT",
+                  "letters": [
+                        "G",
+                        "O",
+                        "A",
+                        "T"
+                  ],
+                  "emoji": "🐐",
+                  "blend": "g - o - a - t ... Goat!"
+            },
+            {
+                  "word": "ROAD",
+                  "letters": [
+                        "R",
+                        "O",
+                        "A",
+                        "D"
+                  ],
+                  "emoji": "🛣️",
+                  "blend": "r - o - a - d ... Road!"
+            },
+            {
+                  "word": "MOON",
+                  "letters": [
+                        "M",
+                        "O",
+                        "O",
+                        "N"
+                  ],
+                  "emoji": "🌙",
+                  "blend": "m - o - o - n ... Moon!"
+            },
+            {
+                  "word": "BOOK",
+                  "letters": [
+                        "B",
+                        "O",
+                        "O",
+                        "K"
+                  ],
+                  "emoji": "📖",
+                  "blend": "b - o - o - k ... Book!"
+            },
+            {
+                  "word": "FOOT",
+                  "letters": [
+                        "F",
+                        "O",
+                        "O",
+                        "T"
+                  ],
+                  "emoji": "🦶",
+                  "blend": "f - o - o - t ... Foot!"
+            },
+            {
+                  "word": "DOOR",
+                  "letters": [
+                        "D",
+                        "O",
+                        "O",
+                        "R"
+                  ],
+                  "emoji": "🚪",
+                  "blend": "d - o - o - r ... Door!"
+            },
+            {
+                  "word": "POND",
+                  "letters": [
+                        "P",
+                        "O",
+                        "N",
+                        "D"
+                  ],
+                  "emoji": "🦆",
+                  "blend": "p - o - n - d ... Pond!"
+            },
+            {
+                  "word": "HORN",
+                  "letters": [
+                        "H",
+                        "O",
+                        "R",
+                        "N"
+                  ],
+                  "emoji": "🦏",
+                  "blend": "h - o - r - n ... Horn!"
+            }
+      ],
+      "u": [
+            {
+                  "word": "DUCK",
+                  "letters": [
+                        "D",
+                        "U",
+                        "C",
+                        "K"
+                  ],
+                  "emoji": "🦆",
+                  "blend": "d - u - c - k ... Duck!"
+            },
+            {
+                  "word": "LUCK",
+                  "letters": [
+                        "L",
+                        "U",
+                        "C",
+                        "K"
+                  ],
+                  "emoji": "🍀",
+                  "blend": "l - u - c - k ... Luck!"
+            },
+            {
+                  "word": "DRUM",
+                  "letters": [
+                        "D",
+                        "R",
+                        "U",
+                        "M"
+                  ],
+                  "emoji": "🥁",
+                  "blend": "d - r - u - m ... Drum!"
+            },
+            {
+                  "word": "PLUM",
+                  "letters": [
+                        "P",
+                        "L",
+                        "U",
+                        "M"
+                  ],
+                  "emoji": "🍑",
+                  "blend": "p - l - u - m ... Plum!"
+            },
+            {
+                  "word": "JUMP",
+                  "letters": [
+                        "J",
+                        "U",
+                        "M",
+                        "P"
+                  ],
+                  "emoji": "🦘",
+                  "blend": "j - u - m - p ... Jump!"
+            },
+            {
+                  "word": "PUMP",
+                  "letters": [
+                        "P",
+                        "U",
+                        "M",
+                        "P"
+                  ],
+                  "emoji": "⛽",
+                  "blend": "p - u - m - p ... Pump!"
+            },
+            {
+                  "word": "BUSH",
+                  "letters": [
+                        "B",
+                        "U",
+                        "S",
+                        "H"
+                  ],
+                  "emoji": "🌳",
+                  "blend": "b - u - s - h ... Bush!"
+            },
+            {
+                  "word": "PUSH",
+                  "letters": [
+                        "P",
+                        "U",
+                        "S",
+                        "H"
+                  ],
+                  "emoji": "🫸",
+                  "blend": "p - u - s - h ... Push!"
+            },
+            {
+                  "word": "BLUE",
+                  "letters": [
+                        "B",
+                        "L",
+                        "U",
+                        "E"
+                  ],
+                  "emoji": "🟦",
+                  "blend": "b - l - u - e ... Blue!"
+            },
+            {
+                  "word": "GLUE",
+                  "letters": [
+                        "G",
+                        "L",
+                        "U",
+                        "E"
+                  ],
+                  "emoji": "🧴",
+                  "blend": "g - l - u - e ... Glue!"
+            },
+            {
+                  "word": "CUBE",
+                  "letters": [
+                        "C",
+                        "U",
+                        "B",
+                        "E"
+                  ],
+                  "emoji": "🧊",
+                  "blend": "c - u - b - e ... Cube!"
+            },
+            {
+                  "word": "TUBE",
+                  "letters": [
+                        "T",
+                        "U",
+                        "B",
+                        "E"
+                  ],
+                  "emoji": "🧪",
+                  "blend": "t - u - b - e ... Tube!"
+            },
+            {
+                  "word": "BULL",
+                  "letters": [
+                        "B",
+                        "U",
+                        "L",
+                        "L"
+                  ],
+                  "emoji": "🐂",
+                  "blend": "b - u - l - l ... Bull!"
+            },
+            {
+                  "word": "FULL",
+                  "letters": [
+                        "F",
+                        "U",
+                        "L",
+                        "L"
+                  ],
+                  "emoji": "🌕",
+                  "blend": "f - u - l - l ... Full!"
+            }
+      ]
+};
+
+    var DATA_UKG_ENGLISH_WORLD = {
+      "days": {
+            "title": "Days of the Week",
+            "items": [
+                  {
+                        "name": "Monday",
+                        "emoji": "📅",
+                        "hint": "Monday is the first school day of the week!"
+                  },
+                  {
+                        "name": "Tuesday",
+                        "emoji": "📅",
+                        "hint": "Tuesday is full of learning and fun!"
+                  },
+                  {
+                        "name": "Wednesday",
+                        "emoji": "📅",
+                        "hint": "Wednesday is the middle day of the week!"
+                  },
+                  {
+                        "name": "Thursday",
+                        "emoji": "📅",
+                        "hint": "Thursday brings us closer to the weekend!"
+                  },
+                  {
+                        "name": "Friday",
+                        "emoji": "🎉",
+                        "hint": "Friday is fun Friday before the weekend!"
+                  },
+                  {
+                        "name": "Saturday",
+                        "emoji": "⚽",
+                        "hint": "Saturday is a great play day with friends!"
+                  },
+                  {
+                        "name": "Sunday",
+                        "emoji": "☀️",
+                        "hint": "Sunday is a wonderful holiday with family!"
+                  }
+            ]
+      },
+      "months": {
+            "title": "Months of the Year",
+            "items": [
+                  {
+                        "name": "January",
+                        "emoji": "❄️",
+                        "hint": "January is the first month of the new year!"
+                  },
+                  {
+                        "name": "February",
+                        "emoji": "💖",
+                        "hint": "February is the shortest month of the year!"
+                  },
+                  {
+                        "name": "March",
+                        "emoji": "🌱",
+                        "hint": "March brings pleasant spring breezes!"
+                  },
+                  {
+                        "name": "April",
+                        "emoji": "🌧️",
+                        "hint": "April brings colorful fresh flowers!"
+                  },
+                  {
+                        "name": "May",
+                        "emoji": "☀️",
+                        "hint": "May is warm and sunny with summer fun!"
+                  },
+                  {
+                        "name": "June",
+                        "emoji": "🏖️",
+                        "hint": "June brings summer holidays and treats!"
+                  },
+                  {
+                        "name": "July",
+                        "emoji": "☔",
+                        "hint": "July has refreshing monsoon rain showers!"
+                  },
+                  {
+                        "name": "August",
+                        "emoji": "🇮🇳",
+                        "hint": "August brings Independence Day celebrations!"
+                  },
+                  {
+                        "name": "September",
+                        "emoji": "📚",
+                        "hint": "September brings Teachers Day cheers!"
+                  },
+                  {
+                        "name": "October",
+                        "emoji": "🪔",
+                        "hint": "October is filled with sparkling festivals!"
+                  },
+                  {
+                        "name": "November",
+                        "emoji": "🎉",
+                        "hint": "November brings Children Day joy!"
+                  },
+                  {
+                        "name": "December",
+                        "emoji": "🎄",
+                        "hint": "December brings Christmas and year end!"
+                  }
+            ]
+      },
+      "colors": {
+            "title": "Colors Around Us",
+            "items": [
+                  {
+                        "name": "Red",
+                        "emoji": "🔴",
+                        "hint": "Red like a sweet juicy apple!"
+                  },
+                  {
+                        "name": "Blue",
+                        "emoji": "🔵",
+                        "hint": "Blue like the wide open sky and ocean!"
+                  },
+                  {
+                        "name": "Green",
+                        "emoji": "🟢",
+                        "hint": "Green like lush trees and green leaves!"
+                  },
+                  {
+                        "name": "Yellow",
+                        "emoji": "🟡",
+                        "hint": "Yellow like the bright morning sunshine!"
+                  },
+                  {
+                        "name": "Orange",
+                        "emoji": "🟠",
+                        "hint": "Orange like a sweet fresh orange fruit!"
+                  },
+                  {
+                        "name": "Purple",
+                        "emoji": "🟣",
+                        "hint": "Purple like delicious sweet grapes!"
+                  },
+                  {
+                        "name": "Pink",
+                        "emoji": "🌸",
+                        "hint": "Pink like a lovely blooming rose!"
+                  },
+                  {
+                        "name": "Black",
+                        "emoji": "⚫",
+                        "hint": "Black like night stars and black ink!"
+                  },
+                  {
+                        "name": "White",
+                        "emoji": "⚪",
+                        "hint": "White like fluffy floating clouds!"
+                  },
+                  {
+                        "name": "Brown",
+                        "emoji": "🟤",
+                        "hint": "Brown like crunchy chocolate and soil!"
+                  }
+            ]
+      },
+      "wild_animals": {
+            "title": "Wild Animals",
+            "items": [
+                  {
+                        "name": "Lion",
+                        "emoji": "🦁",
+                        "hint": "The Lion is the king of the jungle!"
+                  },
+                  {
+                        "name": "Tiger",
+                        "emoji": "🐯",
+                        "hint": "The Tiger is our national animal with bold stripes!"
+                  },
+                  {
+                        "name": "Elephant",
+                        "emoji": "🐘",
+                        "hint": "The Elephant is the largest animal on land!"
+                  },
+                  {
+                        "name": "Giraffe",
+                        "emoji": "🦒",
+                        "hint": "The Giraffe has a very long neck to eat leaves!"
+                  },
+                  {
+                        "name": "Zebra",
+                        "emoji": "🦓",
+                        "hint": "The Zebra has black and white zebra stripes!"
+                  },
+                  {
+                        "name": "Bear",
+                        "emoji": "🐻",
+                        "hint": "The Bear loves eating honey and sweet berries!"
+                  },
+                  {
+                        "name": "Monkey",
+                        "emoji": "🐒",
+                        "hint": "The Monkey loves swinging playfully from trees!"
+                  },
+                  {
+                        "name": "Deer",
+                        "emoji": "🦌",
+                        "hint": "The Deer runs very fast through the green forest!"
+                  }
+            ]
+      },
+      "domestic_animals": {
+            "title": "Domestic Animals",
+            "items": [
+                  {
+                        "name": "Cow",
+                        "emoji": "🐄",
+                        "hint": "The Cow gives us fresh healthy milk!"
+                  },
+                  {
+                        "name": "Dog",
+                        "emoji": "🐶",
+                        "hint": "The Dog is man's best and most faithful friend!"
+                  },
+                  {
+                        "name": "Cat",
+                        "emoji": "🐱",
+                        "hint": "The Cat says meow and purrs softly!"
+                  },
+                  {
+                        "name": "Horse",
+                        "emoji": "🐴",
+                        "hint": "The Horse runs swiftly and has a strong neigh!"
+                  },
+                  {
+                        "name": "Sheep",
+                        "emoji": "🐑",
+                        "hint": "The Sheep gives us soft warm wool!"
+                  },
+                  {
+                        "name": "Goat",
+                        "emoji": "🐐",
+                        "hint": "The Goat loves eating green grass and climbing!"
+                  },
+                  {
+                        "name": "Camel",
+                        "emoji": "🐪",
+                        "hint": "The Camel is known as the ship of the desert!"
+                  },
+                  {
+                        "name": "Rabbit",
+                        "emoji": "🐰",
+                        "hint": "The Rabbit has long ears and loves carrots!"
+                  }
+            ]
+      },
+      "birds": {
+            "title": "Birds in the Sky",
+            "items": [
+                  {
+                        "name": "Parrot",
+                        "emoji": "🦜",
+                        "hint": "The Parrot has green feathers and a red beak!"
+                  },
+                  {
+                        "name": "Peacock",
+                        "emoji": "🦚",
+                        "hint": "The Peacock is our national bird with dancing feathers!"
+                  },
+                  {
+                        "name": "Sparrow",
+                        "emoji": "🐦",
+                        "hint": "The Sparrow chirps sweetly in our garden!"
+                  },
+                  {
+                        "name": "Pigeon",
+                        "emoji": "🕊️",
+                        "hint": "The Pigeon is a gentle bird symbol of peace!"
+                  },
+                  {
+                        "name": "Owl",
+                        "emoji": "🦉",
+                        "hint": "The Owl is awake at night and has big eyes!"
+                  },
+                  {
+                        "name": "Duck",
+                        "emoji": "🦆",
+                        "hint": "The Duck quacks and swims smoothly in water!"
+                  },
+                  {
+                        "name": "Crow",
+                        "emoji": "🦅",
+                        "hint": "The Crow is very clever and caws loudly!"
+                  },
+                  {
+                        "name": "Eagle",
+                        "emoji": "🦅",
+                        "hint": "The Eagle flies high with powerful sharp eyesight!"
+                  }
+            ]
+      },
+      "body_parts": {
+            "title": "Parts of My Body",
+            "items": [
+                  {
+                        "name": "Eyes",
+                        "emoji": "👀",
+                        "hint": "I use my eyes to see the beautiful world!"
+                  },
+                  {
+                        "name": "Ears",
+                        "emoji": "👂",
+                        "hint": "I use my ears to hear pleasant sounds and music!"
+                  },
+                  {
+                        "name": "Nose",
+                        "emoji": "👃",
+                        "hint": "I use my nose to smell fragrant flowers!"
+                  },
+                  {
+                        "name": "Mouth",
+                        "emoji": "👄",
+                        "hint": "I use my mouth to speak, smile, and eat food!"
+                  },
+                  {
+                        "name": "Hands",
+                        "emoji": "✋",
+                        "hint": "I use my hands to write, draw, and hold things!"
+                  },
+                  {
+                        "name": "Legs",
+                        "emoji": "🦵",
+                        "hint": "I use my legs to walk, run, and jump high!"
+                  },
+                  {
+                        "name": "Teeth",
+                        "emoji": "🦷",
+                        "hint": "I brush my teeth twice a day to keep them shining!"
+                  },
+                  {
+                        "name": "Head",
+                        "emoji": "🗣️",
+                        "hint": "My head holds my brain that helps me think!"
+                  }
+            ]
+      },
+      "flowers": {
+            "title": "Beautiful Flowers",
+            "items": [
+                  {
+                        "name": "Rose",
+                        "emoji": "🌹",
+                        "hint": "The Rose has a lovely sweet fragrance!"
+                  },
+                  {
+                        "name": "Lotus",
+                        "emoji": "🪷",
+                        "hint": "The Lotus is our sacred national flower!"
+                  },
+                  {
+                        "name": "Sunflower",
+                        "emoji": "🌻",
+                        "hint": "The Sunflower always turns towards the warm sun!"
+                  },
+                  {
+                        "name": "Marigold",
+                        "emoji": "🌼",
+                        "hint": "Bright yellow Marigolds are used in festive garlands!"
+                  },
+                  {
+                        "name": "Lily",
+                        "emoji": "🪻",
+                        "hint": "The Lily is a pure and elegant garden flower!"
+                  },
+                  {
+                        "name": "Tulip",
+                        "emoji": "🌷",
+                        "hint": "The Tulip has bright colorful bell shaped petals!"
+                  },
+                  {
+                        "name": "Jasmine",
+                        "emoji": "🤍",
+                        "hint": "Jasmine has sweet smelling white delicate blooms!"
+                  },
+                  {
+                        "name": "Daisy",
+                        "emoji": "🌼",
+                        "hint": "The Daisy is cheerful with white petals and yellow center!"
+                  }
+            ]
+      },
+      "relations": {
+            "title": "My Family & Relations",
+            "items": [
+                  {
+                        "name": "Father",
+                        "emoji": "👨",
+                        "hint": "My Father cares for and protects our family!"
+                  },
+                  {
+                        "name": "Mother",
+                        "emoji": "👩",
+                        "hint": "My Mother loves me and cooks delicious meals!"
+                  },
+                  {
+                        "name": "Brother",
+                        "emoji": "👦",
+                        "hint": "My Brother plays games with me every day!"
+                  },
+                  {
+                        "name": "Sister",
+                        "emoji": "👧",
+                        "hint": "My Sister shares her toys and smiles with me!"
+                  },
+                  {
+                        "name": "Grandfather",
+                        "emoji": "👴",
+                        "hint": "My Grandfather tells wonderful bedtime stories!"
+                  },
+                  {
+                        "name": "Grandmother",
+                        "emoji": "👵",
+                        "hint": "My Grandmother gives sweet hugs and blessings!"
+                  },
+                  {
+                        "name": "Uncle",
+                        "emoji": "👨‍💼",
+                        "hint": "My Uncle brings wonderful gifts and surprises!"
+                  },
+                  {
+                        "name": "Aunt",
+                        "emoji": "👩‍💼",
+                        "hint": "My Aunt is very kind and laughs with us!"
+                  }
+            ]
+      },
+      "school_belongings": {
+            "title": "School Belongings",
+            "items": [
+                  {
+                        "name": "School Bag",
+                        "emoji": "🎒",
+                        "hint": "I pack my books neatly in my school bag!"
+                  },
+                  {
+                        "name": "Pencil",
+                        "emoji": "✏️",
+                        "hint": "I use my sharp pencil to write neat letters!"
+                  },
+                  {
+                        "name": "Eraser",
+                        "emoji": "🧼",
+                        "hint": "My eraser helps me correct my pencil mistakes!"
+                  },
+                  {
+                        "name": "Sharpener",
+                        "emoji": "📐",
+                        "hint": "The sharpener sharpens pencils for neat handwriting!"
+                  },
+                  {
+                        "name": "Ruler",
+                        "emoji": "📏",
+                        "hint": "A ruler helps me draw straight clean lines!"
+                  },
+                  {
+                        "name": "Water Bottle",
+                        "emoji": "🍼",
+                        "hint": "I drink clean water from my water bottle!"
+                  },
+                  {
+                        "name": "Lunch Box",
+                        "emoji": "🍱",
+                        "hint": "My lunch box has yummy nutritious snacks!"
+                  },
+                  {
+                        "name": "Notebook",
+                        "emoji": "📓",
+                        "hint": "I write my daily school work in my notebook!"
+                  }
+            ]
+      },
+      "things_in_school": {
+            "title": "Things in School",
+            "items": [
+                  {
+                        "name": "Classroom",
+                        "emoji": "🏫",
+                        "hint": "We sit together and study in our bright classroom!"
+                  },
+                  {
+                        "name": "Blackboard",
+                        "emoji": "⬛",
+                        "hint": "The teacher writes exciting lessons on the board!"
+                  },
+                  {
+                        "name": "Desk",
+                        "emoji": "🪑",
+                        "hint": "We keep our books and pencil box on our desk!"
+                  },
+                  {
+                        "name": "Chair",
+                        "emoji": "💺",
+                        "hint": "We sit comfortably on our classroom chair!"
+                  },
+                  {
+                        "name": "Playground",
+                        "emoji": "🛝",
+                        "hint": "We run and play fun outdoor games in the playground!"
+                  },
+                  {
+                        "name": "Library",
+                        "emoji": "📚",
+                        "hint": "The library is quiet with hundreds of story books!"
+                  },
+                  {
+                        "name": "Books",
+                        "emoji": "📖",
+                        "hint": "Books give us immense knowledge and joy!"
+                  },
+                  {
+                        "name": "Teacher",
+                        "emoji": "👩‍🏫",
+                        "hint": "Our teacher guides us with immense love and care!"
+                  }
+            ]
+      },
+      "clothes": {
+            "title": "Clothes We Wear",
+            "items": [
+                  {
+                        "name": "Shirt",
+                        "emoji": "👔",
+                        "hint": "I wear a smart clean shirt with buttons!"
+                  },
+                  {
+                        "name": "Pants",
+                        "emoji": "👖",
+                        "hint": "Comfortable pants keep me ready for active play!"
+                  },
+                  {
+                        "name": "T-Shirt",
+                        "emoji": "👕",
+                        "hint": "A soft cotton t-shirt is great for hot days!"
+                  },
+                  {
+                        "name": "Frock",
+                        "emoji": "👗",
+                        "hint": "A colorful frock looks lovely for parties!"
+                  },
+                  {
+                        "name": "Jacket",
+                        "emoji": "🧥",
+                        "hint": "A warm jacket keeps me cozy during cold winter!"
+                  },
+                  {
+                        "name": "Cap",
+                        "emoji": "🧢",
+                        "hint": "A cool cap protects my eyes and head from the sun!"
+                  },
+                  {
+                        "name": "Socks",
+                        "emoji": "🧦",
+                        "hint": "Soft socks keep my feet warm inside my shoes!"
+                  },
+                  {
+                        "name": "Shoes",
+                        "emoji": "👟",
+                        "hint": "Sturdy shoes help me run safely everywhere!"
+                  }
+            ]
+      },
+      "action_words": {
+            "title": "Action Words",
+            "items": [
+                  {
+                        "name": "Reading",
+                        "emoji": "📖",
+                        "hint": "Reading wonderful stories expands my mind!"
+                  },
+                  {
+                        "name": "Writing",
+                        "emoji": "✍️",
+                        "hint": "Writing neat words makes my teacher proud!"
+                  },
+                  {
+                        "name": "Running",
+                        "emoji": "🏃",
+                        "hint": "Running fast keeps my heart and body strong!"
+                  },
+                  {
+                        "name": "Jumping",
+                        "emoji": "🦘",
+                        "hint": "Jumping high is super fun with friends!"
+                  },
+                  {
+                        "name": "Eating",
+                        "emoji": "🍎",
+                        "hint": "Eating fresh fruits keeps me healthy and active!"
+                  },
+                  {
+                        "name": "Sleeping",
+                        "emoji": "😴",
+                        "hint": "Sleeping well at night gives me fresh energy!"
+                  },
+                  {
+                        "name": "Singing",
+                        "emoji": "🎤",
+                        "hint": "Singing sweet rhymes brings everyone joy!"
+                  },
+                  {
+                        "name": "Dancing",
+                        "emoji": "💃",
+                        "hint": "Dancing to joyful music makes me smile!"
+                  }
+            ]
+      },
+      "good_manners": {
+            "title": "Good Manners",
+            "items": [
+                  {
+                        "name": "Please",
+                        "emoji": "🙏",
+                        "hint": "Always say Please when asking for something politely!"
+                  },
+                  {
+                        "name": "Thank You",
+                        "emoji": "💐",
+                        "hint": "Say Thank You when someone helps you or gives a gift!"
+                  },
+                  {
+                        "name": "Sorry",
+                        "emoji": "🙇",
+                        "hint": "Say Sorry genuinely if you make a mistake!"
+                  },
+                  {
+                        "name": "Excuse Me",
+                        "emoji": "✋",
+                        "hint": "Say Excuse Me when you want someone attention gently!"
+                  },
+                  {
+                        "name": "Good Morning",
+                        "emoji": "🌅",
+                        "hint": "Greet teachers and parents with a cheerful Good Morning!"
+                  },
+                  {
+                        "name": "Share Toys",
+                        "emoji": "🧸",
+                        "hint": "Sharing toys makes playtime joyful for everyone!"
+                  },
+                  {
+                        "name": "Help Others",
+                        "emoji": "🤝",
+                        "hint": "Helping friends in need is true kindness!"
+                  },
+                  {
+                        "name": "Be Kind",
+                        "emoji": "❤️",
+                        "hint": "Always speak politely and treat everyone with love!"
+                  }
+            ]
+      }
+};
 
     /* ---------------------------------------------------------
        DATA: NURSERY (A-Z English, Hindi Swar, 1-50, Shapes)
@@ -2956,7 +5740,8 @@
       appState.tabIndex = idx;
       appState.quizIndex = 0;
       appState.mode = "learn";
-      if (appState.section === "lkg" && idx === 4) {
+      resetQuizQuestionState();
+      if (appState.section === "lkg" && idx === 5) {
         initShabdaNirman();
       } else if (appState.section === "brain_booster" && idx === 2) {
         initMemoryGame();
@@ -2993,6 +5778,35 @@
     function setUkgEvsTopic(t) {
       appState.ukgEvsTopic = t;
       appState.quizIndex = 0;
+      resetQuizQuestionState();
+      renderCurrentView();
+    }
+
+    function setNurseryPhonicsFilter(f) {
+      appState.nurseryPhonicsFilter = f;
+      appState.quizIndex = 0;
+      resetQuizQuestionState();
+      renderCurrentView();
+    }
+
+    function setLkgPhonicsVowel(v) {
+      appState.lkgPhonicsVowel = v;
+      appState.quizIndex = 0;
+      resetQuizQuestionState();
+      renderCurrentView();
+    }
+
+    function setUkgPhonicsVowel(v) {
+      appState.ukgPhonicsVowel = v;
+      appState.quizIndex = 0;
+      resetQuizQuestionState();
+      renderCurrentView();
+    }
+
+    function setUkgEnglishWorldCat(c) {
+      appState.ukgEnglishWorldCat = c;
+      appState.quizIndex = 0;
+      resetQuizQuestionState();
       renderCurrentView();
     }
 
@@ -3008,13 +5822,13 @@
       var activeColor = "#2196F3";
 
       if (appState.section === "nursery") {
-        tabs = ["🔤 A-Z English", "🕉️ अ-अः Swar", "🔢 1-50 Counting", "🔷 Shapes", "🔄 Before/After (50+)"];
+        tabs = ["🔤 A-Z English", "🔊 Phonic Sounds", "🕉️ अ-अः Swar", "🔢 1-50 Counting", "🔷 Shapes", "🔄 Before/After (50+)"];
         activeColor = "#0288D1";
       } else if (appState.section === "lkg") {
-        tabs = ["🪔 क-ज्ञ व्यंजन", "🔠 1-100 Names", "🌍 EVS Studies", "📐 Pre-Math & Opposites", "🧩 शब्द निर्माण"];
+        tabs = ["🔤 Phonics & CVC Words", "🪔 क-ज्ञ व्यंजन", "🔠 1-100 Names", "🌍 EVS Studies", "📐 Pre-Math & Opposites", "🧩 शब्द निर्माण"];
         activeColor = "#689F38";
       } else if (appState.section === "ukg") {
-        tabs = ["🔤 Short Vowels Phonics", "🎶 Rhyming Words (16)", "🌍 EVS Studies", "✍️ हिंदी मात्राएं (45+)", "➕➖ Math (+ / -)"];
+        tabs = ["🔤 Phonics & 4-Letter Words", "📚 English World (14 Topics)", "🎶 Rhyming Words (16)", "🌍 EVS Studies", "✍️ हिंदी मात्राएं (45+)", "➕➖ Math (+ / -)"];
         activeColor = "#F57C00";
       } else if (appState.section === "picture_world") {
         tabs = ["🦁 Animals", "🦜 Birds", "🍎 Fruits", "🥕 Vegetables", "🚗 Vehicles", "👀 Body Parts"];
@@ -3093,7 +5907,7 @@
       html += '  <div>';
       html += '    <span class="section-badge" style="background:#0288D1;">Age 3-4 Years</span>';
       html += '    <div class="section-name">Nursery Class</div>';
-      html += '    <div class="section-desc">Full A-Z • Hindi Swar • 1-50 Counting • Shapes • Before/After</div>';
+      html += '    <div class="section-desc">Full A-Z • 🔊 Phonic Sounds • Hindi Swar • 1-50 Counting • Shapes • Before/After</div>';
       html += '  </div>';
       html += '  <div class="safe-emoji" style="font-size: 44px;">🧸</div>';
       html += '</div>';
@@ -3103,7 +5917,7 @@
       html += '  <div>';
       html += '    <span class="section-badge" style="background:#689F38;">Age 4-5 Years</span>';
       html += '    <div class="section-name">LKG Class</div>';
-      html += '    <div class="section-desc">Hindi Vyanjan • 1-100 Names • EVS Studies • Pre-Math • Word Formation</div>';
+      html += '    <div class="section-desc">2-Letter & CVC Words • Hindi Vyanjan • 1-100 Names • EVS • Pre-Math • Word Formation</div>';
       html += '  </div>';
       html += '  <div class="safe-emoji" style="font-size: 44px;">🚂</div>';
       html += '</div>';
@@ -3113,7 +5927,7 @@
       html += '  <div>';
       html += '    <span class="section-badge" style="background:#F57C00;">Age 5-6 Years</span>';
       html += '    <div class="section-name">UKG Class</div>';
-      html += '    <div class="section-desc">5 Short Vowels • Rhyming • EVS Studies • Hindi Matras • Math (+/-)</div>';
+      html += '    <div class="section-desc">4-Letter Phonics • English World (14) • Rhyming • EVS • Hindi Matras • Math (+/-)</div>';
       html += '  </div>';
       html += '  <div class="safe-emoji" style="font-size: 44px;">🚀</div>';
       html += '</div>';
@@ -3251,7 +6065,87 @@
         }
       }
 
-      // TAB 1: Hindi Swar (Hindi Subject Tab ONLY)
+      
+      // TAB 1: 🔊 Phonic Sounds & Picture-to-Letter Match (100% English)
+      else if (appState.tabIndex === 1) {
+        filterBar.style.display = "flex";
+        var pFilters = [
+          { key: "all", label: "🌟 All Sounds (68)" },
+          { key: "az", label: "🔤 A–Z Phonics (56)" },
+          { key: "extra", label: "✨ Extra Sounds (12)" }
+        ];
+        var pfHtml = "";
+        for (var pfi = 0; pfi < pFilters.length; pfi++) {
+          var pf = pFilters[pfi];
+          var pfCls = "filter-pill" + (appState.nurseryPhonicsFilter === pf.key ? " active" : "");
+          pfHtml += '<button class="' + pfCls + '" onclick="safeAction(function(){ setNurseryPhonicsFilter(\'' + pf.key + '\'); })" ontouchend="safeAction(function(){ setNurseryPhonicsFilter(\'' + pf.key + '\'); }, event)">' + pf.label + '</button>';
+        }
+        filterBar.innerHTML = pfHtml;
+
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn Sounds</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 Sound Match Quiz</button>';
+        html += '</div>';
+
+        var activeList = DATA_NURSERY_PHONICS_AZ.concat(DATA_NURSERY_PHONICS_EXTRA);
+        if (appState.nurseryPhonicsFilter === "az") activeList = DATA_NURSERY_PHONICS_AZ;
+        else if (appState.nurseryPhonicsFilter === "extra") activeList = DATA_NURSERY_PHONICS_EXTRA;
+
+        if (appState.mode === "learn") {
+          autoSpeak("nurs_ph_learn_" + appState.nurseryPhonicsFilter, "Phonic Sounds. Look at the picture and tap to hear the starting sound!", "en-IN");
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Phonic Sounds. Tap any card to hear pronunciation!\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Phonic Sounds. Tap any card to hear pronunciation!\', \'en-IN\'); }, event)" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any card or picture to hear starting sound 🔊</div>';
+          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 250px); overflow-y: auto;">';
+          for (var npi = 0; npi < activeList.length; npi++) {
+            var npItem = activeList[npi];
+            var npLetter = npItem.letter || npItem.sound;
+            var npSound = npItem.sound || npItem.spoken;
+            html += '<div class="interactive-card" style="padding: 12px; text-align: center; border-color: #81D4FA;" onclick="safeAction(function(){ speak(\'' + npSound + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + npSound + '\', \'en-IN\'); }, event)">';
+            html += '  <div style="font-size: 38px; margin-bottom: 2px;" class="safe-emoji">' + npItem.emoji + '</div>';
+            html += '  <div style="font-size: 20px; font-weight: 900; color: #0277BD;">' + npItem.word + '</div>';
+            html += '  <div style="font-size: 13px; font-weight: 800; color: #00838F; background: #E0F7FA; border-radius: 8px; padding: 2px 8px; display: inline-block; margin-top: 4px;">Sound: ' + npLetter + '</div>';
+            html += '</div>';
+          }
+          html += '</div>';
+        } else {
+          var qItem = activeList[appState.quizIndex % activeList.length];
+          var targetLetter = qItem.letter || qItem.sound;
+          var soundText = qItem.sound || qItem.spoken;
+          var qKey = "nurs_phonics_" + appState.nurseryPhonicsFilter + "_" + appState.quizIndex;
+          var opts = getShuffledOptions(qKey, function() {
+            var arr = [targetLetter];
+            var pool = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "V", "W", "Sh", "Ch", "Th", "Wh"];
+            while (arr.length < 4) {
+              var r = pool[Math.floor(Math.random() * pool.length)];
+              if (arr.indexOf(r) === -1) arr.push(r);
+            }
+            return fisherYatesShuffle(arr);
+          });
+          var isAnswered = (quizState.isAnswered && quizState.activeKey === qKey);
+
+          autoSpeak(qKey, "Look at the picture. What is the starting sound of " + qItem.word + "?", "en-IN");
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + qItem.word + '! ' + soundText + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + qItem.word + '! ' + soundText + '\', \'en-IN\'); }, event)">';
+          html += '  <div class="flashcard-emoji">' + qItem.emoji + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + qItem.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + qItem.word + '\', \'en-IN\'); }, event)" style="font-size: 28px; font-weight: 900; color: #0277BD; letter-spacing: 2px;">' + qItem.word + '</div>';
+          html += '  <div class="audio-hint">🔊 ' + soundText + '</div>';
+          html += '</div>';
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'What is the starting sound of ' + qItem.word + '?\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'What is the starting sound of ' + qItem.word + '?\', \'en-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">What is the starting sound of ' + qItem.word + '? 🔊</div>';
+
+          html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+          for (var oi = 0; oi < opts.length; oi++) {
+            var isOk = (opts[oi] === targetLetter);
+            var btnCls = "letter-bubble";
+            if (isAnswered) {
+              btnCls += isOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + btnCls + '" onclick="safeAction(function(){ handleNurseryPhonicsAns(' + isOk + ', \'' + opts[oi] + '\', \'' + qItem.word + '\', \'' + qItem.emoji + '\', \'' + soundText + '\'); })" ontouchend="safeAction(function(){ handleNurseryPhonicsAns(' + isOk + ', \'' + opts[oi] + '\', \'' + qItem.word + '\', \'' + qItem.emoji + '\', \'' + soundText + '\'); }, event)">' + opts[oi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+      }
+// TAB 1: Hindi Swar (Hindi Subject Tab ONLY)
       else if (appState.tabIndex === 1) {
         if (appState.mode === "learn") {
           autoSpeak("nursery_swar_learn", "हिंदी स्वर. अ से अः. किसी भी कार्ड या चित्र पर टैप करें!", "hi-IN");
@@ -3318,8 +6212,8 @@
         }
       }
 
-      // TAB 2: Counting 1-50 (100% English)
-      else if (appState.tabIndex === 2) {
+      // TAB 3: Counting 1-50 (100% English)
+      else if (appState.tabIndex === 3) {
         if (appState.mode === "learn") {
           var num = appState.countTargetNumber;
           var numWord = getNumberWord(num);
@@ -3376,8 +6270,8 @@
         }
       }
 
-      // TAB 3: Shapes (100% English)
-      else if (appState.tabIndex === 3) {
+      // TAB 4: Shapes (100% English)
+      else if (appState.tabIndex === 4) {
         if (appState.mode === "learn") {
           autoSpeak("shapes_learn", "Shapes. Circle, Square, Triangle, and more. Tap to listen!", "en-IN");
           html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px;">';
@@ -3425,8 +6319,8 @@
         }
       }
 
-      // TAB 4: Before / After (100% English 50+ procedural engine)
-      else if (appState.tabIndex === 4) {
+      // TAB 5: Before / After (50+) (100% English)
+      else if (appState.tabIndex === 5) {
         var baItem = DATA_BEFORE_AFTER[appState.quizIndex % DATA_BEFORE_AFTER.length];
         var baCacheKey = "ba_" + appState.quizIndex;
         var baOpts = getShuffledOptions(baCacheKey, function() {
@@ -3524,13 +6418,170 @@
     /* =========================================================
        SECTION 2: LKG VIEW (Hindi Vyanjan, 1-100 Names, EVS, Pre-Math, Hindi Word Formation)
        ========================================================= */
+    
+
     function renderLkgView() {
       var view = document.getElementById("main-view");
       var filterBar = document.getElementById("filter-pills-bar");
       var html = "";
 
-      // TAB 0: क-ज्ञ व्यंजन (Hindi Subject Tab ONLY)
+      // TAB 0: 🔤 Phonics & CVC Words (Part 1: 2-Letter Words + Part 2: 3-Letter CVC 5 Vowels) (100% English)
       if (appState.tabIndex === 0) {
+        filterBar.style.display = "flex";
+        var lkgPills = [
+          { key: "two", label: "✌️ 2-Letter (25)" },
+          { key: "a", label: "Short 'a' (16)" },
+          { key: "e", label: "Short 'e' (14)" },
+          { key: "i", label: "Short 'i' (14)" },
+          { key: "o", label: "Short 'o' (14)" },
+          { key: "u", label: "Short 'u' (14)" }
+        ];
+        var lpFilterHtml = "";
+        for (var lpi = 0; lpi < lkgPills.length; lpi++) {
+          var lp = lkgPills[lpi];
+          var lpCls = "filter-pill" + (appState.lkgPhonicsVowel === lp.key ? " active" : "");
+          lpFilterHtml += '<button class="' + lpCls + '" onclick="safeAction(function(){ setLkgPhonicsVowel(\'' + lp.key + '\'); })" ontouchend="safeAction(function(){ setLkgPhonicsVowel(\'' + lp.key + '\'); }, event)">' + lp.label + '</button>';
+        }
+        filterBar.innerHTML = lpFilterHtml;
+
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn Words</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 Missing Letter Quiz</button>';
+        html += '</div>';
+
+        // Part 1: Two-Letter Words
+        if (appState.lkgPhonicsVowel === "two") {
+          var twoWords = DATA_2LETTER_WORDS;
+          if (appState.mode === "learn") {
+            autoSpeak("lkg_2let_learn", "Two-letter phonics words. Tap any card to hear the sounds blended!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Two-letter phonics words. Tap any card to hear pronunciation!\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Two-letter phonics words. Tap any card to hear pronunciation!\', \'en-IN\'); }, event)" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any card to hear blending sound 🔊</div>';
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 250px); overflow-y: auto;">';
+            for (var twi = 0; twi < twoWords.length; twi++) {
+              var twItem = twoWords[twi];
+              html += '<div class="interactive-card" style="padding: 12px; text-align: center; border-color: #A5D6A7;" onclick="safeAction(function(){ speak(\'' + twItem.blend + '! ' + twItem.sentence + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + twItem.blend + '! ' + twItem.sentence + '\', \'en-IN\'); }, event)">';
+              html += '  <div style="font-size: 34px; margin-bottom: 2px;" class="safe-emoji">' + twItem.emoji + '</div>';
+              html += '  <div style="font-size: 26px; font-weight: 900; color: #2E7D32;">' + twItem.word.toUpperCase() + '</div>';
+              html += '  <div style="font-size: 13px; font-weight: 800; color: #1B5E20; margin-top: 2px;">' + twItem.blend + '</div>';
+              html += '  <div style="font-size: 11px; font-weight: 600; color: #558B2F; margin-top: 2px;">' + twItem.sentence + '</div>';
+              html += '</div>';
+            }
+            html += '</div>';
+          } else {
+            var qTwo = twoWords[appState.quizIndex % twoWords.length];
+            var blankPos = appState.quizIndex % 2;
+            var targetLetter = (blankPos === 0 ? qTwo.l1.toUpperCase() : qTwo.l2.toUpperCase());
+            var qKey = "lkg_2let_" + appState.quizIndex;
+            var opts = getShuffledOptions(qKey, function() {
+              var arr = [targetLetter];
+              var pool = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M", "N", "O", "P", "R", "S", "T", "U", "W", "X", "Y"];
+              while (arr.length < 4) {
+                var r = pool[Math.floor(Math.random() * pool.length)];
+                if (arr.indexOf(r) === -1) arr.push(r);
+              }
+              return fisherYatesShuffle(arr);
+            });
+            var isAnswered = (quizState.isAnswered && quizState.activeKey === qKey);
+
+            autoSpeak(qKey, "What letter is missing in " + qTwo.word.toUpperCase() + "?", "en-IN");
+
+            var promptWord = "";
+            if (blankPos === 0) {
+              promptWord = (isAnswered ? '<span class="dash-blank filled-blank">' + targetLetter + '</span>' : '<span class="dash-blank">___</span>') + ' ' + qTwo.l2.toUpperCase();
+            } else {
+              promptWord = qTwo.l1.toUpperCase() + ' ' + (isAnswered ? '<span class="dash-blank filled-blank">' + targetLetter + '</span>' : '<span class="dash-blank">___</span>');
+            }
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + qTwo.word.toUpperCase() + '! ' + qTwo.blend + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + qTwo.word.toUpperCase() + '! ' + qTwo.blend + '\', \'en-IN\'); }, event)">';
+            html += '  <div class="flashcard-emoji">' + qTwo.emoji + '</div>';
+            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + qTwo.word.toUpperCase() + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + qTwo.word.toUpperCase() + '\', \'en-IN\'); }, event)" style="font-size: 38px; font-weight: 900; color: #2E7D32; letter-spacing: 4px;">' + promptWord + '</div>';
+            html += '  <div class="audio-hint">🔊 ' + qTwo.blend + '</div>';
+            html += '</div>';
+
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing letter for ' + qTwo.word.toUpperCase() + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Choose the missing letter for ' + qTwo.word.toUpperCase() + '\', \'en-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing letter: 🔊</div>';
+
+            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            for (var oi = 0; oi < opts.length; oi++) {
+              var isOk = (opts[oi] === targetLetter);
+              var btnCls = "letter-bubble";
+              if (isAnswered) {
+                btnCls += isOk ? " correct-choice" : " disabled-choice";
+              }
+              html += '<button class="' + btnCls + '" onclick="safeAction(function(){ handleLkg2LetterAns(' + isOk + ', \'' + opts[oi] + '\', \'' + qTwo.word + '\', \'' + qTwo.emoji + '\', \'' + qTwo.blend + '\'); })" ontouchend="safeAction(function(){ handleLkg2LetterAns(' + isOk + ', \'' + opts[oi] + '\', \'' + qTwo.word + '\', \'' + qTwo.emoji + '\', \'' + qTwo.blend + '\'); }, event)">' + opts[oi] + '</button>';
+            }
+            html += '</div>';
+            html += renderCompletedPreviewCard();
+          }
+        }
+        // Part 2: Detailed 3-Letter CVC Words (5 Vowel Tabs, Randomly Varying Blanks)
+        else {
+          var vKey = appState.lkgPhonicsVowel;
+          var cvcList = DATA_3LETTER_CVC[vKey] || DATA_3LETTER_CVC.a;
+          if (appState.mode === "learn") {
+            autoSpeak("lkg_cvc_learn_" + vKey, "Short " + vKey + " 3-letter CVC words. Tap any card to hear sounds blended!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Short ' + vKey + ' 3-letter CVC words. Tap any card to hear pronunciation!\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Short ' + vKey + ' 3-letter CVC words. Tap any card to hear pronunciation!\', \'en-IN\'); }, event)" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any card to hear blending sound 🔊</div>';
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 250px); overflow-y: auto;">';
+            for (var ci = 0; ci < cvcList.length; ci++) {
+              var cItem = cvcList[ci];
+              html += '<div class="interactive-card" style="padding: 12px; text-align: center; border-color: #FFE082;" onclick="safeAction(function(){ speak(\'' + cItem.blend + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cItem.blend + '\', \'en-IN\'); }, event)">';
+              html += '  <div style="font-size: 38px; margin-bottom: 2px;" class="safe-emoji">' + cItem.emoji + '</div>';
+              html += '  <div style="font-size: 24px; font-weight: 900; color: #E65100;">' + cItem.word + '</div>';
+              html += '  <div style="font-size: 13px; font-weight: 800; color: #BF360C; margin-top: 2px;">' + cItem.blend + '</div>';
+              html += '</div>';
+            }
+            html += '</div>';
+          } else {
+            var cvcQ = cvcList[appState.quizIndex % cvcList.length];
+            // No predictable blank: rotate between letter 0, letter 1, letter 2
+            var blankPos = appState.quizIndex % 3;
+            var targetLetter = cvcQ.letters[blankPos];
+            var qKey = "lkg_cvc_" + vKey + "_" + appState.quizIndex;
+            var opts = getShuffledOptions(qKey, function() {
+              var arr = [targetLetter];
+              var pool = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M", "N", "O", "P", "R", "S", "T", "U", "V", "W"];
+              while (arr.length < 4) {
+                var r = pool[Math.floor(Math.random() * pool.length)];
+                if (arr.indexOf(r) === -1) arr.push(r);
+              }
+              return fisherYatesShuffle(arr);
+            });
+            var isAnswered = (quizState.isAnswered && quizState.activeKey === qKey);
+
+            autoSpeak(qKey, "What letter is missing in " + cvcQ.word + "?", "en-IN");
+
+            var lettersDisplay = [];
+            for (var li = 0; li < cvcQ.letters.length; li++) {
+              if (li === blankPos) {
+                lettersDisplay.push(isAnswered ? '<span class="dash-blank filled-blank">' + targetLetter + '</span>' : '<span class="dash-blank">___</span>');
+              } else {
+                lettersDisplay.push(cvcQ.letters[li]);
+              }
+            }
+            var promptWord = lettersDisplay.join(" ");
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + cvcQ.word + '! ' + cvcQ.blend + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcQ.word + '! ' + cvcQ.blend + '\', \'en-IN\'); }, event)">';
+            html += '  <div class="flashcard-emoji">' + cvcQ.emoji + '</div>';
+            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + cvcQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcQ.word + '\', \'en-IN\'); }, event)" style="font-size: 38px; font-weight: 900; color: #E65100; letter-spacing: 4px;">' + promptWord + '</div>';
+            html += '  <div class="audio-hint">🔊 ' + cvcQ.blend + '</div>';
+            html += '</div>';
+
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing letter for ' + cvcQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Choose the missing letter for ' + cvcQ.word + '\', \'en-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing letter: 🔊</div>';
+
+            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            for (var oi = 0; oi < opts.length; oi++) {
+              var isOk = (opts[oi] === targetLetter);
+              var btnCls = "letter-bubble";
+              if (isAnswered) {
+                btnCls += isOk ? " correct-choice" : " disabled-choice";
+              }
+              html += '<button class="' + btnCls + '" onclick="safeAction(function(){ handleLkgCvcAns(' + isOk + ', \'' + opts[oi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\', \'' + cvcQ.blend + '\'); })" ontouchend="safeAction(function(){ handleLkgCvcAns(' + isOk + ', \'' + opts[oi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\', \'' + cvcQ.blend + '\'); }, event)">' + opts[oi] + '</button>';
+            }
+            html += '</div>';
+            html += renderCompletedPreviewCard();
+          }
+        }
+      }
+      // TAB 1: क-ज्ञ व्यंजन (Hindi Subject Tab ONLY)
+      else if (appState.tabIndex === 1) {
         filterBar.style.display = "none";
         html += '<div class="mode-switch">';
         html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn व्यंजन</button>';
@@ -3602,8 +6653,8 @@
         }
       }
 
-      // TAB 1: 1-100 Number Names (100% English)
-      else if (appState.tabIndex === 1) {
+      // TAB 2: 1-100 Number Names (100% English)
+      else if (appState.tabIndex === 2) {
         filterBar.style.display = "none";
         html += '<div class="mode-switch">';
         html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Explore 1 to 100</button>';
@@ -3727,8 +6778,8 @@
         }
       }
 
-      // TAB 3: Pre-Math & Opposites (100% English)
-      else if (appState.tabIndex === 3) {
+      // TAB 4: Pre-Math & Opposites (100% English)
+      else if (appState.tabIndex === 4) {
         filterBar.style.display = "none";
         html += '<div class="mode-switch">';
         html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📐 Pre-Math Concepts</button>';
@@ -3777,8 +6828,8 @@
         }
       }
 
-      // TAB 4: शब्द निर्माण (Hindi Subject Tab ONLY)
-      else if (appState.tabIndex === 4) {
+      // TAB 5: शब्द निर्माण (Hindi Subject Tab ONLY)
+      else if (appState.tabIndex === 5) {
         filterBar.style.display = "none";
         var wordObj = DATA_SHABDA[appState.wordCurrentIndex % DATA_SHABDA.length];
         autoSpeak("shabda_" + appState.wordCurrentIndex, wordObj.sound + ". चित्र देखकर अक्षर जोड़ें", "hi-IN");
@@ -3831,7 +6882,7 @@
           if (builtWord === wordObj.word) {
             handleQuizAnswerSubmit(true, {
               key: "shabda_" + appState.wordCurrentIndex,
-              display: wordObj.word + " " + wordObj.emoji,
+              display: wordObj.letters.join(" + ") + " = " + wordObj.word + " " + wordObj.emoji,
               spoken: wordObj.sound + "! " + wordObj.word + "!",
               lang: "hi-IN",
               ansVal: wordObj.word,
@@ -3904,79 +6955,320 @@
     /* =========================================================
        SECTION 3: UKG VIEW (5 Short Vowels, Rhyming, UKG EVS, 45+ Matras, Math)
        ========================================================= */
+    
+
     function renderUkgView() {
       var view = document.getElementById("main-view");
       var filterBar = document.getElementById("filter-pills-bar");
       var html = "";
 
-      // TAB 0: Short Vowels Phonics (5 Vowels: a, e, i, o, u) (100% English)
+      // TAB 0: 🔤 Phonics & 4-Letter Words (2-Letter Revision, 3-Letter CVC Mastery & 4-Letter Words across 5 Vowels) (100% English)
       if (appState.tabIndex === 0) {
         filterBar.style.display = "flex";
-        var vowels = ["a", "e", "i", "o", "u"];
-        var vHtml = "";
-        for (var vi = 0; vi < vowels.length; vi++) {
-          var vChar = vowels[vi];
-          var vCls = "filter-pill" + (appState.phonicsVowel === vChar ? " active" : "");
-          vHtml += '<button class="' + vCls + '" onclick="safeAction(function(){ setPhonicsVowel(\'' + vChar + '\'); })" ontouchend="safeAction(function(){ setPhonicsVowel(\'' + vChar + '\'); }, event)">Short \'' + vChar + '\' (10 Words)</button>';
+        var ukgPhonicsPills = [
+          { key: "two", label: "✌️ 2-Letter Rev (25)" },
+          { key: "cvc", label: "🔤 3-Letter CVC (72)" },
+          { key: "a", label: "4-Letter 'A' (14)" },
+          { key: "e", label: "4-Letter 'E' (14)" },
+          { key: "i", label: "4-Letter 'I' (14)" },
+          { key: "o", label: "4-Letter 'O' (14)" },
+          { key: "u", label: "4-Letter 'U' (14)" }
+        ];
+        var uFilterHtml = "";
+        for (var ui = 0; ui < ukgPhonicsPills.length; ui++) {
+          var up = ukgPhonicsPills[ui];
+          var upCls = "filter-pill" + (appState.ukgPhonicsVowel === up.key ? " active" : "");
+          uFilterHtml += '<button class="' + upCls + '" onclick="safeAction(function(){ setUkgPhonicsVowel(\'' + up.key + '\'); })" ontouchend="safeAction(function(){ setUkgPhonicsVowel(\'' + up.key + '\'); }, event)">' + up.label + '</button>';
         }
-        filterBar.innerHTML = vHtml;
+        filterBar.innerHTML = uFilterHtml;
 
         html += '<div class="mode-switch">';
         html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn Words</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 Missing Vowel Quiz</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 Missing Letter Quiz</button>';
         html += '</div>';
 
-        var wordList = DATA_PHONICS_5[appState.phonicsVowel] || DATA_PHONICS_5.a;
+        // Sub-option 1: 2-Letter Revision
+        if (appState.ukgPhonicsVowel === "two") {
+          var twoWords = DATA_2LETTER_WORDS;
+          if (appState.mode === "learn") {
+            autoSpeak("ukg_2let_learn", "2-Letter words revision. Tap any card to hear the sounds blended!", "en-IN");
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 250px); overflow-y: auto;">';
+            for (var ti = 0; ti < twoWords.length; ti++) {
+              var tItem = twoWords[ti];
+              html += '<div class="interactive-card" style="padding: 12px; text-align: center; border-color: #FFE082;" onclick="safeAction(function(){ speak(\'' + tItem.blend + '! ' + tItem.sentence + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + tItem.blend + '! ' + tItem.sentence + '\', \'en-IN\'); }, event)">';
+              html += '  <div style="font-size: 34px; margin-bottom: 2px;" class="safe-emoji">' + tItem.emoji + '</div>';
+              html += '  <div style="font-size: 26px; font-weight: 900; color: #E65100;">' + tItem.word.toUpperCase() + '</div>';
+              html += '  <div style="font-size: 12px; font-weight: 800; color: #BF360C;">' + tItem.blend + '</div>';
+              html += '</div>';
+            }
+            html += '</div>';
+          } else {
+            var qTwo = twoWords[appState.quizIndex % twoWords.length];
+            var blankPos = appState.quizIndex % 2;
+            var targetLetter = (blankPos === 0 ? qTwo.l1.toUpperCase() : qTwo.l2.toUpperCase());
+            var qKey = "ukg_2let_" + appState.quizIndex;
+            var opts = getShuffledOptions(qKey, function() {
+              var arr = [targetLetter];
+              var pool = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M", "N", "O", "P", "R", "S", "T", "U", "W", "X", "Y"];
+              while (arr.length < 4) {
+                var r = pool[Math.floor(Math.random() * pool.length)];
+                if (arr.indexOf(r) === -1) arr.push(r);
+              }
+              return fisherYatesShuffle(arr);
+            });
+            var isAnswered = (quizState.isAnswered && quizState.activeKey === qKey);
+
+            autoSpeak(qKey, "What letter is missing in " + qTwo.word.toUpperCase() + "?", "en-IN");
+
+            var promptWord = (blankPos === 0)
+              ? (isAnswered ? '<span class="dash-blank filled-blank">' + targetLetter + '</span>' : '<span class="dash-blank">___</span>') + ' ' + qTwo.l2.toUpperCase()
+              : qTwo.l1.toUpperCase() + ' ' + (isAnswered ? '<span class="dash-blank filled-blank">' + targetLetter + '</span>' : '<span class="dash-blank">___</span>');
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + qTwo.word.toUpperCase() + '! ' + qTwo.blend + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + qTwo.word.toUpperCase() + '! ' + qTwo.blend + '\', \'en-IN\'); }, event)">';
+            html += '  <div class="flashcard-emoji">' + qTwo.emoji + '</div>';
+            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + qTwo.word.toUpperCase() + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + qTwo.word.toUpperCase() + '\', \'en-IN\'); }, event)" style="font-size: 38px; font-weight: 900; color: #E65100; letter-spacing: 4px;">' + promptWord + '</div>';
+            html += '  <div class="audio-hint">🔊 ' + qTwo.blend + '</div>';
+            html += '</div>';
+
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing letter for ' + qTwo.word.toUpperCase() + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Choose the missing letter for ' + qTwo.word.toUpperCase() + '\', \'en-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing letter: 🔊</div>';
+
+            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            for (var oi = 0; oi < opts.length; oi++) {
+              var isOk = (opts[oi] === targetLetter);
+              var btnCls = "letter-bubble";
+              if (isAnswered) {
+                btnCls += isOk ? " correct-choice" : " disabled-choice";
+              }
+              html += '<button class="' + btnCls + '" onclick="safeAction(function(){ handleLkg2LetterAns(' + isOk + ', \'' + opts[oi] + '\', \'' + qTwo.word + '\', \'' + qTwo.emoji + '\', \'' + qTwo.blend + '\'); })" ontouchend="safeAction(function(){ handleLkg2LetterAns(' + isOk + ', \'' + opts[oi] + '\', \'' + qTwo.word + '\', \'' + qTwo.emoji + '\', \'' + qTwo.blend + '\'); }, event)">' + opts[oi] + '</button>';
+            }
+            html += '</div>';
+            html += renderCompletedPreviewCard();
+          }
+        }
+        // Sub-option 2: 3-Letter CVC Mastery (all 72 words)
+        else if (appState.ukgPhonicsVowel === "cvc") {
+          var allCvc = [].concat(DATA_3LETTER_CVC.a, DATA_3LETTER_CVC.e, DATA_3LETTER_CVC.i, DATA_3LETTER_CVC.o, DATA_3LETTER_CVC.u);
+          if (appState.mode === "learn") {
+            autoSpeak("ukg_cvc_learn", "3-Letter CVC words mastery. Tap any card to hear the sounds blended!", "en-IN");
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 250px); overflow-y: auto;">';
+            for (var ci = 0; ci < allCvc.length; ci++) {
+              var cItem = allCvc[ci];
+              html += '<div class="interactive-card" style="padding: 12px; text-align: center; border-color: #FFCC80;" onclick="safeAction(function(){ speak(\'' + cItem.blend + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cItem.blend + '\', \'en-IN\'); }, event)">';
+              html += '  <div style="font-size: 34px; margin-bottom: 2px;" class="safe-emoji">' + cItem.emoji + '</div>';
+              html += '  <div style="font-size: 24px; font-weight: 900; color: #E65100;">' + cItem.word + '</div>';
+              html += '  <div style="font-size: 12px; font-weight: 800; color: #BF360C;">' + cItem.blend + '</div>';
+              html += '</div>';
+            }
+            html += '</div>';
+          } else {
+            var cvcQ = allCvc[appState.quizIndex % allCvc.length];
+            var blankPos = appState.quizIndex % 3;
+            var targetLetter = cvcQ.letters[blankPos];
+            var qKey = "ukg_cvc_all_" + appState.quizIndex;
+            var opts = getShuffledOptions(qKey, function() {
+              var arr = [targetLetter];
+              var pool = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M", "N", "O", "P", "R", "S", "T", "U", "V", "W"];
+              while (arr.length < 4) {
+                var r = pool[Math.floor(Math.random() * pool.length)];
+                if (arr.indexOf(r) === -1) arr.push(r);
+              }
+              return fisherYatesShuffle(arr);
+            });
+            var isAnswered = (quizState.isAnswered && quizState.activeKey === qKey);
+
+            autoSpeak(qKey, "What letter is missing in " + cvcQ.word + "?", "en-IN");
+
+            var lettersDisplay = [];
+            for (var li = 0; li < cvcQ.letters.length; li++) {
+              if (li === blankPos) {
+                lettersDisplay.push(isAnswered ? '<span class="dash-blank filled-blank">' + targetLetter + '</span>' : '<span class="dash-blank">___</span>');
+              } else {
+                lettersDisplay.push(cvcQ.letters[li]);
+              }
+            }
+            var promptWord = lettersDisplay.join(" ");
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + cvcQ.word + '! ' + cvcQ.blend + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcQ.word + '! ' + cvcQ.blend + '\', \'en-IN\'); }, event)">';
+            html += '  <div class="flashcard-emoji">' + cvcQ.emoji + '</div>';
+            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + cvcQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcQ.word + '\', \'en-IN\'); }, event)" style="font-size: 38px; font-weight: 900; color: #E65100; letter-spacing: 4px;">' + promptWord + '</div>';
+            html += '  <div class="audio-hint">🔊 ' + cvcQ.blend + '</div>';
+            html += '</div>';
+
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing letter for ' + cvcQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Choose the missing letter for ' + cvcQ.word + '\', \'en-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing letter: 🔊</div>';
+
+            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            for (var oi = 0; oi < opts.length; oi++) {
+              var isOk = (opts[oi] === targetLetter);
+              var btnCls = "letter-bubble";
+              if (isAnswered) {
+                btnCls += isOk ? " correct-choice" : " disabled-choice";
+              }
+              html += '<button class="' + btnCls + '" onclick="safeAction(function(){ handleLkgCvcAns(' + isOk + ', \'' + opts[oi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\', \'' + cvcQ.blend + '\'); })" ontouchend="safeAction(function(){ handleLkgCvcAns(' + isOk + ', \'' + opts[oi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\', \'' + cvcQ.blend + '\'); }, event)">' + opts[oi] + '</button>';
+            }
+            html += '</div>';
+            html += renderCompletedPreviewCard();
+          }
+        }
+        // Sub-option 3: 4-Letter Words (5 Vowel Tabs: A, E, I, O, U, 14 words each)
+        else {
+          var vKey = appState.ukgPhonicsVowel;
+          var fourList = DATA_4LETTER_WORDS[vKey] || DATA_4LETTER_WORDS.a;
+          if (appState.mode === "learn") {
+            autoSpeak("ukg_4let_learn_" + vKey, "4-Letter " + vKey.toUpperCase() + " sound words. Tap any card to hear the sounds blended!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'4-Letter ' + vKey.toUpperCase() + ' words. Tap any card to hear pronunciation!\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'4-Letter ' + vKey.toUpperCase() + ' words. Tap any card to hear pronunciation!\', \'en-IN\'); }, event)" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any card to hear blending sound 🔊</div>';
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 250px); overflow-y: auto;">';
+            for (var fi = 0; fi < fourList.length; fi++) {
+              var fItem = fourList[fi];
+              html += '<div class="interactive-card" style="padding: 12px; text-align: center; border-color: #FFB74D;" onclick="safeAction(function(){ speak(\'' + fItem.blend + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + fItem.blend + '\', \'en-IN\'); }, event)">';
+              html += '  <div style="font-size: 34px; margin-bottom: 2px;" class="safe-emoji">' + fItem.emoji + '</div>';
+              html += '  <div style="font-size: 24px; font-weight: 900; color: #E65100;">' + fItem.word + '</div>';
+              html += '  <div style="font-size: 12px; font-weight: 800; color: #D84315;">' + fItem.blend + '</div>';
+              html += '</div>';
+            }
+            html += '</div>';
+          } else {
+            var fourQ = fourList[appState.quizIndex % fourList.length];
+            // Rotating blank across 4 letters: 0, 1, 2, 3
+            var blankPos = appState.quizIndex % 4;
+            var targetLetter = fourQ.letters[blankPos];
+            var qKey = "ukg_4let_" + vKey + "_" + appState.quizIndex;
+            var opts = getShuffledOptions(qKey, function() {
+              var arr = [targetLetter];
+              var pool = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "W"];
+              while (arr.length < 4) {
+                var r = pool[Math.floor(Math.random() * pool.length)];
+                if (arr.indexOf(r) === -1) arr.push(r);
+              }
+              return fisherYatesShuffle(arr);
+            });
+            var isAnswered = (quizState.isAnswered && quizState.activeKey === qKey);
+
+            autoSpeak(qKey, "What letter is missing in " + fourQ.word + "?", "en-IN");
+
+            var lettersDisplay = [];
+            for (var li = 0; li < fourQ.letters.length; li++) {
+              if (li === blankPos) {
+                lettersDisplay.push(isAnswered ? '<span class="dash-blank filled-blank">' + targetLetter + '</span>' : '<span class="dash-blank">___</span>');
+              } else {
+                lettersDisplay.push(fourQ.letters[li]);
+              }
+            }
+            var promptWord = lettersDisplay.join(" ");
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + fourQ.word + '! ' + fourQ.blend + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + fourQ.word + '! ' + fourQ.blend + '\', \'en-IN\'); }, event)">';
+            html += '  <div class="flashcard-emoji">' + fourQ.emoji + '</div>';
+            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + fourQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + fourQ.word + '\', \'en-IN\'); }, event)" style="font-size: 38px; font-weight: 900; color: #E65100; letter-spacing: 4px;">' + promptWord + '</div>';
+            html += '  <div class="audio-hint">🔊 ' + fourQ.blend + '</div>';
+            html += '</div>';
+
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing letter for ' + fourQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Choose the missing letter for ' + fourQ.word + '\', \'en-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing letter: 🔊</div>';
+
+            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            for (var oi = 0; oi < opts.length; oi++) {
+              var isOk = (opts[oi] === targetLetter);
+              var btnCls = "letter-bubble";
+              if (isAnswered) {
+                btnCls += isOk ? " correct-choice" : " disabled-choice";
+              }
+              html += '<button class="' + btnCls + '" onclick="safeAction(function(){ handleUkg4LetterAns(' + isOk + ', \'' + opts[oi] + '\', \'' + fourQ.word + '\', \'' + fourQ.emoji + '\', \'' + fourQ.blend + '\'); })" ontouchend="safeAction(function(){ handleUkg4LetterAns(' + isOk + ', \'' + opts[oi] + '\', \'' + fourQ.word + '\', \'' + fourQ.emoji + '\', \'' + fourQ.blend + '\'); }, event)">' + opts[oi] + '</button>';
+            }
+            html += '</div>';
+            html += renderCompletedPreviewCard();
+          }
+        }
+      }
+
+      // TAB 1: 📚 English World (14 Essential Vocabulary & Phonics Categories) (100% English)
+      else if (appState.tabIndex === 1) {
+        filterBar.style.display = "flex";
+        var ewCats = [
+          { key: "days", label: "📅 Days" },
+          { key: "months", label: "📆 Months" },
+          { key: "colors", label: "🎨 Colors" },
+          { key: "wild_animals", label: "🦁 Wild" },
+          { key: "domestic_animals", label: "🐄 Domestic" },
+          { key: "birds", label: "🦜 Birds" },
+          { key: "body_parts", label: "👀 Body" },
+          { key: "flowers", label: "🌸 Flowers" },
+          { key: "relations", label: "👨‍👩‍👧 Family" },
+          { key: "school_belongings", label: "🎒 Belongings" },
+          { key: "things_in_school", label: "🏫 School" },
+          { key: "clothes", label: "👕 Clothes" },
+          { key: "action_words", label: "🏃 Actions" },
+          { key: "good_manners", label: "🤝 Manners" }
+        ];
+        var ewFilterHtml = "";
+        for (var ewi = 0; ewi < ewCats.length; ewi++) {
+          var ew = ewCats[ewi];
+          var ewCls = "filter-pill" + (appState.ukgEnglishWorldCat === ew.key ? " active" : "");
+          ewFilterHtml += '<button class="' + ewCls + '" onclick="safeAction(function(){ setUkgEnglishWorldCat(\'' + ew.key + '\'); })" ontouchend="safeAction(function(){ setUkgEnglishWorldCat(\'' + ew.key + '\'); }, event)">' + ew.label + '</button>';
+        }
+        filterBar.innerHTML = ewFilterHtml;
+
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn Words</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 Quiz Mode</button>';
+        html += '</div>';
+
+        var catObj = DATA_UKG_ENGLISH_WORLD[appState.ukgEnglishWorldCat] || DATA_UKG_ENGLISH_WORLD.days;
+        var ewList = catObj.items;
 
         if (appState.mode === "learn") {
-          autoSpeak("cvc_learn_" + appState.phonicsVowel, "Short " + appState.phonicsVowel + " words. Tap any card or picture to hear sound!", "en-IN");
+          autoSpeak("ukg_ew_learn_" + appState.ukgEnglishWorldCat, catObj.title + ". Tap any card to hear pronunciation and sentence!", "en-IN");
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + catObj.title + '. Tap any card to hear pronunciation and sentence!\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + catObj.title + '. Tap any card to hear pronunciation and sentence!\', \'en-IN\'); }, event)" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any card to hear pronunciation & sentence 🔊</div>';
           html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 250px); overflow-y: auto;">';
-          for (var cv = 0; cv < wordList.length; cv++) {
-            var cvcItem = wordList[cv];
-            html += '<div class="interactive-card" style="padding: 14px; text-align: center; border-color: #FFCC80;" onclick="safeAction(function(){ speak(\'' + cvcItem.word + '! ' + cvcItem.sound + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcItem.word + '! ' + cvcItem.sound + '\', \'en-IN\'); }, event)">';
-            html += '  <div class="safe-emoji" style="font-size: 40px; margin-bottom: 4px;">' + cvcItem.emoji + '</div>';
-            html += '  <div style="font-size: 22px; font-weight: 900; color: #E65100;">' + cvcItem.word + '</div>';
-            html += '  <div style="font-size: 11px; font-weight: 700; color: #795548;">Vowel: ' + appState.phonicsVowel.toUpperCase() + '</div>';
+          for (var ewi = 0; ewi < ewList.length; ewi++) {
+            var ewItem = ewList[ewi];
+            html += '<div class="interactive-card" style="padding: 12px; text-align: center; border-color: #80DEEA;" onclick="safeAction(function(){ speak(\'' + ewItem.name + '! ' + ewItem.hint + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + ewItem.name + '! ' + ewItem.hint + '\', \'en-IN\'); }, event)">';
+            html += '  <div style="font-size: 36px; margin-bottom: 2px;" class="safe-emoji">' + ewItem.emoji + '</div>';
+            html += '  <div style="font-size: 18px; font-weight: 900; color: #00838F;">' + ewItem.name + '</div>';
+            html += '  <div style="font-size: 11px; font-weight: 600; color: #006064; margin-top: 3px;">' + ewItem.hint + '</div>';
             html += '</div>';
           }
           html += '</div>';
         } else {
-          var cvcQ = wordList[appState.quizIndex % wordList.length];
-          var cvcCacheKey = "cvc_" + appState.phonicsVowel + "_" + appState.quizIndex;
-          var vOptsArr = getShuffledOptions(cvcCacheKey, function() {
-            return fisherYatesShuffle(["A", "E", "I", "O", "U"]);
+          var ewQ = ewList[appState.quizIndex % ewList.length];
+          var qKey = "ukg_ew_" + appState.ukgEnglishWorldCat + "_" + appState.quizIndex;
+          var opts = getShuffledOptions(qKey, function() {
+            var arr = [ewQ.name];
+            var pool = [];
+            for (var p = 0; p < ewList.length; p++) {
+              if (ewList[p].name !== ewQ.name) pool.push(ewList[p].name);
+            }
+            while (arr.length < 4 && pool.length > 0) {
+              var randIdx = Math.floor(Math.random() * pool.length);
+              var pick = pool.splice(randIdx, 1)[0];
+              arr.push(pick);
+            }
+            return fisherYatesShuffle(arr);
           });
-          var isCvcAnswered = (quizState.isAnswered && quizState.activeKey === cvcCacheKey);
+          var isAnswered = (quizState.isAnswered && quizState.activeKey === qKey);
 
-          autoSpeak(cvcCacheKey, cvcQ.word + ". What vowel is missing in " + cvcQ.word + "?", "en-IN");
+          autoSpeak(qKey, "Look at the picture. What is this?", "en-IN");
 
-          var promptWord = isCvcAnswered
-            ? cvcQ.pre + ' <span class="dash-blank filled-blank">' + cvcQ.ans + '</span> ' + cvcQ.post
-            : cvcQ.pre + ' <span class="dash-blank">___</span> ' + cvcQ.post;
-
-          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + cvcQ.word + '! ' + cvcQ.sound + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcQ.word + '! ' + cvcQ.sound + '\', \'en-IN\'); }, event)">';
-          html += '  <div class="flashcard-emoji">' + cvcQ.emoji + '</div>';
-          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + cvcQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcQ.word + '\', \'en-IN\'); }, event)" style="font-size: 38px; font-weight: 900; color: #E65100; letter-spacing: 4px;">' + promptWord + '</div>';
-          html += '  <div class="audio-hint" style="background:#FFF3E0;color:#E65100;">🔊 ' + cvcQ.sound + '</div>';
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + ewQ.name + '! ' + ewQ.hint + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + ewQ.name + '! ' + ewQ.hint + '\', \'en-IN\'); }, event)">';
+          html += '  <div class="flashcard-emoji">' + ewQ.emoji + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + ewQ.hint + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + ewQ.hint + '\', \'en-IN\'); }, event)" style="font-size: 20px; font-weight: 800; color: #00838F; padding: 0 10px;">' + (isAnswered ? ewQ.name : "What is this?") + '</div>';
+          html += '  <div class="audio-hint">🔊 Tap to hear hint</div>';
           html += '</div>';
 
-          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Pick the correct vowel for ' + cvcQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Pick the correct vowel for ' + cvcQ.word + '\', \'en-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Pick the correct vowel: 🔊</div>';
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the correct word below\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Choose the correct word below\', \'en-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the correct word: 🔊</div>';
+
           html += '<div style="display: flex; justify-content: center; gap: 8px; margin-top: 14px; flex-wrap: wrap;">';
-          for (var voi = 0; voi < vOptsArr.length; voi++) {
-            var isVowelOk = (vOptsArr[voi] === cvcQ.ans);
-            var optBtnClass = "letter-bubble";
-            if (isCvcAnswered) {
-              optBtnClass += isVowelOk ? " correct-choice" : " disabled-choice";
+          for (var oi = 0; oi < opts.length; oi++) {
+            var isOk = (opts[oi] === ewQ.name);
+            var btnCls = "opt-btn";
+            if (isAnswered) {
+              btnCls += isOk ? " correct-choice" : " disabled-choice";
             }
-            html += '<button class="' + optBtnClass + '" style="background:#FFF3E0;border-color:#FF9800;color:#BF360C;" onclick="safeAction(function(){ handleCvcAns(' + isVowelOk + ', \'' + cvcQ.sound + '\', \'' + vOptsArr[voi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\'); })" ontouchend="safeAction(function(){ handleCvcAns(' + isVowelOk + ', \'' + cvcQ.sound + '\', \'' + vOptsArr[voi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\'); }, event)">' + vOptsArr[voi] + '</button>';
+            html += '<button class="' + btnCls + '" style="font-size: 16px; padding: 10px 16px; min-width: 120px;" onclick="safeAction(function(){ handleUkgEngWorldAns(' + isOk + ', \'' + opts[oi] + '\', \'' + ewQ.emoji + '\', \'' + ewQ.hint + '\'); })" ontouchend="safeAction(function(){ handleUkgEngWorldAns(' + isOk + ', \'' + opts[oi] + '\', \'' + ewQ.emoji + '\', \'' + ewQ.hint + '\'); }, event)">' + opts[oi] + '</button>';
           }
           html += '</div>';
           html += renderCompletedPreviewCard();
         }
       }
-
-      // TAB 1: 16 Pairs of Rhyming Words (100% English)
-      else if (appState.tabIndex === 1) {
+      // TAB 2: 16 Pairs of Rhyming Words (100% English)
+      else if (appState.tabIndex === 2) {
         filterBar.style.display = "none";
         autoSpeak("rhyme_learn", "Rhyming Words. 16 pairs. Tap any pair to hear them rhyme!", "en-IN");
         html += '<div style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center;">Tap any rhyming pair to listen 🔊</div>';
@@ -4211,6 +7503,8 @@
       view.innerHTML = html;
     }
 
+    
+
     function handleCvcAns(isCorrect, sound, letter, word, emoji) {
       speak(letter, "en-IN");
       var cacheKey = "cvc_" + appState.phonicsVowel + "_" + appState.quizIndex;
@@ -4246,6 +7540,70 @@
         lang: "en-IN",
         ansVal: ans,
         wrongMsg: "Incorrect count, try again!"
+      });
+    }
+
+    function handleNurseryPhonicsAns(isCorrect, letter, word, emoji, sound) {
+      speak(letter, "en-IN");
+      var cacheKey = "nurs_phonics_" + appState.nurseryPhonicsFilter + "_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (emoji || "") + " " + (word || "") + " starts with letter " + letter + "! (" + (sound || "") + ")",
+        spoken: letter + "! " + (sound || "") + " for " + (word || "") + "! Well done!",
+        lang: "en-IN",
+        ansVal: letter,
+        wrongMsg: "Wrong sound, listen and try again!"
+      });
+    }
+
+    function handleLkg2LetterAns(isCorrect, letter, word, emoji, blend) {
+      speak(letter, "en-IN");
+      var cacheKey = "lkg_2let_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (word || "").toUpperCase() + " " + (emoji || ""),
+        spoken: letter + "! " + (blend || "") + "! Great job!",
+        lang: "en-IN",
+        ansVal: letter,
+        wrongMsg: "Wrong letter, try again!"
+      });
+    }
+
+    function handleLkgCvcAns(isCorrect, letter, word, emoji, blend) {
+      speak(letter, "en-IN");
+      var cacheKey = "lkg_cvc_" + appState.lkgPhonicsVowel + "_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (word || "").toUpperCase() + " " + (emoji || ""),
+        spoken: letter + "! " + (blend || "") + "! Excellent!",
+        lang: "en-IN",
+        ansVal: letter,
+        wrongMsg: "Wrong letter, try again!"
+      });
+    }
+
+    function handleUkg4LetterAns(isCorrect, letter, word, emoji, blend) {
+      speak(letter, "en-IN");
+      var cacheKey = "ukg_4let_" + appState.ukgPhonicsVowel + "_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (word || "").toUpperCase() + " " + (emoji || ""),
+        spoken: letter + "! " + (blend || "") + "! Brilliant!",
+        lang: "en-IN",
+        ansVal: letter,
+        wrongMsg: "Wrong letter, try again!"
+      });
+    }
+
+    function handleUkgEngWorldAns(isCorrect, name, emoji, hint) {
+      var cacheKey = "ukg_ew_" + appState.ukgEnglishWorldCat + "_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (name || "") + " " + (emoji || "") + " — " + (hint || ""),
+        spoken: (name || "") + "! " + (hint || "") + " Super!",
+        lang: "en-IN",
+        ansVal: name,
+        wrongMsg: "Try again!"
       });
     }
 
