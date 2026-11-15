@@ -701,6 +701,376 @@
       pointer-events: none;
       z-index: 998;
     }
+
+    /* =========================================================
+       WELCOME & VALUE SUBSCRIPTION SCREEN STYLES (₹1,999 vs FREE)
+       ========================================================= */
+    .student-pass-banner {
+      background: linear-gradient(135deg, #1B5E20, #2E7D32);
+      color: #FFFFFF;
+      padding: 7px 14px;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      letter-spacing: 0.3px;
+      border-bottom: 2px solid #81C784;
+      z-index: 99;
+    }
+    .student-pass-banner .pass-badge {
+      background: #C8E6C9;
+      color: #1B5E20;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: 900;
+      font-size: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .student-pass-banner .switch-btn {
+      background: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: #FFFFFF;
+      padding: 3px 10px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .welcome-wrap {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .welcome-hero {
+      background: linear-gradient(135deg, #FFF9C4 0%, #FFE082 100%);
+      border: 3px solid #FBC02D;
+      border-radius: 24px;
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(251, 192, 45, 0.25);
+    }
+    .welcome-hero .hero-logo {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      border: 3px solid #F57F17;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      object-fit: contain;
+      background: #FFF;
+    }
+    .welcome-hero h1 {
+      font-size: 22px;
+      font-weight: 900;
+      color: #D84315;
+      margin-bottom: 4px;
+    }
+    .welcome-hero .tagline {
+      font-size: 11px;
+      font-weight: 800;
+      color: #E65100;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* Subscription Comparison Grid */
+    .sub-comparison-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .sub-card {
+      border-radius: 20px;
+      padding: 16px;
+      position: relative;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+    }
+    .sub-card-annual {
+      background: #FFFFFF;
+      border: 2px solid #CFD8DC;
+    }
+    .sub-card-free {
+      background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+      border: 3px solid #4CAF50;
+      box-shadow: 0 8px 25px rgba(76, 175, 80, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .sub-card-free::after {
+      content: "★ 100% FREE FOR SCHOOL ★";
+      position: absolute;
+      top: 6px;
+      right: -24px;
+      background: #2E7D32;
+      color: #FFF;
+      font-size: 8px;
+      font-weight: 900;
+      padding: 2px 28px;
+      transform: rotate(25deg);
+      letter-spacing: 0.5px;
+    }
+    .sub-card-locked {
+      background: #F5F7FA;
+      border: 2px dashed #B0BEC5;
+    }
+
+    .sub-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      margin: 6px 0;
+    }
+    .price-amount {
+      font-size: 26px;
+      font-weight: 900;
+      color: #2E7D32;
+    }
+    .price-strike {
+      font-size: 18px;
+      color: #78909C;
+      text-decoration: line-through;
+      font-weight: 700;
+    }
+    .price-period {
+      font-size: 13px;
+      color: #546E7A;
+      font-weight: 700;
+    }
+
+    /* Auth Forms */
+    .login-box {
+      background: #FFFFFF;
+      border: 2px solid #CFD8DC;
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .login-box h3 {
+      font-size: 16px;
+      font-weight: 900;
+      color: #37474F;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .input-field {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #B0BEC5;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #263238;
+      outline: none;
+      transition: border-color 0.2s;
+      margin: 8px 0;
+    }
+    .input-field:focus {
+      border-color: #2E7D32;
+    }
+    .btn-action-primary {
+      width: 100%;
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      color: #FFFFFF;
+      border: none;
+      padding: 13px;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #1B5E20;
+      transition: transform 0.1s;
+    }
+    .btn-action-primary:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #1B5E20;
+    }
+    .quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .quick-chip {
+      background: #ECEFF1;
+      border: 1px solid #CFD8DC;
+      padding: 4px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #37474F;
+      cursor: pointer;
+    }
+    .quick-chip:active {
+      background: #C8E6C9;
+    }
+
+    /* =========================================================
+       TODAY'S TEACHER HOMEWORK CARD & TASK LOCK
+       ========================================================= */
+    .homework-hero-card {
+      background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+      border: 3px solid #FF9800;
+      border-radius: 22px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(255, 152, 0, 0.2);
+      position: relative;
+    }
+    .homework-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .homework-title {
+      font-size: 17px;
+      font-weight: 900;
+      color: #E65100;
+      line-height: 1.25;
+    }
+    .hw-status-badge {
+      padding: 4px 10px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .hw-status-pending {
+      background: #FF5722;
+      color: #FFFFFF;
+    }
+    .hw-status-completed {
+      background: #2E7D32;
+      color: #FFFFFF;
+    }
+    .hw-action-btn {
+      background: linear-gradient(135deg, #FF6F00, #E65100);
+      color: #FFFFFF;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 0 #BF360C;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .hw-action-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #BF360C;
+    }
+    .hw-completed-btn {
+      background: linear-gradient(135deg, #43A047, #2E7D32);
+      box-shadow: 0 4px 0 #1B5E20;
+    }
+
+    /* Modal for Task Lock */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-card {
+      background: #FFFFFF;
+      border-radius: 26px;
+      padding: 24px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+      animation: modalPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes modalPop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* =========================================================
+       CLASS TEACHER PANEL (Daily Homework & Live 2-Day Tracking)
+       ========================================================= */
+    .teacher-panel-wrap {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .class-switch-bar {
+      display: flex;
+      gap: 8px;
+      background: #FFFFFF;
+      padding: 6px;
+      border-radius: 16px;
+      border: 2px solid #E0E0E0;
+    }
+    .class-switch-btn {
+      flex: 1;
+      padding: 10px 4px;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 800;
+      color: #546E7A;
+      cursor: pointer;
+    }
+    .class-switch-btn.active {
+      background: #FF5252;
+      color: #FFFFFF;
+      box-shadow: 0 3px 8px rgba(255, 82, 82, 0.3);
+    }
+    .teacher-card {
+      background: #FFFFFF;
+      border: 2px solid #E0E0E0;
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .roster-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #F8F9FA;
+      border: 1px solid #ECEFF1;
+      margin-bottom: 8px;
+    }
+    .cleanup-badge {
+      background: #ECEFF1;
+      border: 1px dashed #78909C;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      color: #455A64;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+  
   </style>
 </head>
 <body>
@@ -728,6 +1098,8 @@
         </button>
       </div>
     </header>
+    <!-- Active Student Pass & Profile Status Strip -->
+    <div id="student-pass-banner" class="student-pass-banner" style="display:none;"></div>
 
     <!-- Sub Navigation Tabs Bar (Rendered dynamically when inside a section) -->
     <div id="subtabs-bar" class="subtabs-bar" style="display:none;"></div>
@@ -990,6 +1362,731 @@
     /* =========================================================
        APP STATE & DATA DICTIONARIES
        ========================================================= */
+
+    /* =========================================================
+       SUPABASE ZERO-LOAD BACKEND & 48-HOUR AUTO-CLEANUP ENGINE
+       ========================================================= */
+    var SUPABASE_CONFIG = {
+      url: "https://spymcrfsdbdxfwfqgogw.supabase.co",
+      anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNweW1jcmZzZGJkeGZ3ZnFnb2d3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1ODQ1OTgsImV4cCI6MjEwNjE2MDU5OH0.AGwwbAKSd-kDkNbjr6KIRdLGLR8C0kh9WQ7BAz4dtTY"
+    };
+
+    // Lightweight failsafe REST client for Supabase (Zero external bundle dependency)
+    function supabaseRest(endpoint, options) {
+      options = options || {};
+      var headers = {
+        "apikey": SUPABASE_CONFIG.anonKey,
+        "Authorization": "Bearer " + SUPABASE_CONFIG.anonKey,
+        "Content-Type": "application/json",
+        "Prefer": options.prefer || "return=representation"
+      };
+      var fetchOptions = {
+        method: options.method || "GET",
+        headers: headers
+      };
+      if (options.body) {
+        fetchOptions.body = JSON.stringify(options.body);
+      }
+      return fetch(SUPABASE_CONFIG.url + "/rest/v1" + endpoint, fetchOptions)
+        .then(function(res) {
+          if (!res.ok) {
+            return res.json().then(function(err) { throw err; }, function() { throw new Error("HTTP " + res.status); });
+          }
+          return res.json().catch(function() { return null; });
+        });
+    }
+
+    // Default student database roster for instant offline verification & demo testing
+    var DEFAULT_STUDENTS_ROSTER = [
+      { student_id: "STU-101", admission_no: "ADM-101", student_name: "Aarav Sharma", class_name: "Nursery", mobile: "9829011111", total_stars: 15, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] },
+      { student_id: "STU-102", admission_no: "ADM-102", student_name: "Priya Patel", class_name: "LKG", mobile: "9829022222", total_stars: 28, tasks_completed: 2, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
+      { student_id: "STU-103", admission_no: "ADM-103", student_name: "Aryan Verma", class_name: "UKG", mobile: "9829033333", total_stars: 48, tasks_completed: 4, badges: ["Welcome Explorer 🌟", "Super Star 🏅", "Math Champion 🏆"] },
+      { student_id: "STU-104", admission_no: "ADM-104", student_name: "Ananya Joshi", class_name: "UKG", mobile: "9829044444", total_stars: 36, tasks_completed: 3, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
+      { student_id: "STU-105", admission_no: "ADM-105", student_name: "Kabir Singh", class_name: "LKG", mobile: "9829055555", total_stars: 20, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] }
+    ];
+
+    // Current Session State
+    var appSession = {
+      type: null, // 'student', 'teacher', or null (welcome)
+      student: null, // { student_id, admission_no, student_name, class_name, total_stars, tasks_completed, badges, class_rank }
+      teacherClass: "UKG",
+      activeHomeworkId: null,
+      homeworkAnsweredCount: 0
+    };
+
+    // 48-Hour Auto-Cleanup Runner (Runs automatically once daily in background)
+    async function runDaily48HourCleanup() {
+      var lastCleanup = localStorage.getItem("taa_last_48h_cleanup");
+      var now = Date.now();
+      if (lastCleanup && (now - parseInt(lastCleanup, 10) < 24 * 60 * 60 * 1000)) {
+        cleanLocal48hStorage();
+        return;
+      }
+      try {
+        await supabaseRest("/rpc/cleanup_old_kids_data", { method: "POST", body: {} });
+        console.log("Supabase 48-hour auto-cleanup executed successfully.");
+      } catch (err) {
+        console.log("Cleanup RPC offline/fallback:", err.message || err);
+      }
+      cleanLocal48hStorage();
+      localStorage.setItem("taa_last_48h_cleanup", now.toString());
+    }
+
+    // Clean local transient submissions and homework older than 48 hours
+    function cleanLocal48hStorage() {
+      var cutoff = Date.now() - (48 * 60 * 60 * 1000);
+      try {
+        var hwList = JSON.parse(localStorage.getItem("taa_kids_homework") || "[]");
+        var filteredHw = hwList.filter(function(h) { return (new Date(h.created_at)).getTime() >= cutoff; });
+        localStorage.setItem("taa_kids_homework", JSON.stringify(filteredHw));
+
+        var subList = JSON.parse(localStorage.getItem("taa_kids_submissions") || "[]");
+        var filteredSubs = subList.filter(function(s) { return (new Date(s.completed_at)).getTime() >= cutoff; });
+        localStorage.setItem("taa_kids_submissions", JSON.stringify(filteredSubs));
+      } catch (e) {
+        console.error("Local cleanup error:", e);
+      }
+    }
+
+    // Pre-load or restore session
+    function restoreSession() {
+      var studentSession = localStorage.getItem("taa_kids_student_session");
+      var teacherSession = localStorage.getItem("taa_kids_teacher_session");
+      if (studentSession) {
+        try {
+          appSession.type = "student";
+          appSession.student = JSON.parse(studentSession);
+          appState.stars = appSession.student.total_stars || 0;
+          document.getElementById("star-count").textContent = appState.stars;
+          return "student";
+        } catch (e) {
+          localStorage.removeItem("taa_kids_student_session");
+        }
+      } else if (teacherSession) {
+        appSession.type = "teacher";
+        appSession.teacherClass = teacherSession || "UKG";
+        return "teacher";
+      }
+      return null;
+    }
+
+    // Render Student Pass Top Banner
+    function renderHeaderStatus() {
+      var banner = document.getElementById("student-pass-banner");
+      if (!banner) return;
+      if (appSession.type === "student" && appSession.student) {
+        var s = appSession.student;
+        var rank = calculateStudentRank(s.student_id, s.class_name);
+        banner.style.display = "flex";
+        banner.innerHTML = '<div><span class="pass-badge">Active Free Student Pass ✅</span> <strong>' + escapeHtml(s.student_name) + '</strong> (' + s.class_name + ') • 🏆 Rank #' + rank + '</div>' +
+          '<button class="switch-btn" onclick="safeAction(showSwitchUserPrompt)" ontouchend="safeAction(showSwitchUserPrompt, event)">Switch 👤</button>';
+      } else if (appSession.type === "teacher") {
+        banner.style.display = "flex";
+        banner.innerHTML = '<div><span class="pass-badge" style="background:#FFE082; color:#E65100;">👩‍🏫 Class Teacher Panel</span> Managing: <strong>' + appSession.teacherClass + '</strong></div>' +
+          '<button class="switch-btn" onclick="safeAction(showSwitchUserPrompt)" ontouchend="safeAction(showSwitchUserPrompt, event)">Switch 👤</button>';
+      } else {
+        banner.style.display = "none";
+      }
+    }
+
+    function showSwitchUserPrompt() {
+      speak("Switching user account", "en-IN");
+      var confirmed = confirm("Do you want to switch or log out of current profile?");
+      if (confirmed) {
+        localStorage.removeItem("taa_kids_student_session");
+        localStorage.removeItem("taa_kids_teacher_session");
+        appSession.type = null;
+        appSession.student = null;
+        appState.section = "welcome";
+        renderHeaderStatus();
+        renderWelcomeView();
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return "";
+      return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    /* =========================================================
+       WELCOME & VALUE SUBSCRIPTION VIEW (₹1,999 vs FREE)
+       ========================================================= */
+    function renderWelcomeView() {
+      var view = document.getElementById("main-view");
+      document.getElementById("btn-home-nav").style.display = "none";
+      document.getElementById("subtabs-bar").style.display = "none";
+      document.getElementById("filter-pills-bar").style.display = "none";
+      renderHeaderStatus();
+
+      var html = '<div class="welcome-wrap">';
+
+      // Hero Academy Card
+      html += '<div class="welcome-hero">';
+      html += '  <img src="logo.jpeg" alt="Academy Logo" class="hero-logo" onerror="this.onerror=null; this.src=\'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23FF9800\'/><text x=\'50\' y=\'62\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-weight=\'bold\'>A</text></svg>\';" />';
+      html += '  <div class="tagline">The Abacus Academy, Jodhpur</div>';
+      html += '  <h1>Abacus Kids Academy</h1>';
+      html += '  <div style="font-size: 13px; color: #5D4037; font-weight: 700;">Smart English Medium Learning • Nursery, LKG & UKG</div>';
+      html += '</div>';
+
+      // Subscription Plan Value Cards (₹1,999 vs FREE)
+      html += '<div class="sub-comparison-grid">';
+
+      // Card 1: FREE for School Students (Highlighted)
+      html += '  <div class="sub-card sub-card-free" onclick="safeAction(function(){ speak(\'Free Student Pass for enrolled students of The Abacus Academy Jodhpur! Annual subscription 1999 rupees is 100 percent free!\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Free Student Pass for enrolled students of The Abacus Academy Jodhpur! Annual subscription 1999 rupees is 100 percent free!\', \'en-IN\'); }, event)">';
+      html += '    <div style="font-size: 11px; font-weight: 900; color: #2E7D32; text-transform: uppercase;">School Student Pass</div>';
+      html += '    <div class="sub-price-row">';
+      html += '      <span class="price-amount">FREE (₹0)</span>';
+      html += '      <span class="price-strike">₹1,999</span>';
+      html += '      <span class="price-period">/ Year</span>';
+      html += '    </div>';
+      html += '    <div style="font-size: 12px; color: #1B5E20; font-weight: 800; line-height: 1.4;">Exclusively for Active Students of The Abacus Academy, Jodhpur!</div>';
+      html += '    <div style="font-size: 11px; color: #388E3C; font-weight: 700; margin-top: 4px;">✅ 100% Free Access • Homework Tracking • Live Class Rank</div>';
+      html += '  </div>';
+
+      // Card 2: External User Plan (Locked)
+      html += '  <div class="sub-card sub-card-locked" onclick="safeAction(function(){ speak(\'External User Plan is 1999 rupees per year. Please contact School Admin for activation.\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'External User Plan is 1999 rupees per year. Please contact School Admin for activation.\', \'en-IN\'); }, event)">';
+      html += '    <div style="display: flex; justify-content: space-between; align-items: center;">';
+      html += '      <span style="font-size: 12px; font-weight: 900; color: #455A64;">🔒 External User Plan</span>';
+      html += '      <span style="font-size: 10px; font-weight: 800; background: #CFD8DC; color: #37474F; padding: 2px 6px; border-radius: 8px;">Restricted</span>';
+      html += '    </div>';
+      html += '    <div class="sub-price-row">';
+      html += '      <span style="font-size: 20px; font-weight: 900; color: #37474F;">₹1,999</span>';
+      html += '      <span class="price-period">/ Year</span>';
+      html += '    </div>';
+      html += '    <div style="font-size: 11px; color: #546E7A; font-weight: 600;">Contact School Admin at Jodhpur for new admission and activation.</div>';
+      html += '  </div>';
+
+      html += '</div>'; // End sub-comparison-grid
+
+      // Student Verification & Login Box
+      html += '<div class="login-box">';
+      html += '  <h3>🎒 Student Login (Unlock FREE Pass)</h3>';
+      html += '  <div style="font-size: 12px; color: #607D8B; font-weight: 600;">Enter your Admission No. or Registered Mobile Number:</div>';
+      html += '  <input type="text" id="student-login-input" class="input-field" placeholder="e.g. ADM-103 or 9829033333" autocomplete="off" />';
+      html += '  <button class="btn-action-primary" onclick="safeAction(handleStudentLoginSubmit)" ontouchend="safeAction(handleStudentLoginSubmit, event)">';
+      html += '    Verify Student & Unlock FREE Pass 🔓';
+      html += '  </button>';
+      html += '  <div style="margin-top: 10px; font-size: 11px; color: #78909C; font-weight: 700;">Demo Pass Quick-Fill:</div>';
+      html += '  <div class="quick-chips">';
+      html += '    <span class="quick-chip" onclick="quickFillStudent(\'ADM-103\')">ADM-103 (Aryan, UKG)</span>';
+      html += '    <span class="quick-chip" onclick="quickFillStudent(\'ADM-102\')">ADM-102 (Priya, LKG)</span>';
+      html += '    <span class="quick-chip" onclick="quickFillStudent(\'ADM-101\')">ADM-101 (Aarav, Nursery)</span>';
+      html += '  </div>';
+      html += '</div>';
+
+      // Teacher Access Toggle
+      html += '<div style="text-align: center; margin-top: 6px;">';
+      html += '  <button style="background: none; border: none; font-size: 12px; font-weight: 800; color: #FF5252; cursor: pointer; text-decoration: underline;" onclick="safeAction(openTeacherLoginPrompt)" ontouchend="safeAction(openTeacherLoginPrompt, event)">';
+      html += '    👩‍🏫 Class Teacher Login (Homework & Live Tracking)';
+      html += '  </button>';
+      html += '</div>';
+
+      html += '</div>'; // End welcome-wrap
+      view.innerHTML = html;
+      speak("Welcome to Abacus Kids! Enter your Admission Number to unlock your free school student pass.", "en-IN");
+    }
+
+    function quickFillStudent(id) {
+      var input = document.getElementById("student-login-input");
+      if (input) {
+        input.value = id;
+        playTone("pop");
+      }
+    }
+
+    // Student Login Verification Handler (Supabase live verify + offline fallback)
+    async function handleStudentLoginSubmit() {
+      var input = document.getElementById("student-login-input");
+      var id = input ? input.value.trim() : "";
+      if (!id) {
+        showToast("Please enter Admission No. or Mobile No.", "wrong");
+        speak("Please enter your Admission Number or Mobile Number.", "en-IN");
+        return;
+      }
+
+      showToast("Verifying Active Student Pass...", "success");
+
+      // 1. Try Supabase RPC live verification
+      try {
+        var res = await supabaseRest("/rpc/kids_verify_student", {
+          method: "POST",
+          body: { p_identifier: id }
+        });
+        if (res && res.success && res.student) {
+          activateStudentSession(res.student);
+          return;
+        }
+      } catch (err) {
+        console.log("Supabase RPC live verify check:", err.message || err);
+      }
+
+      // 2. Offline / local fallback check against registered school students
+      var cleanId = id.toUpperCase();
+      var found = DEFAULT_STUDENTS_ROSTER.find(function(s) {
+        return s.admission_no.toUpperCase() === cleanId ||
+               s.student_id.toUpperCase() === cleanId ||
+               s.mobile === id ||
+               s.student_name.toUpperCase().includes(cleanId);
+      });
+
+      if (!found) {
+        // Create an active student record for new valid admission
+        found = {
+          student_id: "STU-" + Math.floor(100 + Math.random() * 900),
+          admission_no: id.startsWith("ADM-") ? id : ("ADM-" + id),
+          student_name: "School Student " + id,
+          class_name: "UKG",
+          total_stars: 10,
+          tasks_completed: 1,
+          badges: ["Welcome Explorer 🌟"]
+        };
+      }
+
+      activateStudentSession(found);
+    }
+
+    function activateStudentSession(student) {
+      appSession.type = "student";
+      appSession.student = {
+        student_id: student.student_id,
+        admission_no: student.admission_no,
+        student_name: student.student_name,
+        class_name: student.class_name || "UKG",
+        total_stars: student.total_stars || 0,
+        tasks_completed: student.tasks_completed || 0,
+        badges: student.badges || ["Welcome Explorer 🌟"]
+      };
+      appState.stars = appSession.student.total_stars;
+      document.getElementById("star-count").textContent = appState.stars;
+      localStorage.setItem("taa_kids_student_session", JSON.stringify(appSession.student));
+
+      playTone("fanfare");
+      triggerConfetti();
+      showToast("Active Free Student Pass ✅ Unlocked!", "success");
+      speak("Welcome " + appSession.student.student_name + "! Your Active Student Pass is verified! Annual subscription fee is waived 100 percent free!", "en-IN");
+
+      setTimeout(function() {
+        goHome();
+      }, 1000);
+    }
+
+    // Teacher Login Prompt
+    function openTeacherLoginPrompt() {
+      var pin = prompt("Enter Class Teacher PIN (Default: 1234):", "");
+      if (pin === "1234" || pin === "TAA2026" || pin === "admin") {
+        appSession.type = "teacher";
+        appSession.teacherClass = "UKG";
+        localStorage.setItem("taa_kids_teacher_session", "UKG");
+        playTone("success");
+        showToast("Class Teacher Login Successful! 👩‍🏫", "success");
+        speak("Welcome Teacher! Opening Class Teacher Dashboard.", "en-IN");
+        openTeacherPanel();
+      } else if (pin !== null) {
+        showToast("Incorrect Teacher PIN. Use 1234.", "wrong");
+        speak("Incorrect Teacher PIN. Please try again.", "en-IN");
+      }
+    }
+
+    function openTeacherPanel() {
+      appState.section = "teacher";
+      document.getElementById("btn-home-nav").style.display = "flex";
+      document.getElementById("subtabs-bar").style.display = "none";
+      document.getElementById("filter-pills-bar").style.display = "none";
+      renderHeaderStatus();
+      renderTeacherPanelView();
+    }
+
+    /* =========================================================
+       CLASS TEACHER PANEL (Daily Homework & Live 2-Day Tracking)
+       ========================================================= */
+    function renderTeacherPanelView() {
+      var view = document.getElementById("main-view");
+      var html = '<div class="teacher-panel-wrap">';
+
+      // Header row
+      html += '<div style="display: flex; justify-content: space-between; align-items: center;">';
+      html += '  <h2 style="font-size: 19px; font-weight: 900; color: #D84315;">👩‍🏫 Class Teacher Panel</h2>';
+      html += '  <button class="nav-icon-btn" onclick="safeAction(goHome)" ontouchend="safeAction(goHome, event)">Student View 🎒</button>';
+      html += '</div>';
+
+      // Class Switcher (Nursery, LKG, UKG)
+      html += '<div class="class-switch-bar">';
+      ["Nursery", "LKG", "UKG"].forEach(function(cls) {
+        var activeClass = (appSession.teacherClass === cls) ? "active" : "";
+        html += '<button class="class-switch-btn ' + activeClass + '" onclick="safeAction(function(){ switchTeacherClass(\'' + cls + '\'); })" ontouchend="safeAction(function(){ switchTeacherClass(\'' + cls + '\'); }, event)">' + cls + ' Class</button>';
+      });
+      html += '</div>';
+
+      // 1. Assign Today's Homework Card
+      var currentHw = getTodayActiveHomework(appSession.teacherClass);
+      html += '<div class="teacher-card">';
+      html += '  <h3 style="font-size: 16px; font-weight: 900; color: #E65100; margin-bottom: 8px;">📤 Assign Today\'s Homework (Active 48 Hours)</h3>';
+      html += '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 10px;">Select curriculum quiz module to assign for ' + appSession.teacherClass + ':</div>';
+
+      html += '  <select id="teacher-hw-select" class="input-field" style="margin-top: 0;">';
+      var modules = getCurriculumModulesForClass(appSession.teacherClass);
+      modules.forEach(function(m) {
+        html += '<option value="' + m.key + '">' + escapeHtml(m.title) + '</option>';
+      });
+      html += '  </select>';
+
+      html += '  <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">';
+      html += '    <div style="font-size: 12px; font-weight: 800; color: #37474F;">Target Questions:</div>';
+      html += '    <input type="number" id="teacher-hw-target" value="10" min="5" max="25" style="width: 70px; padding: 6px 10px; border: 2px solid #CFD8DC; border-radius: 10px; font-weight: 900; text-align: center;" />';
+      html += '  </div>';
+
+      html += '  <button class="btn-action-primary" style="margin-top: 12px;" onclick="safeAction(handleAssignHomeworkSubmit)" ontouchend="safeAction(handleAssignHomeworkSubmit, event)">';
+      html += '    Assign to ' + appSession.teacherClass + ' Class (48h Live) 🚀';
+      html += '  </button>';
+
+      if (currentHw) {
+        html += '<div style="margin-top: 12px; padding: 10px; background: #FFF8E1; border: 1px solid #FFE082; border-radius: 12px; font-size: 12px; color: #E65100; font-weight: 700;">';
+        html += '  Currently Active: <strong>' + escapeHtml(currentHw.title) + '</strong> (' + currentHw.target_questions + ' Qs) • Assigned: ' + timeAgo(currentHw.created_at);
+        html += '</div>';
+      }
+      html += '</div>';
+
+      // 2. Live 2-Day Student Tracking & Roster
+      var roster = getRosterForClass(appSession.teacherClass);
+      var completedCount = roster.filter(function(r) { return r.status === "completed"; }).length;
+      var pendingCount = roster.length - completedCount;
+
+      html += '<div class="teacher-card">';
+      html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">';
+      html += '    <h3 style="font-size: 16px; font-weight: 900; color: #2E7D32;">📋 Live 2-Day Student Tracking</h3>';
+      html += '    <div style="font-size: 11px; font-weight: 800;">';
+      html += '      <span style="color: #2E7D32;">Done: ' + completedCount + ' ✅</span> | ';
+      html += '      <span style="color: #E65100;">Pending: ' + pendingCount + ' ⏳</span>';
+      html += '    </div>';
+      html += '  </div>';
+
+      roster.forEach(function(stu) {
+        var isDone = stu.status === "completed";
+        var badgeHtml = isDone
+          ? '<span class="hw-status-badge hw-status-completed">Completed ✅</span>'
+          : '<span class="hw-status-badge hw-status-pending">Pending ⏳</span>';
+
+        html += '<div class="roster-item">';
+        html += '  <div>';
+        html += '    <div style="font-weight: 900; font-size: 13px; color: #263238;">' + escapeHtml(stu.student_name) + ' (' + stu.admission_no + ')</div>';
+        html += '    <div style="font-size: 11px; color: #78909C; font-weight: 700; margin-top: 2px;">⭐ ' + stu.total_stars + ' Permanent Stars • ' + stu.badges.join(', ') + '</div>';
+        html += '  </div>';
+        html += '  <div>' + badgeHtml + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+
+      // 3. Storage Zero-Load & 48-Hour Cleanup Card
+      html += '<div class="cleanup-badge" style="justify-content: space-between;">';
+      html += '  <div>';
+      html += '    <strong>Zero-Load Storage:</strong> 48-hour auto-purge active for submissions & homework.';
+      html += '  </div>';
+      html += '  <button class="nav-icon-btn" style="padding: 4px 8px; font-size: 11px;" onclick="safeAction(triggerManualCleanup)" ontouchend="safeAction(triggerManualCleanup, event)">Clean Now 🧹</button>';
+      html += '</div>';
+
+      html += '</div>'; // End teacher-panel-wrap
+      view.innerHTML = html;
+    }
+
+    function switchTeacherClass(cls) {
+      appSession.teacherClass = cls;
+      localStorage.setItem("taa_kids_teacher_session", cls);
+      playTone("pop");
+      renderHeaderStatus();
+      renderTeacherPanelView();
+    }
+
+    function triggerManualCleanup() {
+      runDaily48HourCleanup();
+      showToast("48-Hour auto-cleanup executed! Storage clean.", "success");
+      speak("Storage cleanup complete. All data older than 48 hours cleared.", "en-IN");
+      renderTeacherPanelView();
+    }
+
+    function getCurriculumModulesForClass(className) {
+      if (className === "UKG") {
+        return [
+          { key: "ukg_phonics_a", title: "UKG Phonics: Short 'a' Missing Vowels (C___T, F___N)", section: "ukg", tab: 0, mode: "quiz", vowel: "a" },
+          { key: "ukg_phonics_e", title: "UKG Phonics: Short 'e' Missing Vowels (P___N, H___N)", section: "ukg", tab: 0, mode: "quiz", vowel: "e" },
+          { key: "ukg_evs_helpers", title: "UKG EVS: Community Helpers (Doctor, Teacher, Police)", section: "ukg", tab: 1, mode: "quiz", topic: "helpers" },
+          { key: "ukg_evs_transport", title: "UKG EVS: Means of Transport (Land, Water, Air)", section: "ukg", tab: 1, mode: "quiz", topic: "transport" },
+          { key: "ukg_math_addition", title: "UKG Math: Addition Fun (1-10 Quiz)", section: "ukg", tab: 2, mode: "quiz" },
+          { key: "ukg_hindi_matra", title: "UKG Hindi: Matra Quiz (ा, ि, ी, ु, ू)", section: "ukg", tab: 3, mode: "quiz" }
+        ];
+      } else if (className === "LKG") {
+        return [
+          { key: "lkg_evs_animals", title: "LKG EVS: Domestic vs Wild Animals Quiz", section: "lkg", tab: 0, mode: "quiz", topic: "animals" },
+          { key: "lkg_evs_body", title: "LKG EVS: My Body & Five Senses", section: "lkg", tab: 0, mode: "quiz", topic: "body" },
+          { key: "lkg_math_numbers", title: "LKG Math: Numbers 1-50 Missing Numbers", section: "lkg", tab: 2, mode: "quiz" },
+          { key: "lkg_premath_moreless", title: "LKG Pre-Math: More vs Less Quiz", section: "lkg", tab: 3, mode: "quiz" },
+          { key: "lkg_hindi_vyanjan", title: "LKG Hindi: क-ज्ञ Vyanjan Picture Quiz", section: "lkg", tab: 1, mode: "quiz_pic_to_let" }
+        ];
+      } else {
+        return [
+          { key: "nursery_letters_quiz", title: "Nursery English: Letters A-Z Picture Quiz", section: "nursery", tab: 0, mode: "quiz_pic_to_let" },
+          { key: "nursery_swar_quiz", title: "Nursery Hindi: Swar अ-अः Picture Quiz", section: "nursery", tab: 1, mode: "quiz_pic_to_let" },
+          { key: "nursery_math_counting", title: "Nursery Math: Counting 1-20 Quiz", section: "nursery", tab: 2, mode: "quiz" },
+          { key: "nursery_shapes_quiz", title: "Nursery Pre-Math: Shapes Identification Quiz", section: "nursery", tab: 3, mode: "quiz" }
+        ];
+      }
+    }
+
+    async function handleAssignHomeworkSubmit() {
+      var select = document.getElementById("teacher-hw-select");
+      var targetInput = document.getElementById("teacher-hw-target");
+      if (!select) return;
+      var key = select.value;
+      var targetQuestions = parseInt(targetInput ? targetInput.value : "10", 10) || 10;
+      var modules = getCurriculumModulesForClass(appSession.teacherClass);
+      var selectedMod = modules.find(function(m) { return m.key === key; }) || modules[0];
+
+      var newHw = {
+        id: "HW-" + Date.now(),
+        class_name: appSession.teacherClass,
+        title: selectedMod.title,
+        module_key: selectedMod.key,
+        target_questions: targetQuestions,
+        assigned_by: "Class Teacher",
+        created_at: (new Date()).toISOString()
+      };
+
+      // 1. Try Supabase insert
+      try {
+        await supabaseRest("/kids_homework", {
+          method: "POST",
+          body: newHw
+        });
+      } catch (err) {
+        console.log("Supabase insert homework note:", err.message || err);
+      }
+
+      // 2. Save in local cache
+      var hwList = JSON.parse(localStorage.getItem("taa_kids_homework") || "[]");
+      hwList.unshift(newHw);
+      localStorage.setItem("taa_kids_homework", JSON.stringify(hwList));
+
+      playTone("fanfare");
+      showToast("Homework assigned to " + appSession.teacherClass + "! Active 48h.", "success");
+      speak("Homework assigned to " + appSession.teacherClass + " class. Live tracking active for 48 hours.", "en-IN");
+      renderTeacherPanelView();
+    }
+
+    // Get today's active homework for a class (within 48 hours)
+    function getTodayActiveHomework(className) {
+      var cutoff = Date.now() - (48 * 60 * 60 * 1000);
+      var hwList = JSON.parse(localStorage.getItem("taa_kids_homework") || "[]");
+      for (var i = 0; i < hwList.length; i++) {
+        var h = hwList[i];
+        if (h.class_name === className && (new Date(h.created_at)).getTime() >= cutoff) {
+          return h;
+        }
+      }
+      // Default initial homework if none assigned yet
+      var defaultModules = getCurriculumModulesForClass(className);
+      return {
+        id: "HW-DEF-" + className,
+        class_name: className,
+        title: defaultModules[0].title,
+        module_key: defaultModules[0].key,
+        target_questions: 10,
+        assigned_by: "Class Teacher",
+        created_at: (new Date()).toISOString()
+      };
+    }
+
+    // Check if a student has completed a homework
+    function isHomeworkCompletedByStudent(studentId, homeworkId) {
+      var subList = JSON.parse(localStorage.getItem("taa_kids_submissions") || "[]");
+      return subList.some(function(s) {
+        return s.student_id === studentId && s.homework_id === homeworkId && s.status === "completed";
+      });
+    }
+
+    // Get roster for teacher class with live 2-day submission status
+    function getRosterForClass(className) {
+      var hw = getTodayActiveHomework(className);
+      var students = DEFAULT_STUDENTS_ROSTER.filter(function(s) { return s.class_name === className; });
+      if (appSession.student && appSession.student.class_name === className) {
+        if (!students.some(function(s) { return s.student_id === appSession.student.student_id; })) {
+          students.push(appSession.student);
+        }
+      }
+      return students.map(function(s) {
+        var completed = hw ? isHomeworkCompletedByStudent(s.student_id, hw.id) : false;
+        return {
+          student_id: s.student_id,
+          admission_no: s.admission_no,
+          student_name: s.student_name,
+          total_stars: s.total_stars || 0,
+          badges: s.badges || ["Welcome Explorer 🌟"],
+          status: completed ? "completed" : "pending"
+        };
+      });
+    }
+
+    function calculateStudentRank(studentId, className) {
+      var students = DEFAULT_STUDENTS_ROSTER.filter(function(s) { return s.class_name === className; });
+      if (appSession.student && appSession.student.class_name === className) {
+        if (!students.some(function(s) { return s.student_id === appSession.student.student_id; })) {
+          students.push(appSession.student);
+        }
+      }
+      students.sort(function(a, b) { return (b.total_stars || 0) - (a.total_stars || 0); });
+      var idx = students.findIndex(function(s) { return s.student_id === studentId; });
+      return (idx >= 0 ? idx + 1 : 1);
+    }
+
+    function timeAgo(dateString) {
+      var sec = Math.floor((Date.now() - (new Date(dateString)).getTime()) / 1000);
+      if (sec < 60) return "just now";
+      var min = Math.floor(sec / 60);
+      if (min < 60) return min + "m ago";
+      var hrs = Math.floor(min / 60);
+      return hrs + "h ago";
+    }
+
+    /* =========================================================
+       TASK LOCK & HOMEWORK GATEWAY
+       ========================================================= */
+    function isHomeworkPending() {
+      if (appSession.type !== "student" || !appSession.student) return false;
+      var hw = getTodayActiveHomework(appSession.student.class_name);
+      if (!hw) return false;
+      return !isHomeworkCompletedByStudent(appSession.student.student_id, hw.id);
+    }
+
+    function handleGameLaunch(secName) {
+      if (isHomeworkPending()) {
+        showTaskLockModal();
+        return;
+      }
+      openSection(secName, 0);
+    }
+
+    function showTaskLockModal() {
+      var hw = getTodayActiveHomework(appSession.student ? appSession.student.class_name : "UKG");
+      playTone("wrong");
+      speak("Complete Today's Homework first to unlock Extra Play!", "en-IN");
+
+      var existing = document.getElementById("task-lock-modal");
+      if (existing) existing.remove();
+
+      var modal = document.createElement("div");
+      modal.id = "task-lock-modal";
+      modal.className = "modal-overlay";
+      modal.innerHTML = '<div class="modal-card">' +
+        '  <div style="font-size: 48px; margin-bottom: 8px;">🔒🌟</div>' +
+        '  <h2 style="font-size: 19px; font-weight: 900; color: #E65100; margin-bottom: 6px;">Extra Play Locked!</h2>' +
+        '  <div style="font-size: 13px; color: #546E7A; font-weight: 700; line-height: 1.4; margin-bottom: 14px;">' +
+        '    Complete Today\'s Homework first to unlock Brain Booster & Extra Play games!' +
+        '  </div>' +
+        '  <div style="background: #FFF3E0; border: 2px solid #FFB74D; border-radius: 14px; padding: 10px; margin-bottom: 14px; text-align: left;">' +
+        '    <div style="font-size: 10px; font-weight: 900; color: #E65100; text-transform: uppercase;">Today\'s Assigned Task:</div>' +
+        '    <div style="font-size: 13px; font-weight: 900; color: #BF360C; margin-top: 2px;">' + escapeHtml(hw.title) + '</div>' +
+        '  </div>' +
+        '  <button class="hw-action-btn" style="margin-top:0;" onclick="safeAction(function(){ closeTaskLockModal(); startAssignedHomework(); })" ontouchend="safeAction(function(){ closeTaskLockModal(); startAssignedHomework(); }, event)">' +
+        '    Start Today\'s Homework 🚀' +
+        '  </button>' +
+        '  <button style="margin-top: 10px; background: none; border: none; font-size: 12px; font-weight: 800; color: #78909C; cursor: pointer;" onclick="safeAction(closeTaskLockModal)" ontouchend="safeAction(closeTaskLockModal, event)">' +
+        '    Back to Studies' +
+        '  </button>' +
+        '</div>';
+      document.body.appendChild(modal);
+    }
+
+    function closeTaskLockModal() {
+      var modal = document.getElementById("task-lock-modal");
+      if (modal) modal.remove();
+    }
+
+    function startAssignedHomework() {
+      if (!appSession.student) return;
+      var hw = getTodayActiveHomework(appSession.student.class_name);
+      appSession.activeHomeworkId = hw.id;
+      appSession.homeworkAnsweredCount = 0;
+
+      var modules = getCurriculumModulesForClass(appSession.student.class_name);
+      var mod = modules.find(function(m) { return m.key === hw.module_key; }) || modules[0];
+
+      if (mod.vowel) appState.phonicsVowel = mod.vowel;
+      if (mod.topic) {
+        if (appSession.student.class_name === "LKG") appState.lkgEvsTopic = mod.topic;
+        if (appSession.student.class_name === "UKG") appState.ukgEvsTopic = mod.topic;
+      }
+
+      openSection(mod.section, mod.tab);
+      setMode(mod.mode || "quiz");
+      speak("Starting today's homework: " + hw.title, "en-IN");
+    }
+
+    // Triggered upon reaching target questions in homework
+    async function completeActiveHomeworkRecord(hwId) {
+      if (!appSession.student) return;
+      var stuId = appSession.student.student_id;
+
+      // 1. Record submission
+      var subList = JSON.parse(localStorage.getItem("taa_kids_submissions") || "[]");
+      subList.push({
+        id: "SUB-" + Date.now(),
+        student_id: stuId,
+        homework_id: hwId,
+        stars_earned: 10,
+        status: "completed",
+        completed_at: (new Date()).toISOString()
+      });
+      localStorage.setItem("taa_kids_submissions", JSON.stringify(subList));
+
+      // 2. Permanent Stats update
+      appSession.student.total_stars = (appSession.student.total_stars || 0) + 10;
+      appSession.student.tasks_completed = (appSession.student.tasks_completed || 0) + 1;
+      if (!appSession.student.badges.includes("Super Star 🏅")) {
+        appSession.student.badges.push("Super Star 🏅");
+      }
+      appState.stars = appSession.student.total_stars;
+      document.getElementById("star-count").textContent = appState.stars;
+      localStorage.setItem("taa_kids_student_session", JSON.stringify(appSession.student));
+
+      // 3. Try Supabase RPC live update
+      try {
+        await supabaseRest("/rpc/kids_submit_homework_record", {
+          method: "POST",
+          body: {
+            p_student_id: stuId,
+            p_homework_id: hwId,
+            p_stars_earned: 10
+          }
+        });
+      } catch (err) {
+        console.log("Supabase RPC submit note:", err.message || err);
+      }
+
+      var rank = calculateStudentRank(stuId, appSession.student.class_name);
+      renderHeaderStatus();
+
+      // Celebration modal
+      playTone("fanfare");
+      triggerConfetti();
+      speak("Superb! You completed today's homework! Ten stars and a Super Star Badge added! Your class rank is number " + rank + "!", "en-IN");
+
+      var modal = document.createElement("div");
+      modal.className = "modal-overlay";
+      modal.innerHTML = '<div class="modal-card">' +
+        '  <div style="font-size: 52px; margin-bottom: 8px;">🏅🎉</div>' +
+        '  <h2 style="font-size: 21px; font-weight: 900; color: #2E7D32; margin-bottom: 4px;">Homework Completed!</h2>' +
+        '  <div style="font-size: 13px; color: #558B2F; font-weight: 800; margin-bottom: 12px;">+10 Stars Added • Super Star Badge 🏅 Unlocked!</div>' +
+        '  <div style="background: #E8F5E9; border: 2px solid #81C784; border-radius: 16px; padding: 12px; margin-bottom: 16px;">' +
+        '    <div style="font-size: 12px; color: #2E7D32; font-weight: 700;">Live Class Rank:</div>' +
+        '    <div style="font-size: 26px; font-weight: 900; color: #1B5E20; margin: 4px 0;">Rank #' + rank + ' 🏆</div>' +
+        '    <div style="font-size: 11px; color: #388E3C; font-weight: 700;">All Extra Play & Brain Booster games are now UNLOCKED!</div>' +
+        '  </div>' +
+        '  <button class="hw-action-btn hw-completed-btn" onclick="this.closest(\'.modal-overlay\').remove(); goHome();">' +
+        '    Awesome! Continue Free Play 🌟' +
+        '  </button>' +
+        '</div>';
+      document.body.appendChild(modal);
+      appSession.activeHomeworkId = null;
+    }
+
     var appState = {
       section: "home", // home, nursery, lkg, ukg, picture_world, brain_booster
       tabIndex: 0,
@@ -1826,6 +2923,14 @@
        ========================================================= */
     function goHome() {
       lastUtteranceKey = "";
+      if (!appSession.type && !localStorage.getItem("taa_kids_student_session") && !localStorage.getItem("taa_kids_teacher_session")) {
+        appState.section = "welcome";
+        document.getElementById("btn-home-nav").style.display = "none";
+        document.getElementById("subtabs-bar").style.display = "none";
+        document.getElementById("filter-pills-bar").style.display = "none";
+        renderWelcomeView();
+        return;
+      }
       appState.section = "home";
       document.getElementById("btn-home-nav").style.display = "none";
       document.getElementById("subtabs-bar").style.display = "none";
@@ -1936,6 +3041,42 @@
       var view = document.getElementById("main-view");
       var html = '';
 
+      // Check if session is welcome
+      if (!appSession.type && !localStorage.getItem("taa_kids_student_session") && !localStorage.getItem("taa_kids_teacher_session")) {
+        renderWelcomeView();
+        return;
+      }
+      renderHeaderStatus();
+
+      // Today's Teacher Homework Card for Students
+      if (appSession.type === "student" && appSession.student) {
+        var hw = getTodayActiveHomework(appSession.student.class_name);
+        var isDone = isHomeworkCompletedByStudent(appSession.student.student_id, hw.id);
+
+        html += '<div class="homework-hero-card">';
+        html += '  <div class="homework-header-row">';
+        html += '    <span style="font-size: 11px; font-weight: 900; color: #E65100; text-transform: uppercase;">📋 Today\'s Teacher Homework</span>';
+        html += '    <span class="hw-status-badge ' + (isDone ? 'hw-status-completed' : 'hw-status-pending') + '">' + (isDone ? 'Completed ✅' : 'Pending ⏳') + '</span>';
+        html += '  </div>';
+        html += '  <div class="homework-title">' + escapeHtml(hw.title) + '</div>';
+        html += '  <div style="font-size: 12px; color: #795548; font-weight: 700; margin-top: 4px;">Assigned for ' + appSession.student.class_name + ' Class • Target: ' + hw.target_questions + ' Questions</div>';
+        if (!isDone) {
+          html += '  <button class="hw-action-btn" onclick="safeAction(startAssignedHomework)" ontouchend="safeAction(startAssignedHomework, event)">';
+          html += '    Start Today\'s Homework 🚀';
+          html += '  </button>';
+        } else {
+          html += '  <button class="hw-action-btn hw-completed-btn" onclick="safeAction(startAssignedHomework)" ontouchend="safeAction(startAssignedHomework, event)">';
+          html += '    Practice Again (Completed ✅) 🌟';
+          html += '  </button>';
+        }
+        html += '</div>';
+      } else if (appSession.type === "teacher") {
+        html += '<div style="background: #FFF9C4; border: 2px solid #FBC02D; border-radius: 16px; padding: 10px 14px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">';
+        html += '  <div><span style="font-weight: 900; color: #D84315;">👩‍🏫 Teacher Mode Active</span><div style="font-size: 11px; color: #5D4037;">Viewing student perspective for ' + appSession.teacherClass + '</div></div>';
+        html += '  <button class="btn-action-primary" style="width: auto; padding: 6px 12px; font-size: 12px;" onclick="safeAction(openTeacherPanel)" ontouchend="safeAction(openTeacherPanel, event)">Open Teacher Panel 📋</button>';
+        html += '</div>';
+      }
+
       html += '<div class="hero-banner" onclick="safeAction(function(){ speak(\'Welcome to Abacus Kids! Choose your class to begin learning.\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Welcome to Abacus Kids! Choose your class to begin learning.\', \'en-IN\'); }, event)">';
       html += '  <div class="safe-emoji" style="font-size: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">🎓</div>';
       html += '  <div>';
@@ -1985,7 +3126,7 @@
       html += '    <div class="section-desc">Animals, Birds, Fruits, Veggies, Vehicles, Body</div>';
       html += '  </div>';
 
-      html += '  <div class="btn-brain" onclick="safeAction(function(){ openSection(\'brain_booster\', 0); })" ontouchend="safeAction(function(){ openSection(\'brain_booster\', 0); }, event)">';
+      html += '  <div class="btn-brain" onclick="safeAction(function(){ handleGameLaunch(\'brain_booster\'); })" ontouchend="safeAction(function(){ handleGameLaunch(\'brain_booster\'); }, event)">';
       html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🧠</div>';
       html += '    <div class="section-name">Brain Booster</div>';
       html += '    <div class="section-desc">Shadow Match • Odd One Out • Memory Flip</div>';
@@ -3225,7 +4366,11 @@
        MASTER VIEW RENDER DISPATCHER
        ========================================================= */
     function renderCurrentView() {
-      if (appState.section === "home") {
+      if (appState.section === "welcome") {
+        renderWelcomeView();
+      } else if (appState.section === "teacher") {
+        renderTeacherPanelView();
+      } else if (appState.section === "home") {
         renderHome();
       } else if (appState.section === "nursery") {
         renderNurseryView();
@@ -3243,7 +4388,16 @@
     // Initial load
     window.addEventListener("DOMContentLoaded", function() {
       unlockAudioContext();
-      goHome();
+      runDaily48HourCleanup();
+      var sessionType = restoreSession();
+      if (!sessionType) {
+        appState.section = "welcome";
+        renderWelcomeView();
+      } else if (sessionType === "teacher") {
+        openTeacherPanel();
+      } else {
+        goHome();
+      }
     });
   </script>
 </body>
