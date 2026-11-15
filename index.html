@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Abacus Kids - The Abacus Academy, Jodhpur</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+Devanagari:wght@500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
+    body {
+      margin: 0;
+      font-family: 'Fredoka', 'Noto Sans Devanagari', sans-serif;
+      background-color: #FFFDF7;
+      color: #2D3436;
+      overflow-x: hidden;
+    }
+    @keyframes bounceSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+    @keyframes popIn { 0% { transform: scale(0.75); opacity: 0; } 70% { transform: scale(1.06); } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+    .anim-float { animation: bounceSlow 2.6s ease-in-out infinite; }
+    .anim-pop { animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    .anim-shake { animation: shake 0.35s ease-in-out; }
+    .btn-3d { transition: all 0.12s ease; }
+    .btn-3d:active { transform: translateY(4px); border-bottom-width: 2px !important; }
+  </style>
+</head>
+<body>
+  <div id="app" class="max-w-lg mx-auto min-h-screen flex flex-col"></div>
+
+  <script>
+    // --- AUDIO & SPEECH ENGINE ---
+    function speak(text, lang = 'en-IN') {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = lang;
+      u.rate = 0.85;
+      u.pitch = 1.15;
+      window.speechSynthesis.speak(u);
+    }
+
+    function playTone(type) {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        const now = ctx.currentTime;
+        if (type === 'pop') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.exponentialRampToValueAtTime(720, now + 0.09);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.09);
+          osc.start(now); osc.stop(now + 0.09);
+        } else if (type === 'success') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.setValueAtTime(659.25, now + 0.1);
+          osc.frequency.setValueAtTime(783.99, now + 0.2);
+          osc.frequency.setValueAtTime(1046.5, now + 0.3);
+          gain.gain.setValueAtTime(0.24, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+          osc.start(now); osc.stop(now + 0.5);
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.linearRampToValueAtTime(160, now + 0.25);
+          gain.gain.setValueAtTime(0.14, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+          osc.start(now); osc.stop(now + 0.25);
+        }
+      } catch (e) {}
+    }
+
+    // --- CURRICULUM DATA ---
+    const NURSERY_ALPHA = [
+      { type: 'eng', prompt: 'A for Apple', speak: 'A for Apple', emoji: '🍎', ans: 'A', opts: ['A', 'B', 'C'] },
+      { type: 'eng', prompt: 'B for Ball', speak: 'B for Ball', emoji: '⚽', ans: 'B', opts: ['D', 'B', 'P'] },
+      { type: 'eng', prompt: 'C for Cat', speak: 'C for Cat', emoji: '🐱', ans: 'C', opts: ['G', 'O', 'C'] },
+      { type: 'eng', prompt: 'E for Elephant', speak: 'E for Elephant', emoji: '🐘', ans: 'E', opts: ['E', 'F', 'H'] },
+      { type: 'eng', prompt: 'L for Lion', speak: 'L for Lion', emoji: '🦁', ans: 'L', opts: ['I', 'L', 'T'] },
+      { type: 'eng', prompt: 'S for Sun', speak: 'S for Sun', emoji: '☀️', ans: 'S', opts: ['Z', 'C', 'S'] },
+      { type: 'hin', prompt: 'अ से अनार', speak: 'अ से अनार', emoji: '🍎', ans: 'अ', opts: ['अ', 'आ', 'इ'], lang: 'hi-IN' },
+      { type: 'hin', prompt: 'आ से आम', speak: 'आ से आम', emoji: '🥭', ans: 'आ', opts: ['उ', 'आ', 'ए'], lang: 'hi-IN' },
+      { type: 'hin', prompt: 'इ से इमली', speak: 'इ से इमली', emoji: '🌿', ans: 'इ', opts: ['इ', 'ई', 'ऊ'], lang: 'hi-IN' },
+      { type: 'hin', prompt: 'उ से उल्लू', speak: 'उ से उल्लू', emoji: '🦉', ans: 'उ', opts: ['अ', 'ओ', 'उ'], lang: 'hi-IN' },
+      { type: 'hin', prompt: 'ए से एड़ी', speak: 'ए से एड़ी', emoji: '🦶', ans: 'ए', opts: ['ए', 'ऐ', 'अं'], lang: 'hi-IN' },
+      { type: 'hin', prompt: 'ओ से ओखली', speak: 'ओ से ओखली', emoji: '🥣', ans: 'ओ', opts: ['औ', 'ओ', 'आ'], lang: 'hi-IN' },
+    ];
+
+    const NURSERY_SOUND_PIC = [
+      { ask: 'Tap on B for Ball', speak: 'Tap on B for Ball', ans: '⚽', opts: [{ e: '🍎', n: 'Apple' }, { e: '⚽', n: 'Ball' }, { e: '🐱', n: 'Cat' }] },
+      { ask: 'क से कबूतर पर टैप करें', speak: 'क से कबूतर पर टैप करें', lang: 'hi-IN', ans: '🕊️', opts: [{ e: '🕊️', n: 'कबूतर' }, { e: '🐇', n: 'खरगोश' }, { e: '🐟', n: 'मछली' }] },
+      { ask: 'Tap on F for Fish', speak: 'Tap on F for Fish', ans: '🐟', opts: [{ e: '🦁', n: 'Lion' }, { e: '🐟', n: 'Fish' }, { e: '🍌', n: 'Banana' }] },
+      { ask: 'म से मछली पर टैप करें', speak: 'म से मछली पर टैप करें', lang: 'hi-IN', ans: '🐟', opts: [{ e: '🐘', n: 'हाथी' }, { e: '🦚', n: 'मोर' }, { e: '🐟', n: 'मछली' }] },
+      { ask: 'Tap on M for Monkey', speak: 'Tap on M for Monkey', ans: '🐒', opts: [{ e: '🐒', n: 'Monkey' }, { e: '🐘', n: 'Elephant' }, { e: '🦆', n: 'Duck' }] },
+    ];
+
+    const NURSERY_BAB = [
+      { kind: 'After', seq: ['A', 'B', '?'], ans: 'C', opts: ['C', 'D', 'E'] },
+      { kind: 'Before', seq: ['?', 'E', 'F'], ans: 'D', opts: ['C', 'D', 'G'] },
+      { kind: 'Between', seq: ['G', '?', 'I'], ans: 'H', opts: ['H', 'J', 'K'] },
+      { kind: 'बाद में (After)', seq: ['अ', 'आ', '?'], ans: 'इ', opts: ['इ', 'उ', 'ए'], lang: 'hi-IN' },
+      { kind: 'बीच में (Between)', seq: ['इ', '?', 'उ'], ans: 'ई', opts: ['अ', 'ई', 'ऊ'], lang: 'hi-IN' },
+      { kind: 'After Number', seq: ['7', '8', '?'], ans: '9', opts: ['6', '9', '10'] },
+      { kind: 'Between Number', seq: ['14', '?', '16'], ans: '15', opts: ['13', '15', '17'] },
+    ];
+
+    const SHAPES_COLORS = [
+      { name: 'Circle (गोला)', speak: 'Circle. गोला', shape: 'rounded-full', bg: '#FF7675', opts: ['Circle', 'Square', 'Triangle'] },
+      { name: 'Square (चौकोर)', speak: 'Square. चौकोर', shape: 'rounded-2xl', bg: '#74B9FF', opts: ['Circle', 'Square', 'Star'] },
+      { name: 'Yellow Star (पीला तारा)', speak: 'Yellow Star. पीला तारा', emoji: '⭐', bg: '#FFF3CD', opts: ['Red Heart', 'Yellow Star', 'Green Leaf'] },
+      { name: 'Green Leaf (हरी पत्ती)', speak: 'Green Leaf. हरी पत्ती', emoji: '🍃', bg: '#D4EDDA', opts: ['Blue Water', 'Green Leaf', 'Pink Flower'] },
+    ];
+
+    const NUMBER_WORDS_1_100 = {
+      1:'One',2:'Two',3:'Three',4:'Four',5:'Five',6:'Six',7:'Seven',8:'Eight',9:'Nine',10:'Ten',
+      11:'Eleven',12:'Twelve',13:'Thirteen',14:'Fourteen',15:'Fifteen',16:'Sixteen',17:'Seventeen',18:'Eighteen',19:'Nineteen',20:'Twenty',
+      24:'Twenty-Four',28:'Twenty-Eight',30:'Thirty',35:'Thirty-Five',40:'Forty',42:'Forty-Two',50:'Fifty',
+      56:'Fifty-Six',60:'Sixty',67:'Sixty-Seven',70:'Seventy',75:'Seventy-Five',80:'Eighty',88:'Eighty-Eight',90:'Ninety',99:'Ninety-Nine',100:'One Hundred'
+    };
+
+    const LKG_WORDS = [
+      { lang: 'hi-IN', emoji: '🪷', word: 'कमल', letters: ['क', 'म', 'ल'], pool: ['ल', 'क', 'र', 'म'] },
+      { lang: 'hi-IN', emoji: '🏠', word: 'घर', letters: ['घ', 'र'], pool: ['र', 'न', 'घ', 'ल'] },
+      { lang: 'hi-IN', emoji: '🚌', word: 'बस', letters: ['ब', 'स'], pool: ['स', 'क', 'ब', 'म'] },
+      { lang: 'hi-IN', emoji: '🍉', word: 'फल', letters: ['फ', 'ल'], pool: ['ल', 'फ', 'ज', 'न'] },
+      { lang: 'en-IN', emoji: '🐱', word: 'CAT', letters: ['C', 'A', 'T'], pool: ['T', 'C', 'O', 'A'] },
+      { lang: 'en-IN', emoji: '🐶', word: 'DOG', letters: ['D', 'O', 'G'], pool: ['G', 'D', 'A', 'O'] },
+      { lang: 'en-IN', emoji: '☀️', word: 'SUN', letters: ['S', 'U', 'N'], pool: ['N', 'S', 'I', 'U'] },
+      { lang: 'en-IN', emoji: '🚌', word: 'BUS', letters: ['B', 'U', 'S'], pool: ['S', 'B', 'E', 'U'] },
+    ];
+
+    const VYANJAN_LIST = ['क','ख','ग','घ','ङ','च','छ','ज','झ','ञ','ट','ठ','ड','ढ','ण','त','थ','द','ध','न','प','फ','ब','भ','म','य','र','ल','व','श','ष','स','ह','क्ष','त्र','ज्ञ'];
+
+    const UKG_CVC = [
+      { emoji: '🐱', word: 'CAT', pre: 'C', post: 'T', ans: 'A', opts: ['A', 'E', 'I', 'O', 'U'] },
+      { emoji: '🖊️', word: 'PEN', pre: 'P', post: 'N', ans: 'E', opts: ['A', 'E', 'I', 'O', 'U'] },
+      { emoji: '🐷', word: 'PIG', pre: 'P', post: 'G', ans: 'I', opts: ['A', 'E', 'I', 'O', 'U'] },
+      { emoji: '🐶', word: 'DOG', pre: 'D', post: 'G', ans: 'O', opts: ['A', 'E', 'I', 'O', 'U'] },
+      { emoji: '☀️', word: 'SUN', pre: 'S', post: 'N', ans: 'U', opts: ['A', 'E', 'I', 'O', 'U'] },
+      { emoji: '🐟', word: 'FISH', pre: 'F', post: 'SH', ans: 'I', opts: ['A', 'E', 'I', 'O', 'U'] },
+      { emoji: '🦆', word: 'DUCK', pre: 'D', post: 'CK', ans: 'U', opts: ['A', 'E', 'I', 'O', 'U'] },
+      { emoji: '🎂', word: 'CAKE', pre: 'C', post: 'KE', ans: 'A', opts: ['A', 'E', 'I', 'O', 'U'] },
+    ];
+
+    const UKG_MATRA = [
+      { emoji: '🚗', word: 'कार', pre: 'क', post: 'र', ans: 'ा', opts: ['ा', 'ि', 'ी', 'ु', 'े'] },
+      { emoji: '📖', word: 'किताब', pre: 'क', post: 'ताब', ans: 'ि', opts: ['ा', 'ि', 'ी', 'ो', 'ै'] },
+      { emoji: '🐟', word: 'मछली', pre: 'मछल', post: '', ans: 'ी', opts: ['ि', 'ी', 'ु', 'े', 'ौ'] },
+      { emoji: '🌹', word: 'गुलाब', pre: 'ग', post: 'लाब', ans: 'ु', opts: ['ा', 'ि', 'ु', 'ू', 'ो'] },
+      { emoji: '🍌', word: 'केला', pre: 'क', post: 'ला', ans: 'े', opts: ['ा', 'ी', 'ु', 'े', 'ै'] },
+      { emoji: '🦚', word: 'मोर', pre: 'म', post: 'र', ans: 'ो', opts: ['ि', 'ु', 'े', 'ो', 'ौ'] },
+    ];
+
+    const PICTURE_WORLD = {
+      Animals: [
+        { e: '🦁', en: 'Lion', hi: 'शेर' }, { e: '🐘', en: 'Elephant', hi: 'हाथी' },
+        { e: '🐯', en: 'Tiger', hi: 'बाघ' }, { e: '🐒', en: 'Monkey', hi: 'बंदर' },
+        { e: '🐄', en: 'Cow', hi: 'गाय' }, { e: '🐕', en: 'Dog', hi: 'कुत्ता' }
+      ],
+      Birds: [
+        { e: '🦚', en: 'Peacock', hi: 'मोर' }, { e: '🦜', en: 'Parrot', hi: 'तोता' },
+        { e: '🦉', en: 'Owl', hi: 'उल्लू' }, { e: '🦆', en: 'Duck', hi: 'बत्तख' },
+        { e: '🕊️', en: 'Pigeon', hi: 'कबूतर' }, { e: '🦅', en: 'Eagle', hi: 'बाज़' }
+      ],
+      Fruits: [
+        { e: '🍎', en: 'Apple', hi: 'सेब' }, { e: '🥭', en: 'Mango', hi: 'आम' },
+        { e: '🍌', en: 'Banana', hi: 'केला' }, { e: '🍇', en: 'Grapes', hi: 'अंगूर' },
+        { e: '🍊', en: 'Orange', hi: 'संतरा' }, { e: '🍉', en: 'Watermelon', hi: 'तरबूज' }
+      ],
+      Vehicles: [
+        { e: '🚗', en: 'Car', hi: 'कार' }, { e: '🚌', en: 'Bus', hi: 'बस' },
+        { e: '🚂', en: 'Train', hi: 'रेलगाड़ी' }, { e: '✈️', en: 'Aeroplane', hi: 'हवाई जहाज' },
+        { e: '🚲', en: 'Bicycle', hi: 'साइकिल' }, { e: '🚢', en: 'Ship', hi: 'जहाज' }
+      ]
+    };
+
+    const SHADOW_DATA = [
+      { target: '🐘', name: 'Elephant', opts: ['🦁', '🐘', '🦒'] },
+      { target: '🍎', name: 'Apple', opts: ['🍌', '🍇', '🍎'] },
+      { target: '✈️', name: 'Aeroplane', opts: ['✈️', '🚗', '🚢'] },
+      { target: '🦚', name: 'Peacock', opts: ['🦉', '🦆', '🦚'] },
+    ];
+
+    const ODD_DATA = [
+      { items: ['🍎', '🍌', '🥭', '🚗'], ans: '🚗', hint: 'Car is a Vehicle, others are Fruits!' },
+      { items: ['🦁', '🐯', '🐘', '🦜'], ans: '🦜', hint: 'Parrot is a Bird, others are Animals!' },
+      { items: ['अ', 'आ', 'इ', 'क'], ans: 'क', hint: 'क व्यंजन है, बाकी स्वर हैं!' },
+      { items: ['2', '4', '6', 'A'], ans: 'A', hint: 'A is a Letter, others are Numbers!' },
+    ];
+
+    // --- APP STATE ---
+    let state = {
+      screen: 'home', // home, nursery, lkg, ukg, brain, pictures
+      tab: 0,
+      stars: 0,
+      qIdx: 0,
+      feedback: null, // 'ok' | 'no'
+      builtLetters: [],
+      dragFilled: false,
+      picCat: 'Animals',
+      picQuizMode: false,
+      picTarget: null,
+      countNum: 7,
+      mathPair: { a: 3, b: 2, op: '+' }
+    };
+
+    function addStar() {
+      state.stars += 1;
+      state.feedback = 'ok';
+      playTone('success');
+      render();
+      setTimeout(() => {
+        state.feedback = null;
+        state.qIdx += 1;
+        state.builtLetters = [];
+        state.dragFilled = false;
+        state.countNum = Math.floor(Math.random() * 12) + 2;
+        const a = Math.floor(Math.random() * 5) + 1;
+        const b = Math.floor(Math.random() * 4) + 1;
+        state.mathPair = { a: Math.max(a, b) + 1, b, op: Math.random() > 0.4 ? '+' : '-' };
+        render();
+      }, 1150);
+    }
+
+    function wrongAns() {
+      state.feedback = 'no';
+      playTone('wrong');
+      speak('Try again', 'en-IN');
+      render();
+      setTimeout(() => { state.feedback = null; render(); }, 650);
+    }
+
+    function go(screen, tab = 0) {
+      playTone('pop');
+      state.screen = screen;
+      state.tab = tab;
+      state.qIdx = 0;
+      state.feedback = null;
+      state.builtLetters = [];
+      state.dragFilled = false;
+      state.picQuizMode = false;
+      render();
+    }
+
+    // --- HEADER COMPONENT ---
+    function headerHTML(title, colorClass) {
+      return `
+        <div class="sticky top-0 z-20 px-4 py-3 flex items-center justify-between bg-[#FFFDF7]/95 backdrop-blur border-b border-amber-100">
+          <button onclick="go('home')" class="btn-3d bg-white border-2 border-b-4 border-slate-200 px-3 py-1.5 rounded-2xl font-bold text-slate-700 text-sm">
+            🏠 Home
+          </button>
+          <div class="font-bold text-base ${colorClass}">${title}</div>
+          <div class="bg-amber-100 border-2 border-amber-300 px-3 py-1 rounded-2xl font-bold text-amber-800 text-sm flex items-center gap-1">
+            ⭐ <span>${state.stars}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // --- SCREENS ---
+    function renderHome() {
+      return `
+        <div class="p-5 flex-1 flex flex-col justify-between">
+          <div>
+            <!-- School Header Card -->
+            <div class="bg-white rounded-3xl p-4 shadow-sm border-2 border-amber-200 flex items-center gap-3.5 mb-5">
+              <img src="logo.jpg" onerror="this.style.display='none'" alt="Logo" class="w-16 h-16 object-contain rounded-2xl border border-amber-100 bg-white p-1" />
+              <div>
+                <div class="text-xs font-bold uppercase tracking-wider text-orange-600">The Abacus Academy, Jodhpur</div>
+                <h1 class="text-2xl font-extrabold text-slate-800 leading-tight">Abacus Kids</h1>
+                <p class="text-xs text-slate-500 font-medium">Pre-Primary Smart Learning App</p>
+              </div>
+              <div class="ml-auto bg-amber-100 border border-amber-300 px-3 py-1.5 rounded-2xl text-center">
+                <div class="text-lg leading-none">⭐</div>
+                <div class="text-xs font-extrabold text-amber-800">${state.stars}</div>
+              </div>
+            </div>
+
+            <div class="text-sm font-bold text-slate-600 mb-3 px-1">अपनी क्लास चुनें (Select Your Class):</div>
+
+            <!-- Class Cards -->
+            <div class="space-y-3.5">
+              <button onclick="go('nursery'); speak('Welcome to Nursery Class')" class="btn-3d w-full text-left bg-[#E1F5FE] border-2 border-b-4 border-[#0288D1] rounded-3xl p-4 flex items-center justify-between">
+                <div>
+                  <span class="inline-block bg-[#0288D1] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full mb-1">Age 3–4 Years</span>
+                  <h2 class="text-2xl font-extrabold text-[#01579B]">Nursery Class</h2>
+                  <p class="text-xs font-semibold text-[#0277BD] mt-0.5">A-Z • अ-अः • Counting 1-50 • Shapes</p>
+                </div>
+                <div class="text-5xl anim-float">🧸</div>
+              </button>
+
+              <button onclick="go('lkg'); speak('Welcome to L K G Class')" class="btn-3d w-full text-left bg-[#F1F8E9] border-2 border-b-4 border-[#689F38] rounded-3xl p-4 flex items-center justify-between">
+                <div>
+                  <span class="inline-block bg-[#689F38] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full mb-1">Age 4–5 Years</span>
+                  <h2 class="text-2xl font-extrabold text-[#33691E]">LKG Class</h2>
+                  <p class="text-xs font-semibold text-[#558B2F] mt-0.5">क-ज्ञ • शब्द निर्माण • Counting 1-100 • 1-50 Names</p>
+                </div>
+                <div class="text-5xl anim-float">🚂</div>
+              </button>
+
+              <button onclick="go('ukg'); speak('Welcome to U K G Class')" class="btn-3d w-full text-left bg-[#FFF8E1] border-2 border-b-4 border-[#F57C00] rounded-3xl p-4 flex items-center justify-between">
+                <div>
+                  <span class="inline-block bg-[#F57C00] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full mb-1">Age 5–6 Years</span>
+                  <h2 class="text-2xl font-extrabold text-[#E65100]">UKG Class</h2>
+                  <p class="text-xs font-semibold text-[#EF6C00] mt-0.5">Drag & Drop CVC • हिंदी मात्रा • 1-100 Names • +/-</p>
+                </div>
+                <div class="text-5xl anim-float">🚀</div>
+              </button>
+            </div>
+
+            <!-- Extra Modules -->
+            <div class="grid grid-cols-2 gap-3 mt-4">
+              <button onclick="go('pictures'); speak('Picture World')" class="btn-3d bg-[#F3E5F5] border-2 border-b-4 border-[#8E24AA] rounded-3xl p-3.5 text-center">
+                <div class="text-3xl mb-1">🦁</div>
+                <div class="font-extrabold text-[#4A148C] text-sm">Picture World</div>
+                <div class="text-[11px] text-[#6A1B9A]">चित्र और आवाज़</div>
+              </button>
+              <button onclick="go('brain'); speak('Brain Booster Games')" class="btn-3d bg-[#FCE4EC] border-2 border-b-4 border-[#D81B60] rounded-3xl p-3.5 text-center">
+                <div class="text-3xl mb-1">🧠</div>
+                <div class="font-extrabold text-[#880E4F] text-sm">Brain Booster</div>
+                <div class="text-[11px] text-[#AD1457]">Shadow & Logic</div>
+              </button>
+            </div>
+          </div>
+
+          <div class="text-center text-[11px] text-slate-400 mt-5 font-medium">
+            Eye-Safe Pastel Learning • The Abacus Academy, Jodhpur
+          </div>
+        </div>
+      `;
+    }
+
+    function tabsHTML(tabs, activeColor) {
+      return `
+        <div class="flex gap-2 overflow-x-auto px-4 py-2.5 bg-white/70 border-b border-slate-100">
+          ${tabs.map((t, i) => `
+            <button onclick="state.tab=${i}; state.qIdx=0; state.builtLetters=[]; state.dragFilled=false; playTone('pop'); render();"
+              class="px-3.5 py-1.5 rounded-2xl text-xs font-bold whitespace-nowrap border-2 transition ${state.tab === i ? activeColor + ' text-white border-transparent shadow-sm' : 'bg-white text-slate-600 border-slate-200'}">
+              ${t}
+            </button>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderNursery() {
+      const tabs = ['🔤 अक्षर (A-Z / अ-अः)', '🔊 Sound & Pic', '↔️ Before/After', '🔢 Count 1-50 & Names', '🎨 Shapes'];
+      let body = '';
+
+      if (state.tab === 0) {
+        const item = NURSERY_ALPHA[state.qIdx % NURSERY_ALPHA.length];
+        body = `
+          <div class="text-center anim-pop">
+            <div class="inline-block bg-sky-100 text-sky-800 text-xs font-bold px-3 py-1 rounded-full mb-3">चित्र देखकर सही अक्षर पहचानें</div>
+            <div onclick="speak('${item.speak}', '${item.lang || 'en-IN'}')" class="mx-auto w-40 h-40 bg-white rounded-3xl border-4 border-sky-200 shadow-sm flex flex-col items-center justify-center cursor-pointer mb-4">
+              <div class="text-7xl">${item.emoji}</div>
+              <div class="text-xs font-bold text-sky-600 mt-1">🔊 टैप करें</div>
+            </div>
+            <div class="grid grid-cols-3 gap-3 max-w-xs mx-auto mt-4">
+              ${item.opts.map(o => `
+                <button onclick="${o === item.ans ? `speak('${item.speak}', '${item.lang || 'en-IN'}'); addStar()` : 'wrongAns()'}"
+                  class="btn-3d bg-white border-2 border-b-4 border-sky-400 rounded-3xl py-5 text-4xl font-extrabold text-slate-800">
+                  ${o}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (state.tab === 1) {
+        const item = NURSERY_SOUND_PIC[state.qIdx % NURSERY_SOUND_PIC.length];
+        body = `
+          <div class="text-center anim-pop">
+            <button onclick="speak('${item.speak}', '${item.lang || 'en-IN'}')" class="btn-3d bg-sky-500 border-b-4 border-sky-700 text-white px-5 py-3 rounded-2xl font-bold text-base mb-5 inline-flex items-center gap-2">
+              🔊 <span>${item.ask}</span>
+            </button>
+            <div class="grid grid-cols-3 gap-3 max-w-sm mx-auto mt-2">
+              ${item.opts.map(o => `
+                <button onclick="${o.e === item.ans ? `speak('${o.n}', '${item.lang || 'en-IN'}'); addStar()` : 'wrongAns()'}"
+                  class="btn-3d bg-white border-2 border-b-4 border-sky-300 rounded-3xl p-4 flex flex-col items-center">
+                  <span class="text-5xl mb-1">${o.e}</span>
+                  <span class="text-xs font-bold text-slate-600">${o.n}</span>
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (state.tab === 2) {
+        const item = NURSERY_BAB[state.qIdx % NURSERY_BAB.length];
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-sm font-bold text-sky-700 mb-4">${item.kind} — खाली जगह भरें</div>
+            <div class="flex justify-center gap-3 mb-6">
+              ${item.seq.map(s => `
+                <div class="w-20 h-20 rounded-2xl flex items-center justify-center text-3xl font-extrabold ${s === '?' ? 'bg-amber-100 border-4 border-dashed border-amber-400 text-amber-600' : 'bg-white border-2 border-sky-300 text-slate-800'}">
+                  ${s}
+                </div>
+              `).join('')}
+            </div>
+            <div class="grid grid-cols-3 gap-3 max-w-xs mx-auto">
+              ${item.opts.map(o => `
+                <button onclick="${o === item.ans ? `speak('${o}', '${item.lang || 'en-IN'}'); addStar()` : 'wrongAns()'}"
+                  class="btn-3d bg-sky-100 border-2 border-b-4 border-sky-400 rounded-2xl py-4 text-3xl font-extrabold text-sky-900">
+                  ${o}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (state.tab === 3) {
+        const n = state.countNum;
+        const opts = [n, n + 1, n > 1 ? n - 1 : 4].sort(() => Math.random() - 0.5);
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-xs font-bold text-sky-700 mb-2">गिनें और सही नंबर चुनें (Count & Tap)</div>
+            <div class="bg-white rounded-3xl p-4 border-2 border-sky-200 flex flex-wrap justify-center gap-2 max-w-xs mx-auto mb-4">
+              ${Array(n).fill('🍓').map((e, idx) => `<span onclick="speak('${idx+1}')" class="text-3xl cursor-pointer">${e}</span>`).join('')}
+            </div>
+            <div class="grid grid-cols-3 gap-3 max-w-xs mx-auto mb-6">
+              ${opts.map(o => `
+                <button onclick="${o === n ? `speak('${o} ${NUMBER_WORDS_1_100[o] || ''}'); addStar()` : 'wrongAns()'}"
+                  class="btn-3d bg-white border-2 border-b-4 border-sky-400 rounded-2xl py-3 text-2xl font-extrabold text-slate-800">
+                  ${o}
+                </button>
+              `).join('')}
+            </div>
+            <div class="border-t border-sky-200 pt-3">
+              <div class="text-xs font-bold text-slate-500 mb-2">1 to 50 Counting & 1 to 10 Number Names (टैप करके सुनें)</div>
+              <div class="grid grid-cols-5 gap-1.5 max-h-40 overflow-y-auto p-1">
+                ${Array.from({length: 50}, (_, i) => i + 1).map(num => `
+                  <button onclick="speak('${num}. ${NUMBER_WORDS_1_100[num] || ''}')" class="bg-sky-50 hover:bg-sky-200 border border-sky-200 rounded-xl py-1.5 text-xs font-bold text-sky-900">
+                    ${num}${num <= 10 ? `<div class="text-[9px] text-sky-600">${NUMBER_WORDS_1_100[num]}</div>` : ''}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        const item = SHAPES_COLORS[state.qIdx % SHAPES_COLORS.length];
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-sm font-bold text-sky-700 mb-4">आकार और रंग पहचानें (Shapes & Colors)</div>
+            <div onclick="speak('${item.speak}')" class="mx-auto w-36 h-36 flex items-center justify-center mb-5 cursor-pointer ${item.shape || 'rounded-3xl'}" style="background:${item.bg}">
+              ${item.emoji ? `<span class="text-7xl">${item.emoji}</span>` : ''}
+            </div>
+            <div class="grid grid-cols-1 gap-2.5 max-w-xs mx-auto">
+              ${item.opts.map(o => `
+                <button onclick="${item.name.startsWith(o) ? `speak('${item.speak}'); addStar()` : 'wrongAns()'}"
+                  class="btn-3d bg-white border-2 border-b-4 border-sky-400 rounded-2xl py-3 text-lg font-bold text-slate-800">
+                  ${o}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      return headerHTML('Nursery Class', 'text-[#0288D1]') + tabsHTML(tabs, 'bg-[#0288D1]') + `<div class="p-4 flex-1">${body}</div>`;
+    }
+
+    function renderLKG() {
+      const tabs = ['🧩 शब्द बनाएं (Word Join)', 'अ व्यंजन (क-ज्ञ)', '🔢 1-100 & Names (1-50)', '⚖️ More / Less'];
+      let body = '';
+
+      if (state.tab === 0) {
+        const item = LKG_WORDS[state.qIdx % LKG_WORDS.length];
+        const targetLen = item.letters.length;
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-xs font-bold text-lime-800 bg-lime-100 inline-block px-3 py-1 rounded-full mb-3">अक्षरों को सही क्रम में टैप करके शब्द बनाएं</div>
+            <div onclick="speak('${item.word}', '${item.lang}')" class="text-7xl mb-3 cursor-pointer">${item.emoji}</div>
+            <div class="flex justify-center gap-2.5 mb-5">
+              ${Array.from({length: targetLen}).map((_, i) => `
+                <div class="w-16 h-16 rounded-2xl border-3 flex items-center justify-center text-3xl font-extrabold ${state.builtLetters[i] ? 'bg-lime-200 border-lime-600 text-lime-900' : 'bg-white border-2 border-dashed border-lime-400 text-slate-300'}">
+                  ${state.builtLetters[i] || '?'}
+                </div>
+              `).join('')}
+            </div>
+            <div class="flex justify-center gap-3 flex-wrap">
+              ${item.pool.map(ch => `
+                <button onclick="handleLkgTap('${ch}')" class="btn-3d w-16 h-16 bg-white border-2 border-b-4 border-lime-500 rounded-2xl text-3xl font-extrabold text-slate-800">
+                  ${ch}
+                </button>
+              `).join('')}
+            </div>
+            ${state.builtLetters.length > 0 ? `<button onclick="state.builtLetters=[]; render();" class="mt-4 text-xs font-bold text-rose-500 underline">Clear / फिर से करें</button>` : ''}
+          </div>
+        `;
+      } else if (state.tab === 1) {
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-xs font-bold text-lime-800 mb-3">हिंदी व्यंजन माला — किसी भी अक्षर पर टैप करके सुनें</div>
+            <div class="grid grid-cols-6 gap-2">
+              ${VYANJAN_LIST.map(v => `
+                <button onclick="playTone('pop'); speak('${v}', 'hi-IN')" class="btn-3d bg-white border-2 border-b-4 border-lime-400 rounded-2xl py-3 text-2xl font-extrabold text-lime-950">
+                  ${v}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (state.tab === 2) {
+        const keys = Object.keys(NUMBER_WORDS_1_100).map(Number).filter(n => n <= 50);
+        const target = keys[state.qIdx % keys.length];
+        const opts = [target, keys[(state.qIdx + 3) % keys.length], keys[(state.qIdx + 7) % keys.length]].sort(() => Math.random() - 0.5);
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-xs font-bold text-lime-800 mb-2">Number Name (1 to 50) पहचानें</div>
+            <div onclick="speak('${NUMBER_WORDS_1_100[target]}')" class="mx-auto w-28 h-24 bg-lime-100 border-2 border-lime-500 rounded-3xl flex items-center justify-center text-4xl font-extrabold text-lime-900 mb-4 cursor-pointer">
+              ${target}
+            </div>
+            <div class="grid grid-cols-1 gap-2.5 max-w-xs mx-auto mb-5">
+              ${opts.map(o => `
+                <button onclick="${o === target ? `speak('${NUMBER_WORDS_1_100[o]}'); addStar()` : 'wrongAns()'}"
+                  class="btn-3d bg-white border-2 border-b-4 border-lime-500 rounded-2xl py-3 text-lg font-extrabold text-slate-800">
+                  ${NUMBER_WORDS_1_100[o]}
+                </button>
+              `).join('')}
+            </div>
+            <div class="text-xs font-bold text-slate-500 mb-1.5">1 to 100 Counting Chart (टैप करें)</div>
+            <div class="grid grid-cols-10 gap-1 max-h-36 overflow-y-auto bg-white p-2 rounded-2xl border border-lime-200">
+              ${Array.from({length: 100}, (_, i) => i + 1).map(n => `
+                <button onclick="speak('${n}')" class="bg-lime-50 hover:bg-lime-200 rounded py-1 text-[11px] font-bold text-lime-900">${n}</button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        const left = (state.qIdx % 4) + 2;
+        const right = left + 3;
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-sm font-bold text-lime-800 mb-4">किस बॉक्स में ज़्यादा (MORE) हैं? टैप करें!</div>
+            <div class="grid grid-cols-2 gap-4 max-w-sm mx-auto">
+              <button onclick="wrongAns()" class="btn-3d bg-white border-2 border-b-4 border-lime-400 rounded-3xl p-4 min-h-[150px] flex flex-wrap items-center justify-center gap-1.5">
+                ${Array(left).fill('🎈').map(e => `<span class="text-3xl">${e}</span>`).join('')}
+              </button>
+              <button onclick="speak('Correct! More balloons'); addStar()" class="btn-3d bg-white border-2 border-b-4 border-lime-400 rounded-3xl p-4 min-h-[150px] flex flex-wrap items-center justify-center gap-1.5">
+                ${Array(right).fill('🎈').map(e => `<span class="text-3xl">${e}</span>`).join('')}
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      return headerHTML('LKG Class', 'text-[#689F38]') + tabsHTML(tabs, 'bg-[#689F38]') + `<div class="p-4 flex-1">${body}</div>`;
+    }
+
+    function handleLkgTap(ch) {
+      const item = LKG_WORDS[state.qIdx % LKG_WORDS.length];
+      playTone('pop');
+      speak(ch, item.lang);
+      state.builtLetters.push(ch);
+      if (state.builtLetters.length === item.letters.length) {
+        if (state.builtLetters.join('') === item.letters.join('')) {
+          setTimeout(() => { speak(item.word, item.lang); addStar(); }, 350);
+        } else {
+          setTimeout(() => { state.builtLetters = []; wrongAns(); }, 350);
+        }
+      } else {
+        render();
+      }
+    }
+
+    function renderUKG() {
+      const tabs = ['🧲 Drag CVC Words', '🪄 हिंदी मात्रा Magic', '💯 Names (1-100)', '➕ Visual +/-'];
+      let body = '';
+
+      if (state.tab === 0) {
+        const item = UKG_CVC[state.qIdx % UKG_CVC.length];
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-xs font-bold text-orange-800 bg-orange-100 inline-block px-3 py-1 rounded-full mb-3">
+              सही Vowel खींचकर (Drag) या टैप करके खाली जगह में डालें
+            </div>
+            <div onclick="speak('${item.word}')" class="text-7xl mb-3 cursor-pointer ${state.dragFilled ? 'anim-float' : ''}">${item.emoji}</div>
+            <div class="flex items-center justify-center gap-2 my-4">
+              <div class="w-16 h-16 bg-white border-2 border-orange-300 rounded-2xl flex items-center justify-center text-3xl font-extrabold">${item.pre}</div>
+              <div id="drop-zone" ondragover="event.preventDefault()" ondrop="handleUkgDrop(event, 'cvc')"
+                class="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl font-extrabold transition ${state.dragFilled ? 'bg-emerald-200 border-4 border-emerald-500 text-emerald-900' : 'bg-amber-100 border-4 border-dashed border-orange-400 text-orange-500'}">
+                ${state.dragFilled ? item.ans : '?'}
+              </div>
+              <div class="w-16 h-16 bg-white border-2 border-orange-300 rounded-2xl flex items-center justify-center text-3xl font-extrabold">${item.post}</div>
+            </div>
+            <div class="flex justify-center gap-2.5 mt-5">
+              ${item.opts.map(v => `
+                <button draggable="true" ondragstart="event.dataTransfer.setData('text', '${v}')" onclick="checkUkgChoice('${v}', 'cvc')"
+                  class="btn-3d w-14 h-14 bg-orange-500 border-b-4 border-orange-700 text-white rounded-2xl text-2xl font-extrabold cursor-grab">
+                  ${v}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (state.tab === 1) {
+        const item = UKG_MATRA[state.qIdx % UKG_MATRA.length];
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-xs font-bold text-orange-800 bg-orange-100 inline-block px-3 py-1 rounded-full mb-3">
+              सही मात्रा खींचकर (Drag) या टैप करके शब्द पूरा करें
+            </div>
+            <div onclick="speak('${item.word}', 'hi-IN')" class="text-7xl mb-3 cursor-pointer">${item.emoji}</div>
+            <div class="flex items-center justify-center gap-2 my-4">
+              <div class="px-4 h-16 bg-white border-2 border-orange-300 rounded-2xl flex items-center justify-center text-3xl font-extrabold">${item.pre}</div>
+              <div ondragover="event.preventDefault()" ondrop="handleUkgDrop(event, 'matra')"
+                class="w-16 h-16 rounded-2xl flex items-center justify-center text-4xl font-extrabold ${state.dragFilled ? 'bg-emerald-200 border-4 border-emerald-500 text-emerald-900' : 'bg-amber-100 border-4 border-dashed border-orange-400 text-orange-500'}">
+                ${state.dragFilled ? item.ans : '?'}
+              </div>
+              ${item.post ? `<div class="px-4 h-16 bg-white border-2 border-orange-300 rounded-2xl flex items-center justify-center text-3xl font-extrabold">${item.post}</div>` : ''}
+            </div>
+            <div class="flex justify-center gap-2.5 mt-5">
+              ${item.opts.map(m => `
+                <button draggable="true" ondragstart="event.dataTransfer.setData('text', '${m}')" onclick="checkUkgChoice('${m}', 'matra')"
+                  class="btn-3d w-14 h-14 bg-amber-500 border-b-4 border-amber-700 text-white rounded-2xl text-3xl font-extrabold cursor-grab">
+                  ${m}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (state.tab === 2) {
+        const keys = Object.keys(NUMBER_WORDS_1_100).map(Number);
+        const target = keys[(state.qIdx + 12) % keys.length];
+        const opts = [target, keys[(state.qIdx + 4) % keys.length], keys[(state.qIdx + 19) % keys.length]].sort(() => Math.random() - 0.5);
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-xs font-bold text-orange-800 mb-2">UKG Number Names (1 to 100)</div>
+            <div onclick="speak('${NUMBER_WORDS_1_100[target]}')" class="mx-auto w-32 h-24 bg-amber-100 border-2 border-orange-400 rounded-3xl flex items-center justify-center text-4xl font-extrabold text-orange-900 mb-4 cursor-pointer">
+              ${target}
+            </div>
+            <div class="grid grid-cols-1 gap-2.5 max-w-xs mx-auto">
+              ${opts.map(o => `
+                <button onclick="${o === target ? `speak('${NUMBER_WORDS_1_100[o]}'); addStar()` : 'wrongAns()'}"
+                  class="btn-3d bg-white border-2 border-b-4 border-orange-400 rounded-2xl py-3.5 text-lg font-extrabold text-slate-800">
+                  ${NUMBER_WORDS_1_100[o]}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        const { a, b, op } = state.mathPair;
+        const ans = op === '+' ? a + b : a - b;
+        const opts = [ans, ans + 1, Math.max(0, ans - 1)].sort(() => Math.random() - 0.5);
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-xs font-bold text-orange-800 mb-3">चित्रों को गिनकर जोड़ें या घटाएं (${op === '+' ? 'Addition' : 'Subtraction'})</div>
+            <div class="bg-white rounded-3xl p-4 border-2 border-orange-200 max-w-xs mx-auto mb-5">
+              <div class="flex flex-wrap justify-center gap-1 text-2xl mb-1">${Array(a).fill('🍎').join('')}</div>
+              <div class="text-3xl font-extrabold text-orange-600 my-1">${a} ${op} ${b} = ?</div>
+              <div class="flex flex-wrap justify-center gap-1 text-2xl mt-1">${Array(b).fill('🍏').join('')}</div>
+            </div>
+            <div class="grid grid-cols-3 gap-3 max-w-xs mx-auto">
+              ${opts.map(o => `
+                <button onclick="${o === ans ? `speak('${o}'); addStar()` : 'wrongAns()'}"
+                  class="btn-3d bg-white border-2 border-b-4 border-orange-400 rounded-2xl py-4 text-3xl font-extrabold text-slate-800">
+                  ${o}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      return headerHTML('UKG Class', 'text-[#F57C00]') + tabsHTML(tabs, 'bg-[#F57C00]') + `<div class="p-4 flex-1">${body}</div>`;
+    }
+
+    function handleUkgDrop(e, mode) {
+      e.preventDefault();
+      const val = e.dataTransfer.getData('text');
+      checkUkgChoice(val, mode);
+    }
+
+    function checkUkgChoice(val, mode) {
+      const item = mode === 'cvc' ? UKG_CVC[state.qIdx % UKG_CVC.length] : UKG_MATRA[state.qIdx % UKG_MATRA.length];
+      if (val === item.ans) {
+        state.dragFilled = true;
+        speak(item.word, mode === 'matra' ? 'hi-IN' : 'en-IN');
+        addStar();
+      } else {
+        wrongAns();
+      }
+    }
+
+    function renderPictures() {
+      const cats = Object.keys(PICTURE_WORLD);
+      const list = PICTURE_WORLD[state.picCat];
+      return `
+        ${headerHTML('Picture World (चित्र संसार)', 'text-[#8E24AA]')}
+        <div class="flex gap-2 overflow-x-auto px-4 py-2.5 bg-white border-b border-purple-100">
+          ${cats.map(c => `
+            <button onclick="state.picCat='${c}'; state.picQuizMode=false; playTone('pop'); render();"
+              class="px-3.5 py-1.5 rounded-2xl text-xs font-bold ${state.picCat === c ? 'bg-purple-600 text-white' : 'bg-purple-50 text-purple-800'}">
+              ${c}
+            </button>
+          `).join('')}
+        </div>
+        <div class="p-4 flex-1">
+          <div class="flex justify-between items-center mb-3">
+            <span class="text-xs font-bold text-purple-800">${state.picQuizMode ? 'सही चित्र पर टैप करें!' : 'किसी भी चित्र पर टैप करके नाम सुनें:'}</span>
+            <button onclick="state.picQuizMode = !state.picQuizMode; state.picTarget = list[Math.floor(Math.random()*list.length)]; if(state.picQuizMode) speak('Where is ' + state.picTarget.en); render();"
+              class="bg-purple-100 border border-purple-300 text-purple-900 px-3 py-1 rounded-xl text-xs font-bold">
+              ${state.picQuizMode ? '📖 Learn Mode' : '🎯 Quiz Mode'}
+            </button>
+          </div>
+          ${state.picQuizMode && state.picTarget ? `
+            <div onclick="speak('Where is ${state.picTarget.en}')" class="bg-purple-600 text-white rounded-2xl p-3 text-center font-bold mb-4 cursor-pointer">
+              🔊 Find: ${state.picTarget.en} (${state.picTarget.hi})
+            </div>
+          ` : ''}
+          <div class="grid grid-cols-2 gap-3">
+            ${list.map(it => `
+              <button onclick="${state.picQuizMode ? (it.en === state.picTarget?.en ? `speak('${it.en}. ${it.hi}'); state.picTarget = list[Math.floor(Math.random()*list.length)]; addStar()` : 'wrongAns()') : `playTone('pop'); speak('${it.en}. ${it.hi}')`}"
+                class="btn-3d bg-white border-2 border-b-4 border-purple-300 rounded-3xl p-4 flex flex-col items-center">
+                <span class="text-6xl mb-2">${it.e}</span>
+                <span class="text-base font-extrabold text-slate-800">${it.en}</span>
+                <span class="text-xs font-bold text-purple-700">${it.hi}</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderBrain() {
+      const tabs = ['👤 Shadow Match', '🔍 Odd One Out'];
+      let body = '';
+      if (state.tab === 0) {
+        const item = SHADOW_DATA[state.qIdx % SHADOW_DATA.length];
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-xs font-bold text-pink-800 mb-3">यह किसकी परछाई (Shadow) है? पहचानें!</div>
+            <div class="mx-auto w-36 h-36 bg-white border-2 border-pink-200 rounded-3xl flex items-center justify-center mb-5">
+              <span class="text-7xl" style="filter: brightness(0); opacity: 0.85;">${item.target}</span>
+            </div>
+            <div class="grid grid-cols-3 gap-3 max-w-xs mx-auto">
+              ${item.opts.map(o => `
+                <button onclick="${o === item.target ? `speak('${item.name}'); addStar()` : 'wrongAns()'}"
+                  class="btn-3d bg-white border-2 border-b-4 border-pink-400 rounded-2xl py-4 text-5xl">
+                  ${o}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        const item = ODD_DATA[state.qIdx % ODD_DATA.length];
+        body = `
+          <div class="text-center anim-pop">
+            <div class="text-xs font-bold text-pink-800 mb-4">इनमें से सबसे अलग (Odd One Out) क्या है?</div>
+            <div class="grid grid-cols-2 gap-3 max-w-xs mx-auto">
+              ${item.items.map(o => `
+                <button onclick="${o === item.ans ? `speak('Correct!'); addStar()` : 'wrongAns()'}"
+                  class="btn-3d bg-white border-2 border-b-4 border-pink-400 rounded-3xl py-6 text-5xl font-extrabold text-slate-800">
+                  ${o}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+      return headerHTML('Brain Booster', 'text-[#D81B60]') + tabsHTML(tabs, 'bg-[#D81B60]') + `<div class="p-4 flex-1">${body}</div>`;
+    }
+
+    function render() {
+      const root = document.getElementById('app');
+      let html = '';
+      if (state.screen === 'home') html = renderHome();
+      else if (state.screen === 'nursery') html = renderNursery();
+      else if (state.screen === 'lkg') html = renderLKG();
+      else if (state.screen === 'ukg') html = renderUKG();
+      else if (state.screen === 'pictures') html = renderPictures();
+      else if (state.screen === 'brain') html = renderBrain();
+
+      if (state.feedback === 'ok') {
+        html += `<div class="fixed inset-0 pointer-events-none flex items-center justify-center z-50"><div class="bg-emerald-500 text-white px-7 py-4 rounded-3xl text-3xl font-extrabold shadow-xl anim-pop">🌟 शाबाश! +1 ⭐</div></div>`;
+      } else if (state.feedback === 'no') {
+        html += `<div class="fixed inset-0 pointer-events-none flex items-center justify-center z-50"><div class="bg-rose-500 text-white px-6 py-3 rounded-3xl text-xl font-extrabold shadow-xl anim-shake">फिर से कोशिश करें! 💪</div></div>`;
+      }
+      root.innerHTML = html;
+    }
+
+    render();
+  </script>
+</body>
+</html>
