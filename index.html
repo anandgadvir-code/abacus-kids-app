@@ -35,45 +35,45 @@
         </div>
       </div>
 
-      <div style="font-size:14px;font-weight:bold;color:#475569;margin-bottom:12px;">अपनी क्लास चुनें (Select Your Class):</div>
+      <div style="font-size:14px;font-weight:bold;color:#475569;margin-bottom:12px;">&#2309;&#2346;&#2344;&#2368; &#2325;&#2381;&#2354;&#2366;&#2360; &#2330;&#2369;&#2344;&#2375;&#2306; (Select Your Class):</div>
 
       <button onclick="go('nursery')" class="btn card-home" style="background:#E1F5FE;border:2px solid #0288D1;border-bottom-width:4px;">
         <div>
           <span style="background:#0288D1;color:#fff;font-size:11px;font-weight:bold;padding:3px 10px;border-radius:12px;">Age 3-4 Years</span>
           <div style="font-size:22px;font-weight:900;color:#01579B;margin-top:4px;">Nursery Class</div>
-          <div style="font-size:12px;font-weight:bold;color:#0277BD;">Full A-Z • अ-अः • Counting 1-50 • Shapes</div>
+          <div style="font-size:12px;font-weight:bold;color:#0277BD;">Full A-Z &bull; Hindi Swar &bull; Counting 1-50 &bull; Shapes</div>
         </div>
-        <div style="font-size:44px;">🧸</div>
+        <div style="font-size:44px;">&#129528;</div>
       </button>
 
       <button onclick="go('lkg')" class="btn card-home" style="background:#F1F8E9;border:2px solid #689F38;border-bottom-width:4px;">
         <div>
           <span style="background:#689F38;color:#fff;font-size:11px;font-weight:bold;padding:3px 10px;border-radius:12px;">Age 4-5 Years</span>
           <div style="font-size:22px;font-weight:900;color:#33691E;margin-top:4px;">LKG Class</div>
-          <div style="font-size:12px;font-weight:bold;color:#558B2F;">क-ज्ञ • शब्द निर्माण • 1-100 & Names • More/Less</div>
+          <div style="font-size:12px;font-weight:bold;color:#558B2F;">Vyanjan &bull; Word Join &bull; 1-100 &amp; Names &bull; More/Less</div>
         </div>
-        <div style="font-size:44px;">🚂</div>
+        <div style="font-size:44px;">&#128642;</div>
       </button>
 
       <button onclick="go('ukg')" class="btn card-home" style="background:#FFF8E1;border:2px solid #F57C00;border-bottom-width:4px;">
         <div>
           <span style="background:#F57C00;color:#fff;font-size:11px;font-weight:bold;padding:3px 10px;border-radius:12px;">Age 5-6 Years</span>
           <div style="font-size:22px;font-weight:900;color:#E65100;margin-top:4px;">UKG Class</div>
-          <div style="font-size:12px;font-weight:bold;color:#EF6C00;">CVC Words • सभी मात्राएं • 1-100 Names • +/-</div>
+          <div style="font-size:12px;font-weight:bold;color:#EF6C00;">CVC Words &bull; Matra Magic &bull; 1-100 Names &bull; +/-</div>
         </div>
-        <div style="font-size:44px;">🚀</div>
+        <div style="font-size:44px;">&#128640;</div>
       </button>
 
       <div class="grid2" style="max-width:100%;margin-top:6px;">
         <button onclick="go('pictures')" class="btn" style="background:#F3E5F5;border:2px solid #8E24AA;border-bottom-width:4px;border-radius:22px;padding:14px;text-align:center;">
-          <div style="font-size:32px;">🦁</div>
+          <div style="font-size:32px;">&#129409;</div>
           <div style="font-weight:900;color:#4A148C;font-size:15px;">Picture World</div>
-          <div style="font-size:11px;color:#6A1B9A;">6 Categories • 36 Pics</div>
+          <div style="font-size:11px;color:#6A1B9A;">6 Categories &bull; 36 Pics</div>
         </button>
         <button onclick="go('brain')" class="btn" style="background:#FCE4EC;border:2px solid #D81B60;border-bottom-width:4px;border-radius:22px;padding:14px;text-align:center;">
-          <div style="font-size:32px;">🧠</div>
+          <div style="font-size:32px;">&#129504;</div>
           <div style="font-weight:900;color:#880E4F;font-size:15px;">Brain Booster</div>
-          <div style="font-size:11px;color:#AD1457;">Shadow • Odd • Memory</div>
+          <div style="font-size:11px;color:#AD1457;">Shadow &bull; Odd &bull; Memory</div>
         </button>
       </div>
     </div>
@@ -122,77 +122,75 @@
     }
 
     var NURSERY_AZ = [
-      { p: "A for Apple", e: "🍎", a: "A", o: ["A", "B", "C"] },
-      { p: "B for Ball", e: "⚽", a: "B", o: ["D", "B", "P"] },
-      { p: "C for Car", e: "🚗", a: "C", o: ["G", "O", "C"] },
-      { p: "D for Dog", e: "🐶", a: "D", o: ["D", "B", "Q"] },
-      { p: "E for Elephant", e: "🐘", a: "E", o: ["E", "F", "H"] },
-      { p: "F for Fish", e: "🐟", a: "F", o: ["E", "F", "T"] },
-      { p: "G for Grapes", e: "🍇", a: "G", o: ["C", "G", "J"] },
-      { p: "H for Horse", e: "🐎", a: "H", o: ["H", "N", "M"] },
-      { p: "I for Ice Cream", e: "🍦", a: "I", o: ["L", "T", "I"] },
-      { p: "J for Joker", e: "🤡", a: "J", o: ["J", "I", "U"] },
-      { p: "K for Kite", e: "🪁", a: "K", o: ["K", "R", "X"] },
-      { p: "L for Lion", e: "🦁", a: "L", o: ["I", "L", "T"] },
-      { p: "M for Mango", e: "🥭", a: "M", o: ["W", "N", "M"] },
-      { p: "N for Nest", e: "🪺", a: "N", o: ["M", "N", "H"] },
-      { p: "O for Orange", e: "🍊", a: "O", o: ["Q", "C", "O"] },
-      { p: "P for Peacock", e: "🦚", a: "P", o: ["P", "B", "R"] },
-      { p: "Q for Queen", e: "👑", a: "Q", o: ["O", "Q", "G"] },
-      { p: "R for Rabbit", e: "🐇", a: "R", o: ["P", "K", "R"] },
-      { p: "S for Sun", e: "☀️", a: "S", o: ["Z", "C", "S"] },
-      { p: "T for Tiger", e: "🐯", a: "T", o: ["T", "I", "L"] },
-      { p: "U for Umbrella", e: "☂️", a: "U", o: ["V", "U", "W"] },
-      { p: "V for Van", e: "🚐", a: "V", o: ["U", "W", "V"] },
-      { p: "W for Watch", e: "⌚", a: "W", o: ["M", "W", "V"] },
-      { p: "X for Xylophone", e: "🎹", a: "X", o: ["K", "Y", "X"] },
-      { p: "Y for Yak", e: "🐂", a: "Y", o: ["V", "Y", "T"] },
-      { p: "Z for Zebra", e: "🦓", a: "Z", o: ["S", "N", "Z"] }
+      { p: "A for Apple", e: "&#127822;", a: "A", o: ["A", "B", "C"] },
+      { p: "B for Ball", e: "&#9917;", a: "B", o: ["D", "B", "P"] },
+      { p: "C for Car", e: "&#128663;", a: "C", o: ["G", "O", "C"] },
+      { p: "D for Dog", e: "&#128054;", a: "D", o: ["D", "B", "Q"] },
+      { p: "E for Elephant", e: "&#128024;", a: "E", o: ["E", "F", "H"] },
+      { p: "F for Fish", e: "&#128031;", a: "F", o: ["E", "F", "T"] },
+      { p: "G for Grapes", e: "&#127815;", a: "G", o: ["C", "G", "J"] },
+      { p: "H for Horse", e: "&#128014;", a: "H", o: ["H", "N", "M"] },
+      { p: "I for Ice Cream", e: "&#127846;", a: "I", o: ["L", "T", "I"] },
+      { p: "J for Joker", e: "&#129313;", a: "J", o: ["J", "I", "U"] },
+      { p: "K for Kite", e: "&#129665;", a: "K", o: ["K", "R", "X"] },
+      { p: "L for Lion", e: "&#129409;", a: "L", o: ["I", "L", "T"] },
+      { p: "M for Mango", e: "&#129389;", a: "M", o: ["W", "N", "M"] },
+      { p: "N for Nest", e: "&#129722;", a: "N", o: ["M", "N", "H"] },
+      { p: "O for Orange", e: "&#127818;", a: "O", o: ["Q", "C", "O"] },
+      { p: "P for Peacock", e: "&#129434;", a: "P", o: ["P", "B", "R"] },
+      { p: "Q for Queen", e: "&#128081;", a: "Q", o: ["O", "Q", "G"] },
+      { p: "R for Rabbit", e: "&#128007;", a: "R", o: ["P", "K", "R"] },
+      { p: "S for Sun", e: "&#9728;&#65039;", a: "S", o: ["Z", "C", "S"] },
+      { p: "T for Tiger", e: "&#128047;", a: "T", o: ["T", "I", "L"] },
+      { p: "U for Umbrella", e: "&#9730;&#65039;", a: "U", o: ["V", "U", "W"] },
+      { p: "V for Van", e: "&#128656;", a: "V", o: ["U", "W", "V"] },
+      { p: "W for Watch", e: "&#8986;", a: "W", o: ["M", "W", "V"] },
+      { p: "X for Xylophone", e: "&#127929;", a: "X", o: ["K", "Y", "X"] },
+      { p: "Y for Yak", e: "&#128002;", a: "Y", o: ["V", "Y", "T"] },
+      { p: "Z for Zebra", e: "&#129427;", a: "Z", o: ["S", "N", "Z"] }
     ];
 
     var NURSERY_SWAR = [
-      { p: "अ से अनार", e: "🍎", a: "अ", o: ["अ", "आ", "इ"] },
-      { p: "आ से आम", e: "🥭", a: "आ", o: ["उ", "आ", "ए"] },
-      { p: "इ से इमली", e: "🌿", a: "इ", o: ["इ", "ई", "ऊ"] },
-      { p: "ई से ईख", e: "🎋", a: "ई", o: ["इ", "ई", "ए"] },
-      { p: "उ से उल्लू", e: "🦉", a: "उ", o: ["अ", "ओ", "उ"] },
-      { p: "ऊ से ऊंट", e: "🐫", a: "ऊ", o: ["उ", "ऊ", "औ"] },
-      { p: "ऋ से ऋषि", e: "🧘", a: "ऋ", o: ["ऋ", "ए", "अं"] },
-      { p: "ए से एड़ी", e: "🦶", a: "ए", o: ["ए", "ऐ", "अं"] },
-      { p: "ऐ से ऐनक", e: "👓", a: "ऐ", o: ["ए", "ऐ", "ओ"] },
-      { p: "ओ से ओखली", e: "🥣", a: "ओ", o: ["औ", "ओ", "आ"] },
-      { p: "औ से औरत", e: "👩", a: "औ", o: ["ओ", "औ", "अः"] },
-      { p: "अं से अंगूर", e: "🍇", a: "अं", o: ["अं", "अः", "अ"] }
+      { p: "\u0905 \u0938\u0947 \u0905\u0928\u093e\u0930", e: "&#127822;", a: "\u0905", o: ["\u0905", "\u0906", "\u0907"] },
+      { p: "\u0906 \u0938\u0947 \u0906\u092e", e: "&#129389;", a: "\u0906", o: ["\u0909", "\u0906", "\u090f"] },
+      { p: "\u0907 \u0938\u0947 \u0907\u092e\u0932\u0940", e: "&#127807;", a: "\u0907", o: ["\u0907", "\u0908", "\u090a"] },
+      { p: "\u0908 \u0938\u0947 \u0908\u0916", e: "&#127883;", a: "\u0908", o: ["\u0907", "\u0908", "\u090f"] },
+      { p: "\u0909 \u0938\u0947 \u0909\u0932\u094d\u0932\u0942", e: "&#129417;", a: "\u0909", o: ["\u0905", "\u0913", "\u0909"] },
+      { p: "\u090a \u0938\u0947 \u090a\u0902\u091f", e: "&#128043;", a: "\u090a", o: ["\u0909", "\u090a", "\u0914"] },
+      { p: "\u090b \u0938\u0947 \u090b\u0937\u093f", e: "&#129496;", a: "\u090b", o: ["\u090b", "\u090f", "\u0905\u0902"] },
+      { p: "\u090f \u0938\u0947 \u090f\u0921\u093c\u0940", e: "&#129462;", a: "\u090f", o: ["\u090f", "\u0910", "\u0905\u0902"] },
+      { p: "\u0910 \u0938\u0947 \u0910\u0928\u0915", e: "&#128083;", a: "\u0910", o: ["\u090f", "\u0910", "\u0913"] },
+      { p: "\u0913 \u0938\u0947 \u0913\u0916\u0932\u0940", e: "&#129379;", a: "\u0913", o: ["\u0914", "\u0913", "\u0906"] },
+      { p: "\u0914 \u0938\u0947 \u0914\u0930\u0924", e: "&#128105;", a: "\u0914", o: ["\u0913", "\u0914", "\u0905\u0903"] },
+      { p: "\u0905\u0902 \u0938\u0947 \u0905\u0902\u0917\u0942\u0930", e: "&#127815;", a: "\u0905\u0902", o: ["\u0905\u0902", "\u0905\u0903", "\u0905"] }
     ];
 
     var SOUND_PIC = [
-      { ask: "Tap on C for Car", sp: "C for Car. Tap on Car", lg: "en-IN", ans: "🚗", opts: [{ e: "🍎", n: "Apple" }, { e: "🚗", n: "Car" }, { e: "🐱", n: "Cat" }] },
-      { ask: "क से कबूतर पर टैप करें", sp: "क से कबूतर पर टैप करें", lg: "hi-IN", ans: "🕊️", opts: [{ e: "🕊️", n: "कबूतर" }, { e: "🐇", n: "खरगोश" }, { e: "🐟", n: "मछली" }] },
-      { ask: "Tap on E for Elephant", sp: "E for Elephant. Tap on Elephant", lg: "en-IN", ans: "🐘", opts: [{ e: "🦁", n: "Lion" }, { e: "🐘", n: "Elephant" }, { e: "🍌", n: "Banana" }] },
-      { ask: "म से मछली पर टैप करें", sp: "म से मछली पर टैप करें", lg: "hi-IN", ans: "🐟", opts: [{ e: "🐘", n: "हाथी" }, { e: "🦚", n: "मोर" }, { e: "🐟", n: "मछली" }] },
-      { ask: "Tap on P for Peacock", sp: "P for Peacock. Tap on Peacock", lg: "en-IN", ans: "🦚", opts: [{ e: "🦜", n: "Parrot" }, { e: "🦉", n: "Owl" }, { e: "🦚", n: "Peacock" }] },
-      { ask: "ह से हाथी पर टैप करें", sp: "ह से हाथी पर टैप करें", lg: "hi-IN", ans: "🐘", opts: [{ e: "🐎", n: "घोड़ा" }, { e: "🐘", n: "हाथी" }, { e: "🐒", n: "बंदर" }] },
-      { ask: "Tap on U for Umbrella", sp: "U for Umbrella. Tap on Umbrella", lg: "en-IN", ans: "☂️", opts: [{ e: "⌚", n: "Watch" }, { e: "☂️", n: "Umbrella" }, { e: "🪁", n: "Kite" }] },
-      { ask: "श से शेर पर टैप करें", sp: "श से शेर पर टैप करें", lg: "hi-IN", ans: "🦁", opts: [{ e: "🐯", n: "बाघ" }, { e: "🦁", n: "शेर" }, { e: "🐄", n: "गाय" }] }
+      { ask: "Tap on C for Car", sp: "C for Car. Tap on Car", lg: "en-IN", ans: "car", opts: [{ id: "apple", e: "&#127822;", n: "Apple" }, { id: "car", e: "&#128663;", n: "Car" }, { id: "cat", e: "&#128049;", n: "Cat" }] },
+      { ask: "\u0915 \u0938\u0947 \u0915\u092c\u0942\u0924\u0930 \u092a\u0930 \u091f\u0948\u092a \u0915\u0930\u0947\u0902", sp: "\u0915 \u0938\u0947 \u0915\u092c\u0942\u0924\u0930", lg: "hi-IN", ans: "pigeon", opts: [{ id: "pigeon", e: "&#128330;&#65039;", n: "\u0915\u092c\u0942\u0924\u0930" }, { id: "rabbit", e: "&#128007;", n: "\u0916\u0930\u0917\u094b\u0936" }, { id: "fish", e: "&#128031;", n: "\u092e\u091b\u0932\u0940" }] },
+      { ask: "Tap on E for Elephant", sp: "E for Elephant. Tap on Elephant", lg: "en-IN", ans: "ele", opts: [{ id: "lion", e: "&#129409;", n: "Lion" }, { id: "ele", e: "&#128024;", n: "Elephant" }, { id: "ban", e: "&#127820;", n: "Banana" }] },
+      { ask: "\u092e \u0938\u0947 \u092e\u091b\u0932\u0940 \u092a\u0930 \u091f\u0948\u092a \u0915\u0930\u0947\u0902", sp: "\u092e \u0938\u0947 \u092e\u091b\u0932\u0940", lg: "hi-IN", ans: "fish", opts: [{ id: "ele", e: "&#128024;", n: "\u0939\u093e\u0925\u0940" }, { id: "pea", e: "&#129434;", n: "\u092e\u094b\u0930" }, { id: "fish", e: "&#128031;", n: "\u092e\u091b\u0932\u0940" }] },
+      { ask: "Tap on P for Peacock", sp: "P for Peacock. Tap on Peacock", lg: "en-IN", ans: "pea", opts: [{ id: "par", e: "&#129436;", n: "Parrot" }, { id: "owl", e: "&#129417;", n: "Owl" }, { id: "pea", e: "&#129434;", n: "Peacock" }] },
+      { ask: "\u0936 \u0938\u0947 \u0936\u0947\u0930 \u092a\u0930 \u091f\u0948\u092a \u0915\u0930\u0947\u0902", sp: "\u0936 \u0938\u0947 \u0936\u0947\u0930", lg: "hi-IN", ans: "lion", opts: [{ id: "tig", e: "&#128047;", n: "\u092c\u093e\u0918" }, { id: "lion", e: "&#129409;", n: "\u0936\u0947\u0930" }, { id: "cow", e: "&#128004;", n: "\u0917\u093e\u092f" }] }
     ];
 
     var BAB_LIST = [
       { kind: "After", sp: "What comes after A, B?", lg: "en-IN", seq: ["A", "B", "?"], ans: "C", opts: ["C", "D", "E"] },
       { kind: "Before", sp: "What comes before E, F?", lg: "en-IN", seq: ["?", "E", "F"], ans: "D", opts: ["C", "D", "G"] },
       { kind: "Between", sp: "What comes between G and I?", lg: "en-IN", seq: ["G", "?", "I"], ans: "H", opts: ["H", "J", "K"] },
-      { kind: "बाद में (After)", sp: "अ, आ के बाद क्या आता है?", lg: "hi-IN", seq: ["अ", "आ", "?"], ans: "इ", opts: ["इ", "उ", "ए"] },
-      { kind: "बीच में (Between)", sp: "इ और उ के बीच क्या आता है?", lg: "hi-IN", seq: ["इ", "?", "उ"], ans: "ई", opts: ["अ", "ई", "ऊ"] },
+      { kind: "After (Hindi)", sp: "\u0905, \u0906 \u0915\u0947 \u092c\u093e\u0926 \u0915\u094d\u092f\u093e \u0906\u0924\u093e \u0939\u0948?", lg: "hi-IN", seq: ["\u0905", "\u0906", "?"], ans: "\u0907", opts: ["\u0907", "\u0909", "\u090f"] },
+      { kind: "Between (Hindi)", sp: "\u0907 \u0914\u0930 \u0909 \u0915\u0947 \u092c\u0940\u091a \u0915\u094d\u092f\u093e \u0906\u0924\u093e \u0939\u0948?", lg: "hi-IN", seq: ["\u0907", "?", "\u0909"], ans: "\u0908", opts: ["\u0905", "\u0908", "\u090a"] },
       { kind: "After Number", sp: "What comes after 7, 8?", lg: "en-IN", seq: ["7", "8", "?"], ans: "9", opts: ["6", "9", "10"] },
       { kind: "Between Number", sp: "What comes between 14 and 16?", lg: "en-IN", seq: ["14", "?", "16"], ans: "15", opts: ["13", "15", "17"] }
     ];
 
     var SHAPES_LIST = [
-      { name: "Circle", sp: "Circle. गोला", emoji: "🔴", opts: ["Circle", "Square", "Triangle"] },
-      { name: "Square", sp: "Square. चौकोर", emoji: "🟦", opts: ["Circle", "Square", "Star"] },
-      { name: "Yellow Star", sp: "Yellow Star. पीला तारा", emoji: "⭐", opts: ["Red Heart", "Yellow Star", "Green Leaf"] },
-      { name: "Red Heart", sp: "Red Heart. लाल दिल", emoji: "❤️", opts: ["Red Heart", "Blue Diamond", "Yellow Star"] },
-      { name: "Blue Diamond", sp: "Blue Diamond. नीला हीरा", emoji: "💎", opts: ["Green Circle", "Blue Diamond", "Pink Flower"] },
-      { name: "Orange Triangle", sp: "Orange Triangle. त्रिकोण", emoji: "🔺", opts: ["Orange Triangle", "Purple Square", "Yellow Moon"] }
+      { name: "Circle", sp: "Circle", emoji: "&#128308;", opts: ["Circle", "Square", "Triangle"] },
+      { name: "Square", sp: "Square", emoji: "&#128998;", opts: ["Circle", "Square", "Star"] },
+      { name: "Yellow Star", sp: "Yellow Star", emoji: "&#11088;", opts: ["Red Heart", "Yellow Star", "Green Leaf"] },
+      { name: "Red Heart", sp: "Red Heart", emoji: "&#10084;&#65039;", opts: ["Red Heart", "Blue Diamond", "Yellow Star"] },
+      { name: "Blue Diamond", sp: "Blue Diamond", emoji: "&#128142;", opts: ["Green Circle", "Blue Diamond", "Pink Flower"] },
+      { name: "Orange Triangle", sp: "Orange Triangle", emoji: "&#128314;", opts: ["Orange Triangle", "Purple Square", "Yellow Moon"] }
     ];
 
     var NUM_NAMES = {
@@ -203,98 +201,95 @@
     };
 
     var LKG_WORDS = [
-      { lg: "hi-IN", e: "🪷", w: "कमल", l: ["क", "म", "ल"], p: ["ल", "क", "र", "म"] },
-      { lg: "hi-IN", e: "🏠", w: "घर", l: ["घ", "र"], p: ["र", "न", "घ", "ल"] },
-      { lg: "hi-IN", e: "🚌", w: "बस", l: ["ब", "स"], p: ["स", "क", "ब", "म"] },
-      { lg: "hi-IN", e: "🍉", w: "फल", l: ["फ", "ल"], p: ["ल", "फ", "ज", "न"] },
-      { lg: "hi-IN", e: "🚰", w: "नल", l: ["न", "ल"], p: ["ल", "क", "न", "प"] },
-      { lg: "hi-IN", e: "🐊", w: "मगर", l: ["म", "ग", "र"], p: ["र", "म", "ल", "ग"] },
-      { lg: "hi-IN", e: "🦆", w: "बतख", l: ["ब", "त", "ख"], p: ["ख", "ब", "त", "स"] },
-      { lg: "en-IN", e: "🐱", w: "CAT", l: ["C", "A", "T"], p: ["T", "C", "O", "A"] },
-      { lg: "en-IN", e: "🐶", w: "DOG", l: ["D", "O", "G"], p: ["G", "D", "A", "O"] },
-      { lg: "en-IN", e: "☀️", w: "SUN", l: ["S", "U", "N"], p: ["N", "S", "I", "U"] },
-      { lg: "en-IN", e: "🚌", w: "BUS", l: ["B", "U", "S"], p: ["S", "B", "E", "U"] },
-      { lg: "en-IN", e: "🎩", w: "HAT", l: ["H", "A", "T"], p: ["A", "H", "E", "T"] },
-      { lg: "en-IN", e: "🦊", w: "FOX", l: ["F", "O", "X"], p: ["X", "F", "U", "O"] }
+      { lg: "hi-IN", e: "&#129719;", w: "\u0915\u092e\u0932", l: ["\u0915", "\u092e", "\u0932"], p: ["\u0932", "\u0915", "\u0930", "\u092e"] },
+      { lg: "hi-IN", e: "&#127968;", w: "\u0918\u0930", l: ["\u0918", "\u0930"], p: ["\u0930", "\u0928", "\u0918", "\u0932"] },
+      { lg: "hi-IN", e: "&#128652;", w: "\u092c\u0938", l: ["\u092c", "\u0938"], p: ["\u0938", "\u0915", "\u092c", "\u092e"] },
+      { lg: "hi-IN", e: "&#127817;", w: "\u092b\u0932", l: ["\u092b", "\u0932"], p: ["\u0932", "\u092b", "\u091c", "\u0928"] },
+      { lg: "hi-IN", e: "&#128688;", w: "\u0928\u0932", l: ["\u0928", "\u0932"], p: ["\u0932", "\u0915", "\u0928", "\u092a"] },
+      { lg: "hi-IN", e: "&#128010;", w: "\u092e\u0917\u0930", l: ["\u092e", "\u0917", "\u0930"], p: ["\u0930", "\u092e", "\u0932", "\u0917"] },
+      { lg: "en-IN", e: "&#128049;", w: "CAT", l: ["C", "A", "T"], p: ["T", "C", "O", "A"] },
+      { lg: "en-IN", e: "&#128054;", w: "DOG", l: ["D", "O", "G"], p: ["G", "D", "A", "O"] },
+      { lg: "en-IN", e: "&#9728;&#65039;", w: "SUN", l: ["S", "U", "N"], p: ["N", "S", "I", "U"] },
+      { lg: "en-IN", e: "&#128652;", w: "BUS", l: ["B", "U", "S"], p: ["S", "B", "E", "U"] },
+      { lg: "en-IN", e: "&#127913;", w: "HAT", l: ["H", "A", "T"], p: ["A", "H", "E", "T"] },
+      { lg: "en-IN", e: "&#129418;", w: "FOX", l: ["F", "O", "X"], p: ["X", "F", "U", "O"] }
     ];
 
-    var VYANJAN = ["क","ख","ग","घ","ङ","च","छ","ज","झ","ञ","ट","ठ","ड","ढ","ण","त","थ","द","ध","न","प","फ","ब","भ","म","य","र","ल","व","श","ष","स","ह","क्ष","त्र","ज्ञ"];
+    var VYANJAN = ["\u0915","\u0916","\u0917","\u0918","\u0919","\u091a","\u091b","\u091c","\u091d","\u091e","\u091f","\u0920","\u0921","\u0922","\u0923","\u0924","\u0925","\u0926","\u0927","\u0928","\u092a","\u092b","\u092c","\u092d","\u092e","\u092f","\u0930","\u0932","\u0935","\u0936","\u0937","\u0938","\u0939","\u0915\u094d\u0937","\u0924\u094d\u0930","\u091c\u094d\u091e"];
 
     var UKG_CVC = [
-      { e: "🐱", w: "CAT", pre: "C", post: "T", ans: "A", opts: ["A", "E", "I", "O", "U"] },
-      { e: "🖊️", w: "PEN", pre: "P", post: "N", ans: "E", opts: ["A", "E", "I", "O", "U"] },
-      { e: "🐷", w: "PIG", pre: "P", post: "G", ans: "I", opts: ["A", "E", "I", "O", "U"] },
-      { e: "🐶", w: "DOG", pre: "D", post: "G", ans: "O", opts: ["A", "E", "I", "O", "U"] },
-      { e: "☀️", w: "SUN", pre: "S", post: "N", ans: "U", opts: ["A", "E", "I", "O", "U"] },
-      { e: "🐟", w: "FISH", pre: "F", post: "SH", ans: "I", opts: ["A", "E", "I", "O", "U"] },
-      { e: "🦆", w: "DUCK", pre: "D", post: "CK", ans: "U", opts: ["A", "E", "I", "O", "U"] },
-      { e: "🛏️", w: "BED", pre: "B", post: "D", ans: "E", opts: ["A", "E", "I", "O", "U"] },
-      { e: "☕", w: "CUP", pre: "C", post: "P", ans: "U", opts: ["A", "E", "I", "O", "U"] },
-      { e: "⭐", w: "STAR", pre: "ST", post: "R", ans: "A", opts: ["A", "E", "I", "O", "U"] }
+      { e: "&#128049;", w: "CAT", pre: "C", post: "T", ans: "A", opts: ["A", "E", "I", "O", "U"] },
+      { e: "&#128394;&#65039;", w: "PEN", pre: "P", post: "N", ans: "E", opts: ["A", "E", "I", "O", "U"] },
+      { e: "&#128055;", w: "PIG", pre: "P", post: "G", ans: "I", opts: ["A", "E", "I", "O", "U"] },
+      { e: "&#128054;", w: "DOG", pre: "D", post: "G", ans: "O", opts: ["A", "E", "I", "O", "U"] },
+      { e: "&#9728;&#65039;", w: "SUN", pre: "S", post: "N", ans: "U", opts: ["A", "E", "I", "O", "U"] },
+      { e: "&#128031;", w: "FISH", pre: "F", post: "SH", ans: "I", opts: ["A", "E", "I", "O", "U"] },
+      { e: "&#129414;", w: "DUCK", pre: "D", post: "CK", ans: "U", opts: ["A", "E", "I", "O", "U"] },
+      { e: "&#128719;&#65039;", w: "BED", pre: "B", post: "D", ans: "E", opts: ["A", "E", "I", "O", "U"] },
+      { e: "&#9749;", w: "CUP", pre: "C", post: "P", ans: "U", opts: ["A", "E", "I", "O", "U"] },
+      { e: "&#11088;", w: "STAR", pre: "ST", post: "R", ans: "A", opts: ["A", "E", "I", "O", "U"] }
     ];
 
     var UKG_MATRA = [
-      { e: "🚗", w: "कार", pre: "क", post: "र", ans: "ा", opts: ["ा", "ि", "ी", "ु", "े"] },
-      { e: "📖", w: "किताब", pre: "क", post: "ताब", ans: "ि", opts: ["ा", "ि", "ी", "ो", "ै"] },
-      { e: "🐟", w: "मछली", pre: "मछल", post: "", ans: "ी", opts: ["ि", "ी", "ु", "े", "ौ"] },
-      { e: "🌹", w: "गुलाब", pre: "ग", post: "लाब", ans: "ु", opts: ["ा", "ि", "ु", "ू", "ो"] },
-      { e: "☀️", w: "सूरज", pre: "स", post: "रज", ans: "ू", opts: ["ु", "ू", "े", "ो", "ा"] },
-      { e: "🍌", w: "केला", pre: "क", post: "ला", ans: "े", opts: ["ा", "ी", "ु", "े", "ै"] },
-      { e: "👜", w: "थैला", pre: "थ", post: "ला", ans: "ै", opts: ["े", "ै", "ो", "ौ", "ा"] },
-      { e: "🦚", w: "मोर", pre: "म", post: "र", ans: "ो", opts: ["ि", "ु", "े", "ो", "ौ"] },
-      { e: "⛵", w: "नौका", pre: "न", post: "का", ans: "ौ", opts: ["ो", "ौ", "ा", "ी", "े"] },
-      { e: "🐘", w: "हाथी", pre: "हाथ", post: "", ans: "ी", opts: ["ि", "ी", "ु", "े", "ो"] }
+      { e: "&#128663;", w: "\u0915\u093e\u0930", pre: "\u0915", post: "\u0930", ans: "\u093e", opts: ["\u093e", "\u093f", "\u0940", "\u0941", "\u0947"] },
+      { e: "&#128214;", w: "\u0915\u093f\u0924\u093e\u092c", pre: "\u0915", post: "\u0924\u093e\u092c", ans: "\u093f", opts: ["\u093e", "\u093f", "\u0940", "\u094b", "\u0948"] },
+      { e: "&#128031;", w: "\u092e\u091b\u0932\u0940", pre: "\u092e\u091b\u0932", post: "", ans: "\u0940", opts: ["\u093f", "\u0940", "\u0941", "\u0947", "\u094c"] },
+      { e: "&#127801;", w: "\u0917\u0941\u0932\u093e\u092c", pre: "\u0917", post: "\u0932\u093e\u092c", ans: "\u0941", opts: ["\u093e", "\u093f", "\u0941", "\u0942", "\u094b"] },
+      { e: "&#9728;&#65039;", w: "\u0938\u0942\u0930\u091c", pre: "\u0938", post: "\u0930\u091c", ans: "\u0942", opts: ["\u0941", "\u0942", "\u0947", "\u094b", "\u093e"] },
+      { e: "&#127820;", w: "\u0915\u0947\u0932\u093e", pre: "\u0915", post: "\u0932\u093e", ans: "\u0947", opts: ["\u093e", "\u0940", "\u0941", "\u0947", "\u0948"] },
+      { e: "&#128092;", w: "\u0925\u0948\u0932\u093e", pre: "\u0925", post: "\u0932\u093e", ans: "\u0948", opts: ["\u0947", "\u0948", "\u094b", "\u094c", "\u093e"] },
+      { e: "&#129434;", w: "\u092e\u094b\u0930", pre: "\u092e", post: "\u0930", ans: "\u094b", opts: ["\u093f", "\u0941", "\u0947", "\u094b", "\u094c"] },
+      { e: "&#9973;", w: "\u0928\u094c\u0915\u093e", pre: "\u0928", post: "\u0915\u093e", ans: "\u094c", opts: ["\u094b", "\u094c", "\u093e", "\u0940", "\u0947"] },
+      { e: "&#128024;", w: "\u0939\u093e\u0925\u0940", pre: "\u0939\u093e\u0925", post: "", ans: "\u0940", opts: ["\u093f", "\u0940", "\u0941", "\u0947", "\u094b"] }
     ];
 
     var PIC_WORLD = {
       Animals: [
-        { e: "🦁", en: "Lion", hi: "शेर" }, { e: "🐘", en: "Elephant", hi: "हाथी" },
-        { e: "🐯", en: "Tiger", hi: "बाघ" }, { e: "🐒", en: "Monkey", hi: "बंदर" },
-        { e: "🐄", en: "Cow", hi: "गाय" }, { e: "🐕", en: "Dog", hi: "कुत्ता" }
+        { e: "&#129409;", en: "Lion", hi: "\u0936\u0947\u0930" }, { e: "&#128024;", en: "Elephant", hi: "\u0939\u093e\u0925\u0940" },
+        { e: "&#128047;", en: "Tiger", hi: "\u092c\u093e\u0918" }, { e: "&#128018;", en: "Monkey", hi: "\u092c\u0902\u0926\u0930" },
+        { e: "&#128004;", en: "Cow", hi: "\u0917\u093e\u092f" }, { e: "&#128021;", en: "Dog", hi: "\u0915\u0941\u0924\u094d\u0924\u093e" }
       ],
       Birds: [
-        { e: "🦚", en: "Peacock", hi: "मोर" }, { e: "🦜", en: "Parrot", hi: "तोता" },
-        { e: "🦉", en: "Owl", hi: "उल्लू" }, { e: "🦆", en: "Duck", hi: "बत्तख" },
-        { e: "🕊️", en: "Pigeon", hi: "कबूतर" }, { e: "🦅", en: "Eagle", hi: "बाज़" }
+        { e: "&#129434;", en: "Peacock", hi: "\u092e\u094b\u0930" }, { e: "&#129436;", en: "Parrot", hi: "\u0924\u094b\u0924\u093e" },
+        { e: "&#129417;", en: "Owl", hi: "\u0909\u0932\u094d\u0932\u0942" }, { e: "&#129414;", en: "Duck", hi: "\u092c\u0924\u094d\u0924\u0916" },
+        { e: "&#128330;&#65039;", en: "Pigeon", hi: "\u0915\u092c\u0942\u0924\u0930" }, { e: "&#129413;", en: "Eagle", hi: "\u092c\u093e\u091c" }
       ],
       Fruits: [
-        { e: "🍎", en: "Apple", hi: "सेब" }, { e: "🥭", en: "Mango", hi: "आम" },
-        { e: "🍌", en: "Banana", hi: "केला" }, { e: "🍇", en: "Grapes", hi: "अंगूर" },
-        { e: "🍊", en: "Orange", hi: "संतरा" }, { e: "🍉", en: "Watermelon", hi: "तरबूज" }
+        { e: "&#127822;", en: "Apple", hi: "\u0938\u0947\u092c" }, { e: "&#129389;", en: "Mango", hi: "\u0906\u092e" },
+        { e: "&#127820;", en: "Banana", hi: "\u0915\u0947\u0932\u093e" }, { e: "&#127815;", en: "Grapes", hi: "\u0905\u0902\u0917\u0942\u0930" },
+        { e: "&#127818;", en: "Orange", hi: "\u0938\u0902\u0924\u0930\u093e" }, { e: "&#127817;", en: "Watermelon", hi: "\u0924\u0930\u092c\u0942\u091c" }
       ],
       Vegetables: [
-        { e: "🥔", en: "Potato", hi: "आलू" }, { e: "🍅", en: "Tomato", hi: "टमाटर" },
-        { e: "🥕", en: "Carrot", hi: "गाजर" }, { e: "🧅", en: "Onion", hi: "प्याज" },
-        { e: "🍆", en: "Brinjal", hi: "बैंगन" }, { e: "🌽", en: "Corn", hi: "मक्का" }
+        { e: "&#129364;", en: "Potato", hi: "\u0906\u0932\u0942" }, { e: "&#127813;", en: "Tomato", hi: "\u091f\u092e\u093e\u091f\u0930" },
+        { e: "&#129365;", en: "Carrot", hi: "\u0917\u093e\u091c\u0930" }, { e: "&#129477;", en: "Onion", hi: "\u092a\u094d\u092f\u093e\u091c" },
+        { e: "&#127814;", en: "Brinjal", hi: "\u092c\u0948\u0902\u0917\u0928" }, { e: "&#127805;", en: "Corn", hi: "\u092e\u0915\u094d\u0915\u093e" }
       ],
       Vehicles: [
-        { e: "🚗", en: "Car", hi: "कार" }, { e: "🚌", en: "Bus", hi: "बस" },
-        { e: "🚂", en: "Train", hi: "रेलगाड़ी" }, { e: "✈️", en: "Aeroplane", hi: "हवाई जहाज" },
-        { e: "🚲", en: "Bicycle", hi: "साइकिल" }, { e: "🚢", en: "Ship", hi: "जहाज" }
+        { e: "&#128663;", en: "Car", hi: "\u0915\u093e\u0930" }, { e: "&#128652;", en: "Bus", hi: "\u092c\u0938" },
+        { e: "&#128642;", en: "Train", hi: "\u0930\u0947\u0932\u0917\u093e\u0921\u093c\u0940" }, { e: "&#9992;&#65039;", en: "Aeroplane", hi: "\u0939\u0935\u093e\u0908 \u091c\u0939\u093e\u091c" },
+        { e: "&#128690;", en: "Bicycle", hi: "\u0938\u093e\u0907\u0915\u093f\u0932" }, { e: "&#128674;", en: "Ship", hi: "\u091c\u0939\u093e\u091c" }
       ],
       BodyParts: [
-        { e: "👀", en: "Eyes", hi: "आंखें" }, { e: "👃", en: "Nose", hi: "नाक" },
-        { e: "👂", en: "Ears", hi: "कान" }, { e: "👄", en: "Lips", hi: "होंठ" },
-        { e: "✋", en: "Hand", hi: "हाथ" }, { e: "🦶", en: "Foot", hi: "पैर" }
+        { e: "&#128064;", en: "Eyes", hi: "\u0906\u0902\u0916\u0947\u0902" }, { e: "&#128067;", en: "Nose", hi: "\u0928\u093e\u0915" },
+        { e: "&#128066;", en: "Ears", hi: "\u0915\u093e\u0928" }, { e: "&#128068;", en: "Lips", hi: "\u0939\u094b\u0902\u0920" },
+        { e: "&#9995;", en: "Hand", hi: "\u0939\u093e\u0925" }, { e: "&#129462;", en: "Foot", hi: "\u092a\u0948\u0930" }
       ]
     };
 
     var SHADOWS = [
-      { t: "🐘", n: "Elephant", o: ["🦁", "🐘", "🦒"] },
-      { t: "🍎", n: "Apple", o: ["🍌", "🍇", "🍎"] },
-      { t: "✈️", n: "Aeroplane", o: ["✈️", "🚗", "🚢"] },
-      { t: "🦚", n: "Peacock", o: ["🦉", "🦆", "🦚"] },
-      { t: "🚗", n: "Car", o: ["🚌", "🚗", "🚲"] },
-      { t: "🐢", n: "Turtle", o: ["🐸", "🐢", "🦀"] }
+      { t: "ele", te: "&#128024;", n: "Elephant", o: [{ id: "lion", e: "&#129409;" }, { id: "ele", e: "&#128024;" }, { id: "gir", e: "&#129426;" }] },
+      { t: "app", te: "&#127822;", n: "Apple", o: [{ id: "ban", e: "&#127820;" }, { id: "grp", e: "&#127815;" }, { id: "app", e: "&#127822;" }] },
+      { t: "air", te: "&#9992;&#65039;", n: "Aeroplane", o: [{ id: "air", e: "&#9992;&#65039;" }, { id: "car", e: "&#128663;" }, { id: "shp", e: "&#128674;" }] },
+      { t: "pea", te: "&#129434;", n: "Peacock", o: [{ id: "owl", e: "&#129417;" }, { id: "duk", e: "&#129414;" }, { id: "pea", e: "&#129434;" }] },
+      { t: "car", te: "&#128663;", n: "Car", o: [{ id: "bus", e: "&#128652;" }, { id: "car", e: "&#128663;" }, { id: "bik", e: "&#128690;" }] }
     ];
 
     var ODDS = [
-      { items: ["🍎", "🍌", "🥭", "🚗"], ans: "🚗" },
-      { items: ["🦁", "🐯", "🐘", "🦜"], ans: "🦜" },
-      { items: ["अ", "आ", "इ", "क"], ans: "क" },
-      { items: ["2", "4", "6", "A"], ans: "A" },
-      { items: ["🥔", "🍅", "🥕", "⚽"], ans: "⚽" },
-      { items: ["🚗", "🚌", "🚂", "🐶"], ans: "🐶" }
+      { items: [{ id: "a", e: "&#127822;" }, { id: "b", e: "&#127820;" }, { id: "c", e: "&#129389;" }, { id: "d", e: "&#128663;" }], ans: "d" },
+      { items: [{ id: "a", e: "&#129409;" }, { id: "b", e: "&#128047;" }, { id: "c", e: "&#128024;" }, { id: "d", e: "&#129436;" }], ans: "d" },
+      { items: [{ id: "a", e: "\u0905" }, { id: "b", e: "\u0906" }, { id: "c", e: "\u0907" }, { id: "d", e: "\u0915" }], ans: "d" },
+      { items: [{ id: "a", e: "2" }, { id: "b", e: "4" }, { id: "c", e: "6" }, { id: "d", e: "A" }], ans: "d" },
+      { items: [{ id: "a", e: "&#129364;" }, { id: "b", e: "&#127813;" }, { id: "c", e: "&#129365;" }, { id: "d", e: "&#9917;" }], ans: "d" }
     ];
 
     var state = {
@@ -304,7 +299,7 @@
     };
 
     function initMem() {
-      var icons = ["🍎", "🚗", "🐘", "🦚", "⭐", "🦁"];
+      var icons = ["&#127822;", "&#128663;", "&#128024;", "&#129434;", "&#11088;", "&#129409;"];
       state.memCards = icons.concat(icons).sort(function() { return Math.random() - 0.5; });
       state.memOpen = [];
       state.memDone = [];
@@ -350,7 +345,7 @@
         document.getElementById("app").innerHTML = HOME_HTML;
         return;
       }
-      speak(scr + " class");
+      speak(scr);
       render();
     }
 
@@ -372,9 +367,9 @@
 
     function headerHTML(title, color) {
       return '<div class="hdr">' +
-        '<button onclick="go(\'home\')" class="btn btn-home">🏠 Home</button>' +
+        '<button onclick="go(\'home\')" class="btn btn-home">&#127968; Home</button>' +
         '<div style="font-weight:900;font-size:17px;color:' + color + ';">' + title + '</div>' +
-        '<div class="star-pill">⭐ ' + state.stars + '</div>' +
+        '<div class="star-pill">&#11088; ' + state.stars + '</div>' +
       '</div>';
     }
 
@@ -388,7 +383,7 @@
     }
 
     function renderNursery() {
-      var tabs = ["🔤 A-Z / अ-अः", "🔊 Sound & Pic", "↔️ Before/After", "🔢 Count 1-50", "🎨 Shapes"];
+      var tabs = ["A-Z / Swar", "Sound & Pic", "Before/After", "Count 1-50", "Shapes"];
       var body = "";
       if (state.tab === 0) {
         var list = state.nurLang === "eng" ? NURSERY_AZ : NURSERY_SWAR;
@@ -403,335 +398,15 @@
         body = '<div style="text-align:center;">' +
           '<div style="display:flex;justify-content:center;gap:8px;margin-bottom:14px;">' +
             '<button onclick="lastSpoken=\'\'; state.nurLang=\'eng\'; state.qIdx=0; render();" class="btn" style="padding:6px 14px;border-radius:12px;font-weight:bold;font-size:12px;background:' + (state.nurLang==="eng"?"#0288D1":"#E0F2FE") + ';color:' + (state.nurLang==="eng"?"#fff":"#0369A1") + ';">A to Z (26)</button>' +
-            '<button onclick="lastSpoken=\'\'; state.nurLang=\'hin\'; state.qIdx=0; render();" class="btn" style="padding:6px 14px;border-radius:12px;font-weight:bold;font-size:12px;background:' + (state.nurLang==="hin"?"#0288D1":"#E0F2FE") + ';color:' + (state.nurLang==="hin"?"#fff":"#0369A1") + ';">अ से अः (12)</button>' +
+            '<button onclick="lastSpoken=\'\'; state.nurLang=\'hin\'; state.qIdx=0; render();" class="btn" style="padding:6px 14px;border-radius:12px;font-weight:bold;font-size:12px;background:' + (state.nurLang==="hin"?"#0288D1":"#E0F2FE") + ';color:' + (state.nurLang==="hin"?"#fff":"#0369A1") + ';">\u0905 \u0938\u0947 \u0905\u0903 (12)</button>' +
           '</div>' +
           '<div onclick="speak(\'' + item.p + '\', \'' + lg + '\')" style="margin:0 auto 12px;width:180px;height:180px;background:#fff;border:4px solid #BAE6FD;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
             '<div style="font-size:74px;">' + item.e + '</div>' +
-            '<div style="font-size:15px;font-weight:800;color:#0369A1;margin-top:6px;">🔊 ' + item.p + '</div>' +
+            '<div style="font-size:15px;font-weight:800;color:#0369A1;margin-top:6px;">&#128266; ' + item.p + '</div>' +
           '</div>' +
-          '<div style="font-size:12px;font-weight:bold;color:#64748B;margin-bottom:12px;">सही अक्षर पर टैप करें (' + ((state.qIdx % list.length) + 1) + '/' + list.length + ')</div>' +
+          '<div style="font-size:12px;font-weight:bold;color:#64748B;margin-bottom:12px;">Tap correct letter (' + ((state.qIdx % list.length) + 1) + '/' + list.length + ')</div>' +
           '<div class="grid3">' + btns + '</div>' +
         '</div>';
       } else if (state.tab === 1) {
         var item = SOUND_PIC[state.qIdx % SOUND_PIC.length];
-        autoSpeak("n1-" + state.qIdx, item.sp, item.lg);
-        var btns = "";
-        for (var i = 0; i < item.opts.length; i++) {
-          var o = item.opts[i];
-          btns += '<button onclick="checkAns(' + (o.e === item.ans) + ', \'' + o.n + '\', \'' + item.lg + '\')" class="btn opt-btn" style="padding:14px 4px;"><div style="font-size:48px;">' + o.e + '</div><div style="font-size:12px;color:#475569;margin-top:4px;">' + o.n + '</div></button>';
-        }
-        body = '<div style="text-align:center;">' +
-          '<button onclick="speak(\'' + item.sp + '\', \'' + item.lg + '\')" class="btn" style="background:#0288D1;color:#fff;padding:12px 20px;border-radius:18px;font-weight:bold;font-size:16px;margin-bottom:20px;">🔊 ' + item.ask + '</button>' +
-          '<div class="grid3">' + btns + '</div>' +
-        '</div>';
-      } else if (state.tab === 2) {
-        var item = BAB_LIST[state.qIdx % BAB_LIST.length];
-        autoSpeak("n2-" + state.qIdx, item.sp, item.lg);
-        var seqHtml = "";
-        for (var i = 0; i < item.seq.length; i++) {
-          var s = item.seq[i];
-          var st = s === "?" ? "background:#FEF3C7;border:3px dashed #F59E0B;color:#D97706;" : "background:#fff;border:2px solid #7DD3FC;color:#1E293B;";
-          seqHtml += '<div style="width:74px;height:74px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;' + st + '">' + s + '</div>';
-        }
-        var btns = "";
-        for (var j = 0; j < item.opts.length; j++) {
-          var o = item.opts[j];
-          btns += '<button onclick="checkAns(' + (o === item.ans) + ', \'' + o + '\', \'' + item.lg + '\')" class="btn opt-btn" style="background:#E0F2FE;">' + o + '</button>';
-        }
-        body = '<div style="text-align:center;">' +
-          '<div style="font-size:14px;font-weight:bold;color:#0369A1;margin-bottom:16px;">🔊 ' + item.kind + ' — खाली जगह भरें</div>' +
-          '<div style="display:flex;justify-content:center;gap:12px;margin-bottom:22px;">' + seqHtml + '</div>' +
-          '<div class="grid3">' + btns + '</div>' +
-        '</div>';
-      } else if (state.tab === 3) {
-        var n = state.countNum;
-        autoSpeak("n3-" + state.qIdx + "-" + n, "Count the strawberries");
-        var opts = [n, n + 1, n > 1 ? n - 1 : 4].sort(function() { return Math.random() - 0.5; });
-        var berries = "";
-        for (var i = 0; i < n; i++) berries += '<span style="font-size:30px;margin:2px;">🍓</span>';
-        var btns = "";
-        for (var j = 0; j < opts.length; j++) {
-          var o = opts[j];
-          btns += '<button onclick="checkAns(' + (o === n) + ', \'' + o + '\', \'en-IN\')" class="btn opt-btn">' + o + '</button>';
-        }
-        var chart = "";
-        for (var k = 1; k <= 50; k++) {
-          chart += '<button onclick="speak(\'' + k + '\')" class="btn" style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px;padding:6px 0;font-size:12px;font-weight:bold;color:#0C4A6E;">' + k + '</button>';
-        }
-        body = '<div style="text-align:center;">' +
-          '<div style="font-size:13px;font-weight:bold;color:#0369A1;margin-bottom:8px;">🔊 गिनें और सही नंबर चुनें (Count & Tap)</div>' +
-          '<div style="background:#fff;border:2px solid #BAE6FD;border-radius:22px;padding:14px;max-width:320px;margin:0 auto 14px;display:flex;flex-wrap:wrap;justify-content:center;">' + berries + '</div>' +
-          '<div class="grid3" style="margin-bottom:18px;">' + btns + '</div>' +
-          '<div style="font-size:12px;font-weight:bold;color:#64748B;margin-bottom:6px;">1 to 50 Counting (टैप करके सुनें)</div>' +
-          '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-height:150px;overflow-y:auto;">' + chart + '</div>' +
-        '</div>';
-      } else {
-        var item = SHAPES_LIST[state.qIdx % SHAPES_LIST.length];
-        autoSpeak("n4-" + state.qIdx, item.sp);
-        var btns = "";
-        for (var i = 0; i < item.opts.length; i++) {
-          var o = item.opts[i];
-          btns += '<button onclick="checkAns(' + (item.name === o) + ', \'' + item.sp + '\', \'en-IN\')" class="btn opt-btn" style="font-size:18px;padding:14px;">' + o + '</button>';
-        }
-        body = '<div style="text-align:center;">' +
-          '<div style="font-size:14px;font-weight:bold;color:#0369A1;margin-bottom:14px;">🔊 आकार पहचानें (Shapes)</div>' +
-          '<div onclick="speak(\'' + item.sp + '\')" style="margin:0 auto 18px;width:130px;height:130px;background:#fff;border:2px solid #BAE6FD;border-radius:26px;display:flex;align-items:center;justify-content:center;font-size:72px;">' + item.emoji + '</div>' +
-          '<div class="grid1">' + btns + '</div>' +
-        '</div>';
-      }
-      return headerHTML("Nursery Class", "#0288D1") + tabsHTML(tabs, "#0288D1") + '<div style="padding:16px;flex:1;">' + body + '</div>';
-    }
-
-    function tapLkg(ch) {
-      var item = LKG_WORDS[state.qIdx % LKG_WORDS.length];
-      playTone("pop");
-      speak(ch, item.lg);
-      state.built.push(ch);
-      if (state.built.length === item.l.length) {
-        if (state.built.join("") === item.l.join("")) {
-          setTimeout(function() { speak(item.w, item.lg); addStar(); }, 350);
-        } else {
-          setTimeout(function() { state.built = []; wrongAns(); }, 350);
-        }
-      } else { render(); }
-    }
-
-    function renderLKG() {
-      var tabs = ["🧩 शब्द बनाएं", "अ व्यंजन (क-ज्ञ)", "🔢 1-100 & Names", "⚖️ More / Less"];
-      var body = "";
-      if (state.tab === 0) {
-        var item = LKG_WORDS[state.qIdx % LKG_WORDS.length];
-        autoSpeak("l0-" + state.qIdx, item.w, item.lg);
-        var boxes = "";
-        for (var i = 0; i < item.l.length; i++) {
-          var ch = state.built[i];
-          var st = ch ? "background:#ECFCCB;border:2px solid #65A30D;color:#365314;" : "background:#fff;border:2px dashed #84CC16;color:#CBD5E1;";
-          boxes += '<div style="width:62px;height:62px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;' + st + '">' + (ch || "?") + '</div>';
-        }
-        var pool = "";
-        for (var j = 0; j < item.p.length; j++) {
-          var c = item.p[j];
-          pool += '<button onclick="tapLkg(\'' + c + '\')" class="btn" style="width:62px;height:62px;background:#fff;border:2px solid #84CC16;border-bottom-width:4px;border-radius:16px;font-size:28px;font-weight:900;">' + c + '</button>';
-        }
-        body = '<div style="text-align:center;">' +
-          '<div style="font-size:12px;font-weight:bold;color:#3F6212;background:#ECFCCB;display:inline-block;padding:5px 12px;border-radius:14px;margin-bottom:12px;">🔊 अक्षरों को सही क्रम में टैप करके शब्द बनाएं</div>' +
-          '<div onclick="speak(\'' + item.w + '\', \'' + item.lg + '\')" style="font-size:74px;margin-bottom:12px;">' + item.e + '</div>' +
-          '<div style="display:flex;justify-content:center;gap:10px;margin-bottom:20px;">' + boxes + '</div>' +
-          '<div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">' + pool + '</div>' +
-        '</div>';
-      } else if (state.tab === 1) {
-        var grid = "";
-        for (var i = 0; i < VYANJAN.length; i++) {
-          var v = VYANJAN[i];
-          grid += '<button onclick="playTone(\'pop\'); speak(\'' + v + '\', \'hi-IN\')" class="btn" style="background:#fff;border:2px solid #84CC16;border-radius:14px;padding:10px 0;font-size:22px;font-weight:900;color:#1A2E05;">' + v + '</button>';
-        }
-        body = '<div style="text-align:center;"><div style="font-size:13px;font-weight:bold;color:#3F6212;margin-bottom:12px;">किसी भी व्यंजन पर टैप करके सुनें</div><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;">' + grid + '</div></div>';
-      } else if (state.tab === 2) {
-        var keys = Object.keys(NUM_NAMES).map(Number);
-        var target = keys[state.qIdx % keys.length];
-        autoSpeak("l2-" + state.qIdx, "Find number name for " + target);
-        var opts = [target, keys[(state.qIdx + 3) % keys.length], keys[(state.qIdx + 7) % keys.length]].sort(function() { return Math.random() - 0.5; });
-        var btns = "";
-        for (var i = 0; i < opts.length; i++) {
-          var o = opts[i];
-          btns += '<button onclick="checkAns(' + (o === target) + ', \'' + NUM_NAMES[o] + '\', \'en-IN\')" class="btn opt-btn" style="border-color:#84CC16;font-size:18px;padding:12px;">' + NUM_NAMES[o] + '</button>';
-        }
-        var c100 = "";
-        for (var n = 1; n <= 100; n++) c100 += '<button onclick="speak(\'' + n + '\')" class="btn" style="background:#F7FEE7;border-radius:6px;padding:4px 0;font-size:11px;font-weight:bold;color:#365314;">' + n + '</button>';
-        body = '<div style="text-align:center;">' +
-          '<div style="font-size:13px;font-weight:bold;color:#3F6212;margin-bottom:8px;">🔊 Number Name पहचानें</div>' +
-          '<div style="margin:0 auto 14px;width:110px;height:90px;background:#ECFCCB;border:2px solid #84CC16;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:#365314;">' + target + '</div>' +
-          '<div class="grid1" style="margin-bottom:16px;">' + btns + '</div>' +
-          '<div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-height:140px;overflow-y:auto;background:#fff;padding:8px;border-radius:16px;border:1px solid #D9F99D;">' + c100 + '</div>' +
-        '</div>';
-      } else {
-        autoSpeak("l3-" + state.qIdx, "Tap the box with more balloons");
-        var left = (state.qIdx % 4) + 2;
-        var right = left + 3;
-        var lb = ""; for (var i = 0; i < left; i++) lb += '<span style="font-size:28px;">🎈</span>';
-        var rb = ""; for (var j = 0; j < right; j++) rb += '<span style="font-size:28px;">🎈</span>';
-        body = '<div style="text-align:center;">' +
-          '<div style="font-size:14px;font-weight:bold;color:#3F6212;margin-bottom:16px;">🔊 किस बॉक्स में ज़्यादा (MORE) हैं? टैप करें!</div>' +
-          '<div class="grid2">' +
-            '<button onclick="wrongAns()" class="btn" style="background:#fff;border:2px solid #84CC16;border-bottom-width:4px;border-radius:22px;padding:14px;min-height:140px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;">' + lb + '</button>' +
-            '<button onclick="checkAns(true, \'More balloons\', \'en-IN\')" class="btn" style="background:#fff;border:2px solid #84CC16;border-bottom-width:4px;border-radius:22px;padding:14px;min-height:140px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;">' + rb + '</button>' +
-          '</div>' +
-        '</div>';
-      }
-      return headerHTML("LKG Class", "#689F38") + tabsHTML(tabs, "#689F38") + '<div style="padding:16px;flex:1;">' + body + '</div>';
-    }
-
-    function checkUkg(val, mode) {
-      var item = mode === "cvc" ? UKG_CVC[state.qIdx % UKG_CVC.length] : UKG_MATRA[state.qIdx % UKG_MATRA.length];
-      if (val === item.ans) {
-        state.filled = true;
-        speak(item.w, mode === "matra" ? "hi-IN" : "en-IN");
-        addStar();
-      } else { wrongAns(); }
-    }
-
-    function renderUKG() {
-      var tabs = ["🧲 CVC Words", "🪄 हिंदी मात्रा", "💯 Names 1-100", "➕ Visual +/-"];
-      var body = "";
-      if (state.tab === 0) {
-        var item = UKG_CVC[state.qIdx % UKG_CVC.length];
-        autoSpeak("u0-" + state.qIdx, "Complete the word " + item.w);
-        var btns = "";
-        for (var i = 0; i < item.opts.length; i++) {
-          var v = item.opts[i];
-          btns += '<button onclick="checkUkg(\'' + v + '\', \'cvc\')" class="btn" style="width:52px;height:52px;background:#F97316;color:#fff;border-radius:16px;font-size:24px;font-weight:900;">' + v + '</button>';
-        }
-        var dzSt = state.filled ? "background:#A7F3D0;border:3px solid #10B981;color:#065F46;" : "background:#FEF3C7;border:3px dashed #F97316;color:#EA580C;";
-        body = '<div style="text-align:center;">' +
-          '<div style="font-size:12px;font-weight:bold;color:#9A3412;background:#FFEDD5;display:inline-block;padding:5px 12px;border-radius:14px;margin-bottom:12px;">🔊 सही Vowel पर टैप करके शब्द पूरा करें</div>' +
-          '<div onclick="speak(\'' + item.w + '\')" style="font-size:74px;margin-bottom:12px;">' + item.e + '</div>' +
-          '<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:16px 0;">' +
-            '<div style="width:62px;height:62px;background:#fff;border:2px solid #FDBA74;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;">' + item.pre + '</div>' +
-            '<div style="width:74px;height:74px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;' + dzSt + '">' + (state.filled ? item.ans : "?") + '</div>' +
-            '<div style="width:62px;height:62px;background:#fff;border:2px solid #FDBA74;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;">' + item.post + '</div>' +
-          '</div>' +
-          '<div style="display:flex;justify-content:center;gap:8px;margin-top:20px;">' + btns + '</div>' +
-        '</div>';
-      } else if (state.tab === 1) {
-        var item = UKG_MATRA[state.qIdx % UKG_MATRA.length];
-        autoSpeak("u1-" + state.qIdx, item.w, "hi-IN");
-        var btns = "";
-        for (var i = 0; i < item.opts.length; i++) {
-          var m = item.opts[i];
-          btns += '<button onclick="checkUkg(\'' + m + '\', \'matra\')" class="btn" style="width:52px;height:52px;background:#F59E0B;color:#fff;border-radius:16px;font-size:28px;font-weight:900;">' + m + '</button>';
-        }
-        var dzSt = state.filled ? "background:#A7F3D0;border:3px solid #10B981;color:#065F46;" : "background:#FEF3C7;border:3px dashed #F59E0B;color:#D97706;";
-        body = '<div style="text-align:center;">' +
-          '<div style="font-size:12px;font-weight:bold;color:#9A3412;background:#FFEDD5;display:inline-block;padding:5px 12px;border-radius:14px;margin-bottom:12px;">🔊 सही मात्रा पर टैप करके शब्द पूरा करें</div>' +
-          '<div onclick="speak(\'' + item.w + '\', \'hi-IN\')" style="font-size:74px;margin-bottom:12px;">' + item.e + '</div>' +
-          '<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:16px 0;">' +
-            '<div style="padding:0 14px;height:62px;background:#fff;border:2px solid #FDBA74;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;">' + item.pre + '</div>' +
-            '<div style="width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;' + dzSt + '">' + (state.filled ? item.ans : "?") + '</div>' +
-            (item.post ? '<div style="padding:0 14px;height:62px;background:#fff;border:2px solid #FDBA74;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;">' + item.post + '</div>' : '') +
-          '</div>' +
-          '<div style="display:flex;justify-content:center;gap:8px;margin-top:20px;">' + btns + '</div>' +
-        '</div>';
-      } else if (state.tab === 2) {
-        var keys = Object.keys(NUM_NAMES).map(Number);
-        var target = keys[(state.qIdx + 10) % keys.length];
-        autoSpeak("u2-" + state.qIdx, "Find number name for " + target);
-        var opts = [target, keys[(state.qIdx + 4) % keys.length], keys[(state.qIdx + 17) % keys.length]].sort(function() { return Math.random() - 0.5; });
-        var btns = "";
-        for (var i = 0; i < opts.length; i++) {
-          var o = opts[i];
-          btns += '<button onclick="checkAns(' + (o === target) + ', \'' + NUM_NAMES[o] + '\', \'en-IN\')" class="btn opt-btn" style="border-color:#F97316;font-size:18px;padding:13px;">' + NUM_NAMES[o] + '</button>';
-        }
-        body = '<div style="text-align:center;">' +
-          '<div style="font-size:13px;font-weight:bold;color:#9A3412;margin-bottom:8px;">🔊 Number Names (1 to 100)</div>' +
-          '<div style="margin:0 auto 16px;width:120px;height:90px;background:#FEF3C7;border:2px solid #F97316;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:#9A3412;">' + target + '</div>' +
-          '<div class="grid1">' + btns + '</div>' +
-        '</div>';
-      } else {
-        var a = state.mathA, b = state.mathB, op = state.mathOp;
-        var ans = op === "+" ? a + b : a - b;
-        autoSpeak("u3-" + state.qIdx, "What is " + a + (op === "+" ? " plus " : " minus ") + b);
-        var opts = [ans, ans + 1, Math.max(0, ans - 1)].sort(function() { return Math.random() - 0.5; });
-        var apA = ""; for (var i = 0; i < a; i++) apA += "🍎";
-        var apB = ""; for (var j = 0; j < b; j++) apB += "🍏";
-        var btns = "";
-        for (var k = 0; k < opts.length; k++) {
-          var o = opts[k];
-          btns += '<button onclick="checkAns(' + (o === ans) + ', \'' + o + '\', \'en-IN\')" class="btn opt-btn" style="border-color:#F97316;">' + o + '</button>';
-        }
-        body = '<div style="text-align:center;">' +
-          '<div style="font-size:13px;font-weight:bold;color:#9A3412;margin-bottom:12px;">🔊 चित्र गिनकर हल करें</div>' +
-          '<div style="background:#fff;border:2px solid #FED7AA;border-radius:22px;padding:14px;max-width:300px;margin:0 auto 18px;">' +
-            '<div style="font-size:24px;">' + apA + '</div>' +
-            '<div style="font-size:30px;font-weight:900;color:#EA580C;margin:6px 0;">' + a + ' ' + op + ' ' + b + ' = ?</div>' +
-            '<div style="font-size:24px;">' + apB + '</div>' +
-          '</div>' +
-          '<div class="grid3">' + btns + '</div>' +
-        '</div>';
-      }
-      return headerHTML("UKG Class", "#F57C00") + tabsHTML(tabs, "#F57C00") + '<div style="padding:16px;flex:1;">' + body + '</div>';
-    }
-
-    function setPicCat(c) { playTone("pop"); state.picCat = c; state.picQuiz = false; render(); }
-
-    function togglePicQuiz() {
-      var list = PIC_WORLD[state.picCat];
-      state.picQuiz = !state.picQuiz;
-      state.picTarget = list[Math.floor(Math.random() * list.length)];
-      if (state.picQuiz && state.picTarget) speak("Where is " + state.picTarget.en);
-      render();
-    }
-
-    function tapPic(idx) {
-      var list = PIC_WORLD[state.picCat];
-      var it = list[idx];
-      if (!state.picQuiz) { playTone("pop"); speak(it.en + ". " + it.hi); }
-      else if (state.picTarget && it.en === state.picTarget.en) {
-        speak(it.en + ". " + it.hi);
-        state.picTarget = list[Math.floor(Math.random() * list.length)];
-        setTimeout(function() { if (state.picTarget) speak("Where is " + state.picTarget.en); }, 1200);
-        addStar();
-      } else { wrongAns(); }
-    }
-
-    function renderPictures() {
-      var cats = Object.keys(PIC_WORLD);
-      var list = PIC_WORLD[state.picCat];
-      var catBar = "";
-      for (var i = 0; i < cats.length; i++) {
-        var c = cats[i];
-        var st = state.picCat === c ? "background:#8E24AA;color:#fff;border-color:#8E24AA;" : "";
-        catBar += '<button onclick="setPicCat(\'' + c + '\')" class="btn tab-btn" style="' + st + '">' + c + '</button>';
-      }
-      var cards = "";
-      for (var j = 0; j < list.length; j++) {
-        var it = list[j];
-        cards += '<button onclick="tapPic(' + j + ')" class="btn" style="background:#fff;border:2px solid #CE93D8;border-bottom-width:4px;border-radius:22px;padding:14px;display:flex;flex-direction:column;align-items:center;">' +
-          '<span style="font-size:54px;margin-bottom:6px;">' + it.e + '</span>' +
-          '<span style="font-size:16px;font-weight:900;color:#1E293B;">' + it.en + '</span>' +
-          '<span style="font-size:12px;font-weight:bold;color:#7B1FA2;">' + it.hi + '</span>' +
-        '</button>';
-      }
-      return headerHTML("Picture World", "#8E24AA") +
-        '<div class="tabs">' + catBar + '</div>' +
-        '<div style="padding:16px;flex:1;">' +
-          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">' +
-            '<span style="font-size:12px;font-weight:bold;color:#6A1B9A;">' + (state.picQuiz ? "सही चित्र पर टैप करें!" : "चित्र पर टैप करके नाम सुनें:") + '</span>' +
-            '<button onclick="togglePicQuiz()" class="btn" style="background:#F3E5F5;border:1px solid #CE93D8;color:#4A148C;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:bold;">' + (state.picQuiz ? "📖 Learn" : "🎯 Quiz") + '</button>' +
-          '</div>' +
-          (state.picQuiz && state.picTarget ? '<div onclick="speak(\'Where is ' + state.picTarget.en + '\')" style="background:#8E24AA;color:#fff;border-radius:16px;padding:10px;text-align:center;font-weight:bold;margin-bottom:14px;">🔊 Find: ' + state.picTarget.en + ' (' + state.picTarget.hi + ')</div>' : '') +
-          '<div class="grid2">' + cards + '</div>' +
-        '</div>';
-    }
-
-    function flipCard(idx) {
-      if (state.memOpen.length >= 2 || state.memOpen.indexOf(idx) !== -1 || state.memDone.indexOf(idx) !== -1) return;
-      playTone("pop");
-      state.memOpen.push(idx);
-      render();
-      if (state.memOpen.length === 2) {
-        var a = state.memOpen[0], b = state.memOpen[1];
-        if (state.memCards[a] === state.memCards[b]) {
-          state.memDone.push(a, b);
-          state.memOpen = [];
-          state.stars += 1;
-          playTone("success");
-          speak("Match!");
-          if (state.memDone.length === state.memCards.length) { setTimeout(function() { initMem(); render(); }, 1100); }
-          else { render(); }
-        } else { setTimeout(function() { state.memOpen = []; render(); }, 700); }
-      }
-    }
-
-    function renderBrain() {
-      var tabs = ["👤 Shadow", "🔍 Odd One", "🃏 Memory"];
-      var body = "";
-      if (state.tab === 0) {
-        var item = SHADOWS[state.qIdx % SHADOWS.length];
-        autoSpeak("b0-" + state.qIdx, "Whose shadow is this?");
-        var btns = "";
-        for (var i = 0; i < item.o.length; i++) {
-          var o = item.o[i];
-          btns += '<button onclick="checkAns(' + (o === item.t) + ', \'' + item.n + '\', \'en-IN\')" class="btn opt-btn" style="border-color:#F472B6;font-size:44px;">' + o + '</button>';
-        }
-        body = '<div style="text-align:center;">' +
-          '<div style="font-size:13px;font-weight:bold;color:#9D174D;margin-bottom:12px;">🔊 यह किसकी परछाई है? पहचान
+        autoSpeak("n1-" + state.q
