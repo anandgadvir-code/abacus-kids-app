@@ -1,0 +1,2318 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#FF6B6B" />
+  <meta name="description" content="Abacus Kids - The Abacus Academy, Jodhpur: Colorful, interactive offline-ready kids learning app for Nursery, LKG, UKG, Picture World, and Brain Booster." />
+  <title>Abacus Kids - The Abacus Academy, Jodhpur</title>
+  <style>
+    :root {
+      --primary: #FF5252;
+      --secondary: #4CAF50;
+      --accent: #FF9800;
+      --blue: #2196F3;
+      --purple: #9C27B0;
+      --pink: #E91E63;
+      --bg: #FFFDF9;
+      --card-bg: #FFFFFF;
+      --text-dark: #2C3E50;
+      --border-radius: 20px;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #F4F7FB;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      touch-action: manipulation;
+    }
+    #app-container {
+      width: 100%;
+      max-width: 600px;
+      min-height: 100vh;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 25px rgba(0,0,0,0.08);
+      overflow-x: hidden;
+    }
+    /* Sticky Top Header */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #FFFFFF;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #FFE082;
+      box-shadow: 0 4px 12px rgba(255, 193, 7, 0.15);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      object-fit: contain;
+      background: #FFF9C4;
+      border: 2px solid #FBC02D;
+    }
+    .academy-badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: #E65100;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+    .app-title {
+      font-size: 19px;
+      font-weight: 900;
+      color: #D84315;
+      line-height: 1.2;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .star-counter {
+      background: #FFF8E1;
+      border: 2px solid #FFD54F;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 900;
+      color: #F57F17;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 5px rgba(255, 213, 79, 0.3);
+    }
+    .nav-icon-btn {
+      background: #FFFFFF;
+      border: 2px solid #CFD8DC;
+      border-radius: 14px;
+      padding: 6px 10px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #455A64;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .nav-icon-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* Sub Tabs Nav */
+    .subtabs-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 14px;
+      background: #FFFFFF;
+      border-bottom: 2px solid #ECEFF1;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .subtabs-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .subtab-chip {
+      padding: 8px 16px;
+      border-radius: 18px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      border: 2px solid #E0E0E0;
+      background: #FFFFFF;
+      color: #607D8B;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .subtab-chip.active {
+      background: var(--active-color, #2196F3);
+      color: #FFFFFF;
+      border-color: var(--active-color, #2196F3);
+      box-shadow: 0 3px 8px rgba(33, 150, 243, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* Main Container Content */
+    .main-content {
+      flex: 1;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Common Card Styles */
+    .interactive-card {
+      background: #FFFFFF;
+      border-radius: 22px;
+      border: 3px solid #E0E0E0;
+      box-shadow: 0 6px 0 #CFD8DC;
+      transition: transform 0.1s, box-shadow 0.1s;
+      cursor: pointer;
+    }
+    .interactive-card:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #CFD8DC;
+    }
+
+    /* Big Hero Screen Card */
+    .hero-banner {
+      background: linear-gradient(135deg, #FFF9C4 0%, #FFE082 100%);
+      border: 3px solid #FBC02D;
+      border-radius: 24px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 5px 15px rgba(251, 192, 45, 0.25);
+    }
+
+    /* Home Navigation Grid */
+    .home-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .home-section-btn {
+      width: 100%;
+      border-radius: 22px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-width: 3px;
+      border-style: solid;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .home-section-btn:active {
+      transform: scale(0.97);
+    }
+    .section-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 12px;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .section-name {
+      font-size: 21px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+    .section-desc {
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    /* Nursery Button Colors */
+    .btn-nursery {
+      background: #E1F5FE;
+      border-color: #03A9F4;
+      box-shadow: 0 5px 0 #0288D1;
+    }
+    .btn-nursery .section-name { color: #01579B; }
+    .btn-nursery .section-desc { color: #0288D1; }
+
+    /* LKG Button Colors */
+    .btn-lkg {
+      background: #F1F8E9;
+      border-color: #8BC34A;
+      box-shadow: 0 5px 0 #689F38;
+    }
+    .btn-lkg .section-name { color: #33691E; }
+    .btn-lkg .section-desc { color: #558B2F; }
+
+    /* UKG Button Colors */
+    .btn-ukg {
+      background: #FFF3E0;
+      border-color: #FF9800;
+      box-shadow: 0 5px 0 #F57C00;
+    }
+    .btn-ukg .section-name { color: #E65100; }
+    .btn-ukg .section-desc { color: #FB8C00; }
+
+    /* Picture World & Brain Booster Grid */
+    .dual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .btn-picworld {
+      background: #F3E5F5;
+      border: 3px solid #BA68C8;
+      box-shadow: 0 5px 0 #8E24AA;
+      border-radius: 22px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .btn-picworld .section-name { color: #4A148C; font-size: 17px; }
+    .btn-picworld .section-desc { color: #7B1FA2; font-size: 11px; }
+
+    .btn-brain {
+      background: #FCE4EC;
+      border: 3px solid #F06292;
+      box-shadow: 0 5px 0 #D81B60;
+      border-radius: 22px;
+      padding: 14px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .btn-brain .section-name { color: #880E4F; font-size: 17px; }
+    .btn-brain .section-desc { color: #C2185B; font-size: 11px; }
+
+    /* Flashcard Large View */
+    .flashcard {
+      background: #FFFFFF;
+      border: 4px solid #90CAF9;
+      border-radius: 28px;
+      padding: 24px 16px;
+      text-align: center;
+      margin: 10px auto;
+      max-width: 320px;
+      box-shadow: 0 8px 24px rgba(33, 150, 243, 0.15);
+      cursor: pointer;
+      position: relative;
+    }
+    .flashcard:active {
+      transform: scale(0.97);
+    }
+    .flashcard-emoji {
+      font-size: 84px;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    }
+    .flashcard-title {
+      font-size: 26px;
+      font-weight: 900;
+      color: #1976D2;
+    }
+    .flashcard-sub {
+      font-size: 15px;
+      font-weight: 700;
+      color: #546E7A;
+      margin-top: 4px;
+    }
+    .audio-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #E3F2FD;
+      color: #1565C0;
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 10px;
+    }
+
+    /* Option Grids */
+    .options-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .options-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .options-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .opt-btn {
+      background: #FFFFFF;
+      border: 3px solid #81D4FA;
+      box-shadow: 0 5px 0 #29B6F6;
+      border-radius: 20px;
+      padding: 16px 8px;
+      font-size: 24px;
+      font-weight: 900;
+      color: #0277BD;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.1s;
+    }
+    .opt-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #29B6F6;
+    }
+
+    /* Small Grid items (A-Z & Swar Grid) */
+    .grid-items-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+      gap: 8px;
+      max-height: calc(100vh - 210px);
+      overflow-y: auto;
+      padding: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .item-chip-card {
+      background: #FFFFFF;
+      border: 2px solid #E0E0E0;
+      border-radius: 18px;
+      padding: 10px 4px;
+      text-align: center;
+      box-shadow: 0 3px 0 #EEEEEE;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .item-chip-card:active {
+      transform: scale(0.92);
+    }
+    .chip-letter {
+      font-size: 22px;
+      font-weight: 900;
+      color: #2E7D32;
+    }
+    .chip-emoji {
+      font-size: 28px;
+      margin: 4px 0;
+    }
+    .chip-word {
+      font-size: 10px;
+      font-weight: 700;
+      color: #616161;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Word Building & Puzzle Chips */
+    .word-slots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 18px 0;
+    }
+    .slot-box {
+      width: 54px;
+      height: 54px;
+      border: 3px dashed #90A4AE;
+      border-radius: 16px;
+      background: #ECEFF1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      color: #263238;
+    }
+    .slot-box.filled {
+      border: 3px solid #4CAF50;
+      background: #E8F5E9;
+      color: #2E7D32;
+    }
+    .letters-tray {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .letter-bubble {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: #FFEB3B;
+      border: 3px solid #FBC02D;
+      box-shadow: 0 4px 0 #F57F17;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 900;
+      color: #795548;
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+    .letter-bubble:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #F57F17;
+    }
+
+    /* Memory Flip Game */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 380px;
+      margin: 14px auto;
+    }
+    .memory-card {
+      aspect-ratio: 1;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    .memory-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.4s;
+      transform-style: preserve-3d;
+      border-radius: 18px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .memory-card.flipped .memory-card-inner {
+      transform: rotateY(180deg);
+    }
+    .memory-front, .memory-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      font-size: 32px;
+      border: 3px solid transparent;
+    }
+    .memory-front {
+      background: linear-gradient(135deg, #FF80AB 0%, #FF4081 100%);
+      color: #fff;
+      border-color: #F50057;
+      font-weight: 900;
+    }
+    .memory-back {
+      background: #FFFFFF;
+      border-color: #4CAF50;
+      transform: rotateY(180deg);
+    }
+
+    /* Feedback Animations & Toast */
+    .toast-overlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: rgba(33, 33, 33, 0.92);
+      color: #fff;
+      padding: 18px 32px;
+      border-radius: 30px;
+      font-size: 26px;
+      font-weight: 900;
+      z-index: 999;
+      pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    .toast-overlay.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+    .toast-overlay.success {
+      background: linear-gradient(135deg, #43A047, #2E7D32);
+      border: 3px solid #A5D6A7;
+    }
+    .toast-overlay.wrong {
+      background: linear-gradient(135deg, #E53935, #C62828);
+      border: 3px solid #EF9A9A;
+    }
+
+    /* Toggle Mode Switcher */
+    .mode-switch {
+      display: flex;
+      justify-content: center;
+      background: #ECEFF1;
+      padding: 4px;
+      border-radius: 18px;
+      margin-bottom: 14px;
+      gap: 6px;
+    }
+    .mode-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      border-radius: 14px;
+      font-weight: 800;
+      font-size: 13px;
+      color: #546E7A;
+      cursor: pointer;
+    }
+    .mode-btn.active {
+      background: #FFFFFF;
+      color: #1E88E5;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Math Visual Counters */
+    .math-counters-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+      padding: 10px;
+      background: #FFFDE7;
+      border-radius: 16px;
+      border: 2px dashed #FFF59D;
+    }
+    .math-symbol {
+      font-size: 32px;
+      font-weight: 900;
+      color: #E65100;
+      margin: 0 6px;
+    }
+
+    /* Confetti Canvas */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 998;
+    }
+  </style>
+</head>
+<body>
+  <div id="app-container">
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Top Sticky Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <img src="logo.jpeg" alt="Logo" class="logo-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23FF9800\'/><text x=\'50\' y=\'62\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-weight=\'bold\'>A</text></svg>';" />
+        <div>
+          <div class="academy-badge">The Abacus Academy, Jodhpur</div>
+          <div class="app-title">Abacus Kids</div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="star-counter" id="star-badge" title="Earned Stars">
+          <span>⭐</span> <span id="star-count">0</span>
+        </div>
+        <button id="btn-sound-toggle" class="nav-icon-btn" onclick="toggleSound()" title="Sound On/Off">
+          <span id="sound-icon">🔊</span>
+        </button>
+        <button id="btn-home-nav" class="nav-icon-btn" onclick="goHome()" style="display:none;" title="Home">
+          <span>🏠</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub Navigation Tabs Bar (Rendered dynamically when inside a section) -->
+    <div id="subtabs-bar" class="subtabs-bar" style="display:none;"></div>
+
+    <!-- Main Dynamic Content Container -->
+    <main id="main-view" class="main-content">
+      <!-- Content dynamically rendered here -->
+    </main>
+
+    <!-- Toast Overlay -->
+    <div id="toast-overlay" class="toast-overlay"></div>
+  </div>
+
+  <script>
+    /* =========================================================
+       AUDIO & SPEECH SYNTHESIS ENGINE (100% Offline & WebView Safe)
+       ========================================================= */
+    var appSoundEnabled = true;
+    var lastUtteranceKey = "";
+    var currentSpeechTimeout = null;
+
+    // Web Audio Synthesizer for rich playful sound effects
+    var audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playTone(type) {
+      if (!appSoundEnabled) return;
+      try {
+        var ctx = getAudioContext();
+        if (!ctx) return;
+        var now = ctx.currentTime;
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === "pop") {
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(400, now);
+          osc.frequency.exponentialRampToValueAtTime(700, now + 0.08);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        } else if (type === "success") {
+          // Cheerful chime chord
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(523.25, now); // C5
+          osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+          osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+          osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
+          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+          osc.start(now);
+          osc.stop(now + 0.45);
+        } else if (type === "wrong") {
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.exponentialRampToValueAtTime(130, now + 0.2);
+          gain.gain.setValueAtTime(0.25, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
+          osc.start(now);
+          osc.stop(now + 0.22);
+        } else if (type === "win") {
+          // Victory fanfare
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(587.33, now); // D5
+          osc.frequency.setValueAtTime(880, now + 0.12); // A5
+          osc.frequency.setValueAtTime(1174.66, now + 0.25); // D6
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.55);
+          osc.start(now);
+          osc.stop(now + 0.55);
+        }
+      } catch (e) {
+        // Safe fallback
+      }
+    }
+
+    // Web Speech API
+    var availableVoices = [];
+    function loadVoices() {
+      if (window.speechSynthesis) {
+        availableVoices = window.speechSynthesis.getVoices() || [];
+      }
+    }
+    if (window.speechSynthesis) {
+      window.speechSynthesis.onvoiceschanged = loadVoices;
+      loadVoices();
+    }
+
+    function speak(text, lang) {
+      if (!appSoundEnabled || !window.speechSynthesis || !text) return;
+      try {
+        window.speechSynthesis.cancel();
+        var utterance = new SpeechSynthesisUtterance(String(text));
+        var targetLang = lang || (containsHindi(text) ? "hi-IN" : "en-IN");
+        utterance.lang = targetLang;
+        utterance.rate = 0.88;
+        utterance.pitch = 1.05;
+
+        // Try to pick matching voice
+        if (availableVoices.length > 0) {
+          var matchedVoice = availableVoices.find(function(v) {
+            return v.lang && v.lang.toLowerCase().indexOf(targetLang.toLowerCase().slice(0, 2)) !== -1;
+          });
+          if (matchedVoice) utterance.voice = matchedVoice;
+        }
+
+        window.speechSynthesis.speak(utterance);
+      } catch (e) {
+        // Ignore speech error
+      }
+    }
+
+    function autoSpeak(key, text, lang) {
+      if (lastUtteranceKey === key) return;
+      lastUtteranceKey = key;
+      if (currentSpeechTimeout) clearTimeout(currentSpeechTimeout);
+      currentSpeechTimeout = setTimeout(function() {
+        speak(text, lang);
+      }, 300);
+    }
+
+    function containsHindi(str) {
+      return /[\u0900-\u097F]/.test(str);
+    }
+
+    function toggleSound() {
+      appSoundEnabled = !appSoundEnabled;
+      document.getElementById("sound-icon").textContent = appSoundEnabled ? "🔊" : "🔇";
+      if (!appSoundEnabled && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      } else if (appSoundEnabled) {
+        playTone("pop");
+        speak("Sound On", "en-IN");
+      }
+    }
+
+    /* =========================================================
+       CONFETTI CELEBRATION ENGINE
+       ========================================================= */
+    var confettiCanvas = document.getElementById("confetti-canvas");
+    var confettiCtx = confettiCanvas.getContext("2d");
+    var confettiParticles = [];
+    var confettiAnimId = null;
+
+    function resizeConfetti() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeConfetti);
+    resizeConfetti();
+
+    function triggerConfetti() {
+      confettiParticles = [];
+      var colors = ["#FF5252", "#FFEB3B", "#4CAF50", "#2196F3", "#E040FB", "#FF9800"];
+      for (var i = 0; i < 70; i++) {
+        confettiParticles.push({
+          x: confettiCanvas.width / 2,
+          y: confettiCanvas.height / 3,
+          vx: (Math.random() - 0.5) * 14,
+          vy: (Math.random() - 0.8) * 14,
+          size: Math.random() * 8 + 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          rotSpeed: (Math.random() - 0.5) * 12,
+          gravity: 0.35,
+          alpha: 1
+        });
+      }
+      if (!confettiAnimId) renderConfetti();
+    }
+
+    function renderConfetti() {
+      confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      var stillActive = false;
+      for (var i = 0; i < confettiParticles.length; i++) {
+        var p = confettiParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += p.gravity;
+        p.rotation += p.rotSpeed;
+        p.alpha -= 0.012;
+        if (p.alpha > 0) {
+          stillActive = true;
+          confettiCtx.save();
+          confettiCtx.globalAlpha = p.alpha;
+          confettiCtx.translate(p.x, p.y);
+          confettiCtx.rotate((p.rotation * Math.PI) / 180);
+          confettiCtx.fillStyle = p.color;
+          confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          confettiCtx.restore();
+        }
+      }
+      if (stillActive) {
+        confettiAnimId = requestAnimationFrame(renderConfetti);
+      } else {
+        confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        confettiAnimId = null;
+      }
+    }
+
+    /* =========================================================
+       APP STATE & DATA DICTIONARIES
+       ========================================================= */
+    var appState = {
+      section: "home", // home, nursery, lkg, ukg, picture_world, brain_booster
+      tabIndex: 0,
+      mode: "learn", // learn, quiz
+      quizIndex: 0,
+      stars: 0,
+      userAnswerGiven: false,
+      // Section-specific states
+      nurseryLetterLang: "A-Z", // "A-Z" or "Swar"
+      countTargetNumber: 5,
+      // LKG Word building
+      wordCurrentIndex: 0,
+      wordSlots: [],
+      // Math
+      mathA: 3,
+      mathB: 2,
+      mathOp: "+",
+      // Picture World
+      picCategory: "Animals",
+      picQuizItem: null,
+      picQuizOptions: [],
+      // Brain Booster Memory
+      memCards: [],
+      memFlipped: [],
+      memMatched: [],
+      // Brain Booster Shadow & Odd
+      brainIndex: 0
+    };
+
+    function addStar(message, speechText, speechLang) {
+      appState.stars += 1;
+      document.getElementById("star-count").textContent = appState.stars;
+      playTone("success");
+      triggerConfetti();
+      showToast(message || "🎉 शानदार! (Very Good!)", "success");
+      if (speechText) {
+        speak(speechText, speechLang || "hi-IN");
+      } else {
+        speak("बहुत बढ़िया!", "hi-IN");
+      }
+    }
+
+    function showToast(text, type) {
+      var toast = document.getElementById("toast-overlay");
+      toast.textContent = text;
+      toast.className = "toast-overlay show " + (type || "success");
+      setTimeout(function() {
+        toast.className = "toast-overlay";
+      }, 1200);
+    }
+
+    function markWrong(speechText) {
+      playTone("wrong");
+      showToast("❌ फिर से कोशिश करो (Try Again)", "wrong");
+      speak(speechText || "फिर से कोशिश करो", "hi-IN");
+    }
+
+    /* ---------------------------------------------------------
+       DATA: NURSERY (A-Z, Swar, 1-50, Shapes, Before/After)
+       --------------------------------------------------------- */
+    var DATA_AZ = [
+      { letter: "A", word: "Apple", hindi: "सेब", emoji: "🍎", phonics: "A for Apple" },
+      { letter: "B", word: "Ball", hindi: "गेंद", emoji: "⚽", phonics: "B for Ball" },
+      { letter: "C", word: "Car", hindi: "गाड़ी", emoji: "🚗", phonics: "C for Car" },
+      { letter: "D", word: "Dog", hindi: "कुत्ता", emoji: "🐶", phonics: "D for Dog" },
+      { letter: "E", word: "Elephant", hindi: "हाथी", emoji: "🐘", phonics: "E for Elephant" },
+      { letter: "F", word: "Fish", hindi: "मछली", emoji: "🐟", phonics: "F for Fish" },
+      { letter: "G", word: "Grapes", hindi: "अंगूर", emoji: "🍇", phonics: "G for Grapes" },
+      { letter: "H", word: "Horse", hindi: "घोड़ा", emoji: "🐴", phonics: "H for Horse" },
+      { letter: "I", word: "Ice Cream", hindi: "आइसक्रीम", emoji: "🍦", phonics: "I for Ice Cream" },
+      { letter: "J", word: "Joker", hindi: "जोकर", emoji: "🃏", phonics: "J for Joker" },
+      { letter: "K", word: "Kite", hindi: "पतंग", emoji: "🪁", phonics: "K for Kite" },
+      { letter: "L", word: "Lion", hindi: "शेर", emoji: "🦁", phonics: "L for Lion" },
+      { letter: "M", word: "Mango", hindi: "आम", emoji: "🥭", phonics: "M for Mango" },
+      { letter: "N", word: "Nest", hindi: "घोंसला", emoji: "🪺", phonics: "N for Nest" },
+      { letter: "O", word: "Orange", hindi: "संतरा", emoji: "🍊", phonics: "O for Orange" },
+      { letter: "P", word: "Peacock", hindi: "मोर", emoji: "🦚", phonics: "P for Peacock" },
+      { letter: "Q", word: "Queen", hindi: "रानी", emoji: "👑", phonics: "Q for Queen" },
+      { letter: "R", word: "Rabbit", hindi: "खरगोश", emoji: "🐰", phonics: "R for Rabbit" },
+      { letter: "S", word: "Sun", hindi: "सूरज", emoji: "☀️", phonics: "S for Sun" },
+      { letter: "T", word: "Tiger", hindi: "बाघ", emoji: "🐯", phonics: "T for Tiger" },
+      { letter: "U", word: "Umbrella", hindi: "छाता", emoji: "☂️", phonics: "U for Umbrella" },
+      { letter: "V", word: "Van", hindi: "वैन", emoji: "🚐", phonics: "V for Van" },
+      { letter: "W", word: "Watch", hindi: "घड़ी", emoji: "⌚", phonics: "W for Watch" },
+      { letter: "X", word: "Xylophone", hindi: "ज़ायलोफ़ोन", emoji: "🎹", phonics: "X for Xylophone" },
+      { letter: "Y", word: "Yak", hindi: "याक", emoji: "🐂", phonics: "Y for Yak" },
+      { letter: "Z", word: "Zebra", hindi: "ज़ेब्रा", emoji: "🦓", phonics: "Z for Zebra" }
+    ];
+
+    var DATA_SWAR = [
+      { letter: "अ", word: "अनार", hindi: "Pomegranate", emoji: "🍎", phonics: "अ से अनार" },
+      { letter: "आ", word: "आम", hindi: "Mango", emoji: "🥭", phonics: "आ से आम" },
+      { letter: "इ", word: "इमली", hindi: "Tamarind", emoji: "🌿", phonics: "इ से इमली" },
+      { letter: "ई", word: "ईख", hindi: "Sugarcane", emoji: "🎋", phonics: "ई से ईख" },
+      { letter: "उ", word: "उल्लू", hindi: "Owl", emoji: "🦉", phonics: "उ से उल्लू" },
+      { letter: "ऊ", word: "ऊन", hindi: "Wool", emoji: "🧶", phonics: "ऊ से ऊन" },
+      { letter: "ऋ", word: "ऋषि", hindi: "Sage", emoji: "🧘", phonics: "ऋ से ऋषि" },
+      { letter: "ए", word: "एड़ी", hindi: "Heel", emoji: "🦶", phonics: "ए से एड़ी" },
+      { letter: "ऐ", word: "ऐनक", hindi: "Spectacles", emoji: "👓", phonics: "ऐ से ऐनक" },
+      { letter: "ओ", word: "ओखली", hindi: "Mortar", emoji: "🥣", phonics: "ओ से ओखली" },
+      { letter: "औ", word: "औरत", hindi: "Woman", emoji: "👩", phonics: "औ से औरत" },
+      { letter: "अं", word: "अंगूर", hindi: "Grapes", emoji: "🍇", phonics: "अं से अंगूर" },
+      { letter: "अः", word: "खाली", hindi: "Aha Khali", emoji: "✨", phonics: "अः खाली" }
+    ];
+
+    var DATA_SHAPES = [
+      { name: "Circle", hindi: "वृत्त / गोल", emoji: "🔴", desc: "Round with no corners" },
+      { name: "Square", hindi: "वर्ग / चौकोर", emoji: "🟦", desc: "4 equal sides" },
+      { name: "Triangle", hindi: "त्रिभुज / त्रिकोण", emoji: "🔺", desc: "3 sides and 3 corners" },
+      { name: "Rectangle", hindi: "आयत", emoji: "🟩", desc: "Opposite sides equal" },
+      { name: "Star", hindi: "तारा", emoji: "⭐", desc: "Twinkling star shape" },
+      { name: "Heart", hindi: "दिल", emoji: "❤️", desc: "Cute heart shape" },
+      { name: "Diamond", hindi: "हीरा", emoji: "💎", desc: "Sparkling diamond" },
+      { name: "Oval", hindi: "अंडाकार", emoji: "🥚", desc: "Egg shape" }
+    ];
+
+    var DATA_BEFORE_AFTER = [
+      { q: "What comes AFTER B?", prompt: "A, B, ?", ans: "C", options: ["C", "D", "E"], lang: "en-IN", speak: "What comes after B?" },
+      { q: "What comes BEFORE E?", prompt: "?, E, F", ans: "D", options: ["B", "D", "G"], lang: "en-IN", speak: "What comes before E?" },
+      { q: "What comes BETWEEN G and I?", prompt: "G, ?, I", ans: "H", options: ["H", "J", "F"], lang: "en-IN", speak: "What comes between G and I?" },
+      { q: "अ, आ के बाद क्या आता है?", prompt: "अ, आ, ?", ans: "इ", options: ["इ", "उ", "ई"], lang: "hi-IN", speak: "अ, आ के बाद क्या आता है?" },
+      { q: "इ और उ के बीच क्या आता है?", prompt: "इ, ?, उ", ans: "ई", options: ["ई", "ऋ", "ओ"], lang: "hi-IN", speak: "इ और उ के बीच क्या आता है?" },
+      { q: "What comes AFTER 7?", prompt: "6, 7, ?", ans: "8", options: ["8", "9", "5"], lang: "en-IN", speak: "What comes after 7?" },
+      { q: "What comes BEFORE 15?", prompt: "?, 15, 16", ans: "14", options: ["13", "14", "17"], lang: "en-IN", speak: "What comes before 15?" },
+      { q: "What comes BETWEEN 19 and 21?", prompt: "19, ?, 21", ans: "20", options: ["18", "20", "22"], lang: "en-IN", speak: "What comes between 19 and 21?" }
+    ];
+
+    /* ---------------------------------------------------------
+       DATA: LKG (Vyanjan, 1-100 Names, More/Less, Shabda Nirman)
+       --------------------------------------------------------- */
+    var DATA_VYANJAN = [
+      { letter: "क", word: "कबूतर", emoji: "🕊️", sound: "क से कबूतर" },
+      { letter: "ख", word: "खरगोश", emoji: "🐰", sound: "ख से खरगोश" },
+      { letter: "ग", word: "गमला", emoji: "🪴", sound: "ग से गमला" },
+      { letter: "घ", word: "घड़ी", emoji: "⌚", sound: "घ से घड़ी" },
+      { letter: "ङ", word: "खाली", emoji: "✨", sound: "ङ खाली" },
+      { letter: "च", word: "चम्मच", emoji: "🥄", sound: "च से चम्मच" },
+      { letter: "छ", word: "छतरी", emoji: "☂️", sound: "छ से छतरी" },
+      { letter: "ज", word: "जहाज", emoji: "🚢", sound: "ज से जहाज" },
+      { letter: "झ", word: "झंडा", emoji: "🚩", sound: "झ से झंडा" },
+      { letter: "ञ", word: "खाली", emoji: "✨", sound: "ञ खाली" },
+      { letter: "ट", word: "टमाटर", emoji: "🍅", sound: "ट से टमाटर" },
+      { letter: "ठ", word: "ठठेरा", emoji: "🔨", sound: "ठ से ठठेरा" },
+      { letter: "ड", word: "डमरू", emoji: "🪘", sound: "ड से डमरू" },
+      { letter: "ढ", word: "ढक्कन", emoji: "🥘", sound: "ढ से ढक्कन" },
+      { letter: "ण", word: "खाली", emoji: "✨", sound: "ण खाली" },
+      { letter: "त", word: "तरबूज", emoji: "🍉", sound: "त से तरबूज" },
+      { letter: "थ", word: "थर्मस", emoji: "🍶", sound: "थ से थर्मस" },
+      { letter: "द", word: "दवात", emoji: "✒️", sound: "द से दवात" },
+      { letter: "ध", word: "धनुष", emoji: "🏹", sound: "ध से धनुष" },
+      { letter: "न", word: "नल", emoji: "🚰", sound: "न से नल" },
+      { letter: "प", word: "पतंग", emoji: "🪁", sound: "प से पतंग" },
+      { letter: "फ", word: "फल", emoji: "🍎", sound: "फ से फल" },
+      { letter: "ब", word: "बत्तख", emoji: "🦆", sound: "ब से बत्तख" },
+      { letter: "भ", word: "भालू", emoji: "🐻", sound: "भ से भालू" },
+      { letter: "म", word: "मछली", emoji: "🐟", sound: "म से मछली" },
+      { letter: "य", word: "यज्ञ", emoji: "🔥", sound: "य से यज्ञ" },
+      { letter: "र", word: "रथ", emoji: "🎠", sound: "र से रथ" },
+      { letter: "ल", word: "लट्टू", emoji: "🪀", sound: "ल से लट्टू" },
+      { letter: "व", word: "वक", emoji: "🪿", sound: "व से वक" },
+      { letter: "श", word: "शलजम", emoji: "🧅", sound: "श से शलजम" },
+      { letter: "ष", word: "षट्कोण", emoji: "🔷", sound: "ष से षट्कोण" },
+      { letter: "स", word: "सपेरा", emoji: "🐍", sound: "स से सपेरा" },
+      { letter: "ह", word: "हाथी", emoji: "🐘", sound: "ह से हाथी" },
+      { letter: "क्ष", word: "क्षत्रिय", emoji: "⚔️", sound: "क्ष से क्षत्रिय" },
+      { letter: "त्र", word: "त्रिशूल", emoji: "🔱", sound: "त्र से त्रिशूल" },
+      { letter: "ज्ञ", word: "ज्ञानी", emoji: "📚", sound: "ज्ञ से ज्ञानी" }
+    ];
+
+    function getNumberWord(n) {
+      var ones = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
+                  "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+      var tens = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+      if (n <= 19) return ones[n];
+      if (n === 100) return "One Hundred";
+      var t = Math.floor(n / 10);
+      var rem = n % 10;
+      return tens[t] + (rem > 0 ? ("-" + ones[rem]) : "");
+    }
+
+    var DATA_SHABDA = [
+      { word: "घर", letters: ["घ", "र"], pool: ["घ", "र", "ल", "प"], emoji: "🏠", sound: "घ-र, घर" },
+      { word: "नल", letters: ["न", "ल"], pool: ["ल", "क", "न", "म"], emoji: "🚰", sound: "न-ल, नल" },
+      { word: "जल", letters: ["ज", "ल"], pool: ["ज", "त", "ल", "र"], emoji: "💧", sound: "ज-ल, जल" },
+      { word: "बस", letters: ["ब", "स"], pool: ["स", "ब", "न", "ख"], emoji: "🚌", sound: "ब-स, बस" },
+      { word: "फल", letters: ["फ", "ल"], pool: ["फ", "ल", "म", "स"], emoji: "🍉", sound: "फ-ल, फल" },
+      { word: "कमल", letters: ["क", "म", "ल"], pool: ["म", "ल", "क", "र"], emoji: "🪷", sound: "क-म-ल, कमल" },
+      { word: "मगर", letters: ["म", "ग", "र"], pool: ["र", "म", "ग", "स"], emoji: "🐊", sound: "म-ग-र, मगर" },
+      { word: "मटर", letters: ["म", "ट", "र"], pool: ["ट", "र", "म", "प"], emoji: "🫛", sound: "म-ट-र, मटर" },
+      { word: "बटन", letters: ["ब", "ट", "न"], pool: ["न", "ब", "ट", "ल"], emoji: "🔘", sound: "ब-ट-न, बटन" },
+      { word: "सड़क", letters: ["स", "ड़", "क"], pool: ["क", "स", "ड़", "म"], emoji: "🛣️", sound: "स-ड़-क, सड़क" }
+    ];
+
+    /* ---------------------------------------------------------
+       DATA: UKG (CVC Words, Matras, Addition/Subtraction)
+       --------------------------------------------------------- */
+    var DATA_CVC = [
+      { word: "CAT", missing: 1, pre: "C", post: "T", ans: "A", vowel: "A", emoji: "🐱", sound: "C A T, Cat" },
+      { word: "DOG", missing: 1, pre: "D", post: "G", ans: "O", vowel: "O", emoji: "🐶", sound: "D O G, Dog" },
+      { word: "SUN", missing: 1, pre: "S", post: "N", ans: "U", vowel: "U", emoji: "☀️", sound: "S U N, Sun" },
+      { word: "PEN", missing: 1, pre: "P", post: "N", ans: "E", vowel: "E", emoji: "🖊️", sound: "P E N, Pen" },
+      { word: "PIG", missing: 1, pre: "P", post: "G", ans: "I", vowel: "I", emoji: "🐷", sound: "P I G, Pig" },
+      { word: "BAT", missing: 1, pre: "B", post: "T", ans: "A", vowel: "A", emoji: "🦇", sound: "B A T, Bat" },
+      { word: "BED", missing: 1, pre: "B", post: "D", ans: "E", vowel: "E", emoji: "🛏️", sound: "B E D, Bed" },
+      { word: "CUP", missing: 1, pre: "C", post: "P", ans: "U", vowel: "U", emoji: "☕", sound: "C U P, Cup" },
+      { word: "FOX", missing: 1, pre: "F", post: "X", ans: "O", vowel: "O", emoji: "🦊", sound: "F O X, Fox" },
+      { word: "LIP", missing: 1, pre: "L", post: "P", ans: "I", vowel: "I", emoji: "👄", sound: "L I P, Lip" }
+    ];
+
+    var DATA_MATRA = [
+      { name: "आ की मात्रा (ा)", symbol: "ा", example: "कार", base: "क", full: "कार", emoji: "🚗", sound: "क + आ = का, कार", missingPart: "क[?]र", ans: "ा", options: ["ा", "ि", "ी"] },
+      { name: "इ की मात्रा (ि)", symbol: "ि", example: "किताब", base: "क", full: "किताब", emoji: "📖", sound: "क + इ = कि, किताब", missingPart: "[?]कताब", ans: "ि", options: ["ि", "ी", "ु"] },
+      { name: "ई की मात्रा (ी)", symbol: "ी", example: "मछली", base: "ल", full: "मछली", emoji: "🐟", sound: "ल + ई = ली, मछली", missingPart: "मछल[?]", ans: "ी", options: ["ि", "ी", "े"] },
+      { name: "उ की मात्रा (ु)", symbol: "ु", example: "गुलाब", base: "ग", full: "गुलाब", emoji: "🌹", sound: "ग + उ = गु, गुलाब", missingPart: "ग[?]लाब", ans: "ु", options: ["ु", "ू", "ो"] },
+      { name: "ऊ की मात्रा (ू)", symbol: "ू", example: "सूरज", base: "स", full: "सूरज", emoji: "☀️", sound: "स + ऊ = सू, सूरज", missingPart: "स[?]रज", ans: "ू", options: ["ु", "ू", "ा"] },
+      { name: "ऋ की मात्रा (ृ)", symbol: "ृ", example: "वृक्ष", base: "व", full: "वृक्ष", emoji: "🌳", sound: "व + ऋ = वृ, वृक्ष", missingPart: "व[?]क्ष", ans: "ृ", options: ["ृ", "े", "ै"] },
+      { name: "ए की मात्रा (े)", symbol: "े", example: "केला", base: "क", full: "केला", emoji: "🍌", sound: "क + ए = के, केला", missingPart: "क[?]ला", ans: "े", options: ["े", "ै", "ी"] },
+      { name: "ऐ की मात्रा (ै)", symbol: "ै", example: "थैला", base: "थ", full: "थैला", emoji: "🛍️", sound: "थ + ऐ = थै, थैला", missingPart: "थ[?]ला", ans: "ै", options: ["े", "ै", "ो"] },
+      { name: "ओ की मात्रा (ो)", symbol: "ो", example: "मोर", base: "म", full: "मोर", emoji: "🦚", sound: "म + ओ = मो, मोर", missingPart: "म[?]र", ans: "ो", options: ["ो", "ौ", "ा"] },
+      { name: "औ की मात्रा (ौ)", symbol: "ौ", example: "नौका", base: "न", full: "नौका", emoji: "⛵", sound: "न + औ = नौ, नौका", missingPart: "न[?]का", ans: "ौ", options: ["ो", "ौ", "ं"] },
+      { name: "अं की मात्रा (ं)", symbol: "ं", example: "पतंग", base: "त", full: "पतंग", emoji: "🪁", sound: "त + अं = तं, पतंग", missingPart: "पत[?]ग", ans: "ं", options: ["ं", "ः", "ा"] }
+    ];
+
+    /* ---------------------------------------------------------
+       DATA: PICTURE WORLD (6 Categories, Learn & Quiz)
+       --------------------------------------------------------- */
+    var DATA_PICTURE_WORLD = {
+      Animals: [
+        { en: "Lion", hi: "शेर", emoji: "🦁" },
+        { en: "Tiger", hi: "बाघ", emoji: "🐯" },
+        { en: "Elephant", hi: "हाथी", emoji: "🐘" },
+        { en: "Monkey", hi: "बंदर", emoji: "🐒" },
+        { en: "Giraffe", hi: "जिराफ़", emoji: "🦒" },
+        { en: "Zebra", hi: "ज़ेब्रा", emoji: "🦓" },
+        { en: "Cow", hi: "गाय", emoji: "🐮" },
+        { en: "Dog", hi: "कुत्ता", emoji: "🐶" },
+        { en: "Cat", hi: "बिल्ली", emoji: "🐱" },
+        { en: "Bear", hi: "भालू", emoji: "🐻" },
+        { en: "Horse", hi: "घोड़ा", emoji: "🐴" },
+        { en: "Rabbit", hi: "खरगोश", emoji: "🐰" }
+      ],
+      Birds: [
+        { en: "Peacock", hi: "मोर", emoji: "🦚" },
+        { en: "Parrot", hi: "तोता", emoji: "🦜" },
+        { en: "Owl", hi: "उल्लू", emoji: "🦉" },
+        { en: "Pigeon", hi: "कबूतर", emoji: "🕊️" },
+        { en: "Duck", hi: "बत्तख", emoji: "🦆" },
+        { en: "Eagle", hi: "बाज़", emoji: "🦅" },
+        { en: "Sparrow", hi: "गौरैया", emoji: "🐦" },
+        { en: "Flamingo", hi: "राजहंस", emoji: "🦩" },
+        { en: "Penguin", hi: "पेंगुइन", emoji: "🐧" },
+        { en: "Swan", hi: "हंस", emoji: "🦢" }
+      ],
+      Fruits: [
+        { en: "Apple", hi: "सेब", emoji: "🍎" },
+        { en: "Mango", hi: "आम", emoji: "🥭" },
+        { en: "Banana", hi: "केला", emoji: "🍌" },
+        { en: "Grapes", hi: "अंगूर", emoji: "🍇" },
+        { en: "Orange", hi: "संतरा", emoji: "🍊" },
+        { en: "Watermelon", hi: "तरबूज", emoji: "🍉" },
+        { en: "Strawberry", hi: "स्ट्रॉबेरी", emoji: "🍓" },
+        { en: "Pineapple", hi: "अनानास", emoji: "🍍" },
+        { en: "Papaya", hi: "पपीता", emoji: "🍈" },
+        { en: "Guava", hi: "अमरूद", emoji: "🍐" }
+      ],
+      Vegetables: [
+        { en: "Potato", hi: "आलू", emoji: "🥔" },
+        { en: "Tomato", hi: "टमाटर", emoji: "🍅" },
+        { en: "Carrot", hi: "गाजर", emoji: "🥕" },
+        { en: "Onion", hi: "प्याज़", emoji: "🧅" },
+        { en: "Brinjal", hi: "बैंगन", emoji: "🍆" },
+        { en: "Peas", hi: "मटर", emoji: "🫛" },
+        { en: "Corn", hi: "मक्का", emoji: "🌽" },
+        { en: "Broccoli", hi: "ब्रोकली", emoji: "🥦" },
+        { en: "Cauliflower", hi: "फूलगोभी", emoji: "🥬" },
+        { en: "Capsicum", hi: "शिमला मिर्च", emoji: "🫑" }
+      ],
+      Vehicles: [
+        { en: "Car", hi: "कार", emoji: "🚗" },
+        { en: "Bus", hi: "बस", emoji: "🚌" },
+        { en: "Train", hi: "रेलगाड़ी", emoji: "🚂" },
+        { en: "Aeroplane", hi: "हवाई जहाज़", emoji: "✈️" },
+        { en: "Bicycle", hi: "साइकिल", emoji: "🚲" },
+        { en: "Ship", hi: "पानी का जहाज़", emoji: "🚢" },
+        { en: "Helicopter", hi: "हेलीकॉप्टर", emoji: "🚁" },
+        { en: "Auto Rickshaw", hi: "ऑटो", emoji: "🛺" },
+        { en: "Police Car", hi: "पुलिस कार", emoji: "🚓" },
+        { en: "Fire Truck", hi: "दमकल गाड़ी", emoji: "🚒" }
+      ],
+      BodyParts: [
+        { en: "Eyes", hi: "आँखें", emoji: "👀" },
+        { en: "Nose", hi: "नाक", emoji: "👃" },
+        { en: "Ears", hi: "कान", emoji: "👂" },
+        { en: "Lips", hi: "होंठ", emoji: "👄" },
+        { en: "Hands", hi: "हाथ", emoji: "✋" },
+        { en: "Legs", hi: "टांगें", emoji: "🦵" },
+        { en: "Teeth", hi: "दांत", emoji: "🦷" },
+        { en: "Feet", hi: "पैर", emoji: "🦶" },
+        { en: "Tongue", hi: "जीभ", emoji: "👅" },
+        { en: "Brain", hi: "दिमाग", emoji: "🧠" }
+      ]
+    };
+
+    /* ---------------------------------------------------------
+       DATA: BRAIN BOOSTER (Shadow, Odd One Out, Memory)
+       --------------------------------------------------------- */
+    var DATA_SHADOWS = [
+      { name: "Elephant", emoji: "🐘", sound: "Elephant का सही Shadow पहचानो", options: ["🐘", "🦁", "🦒"], correct: "🐘" },
+      { name: "Apple", emoji: "🍎", sound: "Apple का सही Shadow पहचानो", options: ["🍌", "🍎", "🍇"], correct: "🍎" },
+      { name: "Car", emoji: "🚗", sound: "Car का सही Shadow पहचानो", options: ["🚌", "🚲", "🚗"], correct: "🚗" },
+      { name: "Peacock", emoji: "🦚", sound: "Peacock का सही Shadow पहचानो", options: ["🦚", "🦉", "🦆"], correct: "🦚" },
+      { name: "Aeroplane", emoji: "✈️", sound: "Aeroplane का सही Shadow पहचानो", options: ["🚀", "✈️", "🚁"], correct: "✈️" },
+      { name: "Cat", emoji: "🐱", sound: "Cat का सही Shadow पहचानो", options: ["🐶", "🐱", "🐰"], correct: "🐱" }
+    ];
+
+    var DATA_ODD_OUT = [
+      {
+        question: "Find the odd one out (अलग चित्र चुनो)",
+        items: [
+          { emoji: "🍎", name: "Apple", isOdd: false },
+          { emoji: "🍌", name: "Banana", isOdd: false },
+          { emoji: "🍇", name: "Grapes", isOdd: false },
+          { emoji: "🚗", name: "Car", isOdd: true, reason: "Car is a vehicle, others are fruits!" }
+        ]
+      },
+      {
+        question: "Find the odd one out (अलग चित्र चुनो)",
+        items: [
+          { emoji: "🦁", name: "Lion", isOdd: false },
+          { emoji: "🐯", name: "Tiger", isOdd: false },
+          { emoji: "🐘", name: "Elephant", isOdd: false },
+          { emoji: "🦚", name: "Peacock", isOdd: true, reason: "Peacock is a bird, others are animals!" }
+        ]
+      },
+      {
+        question: "Find the odd one out (अलग अक्षर चुनो)",
+        items: [
+          { emoji: "अ", name: "Swar", isOdd: false },
+          { emoji: "आ", name: "Swar", isOdd: false },
+          { emoji: "इ", name: "Swar", isOdd: false },
+          { emoji: "क", name: "Vyanjan", isOdd: true, reason: "क is a consonant (व्यंजन), others are vowels (स्वर)!" }
+        ]
+      },
+      {
+        question: "Find the odd one out (अलग संख्या चुनो)",
+        items: [
+          { emoji: "2", name: "Number", isOdd: false },
+          { emoji: "4", name: "Number", isOdd: false },
+          { emoji: "6", name: "Number", isOdd: false },
+          { emoji: "A", name: "Letter", isOdd: true, reason: "A is an alphabet letter, others are numbers!" }
+        ]
+      },
+      {
+        question: "Find the odd one out (अलग वस्तु चुनो)",
+        items: [
+          { emoji: "🥔", name: "Potato", isOdd: false },
+          { emoji: "🍅", name: "Tomato", isOdd: false },
+          { emoji: "🥕", name: "Carrot", isOdd: false },
+          { emoji: "⚽", name: "Ball", isOdd: true, reason: "Ball is a toy, others are vegetables!" }
+        ]
+      }
+    ];
+
+    /* =========================================================
+       NAVIGATION & VIEW CONTROLLERS
+       ========================================================= */
+    function goHome() {
+      playTone("pop");
+      lastUtteranceKey = "";
+      appState.section = "home";
+      document.getElementById("btn-home-nav").style.display = "none";
+      document.getElementById("subtabs-bar").style.display = "none";
+      renderHome();
+      speak("Abacus Kids. The Abacus Academy Jodhpur में आपका स्वागत है!", "hi-IN");
+    }
+
+    function openSection(secName, tabIdx) {
+      playTone("pop");
+      lastUtteranceKey = "";
+      appState.section = secName;
+      appState.tabIndex = typeof tabIdx === "number" ? tabIdx : 0;
+      appState.mode = "learn";
+      appState.quizIndex = 0;
+      appState.userAnswerGiven = false;
+      document.getElementById("btn-home-nav").style.display = "flex";
+
+      renderSubtabs();
+      renderCurrentView();
+    }
+
+    function setTab(idx) {
+      playTone("pop");
+      lastUtteranceKey = "";
+      appState.tabIndex = idx;
+      appState.quizIndex = 0;
+      appState.userAnswerGiven = false;
+      if (appState.section === "lkg" && idx === 3) {
+        initShabdaNirman();
+      } else if (appState.section === "brain_booster" && idx === 2) {
+        initMemoryGame();
+      }
+      renderSubtabs();
+      renderCurrentView();
+    }
+
+    function setMode(mode) {
+      playTone("pop");
+      lastUtteranceKey = "";
+      appState.mode = mode;
+      appState.quizIndex = 0;
+      appState.userAnswerGiven = false;
+      renderCurrentView();
+    }
+
+    /* =========================================================
+       RENDER SUBTABS
+       ========================================================= */
+    function renderSubtabs() {
+      var tabsContainer = document.getElementById("subtabs-bar");
+      var tabs = [];
+      var activeColor = "#2196F3";
+
+      if (appState.section === "nursery") {
+        tabs = ["🔤 A-Z English", "🕉️ अ-अः Swar", "🔢 1-50 Counting", "🔷 Shapes", "🔄 Before/After"];
+        activeColor = "#0288D1";
+      } else if (appState.section === "lkg") {
+        tabs = ["🪔 क-ज्ञ व्यंजन", "🔠 1-100 Names", "⚖️ More/Less", "🧩 शब्द निर्माण"];
+        activeColor = "#689F38";
+      } else if (appState.section === "ukg") {
+        tabs = ["🔤 CVC Words", "✍️ सभी मात्राएं", "➕➖ Math (+ / -)"];
+        activeColor = "#F57C00";
+      } else if (appState.section === "picture_world") {
+        tabs = ["🦁 Animals", "🦜 Birds", "🍎 Fruits", "🥕 Vegetables", "🚗 Vehicles", "👀 Body Parts"];
+        activeColor = "#8E24AA";
+      } else if (appState.section === "brain_booster") {
+        tabs = ["👥 Shadow Match", "🎯 Odd One Out", "🃏 Memory Flip"];
+        activeColor = "#D81B60";
+      }
+
+      tabsContainer.style.display = "flex";
+      tabsContainer.style.setProperty("--active-color", activeColor);
+      var html = "";
+      for (var i = 0; i < tabs.length; i++) {
+        var cls = "subtab-chip" + (appState.tabIndex === i ? " active" : "");
+        html += '<button class="' + cls + '" onclick="setTab(' + i + ')">' + tabs[i] + '</button>';
+      }
+      tabsContainer.innerHTML = html;
+    }
+
+    /* =========================================================
+       RENDER HOME
+       ========================================================= */
+    function renderHome() {
+      var view = document.getElementById("main-view");
+      var html = '';
+
+      // Welcome Banner
+      html += '<div class="hero-banner">';
+      html += '  <div style="font-size: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">🎓</div>';
+      html += '  <div>';
+      html += '    <div style="font-size: 11px; font-weight: 800; color: #E65100; text-transform: uppercase;">Smart Kids Learning</div>';
+      html += '    <div style="font-size: 20px; font-weight: 900; color: #BF360C;">बच्चों की पसंदीदा ऐप</div>';
+      html += '    <div style="font-size: 12px; color: #795548; font-weight: 600;">अपनी क्लास या एक्टिविटी चुनें:</div>';
+      html += '  </div>';
+      html += '</div>';
+
+      // Section Cards
+      html += '<div class="home-grid">';
+
+      // Nursery
+      html += '<div class="home-section-btn btn-nursery" onclick="openSection(\'nursery\', 0)">';
+      html += '  <div>';
+      html += '    <span class="section-badge" style="background:#0288D1;">Age 3-4 Years</span>';
+      html += '    <div class="section-name">Nursery Class</div>';
+      html += '    <div class="section-desc">Full A-Z • अ से अः • 1-50 Counting • Shapes • Before/After</div>';
+      html += '  </div>';
+      html += '  <div style="font-size: 44px;">🧸</div>';
+      html += '</div>';
+
+      // LKG
+      html += '<div class="home-section-btn btn-lkg" onclick="openSection(\'lkg\', 0)">';
+      html += '  <div>';
+      html += '    <span class="section-badge" style="background:#689F38;">Age 4-5 Years</span>';
+      html += '    <div class="section-name">LKG Class</div>';
+      html += '    <div class="section-desc">क-ज्ञ व्यंजन • 1-100 Names • More/Less • शब्द निर्माण</div>';
+      html += '  </div>';
+      html += '  <div style="font-size: 44px;">🚂</div>';
+      html += '</div>';
+
+      // UKG
+      html += '<div class="home-section-btn btn-ukg" onclick="openSection(\'ukg\', 0)">';
+      html += '  <div>';
+      html += '    <span class="section-badge" style="background:#F57C00;">Age 5-6 Years</span>';
+      html += '    <div class="section-name">UKG Class</div>';
+      html += '    <div class="section-desc">CVC Words • सभी हिंदी मात्राएं • Addition/Subtraction</div>';
+      html += '  </div>';
+      html += '  <div style="font-size: 44px;">🚀</div>';
+      html += '</div>';
+
+      // Dual Row: Picture World & Brain Booster
+      html += '<div class="dual-grid">';
+      html += '  <div class="btn-picworld" onclick="openSection(\'picture_world\', 0)">';
+      html += '    <div style="font-size: 36px; margin-bottom: 4px;">🦁</div>';
+      html += '    <div class="section-name">Picture World</div>';
+      html += '    <div class="section-desc">Animals, Birds, Fruits, Veggies, Vehicles, Body</div>';
+      html += '  </div>';
+
+      html += '  <div class="btn-brain" onclick="openSection(\'brain_booster\', 0)">';
+      html += '    <div style="font-size: 36px; margin-bottom: 4px;">🧠</div>';
+      html += '    <div class="section-name">Brain Booster</div>';
+      html += '    <div class="section-desc">Shadow Match • Odd One Out • Memory Flip</div>';
+      html += '  </div>';
+      html += '</div>';
+
+      html += '</div>'; // end home-grid
+
+      view.innerHTML = html;
+    }
+
+    /* =========================================================
+       SECTION 1: NURSERY VIEW
+       ========================================================= */
+    function renderNurseryView() {
+      var view = document.getElementById("main-view");
+      var html = "";
+
+      // Mode Switcher for A-Z, Swar, Shapes
+      if (appState.tabIndex === 0 || appState.tabIndex === 1 || appState.tabIndex === 2 || appState.tabIndex === 3) {
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 Learn Mode (सीखें)</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 Quiz Mode (प्रश्नोत्तरी)</button>';
+        html += '</div>';
+      }
+
+      // TAB 0: A-Z English
+      if (appState.tabIndex === 0) {
+        if (appState.mode === "learn") {
+          autoSpeak("nursery_az_learn", "English Alphabets. A to Z. Tap any letter to listen!", "en-IN");
+          html += '<div style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center;">Tap any card to hear pronunciation 🔊</div>';
+          html += '<div class="grid-items-container">';
+          for (var i = 0; i < DATA_AZ.length; i++) {
+            var item = DATA_AZ[i];
+            html += '<div class="item-chip-card" onclick="speak(\'' + item.phonics + '\', \'en-IN\')">';
+            html += '  <div class="chip-letter">' + item.letter + '</div>';
+            html += '  <div class="chip-emoji">' + item.emoji + '</div>';
+            html += '  <div class="chip-word">' + item.word + '</div>';
+            html += '</div>';
+          }
+          html += '</div>';
+        } else {
+          // Quiz Mode
+          var qItem = DATA_AZ[appState.quizIndex % DATA_AZ.length];
+          autoSpeak("nursery_az_q_" + appState.quizIndex, "Tap on " + qItem.letter + " for " + qItem.word, "en-IN");
+
+          // Build 3 options
+          var opts = [qItem.letter];
+          while (opts.length < 3) {
+            var randLetter = DATA_AZ[Math.floor(Math.random() * DATA_AZ.length)].letter;
+            if (opts.indexOf(randLetter) === -1) opts.push(randLetter);
+          }
+          opts.sort(function() { return Math.random() - 0.5; });
+
+          html += '<div class="flashcard" onclick="speak(\'' + qItem.phonics + '\', \'en-IN\')">';
+          html += '  <div class="flashcard-emoji">' + qItem.emoji + '</div>';
+          html += '  <div class="flashcard-title">' + qItem.word + '</div>';
+          html += '  <div class="audio-hint">🔊 ' + qItem.phonics + '</div>';
+          html += '</div>';
+
+          html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px;">Which letter does this start with?</div>';
+          html += '<div class="options-grid-3">';
+          for (var o = 0; o < opts.length; o++) {
+            var isCorrect = (opts[o] === qItem.letter);
+            html += '<button class="opt-btn" onclick="handleNurseryLetterAns(' + isCorrect + ', \'' + qItem.phonics + '\', \'en-IN\')">' + opts[o] + '</button>';
+          }
+          html += '</div>';
+        }
+      }
+
+      // TAB 1: Swar (अ से अः)
+      else if (appState.tabIndex === 1) {
+        if (appState.mode === "learn") {
+          autoSpeak("nursery_swar_learn", "हिंदी स्वर. अ से अः. किसी भी कार्ड पर टैप करें!", "hi-IN");
+          html += '<div style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center;">किसी भी अक्षर पर टैप करके आवाज़ सुनें 🔊</div>';
+          html += '<div class="grid-items-container">';
+          for (var s = 0; s < DATA_SWAR.length; s++) {
+            var sItem = DATA_SWAR[s];
+            html += '<div class="item-chip-card" onclick="speak(\'' + sItem.phonics + '\', \'hi-IN\')">';
+            html += '  <div class="chip-letter" style="color:#C2185B;">' + sItem.letter + '</div>';
+            html += '  <div class="chip-emoji">' + sItem.emoji + '</div>';
+            html += '  <div class="chip-word">' + sItem.word + '</div>';
+            html += '</div>';
+          }
+          html += '</div>';
+        } else {
+          // Swar Quiz
+          var sqItem = DATA_SWAR[appState.quizIndex % DATA_SWAR.length];
+          autoSpeak("nursery_swar_q_" + appState.quizIndex, sqItem.phonics + " पर टैप करें", "hi-IN");
+
+          var sOpts = [sqItem.letter];
+          while (sOpts.length < 3) {
+            var rL = DATA_SWAR[Math.floor(Math.random() * DATA_SWAR.length)].letter;
+            if (sOpts.indexOf(rL) === -1) sOpts.push(rL);
+          }
+          sOpts.sort(function() { return Math.random() - 0.5; });
+
+          html += '<div class="flashcard" onclick="speak(\'' + sqItem.phonics + '\', \'hi-IN\')">';
+          html += '  <div class="flashcard-emoji">' + sqItem.emoji + '</div>';
+          html += '  <div class="flashcard-title" style="color:#C2185B;">' + sqItem.word + '</div>';
+          html += '  <div class="audio-hint" style="background:#FCE4EC;color:#880E4F;">🔊 ' + sqItem.phonics + '</div>';
+          html += '</div>';
+
+          html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px;">सही स्वर पर टैप करें:</div>';
+          html += '<div class="options-grid-3">';
+          for (var so = 0; so < sOpts.length; so++) {
+            var sCorrect = (sOpts[so] === sqItem.letter);
+            html += '<button class="opt-btn" style="border-color:#F48FB1;box-shadow:0 5px 0 #EC407A;color:#880E4F;" onclick="handleNurseryLetterAns(' + sCorrect + ', \'' + sqItem.phonics + '\', \'hi-IN\')">' + sOpts[so] + '</button>';
+          }
+          html += '</div>';
+        }
+      }
+
+      // TAB 2: Counting 1-50
+      else if (appState.tabIndex === 2) {
+        if (appState.mode === "learn") {
+          var num = appState.countTargetNumber;
+          var numWord = getNumberWord(num);
+          autoSpeak("count_learn_" + num, num + ". " + numWord, "en-IN");
+
+          html += '<div style="text-align:center;margin-bottom:12px;">';
+          html += '  <div style="font-size: 54px; font-weight: 900; color: #E65100; line-height: 1;">' + num + '</div>';
+          html += '  <div style="font-size: 22px; font-weight: 800; color: #F57C00;">' + numWord + '</div>';
+          html += '  <button class="nav-icon-btn" style="margin: 8px auto 0;" onclick="speak(\'' + num + '. ' + numWord + '\', \'en-IN\')">🔊 Listen</button>';
+          html += '</div>';
+
+          // Visual items
+          html += '<div class="math-counters-row" style="max-height: 140px; overflow-y: auto;">';
+          for (var c = 0; c < num; c++) {
+            html += '<span style="font-size: 28px;" title="' + (c+1) + '">🎈</span>';
+          }
+          html += '</div>';
+
+          // 1 to 50 Quick selector chips
+          html += '<div style="font-size: 13px; font-weight: 800; color: #546E7A; margin: 12px 0 6px;">Select any number (1 to 50):</div>';
+          html += '<div style="display: flex; flex-wrap: wrap; gap: 6px; max-height: calc(100vh - 360px); overflow-y: auto; padding: 4px;">';
+          for (var n = 1; n <= 50; n++) {
+            var activeStyle = (n === num) ? 'background:#FF9800;color:#fff;border-color:#F57C00;' : 'background:#fff;color:#E65100;border:1px solid #FFE0B2;';
+            html += '<button onclick="appState.countTargetNumber=' + n + ';renderCurrentView();" style="width: 44px; height: 44px; border-radius: 12px; font-weight: 900; font-size: 16px; cursor: pointer;' + activeStyle + '">' + n + '</button>';
+          }
+          html += '</div>';
+        } else {
+          // Counting Quiz
+          var quizNum = (appState.quizIndex % 15) + 2; // numbers 2 to 16
+          autoSpeak("count_quiz_" + appState.quizIndex, "Count the objects and tap the right number!", "en-IN");
+
+          var countOpts = [quizNum, quizNum + 1, Math.max(1, quizNum - 1)].sort(function() { return Math.random() - 0.5; });
+
+          html += '<div style="text-align:center;margin: 10px 0;">';
+          html += '  <div style="font-size: 16px; font-weight: 800; color: #455A64;">Count the items (गिनती करो):</div>';
+          html += '  <div class="math-counters-row" style="margin: 14px auto; max-width: 320px;">';
+          for (var qi = 0; qi < quizNum; qi++) {
+            html += '<span style="font-size: 32px;">⭐</span>';
+          }
+          html += '  </div>';
+          html += '</div>';
+
+          html += '<div class="options-grid-3">';
+          for (var co = 0; co < countOpts.length; co++) {
+            var isCountOk = (countOpts[co] === quizNum);
+            html += '<button class="opt-btn" onclick="handleNurseryCountAns(' + isCountOk + ', ' + quizNum + ')">' + countOpts[co] + '</button>';
+          }
+          html += '</div>';
+        }
+      }
+
+      // TAB 3: Shapes
+      else if (appState.tabIndex === 3) {
+        if (appState.mode === "learn") {
+          autoSpeak("shapes_learn", "Shapes. Circle, Square, Triangle, and more. Tap to listen!", "en-IN");
+          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px;">';
+          for (var sh = 0; sh < DATA_SHAPES.length; sh++) {
+            var sItemObj = DATA_SHAPES[sh];
+            html += '<div class="interactive-card" style="padding: 16px; text-align: center;" onclick="speak(\'' + sItemObj.name + ', ' + sItemObj.hindi + '\', \'en-IN\')">';
+            html += '  <div style="font-size: 48px; margin-bottom: 6px;">' + sItemObj.emoji + '</div>';
+            html += '  <div style="font-size: 18px; font-weight: 900; color: #2C3E50;">' + sItemObj.name + '</div>';
+            html += '  <div style="font-size: 13px; font-weight: 700; color: #78909C;">' + sItemObj.hindi + '</div>';
+            html += '</div>';
+          }
+          html += '</div>';
+        } else {
+          // Shapes Quiz
+          var shapeTarget = DATA_SHAPES[appState.quizIndex % DATA_SHAPES.length];
+          autoSpeak("shape_quiz_" + appState.quizIndex, "Find the " + shapeTarget.name, "en-IN");
+
+          var shapeOpts = [shapeTarget];
+          while (shapeOpts.length < 3) {
+            var rShape = DATA_SHAPES[Math.floor(Math.random() * DATA_SHAPES.length)];
+            if (shapeOpts.indexOf(rShape) === -1) shapeOpts.push(rShape);
+          }
+          shapeOpts.sort(function() { return Math.random() - 0.5; });
+
+          html += '<div style="text-align: center; margin: 18px 0;">';
+          html += '  <div style="font-size: 15px; font-weight: bold; color: #546E7A;">Tap on:</div>';
+          html += '  <div style="font-size: 28px; font-weight: 900; color: #D84315;">' + shapeTarget.name + '</div>';
+          html += '  <div style="font-size: 16px; font-weight: 700; color: #FF7043;">(' + shapeTarget.hindi + ')</div>';
+          html += '</div>';
+
+          html += '<div class="options-grid-3">';
+          for (var sho = 0; sho < shapeOpts.length; sho++) {
+            var isShapeOk = (shapeOpts[sho].name === shapeTarget.name);
+            html += '<button class="opt-btn" onclick="handleNurseryShapeAns(' + isShapeOk + ', \'' + shapeTarget.name + '\')">';
+            html += '  <span style="font-size: 44px;">' + shapeOpts[sho].emoji + '</span>';
+            html += '</button>';
+          }
+          html += '</div>';
+        }
+      }
+
+      // TAB 4: Before / After
+      else if (appState.tabIndex === 4) {
+        var baItem = DATA_BEFORE_AFTER[appState.quizIndex % DATA_BEFORE_AFTER.length];
+        autoSpeak("ba_q_" + appState.quizIndex, baItem.speak, baItem.lang);
+
+        html += '<div style="text-align:center;margin: 14px 0 20px;">';
+        html += '  <div style="font-size: 18px; font-weight: 800; color: #0277BD; margin-bottom: 12px;">' + baItem.q + '</div>';
+        html += '  <div style="font-size: 38px; font-weight: 900; letter-spacing: 6px; background: #E1F5FE; border: 3px solid #0288D1; border-radius: 20px; padding: 14px 20px; display: inline-block; color: #01579B;">' + baItem.prompt + '</div>';
+        html += '</div>';
+
+        html += '<div class="options-grid-3">';
+        for (var bao = 0; bao < baItem.options.length; bao++) {
+          var isBaOk = (baItem.options[bao] === baItem.ans);
+          html += '<button class="opt-btn" onclick="handleBeforeAfterAns(' + isBaOk + ', \'' + baItem.ans + '\', \'' + baItem.lang + '\')">' + baItem.options[bao] + '</button>';
+        }
+        html += '</div>';
+      }
+
+      view.innerHTML = html;
+    }
+
+    function handleNurseryLetterAns(isCorrect, speech, lang) {
+      if (isCorrect) {
+        addStar("बहुत खूब! (Superb!)", speech, lang);
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("गलत जवाब, फिर कोशिश करो");
+      }
+    }
+
+    function handleNurseryCountAns(isCorrect, count) {
+      if (isCorrect) {
+        addStar("सही जवाब! (Correct Count)", count + "! Great counting!", "en-IN");
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("गलत गिनती, फिर से गिनो");
+      }
+    }
+
+    function handleNurseryShapeAns(isCorrect, shapeName) {
+      if (isCorrect) {
+        addStar("बढ़िया! " + shapeName, "Yes! That is " + shapeName, "en-IN");
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("यह सही आकार नहीं है");
+      }
+    }
+
+    function handleBeforeAfterAns(isCorrect, ans, lang) {
+      if (isCorrect) {
+        addStar("शाबाश! सही उत्तर: " + ans, "Great! Answer is " + ans, lang);
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("फिर से सोचो");
+      }
+    }
+
+    /* =========================================================
+       SECTION 2: LKG VIEW
+       ========================================================= */
+    function renderLkgView() {
+      var view = document.getElementById("main-view");
+      var html = "";
+
+      // TAB 0: क-ज्ञ व्यंजन
+      if (appState.tabIndex === 0) {
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 Learn Grid (सभी ३६ व्यंजन)</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 Vyanjan Quiz</button>';
+        html += '</div>';
+
+        if (appState.mode === "learn") {
+          autoSpeak("lkg_vyanjan_learn", "क से ज्ञ तक व्यंजन. किसी भी अक्षर पर टैप करके सीखें!", "hi-IN");
+          html += '<div class="grid-items-container">';
+          for (var v = 0; v < DATA_VYANJAN.length; v++) {
+            var vItem = DATA_VYANJAN[v];
+            html += '<div class="item-chip-card" onclick="speak(\'' + vItem.sound + '\', \'hi-IN\')">';
+            html += '  <div class="chip-letter" style="color:#2E7D32;">' + vItem.letter + '</div>';
+            html += '  <div class="chip-emoji">' + vItem.emoji + '</div>';
+            html += '  <div class="chip-word">' + vItem.word + '</div>';
+            html += '</div>';
+          }
+          html += '</div>';
+        } else {
+          // Vyanjan Quiz
+          var vTarget = DATA_VYANJAN[appState.quizIndex % DATA_VYANJAN.length];
+          autoSpeak("lkg_vyanjan_q_" + appState.quizIndex, vTarget.sound + " पर टैप करें", "hi-IN");
+
+          var vOpts = [vTarget.letter];
+          while (vOpts.length < 3) {
+            var rV = DATA_VYANJAN[Math.floor(Math.random() * DATA_VYANJAN.length)].letter;
+            if (vOpts.indexOf(rV) === -1) vOpts.push(rV);
+          }
+          vOpts.sort(function() { return Math.random() - 0.5; });
+
+          html += '<div class="flashcard" onclick="speak(\'' + vTarget.sound + '\', \'hi-IN\')">';
+          html += '  <div class="flashcard-emoji">' + vTarget.emoji + '</div>';
+          html += '  <div class="flashcard-title" style="color:#2E7D32;">' + vTarget.word + '</div>';
+          html += '  <div class="audio-hint" style="background:#E8F5E9;color:#1B5E20;">🔊 ' + vTarget.sound + '</div>';
+          html += '</div>';
+
+          html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px;">सही व्यंजन पर टैप करें:</div>';
+          html += '<div class="options-grid-3">';
+          for (var vo = 0; vo < vOpts.length; vo++) {
+            var isVOk = (vOpts[vo] === vTarget.letter);
+            html += '<button class="opt-btn" style="border-color:#A5D6A7;box-shadow:0 5px 0 #66BB6A;color:#1B5E20;" onclick="handleVyanjanAns(' + isVOk + ', \'' + vTarget.sound + '\')">' + vOpts[vo] + '</button>';
+          }
+          html += '</div>';
+        }
+      }
+
+      // TAB 1: 1-100 Number Names
+      else if (appState.tabIndex === 1) {
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 Explore 1 to 100</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 Spelling Quiz</button>';
+        html += '</div>';
+
+        if (appState.mode === "learn") {
+          autoSpeak("num_names_learn", "1 to 100 Number Names. Tap any number to hear its spelling!", "en-IN");
+          html += '<div style="max-height: calc(100vh - 210px); overflow-y: auto; padding-right: 4px;">';
+          for (var nn = 1; nn <= 100; nn++) {
+            var spelling = getNumberWord(nn);
+            html += '<div class="interactive-card" style="padding: 10px 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between;" onclick="speak(\'' + nn + ', ' + spelling + '\', \'en-IN\')">';
+            html += '  <div style="display: flex; align-items: center; gap: 12px;">';
+            html += '    <div style="width: 40px; height: 40px; border-radius: 12px; background: #E8F5E9; color: #2E7D32; font-weight: 900; font-size: 18px; display: flex; align-items: center; justify-content: center;">' + nn + '</div>';
+            html += '    <div style="font-size: 17px; font-weight: 800; color: #1B5E20;">' + spelling + '</div>';
+            html += '  </div>';
+            html += '  <div style="font-size: 18px;">🔊</div>';
+            html += '</div>';
+          }
+          html += '</div>';
+        } else {
+          // Number Names Quiz
+          var targetNum = Math.floor(Math.random() * 99) + 1;
+          var correctSpelling = getNumberWord(targetNum);
+          autoSpeak("num_name_quiz_" + appState.quizIndex, "What is the spelling of " + targetNum + "?", "en-IN");
+
+          var spellingOpts = [correctSpelling];
+          while (spellingOpts.length < 3) {
+            var wrongNum = Math.floor(Math.random() * 99) + 1;
+            if (wrongNum !== targetNum) {
+              var wrongSpell = getNumberWord(wrongNum);
+              if (spellingOpts.indexOf(wrongSpell) === -1) spellingOpts.push(wrongSpell);
+            }
+          }
+          spellingOpts.sort(function() { return Math.random() - 0.5; });
+
+          html += '<div style="text-align:center;margin: 14px 0 20px;">';
+          html += '  <div style="font-size: 15px; font-weight: bold; color: #546E7A;">Choose correct spelling for:</div>';
+          html += '  <div style="font-size: 64px; font-weight: 900; color: #2E7D32; margin: 4px 0;">' + targetNum + '</div>';
+          html += '</div>';
+
+          html += '<div style="display: flex; flex-direction: column; gap: 10px;">';
+          for (var spo = 0; spo < spellingOpts.length; spo++) {
+            var isSpellOk = (spellingOpts[spo] === correctSpelling);
+            html += '<button class="opt-btn" style="padding: 14px 10px; font-size: 20px; color: #2E7D32; border-color: #A5D6A7;" onclick="handleNumNameAns(' + isSpellOk + ', \'' + correctSpelling + '\')">' + spellingOpts[spo] + '</button>';
+          }
+          html += '</div>';
+        }
+      }
+
+      // TAB 2: More / Less (ज्यादा / कम)
+      else if (appState.tabIndex === 2) {
+        var isAskingMore = (appState.quizIndex % 2 === 0);
+        var countL = Math.floor(Math.random() * 5) + 3; // 3 to 7
+        var countR = Math.floor(Math.random() * 5) + 3;
+        while (countL === countR) {
+          countR = Math.floor(Math.random() * 5) + 3;
+        }
+
+        var correctSide = isAskingMore ? (countL > countR ? "left" : "right") : (countL < countR ? "left" : "right");
+        var qPrompt = isAskingMore ? "Which side has MORE? (ज्यादा)" : "Which side has LESS? (कम)";
+        autoSpeak("more_less_" + appState.quizIndex, isAskingMore ? "Which side has more? ज्यादा किस तरफ हैं?" : "Which side has less? कम किस तरफ हैं?", "hi-IN");
+
+        html += '<div style="text-align: center; margin: 10px 0 16px;">';
+        html += '  <div style="font-size: 20px; font-weight: 900; color: #2E7D32;">' + qPrompt + '</div>';
+        html += '  <div style="font-size: 12px; color: #546E7A; font-weight: bold;">Tap on the correct group!</div>';
+        html += '</div>';
+
+        html += '<div class="dual-grid" style="align-items: stretch;">';
+        // Left Box
+        html += '<div class="interactive-card" style="padding: 16px; text-align: center; border-color: #81C784;" onclick="handleMoreLessAns(\'left\', \'' + correctSide + '\')">';
+        html += '  <div style="font-size: 13px; font-weight: 800; color: #388E3C; margin-bottom: 8px;">Group A (' + countL + ')</div>';
+        html += '  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; font-size: 28px;">';
+        for (var l = 0; l < countL; l++) html += '<span>🍎</span>';
+        html += '  </div>';
+        html += '</div>';
+
+        // Right Box
+        html += '<div class="interactive-card" style="padding: 16px; text-align: center; border-color: #81C784;" onclick="handleMoreLessAns(\'right\', \'' + correctSide + '\')">';
+        html += '  <div style="font-size: 13px; font-weight: 800; color: #388E3C; margin-bottom: 8px;">Group B (' + countR + ')</div>';
+        html += '  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; font-size: 28px;">';
+        for (var r = 0; r < countR; r++) html += '<span>🍎</span>';
+        html += '  </div>';
+        html += '</div>';
+        html += '</div>';
+      }
+
+      // TAB 3: शब्द निर्माण (Word Building)
+      else if (appState.tabIndex === 3) {
+        var wordObj = DATA_SHABDA[appState.wordCurrentIndex % DATA_SHABDA.length];
+        autoSpeak("shabda_" + appState.wordCurrentIndex, wordObj.sound + ". चित्र देखकर अक्षर जोड़ें", "hi-IN");
+
+        html += '<div style="text-align: center; margin: 10px 0;">';
+        html += '  <div style="font-size: 64px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">' + wordObj.emoji + '</div>';
+        html += '  <div style="font-size: 14px; font-weight: bold; color: #546E7A; margin-top: 4px;">अक्षर चुनकर शब्द बनाओ:</div>';
+        html += '</div>';
+
+        // Word Slots
+        html += '<div class="word-slots">';
+        for (var ws = 0; ws < wordObj.letters.length; ws++) {
+          var val = appState.wordSlots[ws] || "";
+          var filledCls = val ? " filled" : "";
+          html += '<div class="slot-box' + filledCls + '">' + val + '</div>';
+        }
+        html += '</div>';
+
+        // Tray of letter options
+        html += '<div class="letters-tray">';
+        for (var lp = 0; lp < wordObj.pool.length; lp++) {
+          var letterChar = wordObj.pool[lp];
+          html += '<button class="letter-bubble" onclick="tapWordLetter(\'' + letterChar + '\')">' + letterChar + '</button>';
+        }
+        html += '</div>';
+
+        // Reset button
+        html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">';
+        html += '  <button class="nav-icon-btn" onclick="initShabdaNirman()">🔄 Reset (हटाएं)</button>';
+        html += '  <button class="nav-icon-btn" onclick="speak(\'' + wordObj.sound + '\', \'hi-IN\')">🔊 सुनिए</button>';
+        html += '</div>';
+      }
+
+      view.innerHTML = html;
+    }
+
+    function initShabdaNirman() {
+      appState.wordSlots = [];
+      renderCurrentView();
+    }
+
+    function tapWordLetter(char) {
+      playTone("pop");
+      var wordObj = DATA_SHABDA[appState.wordCurrentIndex % DATA_SHABDA.length];
+      if (appState.wordSlots.length < wordObj.letters.length) {
+        appState.wordSlots.push(char);
+        renderCurrentView();
+
+        // Check if finished
+        if (appState.wordSlots.length === wordObj.letters.length) {
+          var builtWord = appState.wordSlots.join("");
+          if (builtWord === wordObj.word) {
+            addStar("अद्भुत! " + wordObj.word, wordObj.sound + "! बहुत बढ़िया!", "hi-IN");
+            setTimeout(function() {
+              appState.wordCurrentIndex++;
+              appState.wordSlots = [];
+              renderCurrentView();
+            }, 1300);
+          } else {
+            markWrong("गलत शब्द बना, दोबारा जोड़ें");
+            setTimeout(function() {
+              appState.wordSlots = [];
+              renderCurrentView();
+            }, 900);
+          }
+        }
+      }
+    }
+
+    function handleVyanjanAns(isCorrect, sound) {
+      if (isCorrect) {
+        addStar("सही उत्तर! (Correct Vyanjan)", sound, "hi-IN");
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("गलत व्यंजन, फिर से कोशिश करें");
+      }
+    }
+
+    function handleNumNameAns(isCorrect, spelling) {
+      if (isCorrect) {
+        addStar("शानदार! " + spelling, "Correct! " + spelling, "en-IN");
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("गलत स्पेलिंग, दोबारा चुनें");
+      }
+    }
+
+    function handleMoreLessAns(chosen, correct) {
+      if (chosen === correct) {
+        addStar("बिल्कुल सही! (Correct!)", "Very good! Correct answer!", "en-IN");
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("फिर से गिन कर देखो");
+      }
+    }
+
+    /* =========================================================
+       SECTION 3: UKG VIEW
+       ========================================================= */
+    function renderUkgView() {
+      var view = document.getElementById("main-view");
+      var html = "";
+
+      // TAB 0: CVC Words
+      if (appState.tabIndex === 0) {
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 Phonics Learn</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 Missing Vowel Quiz</button>';
+        html += '</div>';
+
+        if (appState.mode === "learn") {
+          autoSpeak("cvc_learn", "CVC Words Phonics. Three letter words. Tap to hear each sound!", "en-IN");
+          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">';
+          for (var cv = 0; cv < DATA_CVC.length; cv++) {
+            var cvcItem = DATA_CVC[cv];
+            html += '<div class="interactive-card" style="padding: 14px; text-align: center; border-color: #FFCC80;" onclick="speak(\'' + cvcItem.sound + '\', \'en-IN\')">';
+            html += '  <div style="font-size: 40px; margin-bottom: 4px;">' + cvcItem.emoji + '</div>';
+            html += '  <div style="font-size: 22px; font-weight: 900; color: #E65100;">' + cvcItem.word + '</div>';
+            html += '  <div style="font-size: 11px; font-weight: 700; color: #795548;">Vowel: ' + cvcItem.vowel + '</div>';
+            html += '</div>';
+          }
+          html += '</div>';
+        } else {
+          // Missing Vowel Quiz
+          var cvcQ = DATA_CVC[appState.quizIndex % DATA_CVC.length];
+          autoSpeak("cvc_q_" + appState.quizIndex, cvcQ.sound + ". What vowel is missing in " + cvcQ.word + "?", "en-IN");
+
+          html += '<div class="flashcard" onclick="speak(\'' + cvcQ.sound + '\', \'en-IN\')">';
+          html += '  <div class="flashcard-emoji">' + cvcQ.emoji + '</div>';
+          html += '  <div style="font-size: 38px; font-weight: 900; color: #E65100; letter-spacing: 4px;">' + cvcQ.pre + ' [ ? ] ' + cvcQ.post + '</div>';
+          html += '  <div class="audio-hint" style="background:#FFF3E0;color:#E65100;">🔊 ' + cvcQ.sound + '</div>';
+          html += '</div>';
+
+          html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px;">Pick the correct vowel:</div>';
+          var vowels = ["A", "E", "I", "O", "U"];
+          html += '<div style="display: flex; justify-content: center; gap: 8px; margin-top: 14px; flex-wrap: wrap;">';
+          for (var v = 0; v < vowels.length; v++) {
+            var isVowelOk = (vowels[v] === cvcQ.ans);
+            html += '<button class="letter-bubble" style="background:#FFF3E0;border-color:#FF9800;color:#BF360C;" onclick="handleCvcAns(' + isVowelOk + ', \'' + cvcQ.sound + '\')">' + vowels[v] + '</button>';
+          }
+          html += '</div>';
+        }
+      }
+
+      // TAB 1: सभी हिंदी मात्राएं
+      else if (appState.tabIndex === 1) {
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 सभी मात्राएं सीखें</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 मात्रा Quiz</button>';
+        html += '</div>';
+
+        if (appState.mode === "learn") {
+          autoSpeak("matra_learn", "हिंदी की सभी प्रमुख मात्राएं. किसी भी मात्रा पर टैप करें!", "hi-IN");
+          html += '<div style="max-height: calc(100vh - 210px); overflow-y: auto;">';
+          for (var m = 0; m < DATA_MATRA.length; m++) {
+            var mItem = DATA_MATRA[m];
+            html += '<div class="interactive-card" style="padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; border-color: #FFCC80;" onclick="speak(\'' + mItem.sound + '\', \'hi-IN\')">';
+            html += '  <div style="display: flex; align-items: center; gap: 12px;">';
+            html += '    <div style="font-size: 32px;">' + mItem.emoji + '</div>';
+            html += '    <div>';
+            html += '      <div style="font-size: 17px; font-weight: 900; color: #E65100;">' + mItem.name + '</div>';
+            html += '      <div style="font-size: 12px; font-weight: 700; color: #795548;">' + mItem.sound + '</div>';
+            html += '    </div>';
+            html += '  </div>';
+            html += '  <div style="font-size: 24px; font-weight: 900; color: #D84315;">' + mItem.example + '</div>';
+            html += '</div>';
+          }
+          html += '</div>';
+        } else {
+          // Matra Quiz
+          var mqItem = DATA_MATRA[appState.quizIndex % DATA_MATRA.length];
+          autoSpeak("matra_q_" + appState.quizIndex, mqItem.full + " में कौन सी मात्रा लगेगी?", "hi-IN");
+
+          html += '<div class="flashcard" onclick="speak(\'' + mqItem.sound + '\', \'hi-IN\')">';
+          html += '  <div class="flashcard-emoji">' + mqItem.emoji + '</div>';
+          html += '  <div style="font-size: 32px; font-weight: 900; color: #D84315;">' + mqItem.missingPart + '</div>';
+          html += '  <div class="audio-hint" style="background:#FFF3E0;color:#E65100;">🔊 ' + mqItem.full + '</div>';
+          html += '</div>';
+
+          html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px;">सही मात्रा चुनो:</div>';
+          html += '<div class="options-grid-3">';
+          for (var mo = 0; mo < mqItem.options.length; mo++) {
+            var isMatraOk = (mqItem.options[mo] === mqItem.ans);
+            html += '<button class="opt-btn" style="border-color:#FFB74D;color:#E65100;font-size:32px;" onclick="handleMatraAns(' + isMatraOk + ', \'' + mqItem.sound + '\')">' + mqItem.options[mo] + '</button>';
+          }
+          html += '</div>';
+        }
+      }
+
+      // TAB 2: Addition & Subtraction
+      else if (appState.tabIndex === 2) {
+        var op = (appState.quizIndex % 2 === 0) ? "+" : "-";
+        var a = Math.floor(Math.random() * 4) + 3; // 3 to 6
+        var b = Math.floor(Math.random() * 3) + 1; // 1 to 3
+        if (op === "-" && a < b) {
+          var tmp = a; a = b; b = tmp;
+        }
+        var correctMath = (op === "+") ? (a + b) : (a - b);
+        var mathSpoken = (op === "+") ? (a + " plus " + b + " equals what?") : (a + " minus " + b + " equals what?");
+        autoSpeak("math_q_" + appState.quizIndex, mathSpoken, "en-IN");
+
+        html += '<div style="text-align:center;margin: 12px 0;">';
+        html += '  <div style="font-size: 44px; font-weight: 900; color: #E65100;">' + a + ' ' + op + ' ' + b + ' = ?</div>';
+        html += '  <div style="font-size: 13px; font-weight: bold; color: #795548;">Count the objects below:</div>';
+        html += '</div>';
+
+        // Visual Representation
+        html += '<div class="math-counters-row" style="max-width: 340px; margin: 10px auto;">';
+        // Group A
+        for (var ga = 0; ga < a; ga++) {
+          html += '<span style="font-size: 32px;">🍎</span>';
+        }
+        html += '<span class="math-symbol">' + op + '</span>';
+        // Group B
+        for (var gb = 0; gb < b; gb++) {
+          var cross = (op === "-") ? ' style="filter: grayscale(1); opacity: 0.5;"' : '';
+          html += '<span style="font-size: 32px;"' + cross + '>🍎</span>';
+        }
+        html += '</div>';
+
+        var mathOpts = [correctMath, correctMath + 1, Math.max(0, correctMath - 1)].sort(function() { return Math.random() - 0.5; });
+
+        html += '<div class="options-grid-3" style="max-width: 320px; margin: 18px auto 0;">';
+        for (var mopt = 0; mopt < mathOpts.length; mopt++) {
+          var isMathOk = (mathOpts[mopt] === correctMath);
+          html += '<button class="opt-btn" onclick="handleMathAns(' + isMathOk + ', ' + correctMath + ')">' + mathOpts[mopt] + '</button>';
+        }
+        html += '</div>';
+      }
+
+      view.innerHTML = html;
+    }
+
+    function handleCvcAns(isCorrect, sound) {
+      if (isCorrect) {
+        addStar("Superb! " + sound, sound + "! Perfect!", "en-IN");
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("Wrong vowel, try again");
+      }
+    }
+
+    function handleMatraAns(isCorrect, sound) {
+      if (isCorrect) {
+        addStar("शाबाश! सही मात्रा", sound, "hi-IN");
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("गलत मात्रा, फिर से देखो");
+      }
+    }
+
+    function handleMathAns(isCorrect, ans) {
+      if (isCorrect) {
+        addStar("Correct! = " + ans, "Awesome! The answer is " + ans, "en-IN");
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("गिनती गलत है, फिर से जोड़ें");
+      }
+    }
+
+    /* =========================================================
+       SECTION 4: PICTURE WORLD VIEW (Learn & Quiz)
+       ========================================================= */
+    function renderPictureWorldView() {
+      var view = document.getElementById("main-view");
+      var categories = ["Animals", "Birds", "Fruits", "Vegetables", "Vehicles", "BodyParts"];
+      var catName = categories[appState.tabIndex] || "Animals";
+      var items = DATA_PICTURE_WORLD[catName] || [];
+
+      var html = "";
+      html += '<div class="mode-switch">';
+      html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="setMode(\'learn\')">📖 Picture Cards (सीखें)</button>';
+      html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="setMode(\'quiz\')">🎯 Picture Quiz</button>';
+      html += '</div>';
+
+      if (appState.mode === "learn") {
+        autoSpeak("pw_learn_" + catName, catName + ". Tap any card to hear pronunciation!", "en-IN");
+        html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 210px); overflow-y: auto; padding: 4px;">';
+        for (var p = 0; p < items.length; p++) {
+          var pItem = items[p];
+          html += '<div class="interactive-card" style="padding: 14px; text-align: center; border-color: #CE93D8;" onclick="speak(\'' + pItem.en + ', ' + pItem.hi + '\', \'en-IN\')">';
+          html += '  <div style="font-size: 52px; margin-bottom: 6px;">' + pItem.emoji + '</div>';
+          html += '  <div style="font-size: 18px; font-weight: 900; color: #4A148C;">' + pItem.en + '</div>';
+          html += '  <div style="font-size: 13px; font-weight: 700; color: #7B1FA2;">' + pItem.hi + '</div>';
+          html += '</div>';
+        }
+        html += '</div>';
+      } else {
+        // Picture Quiz
+        var targetPic = items[appState.quizIndex % items.length];
+        autoSpeak("pw_q_" + appState.quizIndex, "Where is the " + targetPic.en + "? " + targetPic.hi + " कहाँ है?", "hi-IN");
+
+        var pOpts = [targetPic];
+        while (pOpts.length < 4) {
+          var randP = items[Math.floor(Math.random() * items.length)];
+          if (pOpts.indexOf(randP) === -1) pOpts.push(randP);
+        }
+        pOpts.sort(function() { return Math.random() - 0.5; });
+
+        html += '<div style="text-align: center; margin: 12px 0 16px;">';
+        html += '  <div style="font-size: 14px; font-weight: bold; color: #546E7A;">Find this picture (पहचानो):</div>';
+        html += '  <div style="font-size: 30px; font-weight: 900; color: #6A1B9A;">' + targetPic.en + '</div>';
+        html += '  <div style="font-size: 18px; font-weight: 700; color: #8E24AA;">(' + targetPic.hi + ')</div>';
+        html += '</div>';
+
+        html += '<div class="options-grid-4">';
+        for (var po = 0; po < pOpts.length; po++) {
+          var isPicOk = (pOpts[po].en === targetPic.en);
+          html += '<button class="opt-btn" style="border-color:#BA68C8;box-shadow:0 5px 0 #8E24AA;padding:18px 8px;" onclick="handlePicWorldAns(' + isPicOk + ', \'' + targetPic.en + '\', \'' + targetPic.hi + '\')">';
+          html += '  <span style="font-size: 52px;">' + pOpts[po].emoji + '</span>';
+          html += '</button>';
+        }
+        html += '</div>';
+      }
+
+      view.innerHTML = html;
+    }
+
+    function handlePicWorldAns(isCorrect, en, hi) {
+      if (isCorrect) {
+        addStar("शानदार! " + en, "Very good! That is " + en + ", " + hi, "en-IN");
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("यह नहीं है, दोबारा ढूंढें");
+      }
+    }
+
+    /* =========================================================
+       SECTION 5: BRAIN BOOSTER VIEW
+       ========================================================= */
+    function renderBrainBoosterView() {
+      var view = document.getElementById("main-view");
+      var html = "";
+
+      // TAB 0: Shadow Match
+      if (appState.tabIndex === 0) {
+        var sTarget = DATA_SHADOWS[appState.brainIndex % DATA_SHADOWS.length];
+        autoSpeak("shadow_q_" + appState.brainIndex, sTarget.sound, "hi-IN");
+
+        html += '<div style="text-align: center; margin: 10px 0;">';
+        html += '  <div style="font-size: 14px; font-weight: bold; color: #546E7A;">इस चित्र की सही परछाई (Shadow) चुनो:</div>';
+        html += '  <div style="font-size: 74px; margin: 10px 0; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));">' + sTarget.emoji + '</div>';
+        html += '  <div style="font-size: 20px; font-weight: 900; color: #880E4F;">' + sTarget.name + '</div>';
+        html += '</div>';
+
+        html += '<div class="options-grid-3">';
+        for (var so = 0; so < sTarget.options.length; so++) {
+          var isShadowOk = (sTarget.options[so] === sTarget.correct);
+          html += '<button class="opt-btn" style="border-color:#F48FB1;box-shadow:0 5px 0 #D81B60;" onclick="handleShadowAns(' + isShadowOk + ', \'' + sTarget.name + '\')">';
+          // CSS Silhouette shadow filter
+          html += '  <span style="font-size: 48px; filter: brightness(0) opacity(0.85);">' + sTarget.options[so] + '</span>';
+          html += '</button>';
+        }
+        html += '</div>';
+      }
+
+      // TAB 1: Odd One Out
+      else if (appState.tabIndex === 1) {
+        var oddObj = DATA_ODD_OUT[appState.brainIndex % DATA_ODD_OUT.length];
+        autoSpeak("odd_q_" + appState.brainIndex, "Find the odd one out. इनमें से अलग क्या है?", "hi-IN");
+
+        html += '<div style="text-align: center; margin: 12px 0 16px;">';
+        html += '  <div style="font-size: 18px; font-weight: 900; color: #880E4F;">' + oddObj.question + '</div>';
+        html += '  <div style="font-size: 12px; font-weight: bold; color: #546E7A;">जो सबसे अलग है, उस पर टैप करें:</div>';
+        html += '</div>';
+
+        html += '<div class="options-grid-4">';
+        for (var oi = 0; oi < oddObj.items.length; oi++) {
+          var itm = oddObj.items[oi];
+          html += '<button class="opt-btn" style="border-color:#F48FB1;box-shadow:0 5px 0 #D81B60;padding:20px 8px;" onclick="handleOddAns(' + itm.isOdd + ', \'' + (itm.reason || "Good job!") + '\')">';
+          html += '  <span style="font-size: 52px;">' + itm.emoji + '</span>';
+          html += '</button>';
+        }
+        html += '</div>';
+      }
+
+      // TAB 2: Memory Flip Game
+      else if (appState.tabIndex === 2) {
+        if (!appState.memCards || appState.memCards.length === 0) {
+          initMemoryGame();
+        }
+
+        html += '<div style="text-align: center; margin-bottom: 8px;">';
+        html += '  <div style="font-size: 18px; font-weight: 900; color: #880E4F;">Memory Flip Game (जोड़ी मिलाओ)</div>';
+        html += '  <div style="font-size: 12px; font-weight: bold; color: #546E7A;">Matched: ' + appState.memMatched.length + ' / ' + (appState.memCards.length / 2) + ' pairs</div>';
+        html += '</div>';
+
+        html += '<div class="memory-grid">';
+        for (var mi = 0; mi < appState.memCards.length; mi++) {
+          var cardIcon = appState.memCards[mi];
+          var isFlipped = (appState.memFlipped.indexOf(mi) !== -1 || appState.memMatched.indexOf(cardIcon) !== -1);
+          var flipCls = isFlipped ? " flipped" : "";
+          html += '<div class="memory-card' + flipCls + '" onclick="tapMemoryCard(' + mi + ')">';
+          html += '  <div class="memory-card-inner">';
+          html += '    <div class="memory-front">⭐</div>';
+          html += '    <div class="memory-back">' + cardIcon + '</div>';
+          html += '  </div>';
+          html += '</div>';
+        }
+        html += '</div>';
+
+        html += '<div style="text-align: center; margin-top: 10px;">';
+        html += '  <button class="nav-icon-btn" style="margin: 0 auto;" onclick="initMemoryGame()">🔄 New Game (नया खेल)</button>';
+        html += '</div>';
+      }
+
+      view.innerHTML = html;
+    }
+
+    function initMemoryGame() {
+      var pool = ["🦁", "🍎", "🚗", "🦚", "🐘", "⭐"];
+      var doublePool = pool.concat(pool);
+      doublePool.sort(function() { return Math.random() - 0.5; });
+      appState.memCards = doublePool;
+      appState.memFlipped = [];
+      appState.memMatched = [];
+      autoSpeak("mem_init", "Memory Flip Game. Tap cards to find matching pairs!", "en-IN");
+    }
+
+    function tapMemoryCard(idx) {
+      if (appState.memFlipped.length >= 2) return;
+      if (appState.memFlipped.indexOf(idx) !== -1) return;
+      var cardIcon = appState.memCards[idx];
+      if (appState.memMatched.indexOf(cardIcon) !== -1) return;
+
+      playTone("pop");
+      appState.memFlipped.push(idx);
+      renderCurrentView();
+
+      if (appState.memFlipped.length === 2) {
+        var idx1 = appState.memFlipped[0];
+        var idx2 = appState.memFlipped[1];
+        var icon1 = appState.memCards[idx1];
+        var icon2 = appState.memCards[idx2];
+
+        if (icon1 === icon2) {
+          appState.memMatched.push(icon1);
+          addStar("जोड़ी मिल गई! (Pair Matched!)", "Match found! Super!", "en-IN");
+          appState.memFlipped = [];
+
+          if (appState.memMatched.length === appState.memCards.length / 2) {
+            setTimeout(function() {
+              playTone("win");
+              showToast("🏆 You Won the Game!", "success");
+              speak("Congratulations! You matched all pairs!", "en-IN");
+            }, 600);
+          }
+        } else {
+          setTimeout(function() {
+            playTone("wrong");
+            appState.memFlipped = [];
+            renderCurrentView();
+          }, 850);
+        }
+      }
+    }
+
+    function handleShadowAns(isCorrect, name) {
+      if (isCorrect) {
+        addStar("सही Shadow! (Great Match)", "Perfect shadow of " + name, "en-IN");
+        setTimeout(function() {
+          appState.brainIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("यह सही परछाई नहीं है");
+      }
+    }
+
+    function handleOddAns(isOdd, reason) {
+      if (isOdd) {
+        addStar("बिल्कुल सही! (Odd One Out)", reason, "en-IN");
+        setTimeout(function() {
+          appState.brainIndex++;
+          renderCurrentView();
+        }, 1300);
+      } else {
+        markWrong("यह अलग नहीं है, ध्यान से देखो");
+      }
+    }
+
+    /* =========================================================
+       MASTER VIEW RENDER DISPATCHER
+       ========================================================= */
+    function renderCurrentView() {
+      if (appState.section === "home") {
+        renderHome();
+      } else if (appState.section === "nursery") {
+        renderNurseryView();
+      } else if (appState.section === "lkg") {
+        renderLkgView();
+      } else if (appState.section === "ukg") {
+        renderUkgView();
+      } else if (appState.section === "picture_world") {
+        renderPictureWorldView();
+      } else if (appState.section === "brain_booster") {
+        renderBrainBoosterView();
+      }
+    }
+
+    // Initial load
+    window.addEventListener("DOMContentLoaded", function() {
+      // Unlock audio on first user gesture
+      document.body.addEventListener("click", function() {
+        getAudioContext();
+      }, { once: true });
+
+      goHome();
+    });
+  </script>
+</body>
+</html>
