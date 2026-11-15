@@ -1,0 +1,6 @@
+{
+  "appId": "com.abacusacademy.jodhpur.kids",
+  "appName": "Abacus Kids",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
