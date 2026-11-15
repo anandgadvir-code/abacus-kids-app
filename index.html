@@ -443,44 +443,109 @@
       pointer-events: none;
     }
 
-    /* Option Grids */
-    .options-grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 16px;
+    /* Option Grids (Wide Kid-Friendly 2x2 and 3x2 Layouts) */
+    .options-grid-3, .quiz-grid-6 {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 14px !important;
+      width: 100% !important;
+      max-width: 380px !important;
+      margin: 14px auto 0 !important;
+      box-sizing: border-box !important;
     }
-    .options-grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 16px;
-    }
-    .options-grid-4 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 16px;
+    .options-grid-2, .options-grid-4, .quiz-grid-4 {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 14px !important;
+      width: 100% !important;
+      max-width: 360px !important;
+      margin: 14px auto 0 !important;
+      box-sizing: border-box !important;
     }
     .opt-btn {
+      min-width: 74px !important;
+      min-height: 66px !important;
+      padding: 12px 18px !important;
+      font-size: 1.75rem !important;
+      font-weight: 900 !important;
+      border-radius: 18px !important;
+      display: inline-flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
       background: #FFFFFF;
       border: 3px solid #81D4FA;
       box-shadow: 0 5px 0 #29B6F6;
-      border-radius: 20px;
-      padding: 16px 8px;
-      font-size: 24px;
-      font-weight: 900;
       color: #0277BD;
       cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.1s;
+      box-sizing: border-box !important;
+      touch-action: manipulation !important;
+      text-align: center !important;
+      width: 100% !important;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
     .opt-btn:active {
-      transform: translateY(3px);
-      box-shadow: 0 2px 0 #29B6F6;
+      transform: translateY(3px) !important;
+      box-shadow: 0 2px 0 #29B6F6 !important;
+    }
+    /* When options have words/phrases (English World, EVS, Number Names, Picture World) */
+    .opt-btn.has-text, .opt-btn-text, .word-opt {
+      font-size: 1.15rem !important;
+      min-height: 58px !important;
+      padding: 10px 14px !important;
+      line-height: 1.25 !important;
+      word-break: break-word !important;
+    }
+    /* Option button child spans and labels */
+    .opt-btn .opt-emoji {
+      font-size: 32px !important;
+      line-height: 1.1 !important;
+      margin-bottom: 2px !important;
+    }
+    .opt-btn .opt-subtext {
+      font-size: 14px !important;
+      font-weight: 800 !important;
+      color: #2C3E50 !important;
+      margin-top: 2px !important;
+    }
+    /* Letter bubble in 2x2 or 3x2 option grids fills the cell with kid-friendly sizing */
+    .options-grid-2 .letter-bubble,
+    .options-grid-3 .letter-bubble,
+    .quiz-grid-4 .letter-bubble,
+    .quiz-grid-6 .letter-bubble {
+      width: 100% !important;
+      min-width: 74px !important;
+      min-height: 66px !important;
+      font-size: 1.75rem !important;
+      border-radius: 18px !important;
+      box-shadow: 0 5px 0 #F57F17 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    /* Order tile button in option grids */
+    .options-grid-2 .order-tile-btn,
+    .quiz-grid-4 .order-tile-btn {
+      width: 100% !important;
+      min-width: 74px !important;
+      min-height: 66px !important;
+      font-size: 1.75rem !important;
+      border-radius: 18px !important;
+      box-shadow: 0 5px 0 #81D4FA !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    /* Missing Letters & Numbers tile buttons */
+    .missing-tile-btn {
+      min-width: 64px !important;
+      min-height: 58px !important;
+      font-size: 1.65rem !important;
+      border-radius: 16px !important;
+      padding: 10px 16px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
     }
 
     /* Small Grid items (A-Z & Swar Grid) */
@@ -7469,14 +7534,14 @@ function setNurseryNumSubTab(st) {
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Which letter makes the sound ' + pSoundT + ' for ' + pTarget.word + '?\', \'en-IN\'); })" style="font-size: 15px; font-weight: 800; color: #546E7A; margin-top: 8px;">Which letter makes this initial sound? 🔊</div>';
 
-          html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+          html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
           for (var poi = 0; poi < pOpts.length; poi++) {
             var isPOk = (pOpts[poi] === pHeadingT);
-            var pBtnCls = "letter-bubble";
+            var pBtnCls = "opt-btn letter-bubble";
             if (isPhonicsAnswered) {
               pBtnCls += isPOk ? " correct-choice" : " disabled-choice";
             }
-            html += '<button class="' + pBtnCls + '" onclick="safeAction(function(){ handleNurseryPhonicsAns(' + isPOk + ', \'' + pOpts[poi] + '\', \'' + pTarget.word + '\', \'' + pTarget.emoji + '\', \'' + pSoundT + '\'); })">' + pOpts[poi] + '</button>';
+            html += '<button class="' + pBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleNurseryPhonicsAns(' + isPOk + ', \'' + pOpts[poi] + '\', \'' + pTarget.word + '\', \'' + pTarget.emoji + '\', \'' + pSoundT + '\'); })">' + pOpts[poi] + '</button>';
           }
           html += '</div>';
           html += renderCompletedPreviewCard();
@@ -7661,8 +7726,8 @@ function setNurseryNumSubTab(st) {
             for (var mci = 0; mci < missingChoices.length; mci++) {
               var mChoice = missingChoices[mci];
               var isAlreadyPlaced = (filledList.indexOf(mChoice) !== -1);
-              var btnCls = "letter-bubble" + (isAlreadyPlaced ? " disabled-choice" : "");
-              html += '<button class="' + btnCls + '" style="font-size:28px;width:56px;height:56px;" onclick="safeAction(function(){ tapNurseryMissingLetter(\'' + mChoice + '\'); })">' + mChoice + '</button>';
+              var btnCls = "letter-bubble missing-tile-btn" + (isAlreadyPlaced ? " disabled-choice" : "");
+              html += '<button class="' + btnCls + '" style="min-width: 64px !important; min-height: 58px !important; font-size: 1.65rem !important; border-radius: 16px !important; padding: 10px 16px !important;" onclick="safeAction(function(){ tapNurseryMissingLetter(\'' + mChoice + '\'); })">' + mChoice + '</button>';
             }
             html += '</div>';
           }
@@ -7694,15 +7759,15 @@ function setNurseryNumSubTab(st) {
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Which letter does ' + target6.word + ' start with?\', \'en-IN\'); })" style="font-size: 15px; font-weight: 800; color: #546E7A; margin-top: 8px;">Which letter does ' + target6.word + ' start with? 🔊</div>';
 
-          // 3x2 Grid for 6 Options
-          html += '<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;max-width:320px;margin:14px auto 0;">';
+          // 3x2 Grid for 6 Options (Kid-friendly 3x2 Layout ~115px wide each)
+          html += '<div class="options-grid-3" style="display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 380px !important; margin: 14px auto 0 !important;">';
           for (var o6i = 0; o6i < opts6.length; o6i++) {
             var isOk6 = (opts6[o6i] === target6.letter);
-            var btnCls6 = "letter-bubble";
+            var btnCls6 = "opt-btn letter-bubble";
             if (isAnswered6) {
               btnCls6 += isOk6 ? " correct-choice" : " disabled-choice";
             }
-            html += '<button class="' + btnCls6 + '" style="font-size:30px;width:100%;height:56px;" onclick="safeAction(function(){ handleNurseryLetterAns(' + isOk6 + ', \'' + opts6[o6i] + ' for ' + target6.word + '\', \'en-IN\', \'' + target6.letter + '\', \'' + target6.word + '\', \'' + target6.emoji + '\', \'' + qCacheKey6 + '\'); })">' + opts6[o6i] + '</button>';
+            html += '<button class="' + btnCls6 + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleNurseryLetterAns(' + isOk6 + ', \'' + opts6[o6i] + ' for ' + target6.word + '\', \'en-IN\', \'' + target6.letter + '\', \'' + target6.word + '\', \'' + target6.emoji + '\', \'' + qCacheKey6 + '\'); })">' + opts6[o6i] + '</button>';
           }
           html += '</div>';
           html += renderCompletedPreviewCard();
@@ -7867,15 +7932,15 @@ function setNurseryNumSubTab(st) {
 
           html += '<div style="font-size:13px;font-weight:800;color:#546E7A;text-align:center;margin:6px 0;">Counted: <span style="font-size:16px;color:#E91E63;font-weight:900;">' + countedList10.length + ' / ' + countTarget10 + '</span>. Choose the correct number:</div>';
 
-          // 4 Options Grid
-          html += '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;max-width:380px;margin:10px auto 0;">';
+          // 4 Options Grid (2x2 Layout ~165px wide each)
+          html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
           for (var coi = 0; coi < countOpts10.length; coi++) {
             var isCountOk = (countOpts10[coi] === countTarget10);
-            var cBtnCls = "order-tile-btn";
+            var cBtnCls = "opt-btn order-tile-btn";
             if (isAnswered10) {
               cBtnCls += isCountOk ? " correct-choice" : " disabled-choice";
             }
-            html += '<button class="' + cBtnCls + '" onclick="safeAction(function(){ handleNurseryCountAns(' + isCountOk + ', ' + countTarget10 + '); })">' + countOpts10[coi] + '</button>';
+            html += '<button class="' + cBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleNurseryCountAns(' + isCountOk + ', ' + countTarget10 + '); })">' + countOpts10[coi] + '</button>';
           }
           html += '</div>';
           html += renderCompletedPreviewCard();
@@ -7920,14 +7985,14 @@ function setNurseryNumSubTab(st) {
 
           html += '<div style="font-size:13px;font-weight:800;color:#546E7A;text-align:center;margin:6px 0;">Counted: <span style="font-size:16px;color:#E91E63;font-weight:900;">' + countedList20.length + ' / ' + countTarget20 + '</span>. Choose the correct number:</div>';
 
-          html += '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;max-width:380px;margin:10px auto 0;">';
+          html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
           for (var co2i = 0; co2i < countOpts20.length; co2i++) {
             var isCountOk20 = (countOpts20[co2i] === countTarget20);
-            var cBtnCls20 = "order-tile-btn";
+            var cBtnCls20 = "opt-btn order-tile-btn";
             if (isAnswered20) {
               cBtnCls20 += isCountOk20 ? " correct-choice" : " disabled-choice";
             }
-            html += '<button class="' + cBtnCls20 + '" onclick="safeAction(function(){ handleNurseryCountAns(' + isCountOk20 + ', ' + countTarget20 + '); })">' + countOpts20[co2i] + '</button>';
+            html += '<button class="' + cBtnCls20 + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleNurseryCountAns(' + isCountOk20 + ', ' + countTarget20 + '); })">' + countOpts20[co2i] + '</button>';
           }
           html += '</div>';
           html += renderCompletedPreviewCard();
@@ -8037,14 +8102,14 @@ function setNurseryNumSubTab(st) {
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'What comes after ' + afterBase + '?\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">What comes AFTER ' + afterBase + '? 🔊</div>';
 
-          html += '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+          html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
           for (var aoi = 0; aoi < afterOpts.length; aoi++) {
             var isAOk = (afterOpts[aoi] === afterAns);
-            var aBtnCls = "order-tile-btn";
+            var aBtnCls = "opt-btn order-tile-btn";
             if (isAfterAnswered) {
               aBtnCls += isAOk ? " correct-choice" : " disabled-choice";
             }
-            html += '<button class="' + aBtnCls + '" onclick="safeAction(function(){ handleNurseryAfterAns(' + isAOk + ', ' + afterBase + ', ' + afterAns + '); })">' + afterOpts[aoi] + '</button>';
+            html += '<button class="' + aBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleNurseryAfterAns(' + isAOk + ', ' + afterBase + ', ' + afterAns + '); })">' + afterOpts[aoi] + '</button>';
           }
           html += '</div>';
           html += renderCompletedPreviewCard();
@@ -8082,14 +8147,14 @@ function setNurseryNumSubTab(st) {
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'What comes before ' + beforeBase + '?\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">What comes BEFORE ' + beforeBase + '? 🔊</div>';
 
-          html += '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+          html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
           for (var boi = 0; boi < beforeOpts.length; boi++) {
             var isBOk = (beforeOpts[boi] === beforeAns);
-            var bBtnCls = "order-tile-btn";
+            var bBtnCls = "opt-btn order-tile-btn";
             if (isBeforeAnswered) {
               bBtnCls += isBOk ? " correct-choice" : " disabled-choice";
             }
-            html += '<button class="' + bBtnCls + '" onclick="safeAction(function(){ handleNurseryBeforeAns(' + isBOk + ', ' + beforeBase + ', ' + beforeAns + '); })">' + beforeOpts[boi] + '</button>';
+            html += '<button class="' + bBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleNurseryBeforeAns(' + isBOk + ', ' + beforeBase + ', ' + beforeAns + '); })">' + beforeOpts[boi] + '</button>';
           }
           html += '</div>';
           html += renderCompletedPreviewCard();
@@ -8127,14 +8192,14 @@ function setNurseryNumSubTab(st) {
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'What comes between ' + betweenBase + ' and ' + (betweenBase + 2) + '?\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">What comes BETWEEN ' + betweenBase + ' and ' + (betweenBase + 2) + '? 🔊</div>';
 
-          html += '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+          html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
           for (var btoi = 0; btoi < betweenOpts.length; btoi++) {
             var isBtOk = (betweenOpts[btoi] === betweenAns);
-            var btBtnCls = "order-tile-btn";
+            var btBtnCls = "opt-btn order-tile-btn";
             if (isBetweenAnswered) {
               btBtnCls += isBtOk ? " correct-choice" : " disabled-choice";
             }
-            html += '<button class="' + btBtnCls + '" onclick="safeAction(function(){ handleNurseryBetweenAns(' + isBtOk + ', ' + betweenBase + ', ' + betweenAns + '); })">' + betweenOpts[btoi] + '</button>';
+            html += '<button class="' + btBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleNurseryBetweenAns(' + isBtOk + ', ' + betweenBase + ', ' + betweenAns + '); })">' + betweenOpts[btoi] + '</button>';
           }
           html += '</div>';
           html += renderCompletedPreviewCard();
@@ -8256,14 +8321,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the correct spelling for ' + nnTarget1 + '\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">Choose the spelling for ' + nnTarget1 + ': 🔊</div>';
 
-            html += '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var noi1 = 0; noi1 < nnOpts1.length; noi1++) {
               var isNnOk1 = (nnOpts1[noi1] === nnSpelling1);
-              var nnBtnCls1 = "order-tile-btn";
+              var nnBtnCls1 = "opt-btn has-text";
               if (isNn1Answered) {
                 nnBtnCls1 += isNnOk1 ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + nnBtnCls1 + '" style="font-size:16px;" onclick="safeAction(function(){ handleNurseryNumNameAns(' + isNnOk1 + ', ' + nnTarget1 + ', \'' + nnSpelling1 + '\'); })">' + nnOpts1[noi1] + '</button>';
+              html += '<button class="' + nnBtnCls1 + '" style="font-size: 1.15rem !important; min-height: 58px !important;" onclick="safeAction(function(){ handleNurseryNumNameAns(' + isNnOk1 + ', ' + nnTarget1 + ', \'' + nnSpelling1 + '\'); })">' + nnOpts1[noi1] + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -8316,14 +8381,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the correct spelling for ' + nnTarget2 + '\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">Choose the spelling for ' + nnTarget2 + ': 🔊</div>';
 
-            html += '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var noi2 = 0; noi2 < nnOpts2.length; noi2++) {
               var isNnOk2 = (nnOpts2[noi2] === nnSpelling2);
-              var nnBtnCls2 = "order-tile-btn";
+              var nnBtnCls2 = "opt-btn has-text";
               if (isNn2Answered) {
                 nnBtnCls2 += isNnOk2 ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + nnBtnCls2 + '" style="font-size:15px;" onclick="safeAction(function(){ handleNurseryNumNameAns(' + isNnOk2 + ', ' + nnTarget2 + ', \'' + nnSpelling2 + '\'); })">' + nnOpts2[noi2] + '</button>';
+              html += '<button class="' + nnBtnCls2 + '" style="font-size: 1.15rem !important; min-height: 58px !important;" onclick="safeAction(function(){ handleNurseryNumNameAns(' + isNnOk2 + ', ' + nnTarget2 + ', \'' + nnSpelling2 + '\'); })">' + nnOpts2[noi2] + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -8411,14 +8476,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'What shape is ' + shObjTarget.obj + '?\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">What shape is ' + shObjTarget.obj + '? 🔊</div>';
 
-            html += '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var shoi = 0; shoi < shObjOpts.length; shoi++) {
               var isShObjOk = (shObjOpts[shoi] === shObjTarget.shape);
-              var shBtnCls = "order-tile-btn";
+              var shBtnCls = "opt-btn has-text";
               if (isShObjAnswered) {
                 shBtnCls += isShObjOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + shBtnCls + '" style="font-size:16px;" onclick="safeAction(function(){ handleNurseryShapeObjectAns(' + isShObjOk + ', \'' + shObjTarget.obj + '\', \'' + shObjTarget.shape + '\', \'' + shObjTarget.shapeEmoji + '\'); })">' + shObjOpts[shoi] + '</button>';
+              html += '<button class="' + shBtnCls + '" style="font-size: 1.15rem !important; min-height: 58px !important;" onclick="safeAction(function(){ handleNurseryShapeObjectAns(' + isShObjOk + ', \'' + shObjTarget.obj + '\', \'' + shObjTarget.shape + '\', \'' + shObjTarget.shapeEmoji + '\'); })">' + shObjOpts[shoi] + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -8475,8 +8540,8 @@ function setNurseryNumSubTab(st) {
             for (var nmci = 0; nmci < numMissingChoices.length; nmci++) {
               var nmChoice = numMissingChoices[nmci];
               var isPlacedNum = (filledNums.indexOf(nmChoice) !== -1);
-              var nBtnCls = "order-tile-btn" + (isPlacedNum ? " disabled-choice" : "");
-              html += '<button class="' + nBtnCls + '" style="font-size:26px;width:64px;height:56px;" onclick="safeAction(function(){ tapNurseryMissingNum(' + nmChoice + '); })">' + nmChoice + '</button>';
+              var nBtnCls = "order-tile-btn missing-tile-btn" + (isPlacedNum ? " disabled-choice" : "");
+              html += '<button class="' + nBtnCls + '" style="min-width: 64px !important; min-height: 58px !important; font-size: 1.65rem !important; border-radius: 16px !important; padding: 10px 16px !important;" onclick="safeAction(function(){ tapNurseryMissingNum(' + nmChoice + '); })">' + nmChoice + '</button>';
             }
             html += '</div>';
           }
@@ -8546,14 +8611,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'यह किस स्वर से शुरू होता है? सही अक्षर चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">यह किस अक्षर से शुरू होता है? 🔊</div>';
 
-            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var sj = 0; sj < sOpts.length; sj++) {
               var isSwarOk = (sOpts[sj] === sqItem.letter);
-              var sBtnCls = "letter-bubble";
+              var sBtnCls = "opt-btn letter-bubble";
               if (isS1Answered) {
                 sBtnCls += isSwarOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + sBtnCls + '" onclick="safeAction(function(){ handleSwarAns(' + isSwarOk + ', \'' + sOpts[sj] + '\', \'' + sqItem.word + '\', \'' + sqSound1 + '\', \'' + sqItem.emoji + '\'); })">' + sOpts[sj] + '</button>';
+              html += '<button class="' + sBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleSwarAns(' + isSwarOk + ', \'' + sOpts[sj] + '\', \'' + sqItem.word + '\', \'' + sqSound1 + '\', \'' + sqItem.emoji + '\'); })">' + sOpts[sj] + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -8580,7 +8645,7 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + sqItem2.letter + ' से क्या होता है? सही चित्र चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">' + sqItem2.letter + ' से क्या होता है? सही चित्र चुनो 🔊</div>';
 
-            html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
+            html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
             for (var sk = 0; sk < sPicOpts.length; sk++) {
               var isSPicOk = (sPicOpts[sk].letter === sqItem2.letter);
               var sOptBtnCls = "opt-btn";
@@ -8640,14 +8705,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'यह किस व्यंजन से शुरू होता है? सही अक्षर चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">यह किस व्यंजन से शुरू होता है? 🔊</div>';
 
-            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var nvi2 = 0; nvi2 < nvyOpts.length; nvi2++) {
               var isNVOk = (nvyOpts[nvi2] === nvyTarget.letter);
-              var nvBtnCls = "letter-bubble";
+              var nvBtnCls = "opt-btn letter-bubble";
               if (isNVyAnswered) {
                 nvBtnCls += isNVOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + nvBtnCls + '" onclick="safeAction(function(){ handleVyanjanAns(' + isNVOk + ', \'' + nvyTarget.sound + '\', \'' + nvyOpts[nvi2] + '\', \'' + nvyTarget.word + '\', \'' + nvyTarget.emoji + '\', \'' + nvyCacheKey + '\'); })">' + nvyOpts[nvi2] + '</button>';
+              html += '<button class="' + nvBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleVyanjanAns(' + isNVOk + ', \'' + nvyTarget.sound + '\', \'' + nvyOpts[nvi2] + '\', \'' + nvyTarget.word + '\', \'' + nvyTarget.emoji + '\', \'' + nvyCacheKey + '\'); })">' + nvyOpts[nvi2] + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -8673,7 +8738,7 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + nvyTarget2.letter + ' से क्या होता है? सही चित्र चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">' + nvyTarget2.letter + ' से क्या होता है? सही चित्र चुनो 🔊</div>';
 
-            html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
+            html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
             for (var nvk = 0; nvk < nvyPicOpts.length; nvk++) {
               var isNVPicOk = (nvyPicOpts[nvk].letter === nvyTarget2.letter);
               var nvyOptBtnCls = "opt-btn";
@@ -8776,14 +8841,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing letter for ' + twoQ.word + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing letter: 🔊</div>';
 
-            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var toi = 0; toi < twoOpts.length; toi++) {
               var isTwoOk = (twoOpts[toi] === targetChar);
-              var twoBtnCls = "letter-bubble";
+              var twoBtnCls = "opt-btn letter-bubble";
               if (isTwoAnswered) {
                 twoBtnCls += isTwoOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + twoBtnCls + '" onclick="safeAction(function(){ handleLkg2LetterAns(' + isTwoOk + ', \'' + twoOpts[toi] + '\', \'' + twoQ.word + '\', \'' + twoQ.emoji + '\', \'' + twoQ.blend + '\'); })">' + twoOpts[toi].toUpperCase() + '</button>';
+              html += '<button class="' + twoBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleLkg2LetterAns(' + isTwoOk + ', \'' + twoOpts[toi] + '\', \'' + twoQ.word + '\', \'' + twoQ.emoji + '\', \'' + twoQ.blend + '\'); })">' + twoOpts[toi].toUpperCase() + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -8840,14 +8905,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing letter for ' + cvcQ.word + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing letter: 🔊</div>';
 
-            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var cvoi = 0; cvoi < cvcOpts.length; cvoi++) {
               var isCvcOk = (cvcOpts[cvoi] === targetCharCvc);
-              var cvcBtnCls = "letter-bubble";
+              var cvcBtnCls = "opt-btn letter-bubble";
               if (isCvcAnswered) {
                 cvcBtnCls += isCvcOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + cvcBtnCls + '" onclick="safeAction(function(){ handleLkgCvcAns(' + isCvcOk + ', \'' + cvcOpts[cvoi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\', \'' + cvcQ.blend + '\'); })">' + cvcOpts[cvoi].toUpperCase() + '</button>';
+              html += '<button class="' + cvcBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleLkgCvcAns(' + isCvcOk + ', \'' + cvcOpts[cvoi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\', \'' + cvcQ.blend + '\'); })">' + cvcOpts[cvoi].toUpperCase() + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -8920,10 +8985,10 @@ function setNurseryNumSubTab(st) {
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the correct answer below\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the correct answer: 🔊</div>';
 
-          html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
+          html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
           for (var eo = 0; eo < evsOpts.length; eo++) {
             var isEvsOk = (evsOpts[eo] === qObj.ans);
-            var evsBtnCls = "opt-btn";
+            var evsBtnCls = "opt-btn has-text";
             if (isEvsAnswered) {
               evsBtnCls += isEvsOk ? " correct-choice" : " disabled-choice";
             }
@@ -8995,14 +9060,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'यह किस व्यंजन से शुरू होता है? सही अक्षर चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">यह किस व्यंजन से शुरू होता है? 🔊</div>';
 
-            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var vyi = 0; vyi < vyOpts.length; vyi++) {
               var isVOk = (vyOpts[vyi] === vyTarget.letter);
-              var vBtnCls = "letter-bubble";
+              var vBtnCls = "opt-btn letter-bubble";
               if (isVyAnswered) {
                 vBtnCls += isVOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + vBtnCls + '" onclick="safeAction(function(){ handleVyanjanAns(' + isVOk + ', \'' + vyTarget.sound + '\', \'' + vyOpts[vyi] + '\', \'' + vyTarget.word + '\', \'' + vyTarget.emoji + '\', \'' + vyCacheKey + '\'); })">' + vyOpts[vyi] + '</button>';
+              html += '<button class="' + vBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleVyanjanAns(' + isVOk + ', \'' + vyTarget.sound + '\', \'' + vyOpts[vyi] + '\', \'' + vyTarget.word + '\', \'' + vyTarget.emoji + '\', \'' + vyCacheKey + '\'); })">' + vyOpts[vyi] + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -9028,7 +9093,7 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + vyTarget2.letter + ' से क्या होता है? सही चित्र चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">' + vyTarget2.letter + ' से क्या होता है? सही चित्र चुनो 🔊</div>';
 
-            html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
+            html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
             for (var vyk = 0; vyk < vyPicOpts.length; vyk++) {
               var isVPicOk = (vyPicOpts[vyk].letter === vyTarget2.letter);
               var vyOptBtnCls = "opt-btn";
@@ -9090,14 +9155,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'यह किस स्वर से शुरू होता है? सही अक्षर चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">यह किस अक्षर से शुरू होता है? 🔊</div>';
 
-            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var lsj = 0; lsj < lsOpts.length; lsj++) {
               var isLSwarOk = (lsOpts[lsj] === lsqItem.letter);
-              var lsBtnCls = "letter-bubble";
+              var lsBtnCls = "opt-btn letter-bubble";
               if (isLS1Answered) {
                 lsBtnCls += isLSwarOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + lsBtnCls + '" onclick="safeAction(function(){ handleSwarAns(' + isLSwarOk + ', \'' + lsOpts[lsj] + '\', \'' + lsqItem.word + '\', \'' + lsqSound1 + '\', \'' + lsqItem.emoji + '\'); })">' + lsOpts[lsj] + '</button>';
+              html += '<button class="' + lsBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleSwarAns(' + isLSwarOk + ', \'' + lsOpts[lsj] + '\', \'' + lsqItem.word + '\', \'' + lsqSound1 + '\', \'' + lsqItem.emoji + '\'); })">' + lsOpts[lsj] + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -9124,7 +9189,7 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + lsqItem2.letter + ' से क्या होता है? सही चित्र चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">' + lsqItem2.letter + ' से क्या होता है? सही चित्र चुनो 🔊</div>';
 
-            html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
+            html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
             for (var lsk = 0; lsk < lsPicOpts.length; lsk++) {
               var isLSPicOk = (lsPicOpts[lsk].letter === lsqItem2.letter);
               var lsOptBtnCls = "opt-btn";
@@ -9258,7 +9323,7 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the correct spelling of ' + numTarget + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the correct spelling: 🔊</div>';
 
-            html += '<div class="options-grid-2" style="max-width: 340px; margin: 14px auto 0;">';
+            html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
             for (var noi = 0; noi < numOpts.length; noi++) {
               var isNumOk = (numOpts[noi] === numAns);
               var nBtnCls = "opt-btn";
@@ -9340,7 +9405,7 @@ function setNurseryNumSubTab(st) {
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + babPrompt + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">' + babPrompt + ' 🔊</div>';
 
-          html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
+          html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
           for (var babi = 0; babi < babOpts.length; babi++) {
             var isBabOk = (babOpts[babi] === babAns);
             var babBtnCls = "opt-btn";
@@ -9439,10 +9504,10 @@ function setNurseryNumSubTab(st) {
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the matching name below\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the matching name: 🔊</div>';
 
-          html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
+          html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
           for (var eoi = 0; eoi < ewOpts.length; eoi++) {
             var isEwOk = (ewOpts[eoi] === ewTarget.name);
-            var ewBtnCls = "opt-btn";
+            var ewBtnCls = "opt-btn has-text";
             if (isEwAnswered) {
               ewBtnCls += isEwOk ? " correct-choice" : " disabled-choice";
             }
@@ -9529,14 +9594,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing letter for ' + u2Q.word + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing letter: 🔊</div>';
 
-            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var u2oi = 0; u2oi < u2Opts.length; u2oi++) {
               var isU2Ok = (u2Opts[u2oi] === targetChar2);
-              var u2BtnCls = "letter-bubble";
+              var u2BtnCls = "opt-btn letter-bubble";
               if (isU2Answered) {
                 u2BtnCls += isU2Ok ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + u2BtnCls + '" onclick="safeAction(function(){ handleLkg2LetterAns(' + isU2Ok + ', \'' + u2Opts[u2oi] + '\', \'' + u2Q.word + '\', \'' + u2Q.emoji + '\', \'' + u2Q.blend + '\'); })">' + u2Opts[u2oi].toUpperCase() + '</button>';
+              html += '<button class="' + u2BtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleLkg2LetterAns(' + isU2Ok + ', \'' + u2Opts[u2oi] + '\', \'' + u2Q.word + '\', \'' + u2Q.emoji + '\', \'' + u2Q.blend + '\'); })">' + u2Opts[u2oi].toUpperCase() + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -9597,14 +9662,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing vowel for ' + u3Q.word + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing vowel: 🔊</div>';
 
-            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var u3oi = 0; u3oi < u3Opts.length; u3oi++) {
               var isU3Ok = (u3Opts[u3oi] === targetChar3);
-              var u3BtnCls = "letter-bubble";
+              var u3BtnCls = "opt-btn letter-bubble";
               if (isU3Answered) {
                 u3BtnCls += isU3Ok ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + u3BtnCls + '" onclick="safeAction(function(){ handleLkgCvcAns(' + isU3Ok + ', \'' + u3Opts[u3oi] + '\', \'' + u3Q.word + '\', \'' + u3Q.emoji + '\', \'' + u3Q.blend + '\'); })">' + u3Opts[u3oi].toUpperCase() + '</button>';
+              html += '<button class="' + u3BtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleLkgCvcAns(' + isU3Ok + ', \'' + u3Opts[u3oi] + '\', \'' + u3Q.word + '\', \'' + u3Q.emoji + '\', \'' + u3Q.blend + '\'); })">' + u3Opts[u3oi].toUpperCase() + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -9661,14 +9726,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing letter for ' + fourQ.word + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing letter: 🔊</div>';
 
-            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var oi = 0; oi < opts.length; oi++) {
               var isOk = (opts[oi] === targetLetter);
-              var btnCls = "letter-bubble";
+              var btnCls = "opt-btn letter-bubble";
               if (isAnswered) {
                 btnCls += isOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + btnCls + '" onclick="safeAction(function(){ handleUkg4LetterAns(' + isOk + ', \'' + opts[oi] + '\', \'' + fourQ.word + '\', \'' + fourQ.emoji + '\', \'' + fourQ.blend + '\'); })">' + opts[oi].toUpperCase() + '</button>';
+              html += '<button class="' + btnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleUkg4LetterAns(' + isOk + ', \'' + opts[oi] + '\', \'' + fourQ.word + '\', \'' + fourQ.emoji + '\', \'' + fourQ.blend + '\'); })">' + opts[oi].toUpperCase() + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -9741,10 +9806,10 @@ function setNurseryNumSubTab(st) {
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the correct answer below\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the correct answer: 🔊</div>';
 
-          html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
+          html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
           for (var ueo = 0; ueo < uEvsOpts.length; ueo++) {
             var isUEvsOk = (uEvsOpts[ueo] === uqObj.ans);
-            var uEvsBtnCls = "opt-btn";
+            var uEvsBtnCls = "opt-btn has-text";
             if (isUEvsAnswered) {
               uEvsBtnCls += isUEvsOk ? " correct-choice" : " disabled-choice";
             }
@@ -9899,14 +9964,14 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'खाली जगह के लिए सही मात्रा चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">खाली जगह के लिए सही मात्रा चुनो: 🔊</div>';
 
-            html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
+            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
             for (var moi = 0; moi < matraOpts.length; moi++) {
               var isMatraOk = (matraOpts[moi] === mqItem.ans);
-              var mOptBtnCls = "letter-bubble";
+              var mOptBtnCls = "opt-btn letter-bubble";
               if (isMatraAnswered) {
                 mOptBtnCls += isMatraOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + mOptBtnCls + '" style="background:#F3E5F5;border-color:#BA68C8;color:#4A148C;font-size:28px;" onclick="safeAction(function(){ handleMatraAns(' + isMatraOk + ', \'' + mqItem.sound + '\', \'' + mqFull + '\', \'' + mqItem.emoji + '\'); })">' + matraOpts[moi] + '</button>';
+              html += '<button class="' + mOptBtnCls + '" style="background:#F3E5F5;border-color:#BA68C8;color:#4A148C;min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleMatraAns(' + isMatraOk + ', \'' + mqItem.sound + '\', \'' + mqFull + '\', \'' + mqItem.emoji + '\'); })">' + matraOpts[moi] + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -9972,7 +10037,7 @@ function setNurseryNumSubTab(st) {
           }
           html += '</div>';
 
-          html += '<div class="options-grid-3" style="max-width: 320px; margin: 18px auto 0;">';
+          html += '<div class="options-grid-3" style="max-width: 380px; margin: 18px auto 0;">';
           for (var mopt = 0; mopt < mathItem.options.length; mopt++) {
             var isMathOk = (mathItem.options[mopt] === mathItem.ans);
             var mBtnCls = "opt-btn";
@@ -10031,7 +10096,7 @@ function setNurseryNumSubTab(st) {
           html += '  <div class="audio-hint">🔊 Compare the two numbers</div>';
           html += '</div>';
 
-          html += '<div class="options-grid-2" style="max-width: 340px; margin: 14px auto 0;">';
+          html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
           for (var coi = 0; coi < compOpts.length; coi++) {
             var isCompOk = (compOpts[coi] === compAns);
             var compBtnCls = "opt-btn";
@@ -10110,10 +10175,10 @@ function setNurseryNumSubTab(st) {
 
         html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the matching word below\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the matching word: 🔊</div>';
 
-        html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
+        html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
         for (var pwi = 0; pwi < pwOpts.length; pwi++) {
           var isPwOk = (pwOpts[pwi] === pwTarget.en);
-          var pwBtnCls = "opt-btn";
+          var pwBtnCls = "opt-btn has-text";
           if (isPwAnswered) {
             pwBtnCls += isPwOk ? " correct-choice" : " disabled-choice";
           }
