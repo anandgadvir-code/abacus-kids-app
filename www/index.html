@@ -547,6 +547,67 @@
       align-items: center !important;
       justify-content: center !important;
     }
+    /* Nursery Hindi Workbook Sizing & 3D Styling */
+    .hindi-learn-card {
+      min-height: 110px !important;
+      padding: 12px 6px !important;
+      border-radius: 20px !important;
+      background: #FFFFFF !important;
+      border: 3px solid #FFCCBC !important;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08) !important;
+      cursor: pointer !important;
+      transition: transform 0.1s ease !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .hindi-learn-card:active {
+      transform: scale(0.93) !important;
+    }
+    .hindi-opt-btn {
+      min-height: 70px !important;
+      font-size: 1.9rem !important;
+      font-weight: 900 !important;
+      border-radius: 18px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+    }
+    .hindi-order-grid {
+      display: grid !important;
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 10px !important;
+      width: 100% !important;
+      max-width: 420px !important;
+      margin: 14px auto 0 !important;
+    }
+    .hindi-order-tile {
+      min-height: 60px !important;
+      font-size: 1.8rem !important;
+      font-weight: 900 !important;
+      border-radius: 16px !important;
+      background: #FFF3E0 !important;
+      border: 2.5px solid #FFB74D !important;
+      color: #E65100 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.08) !important;
+      transition: transform 0.1s ease !important;
+    }
+    .hindi-order-tile:active {
+      transform: scale(0.92) !important;
+    }
+    .hindi-order-tile.placed {
+      opacity: 0.18 !important;
+      pointer-events: none !important;
+      background: #ECEFF1 !important;
+      border-color: #CFD8DC !important;
+      color: #B0BEC5 !important;
+    }
 
     /* Small Grid items (A-Z & Swar Grid) */
     .grid-items-container {
@@ -2720,7 +2781,15 @@
       stars: 0,
       // Curriculum Sub-tabs
       nurseryNumSubTab: "count", // count, shapes, before_after
-      nurseryHindiSubTab: "swar", // swar, vyanjan
+      nurseryHindiSubTab: "learn_all", // 9 dedicated Sub-tabs: learn_all, match_pic, match_same, after_letter, before_letter, between_letter, missing_letters, choose_6, order_hindi
+      nurseryHindiLearnCategory: "swar", // swar, vyanjan
+      nurseryHindiMatchSetIndex: 0,
+      nurseryHindiMissingRound: 0,
+      nurseryHindiMissingFilled: [],
+      nurseryHindiOrderMode: "swar_order", // swar_order, vyanjan_order
+      nurseryHindiOrderCurrentIdx: 0,
+      nurseryHindiOrderPlaced: [],
+      nurseryHindiOrderRound: 0,
       nurseryAbcSubTab: "match_picture", // match_picture, match_same, match_small, missing_letters, choose_letter, order_az
       nurseryAbcMatchSetIndex: 0,
       nurseryAbcMissingRound: 0,
@@ -6546,8 +6615,143 @@
       appState.nurseryHindiSubTab = st;
       appState.quizIndex = 0;
       resetQuizQuestionState();
+      lineDrawingState.matchedPairs = [];
+      lineDrawingState.selectedDot = null;
+      lineDrawingState.wrongLine = null;
+      lineDrawingState.isDrawing = false;
       renderCurrentView();
       scrollActiveFilterPill();
+    }
+
+    function setNurseryHindiLearnCat(cat) {
+      appState.nurseryHindiLearnCategory = cat;
+      renderCurrentView();
+    }
+
+    function setNurseryHindiOrderMode(mode) {
+      appState.nurseryHindiOrderMode = mode;
+      appState.nurseryHindiOrderCurrentIdx = 0;
+      appState.nurseryHindiOrderPlaced = [];
+      appState.nurseryHindiOrderRound = (appState.nurseryHindiOrderRound || 0) + 1;
+      renderCurrentView();
+    }
+
+    function advanceNurseryHindiMatchSet() {
+      appState.nurseryHindiMatchSetIndex = (appState.nurseryHindiMatchSetIndex || 0) + 1;
+      lineDrawingState.matchedPairs = [];
+      lineDrawingState.selectedDot = null;
+      lineDrawingState.wrongLine = null;
+      lineDrawingState.isDrawing = false;
+      renderCurrentView();
+    }
+
+    function advanceNurseryHindiMissingRound() {
+      appState.nurseryHindiMissingRound = (appState.nurseryHindiMissingRound || 0) + 1;
+      appState.nurseryHindiMissingFilled = [];
+      renderCurrentView();
+    }
+
+    function resetNurseryHindiOrderGame() {
+      appState.nurseryHindiOrderCurrentIdx = 0;
+      appState.nurseryHindiOrderPlaced = [];
+      appState.nurseryHindiOrderRound = (appState.nurseryHindiOrderRound || 0) + 1;
+      renderCurrentView();
+    }
+
+    function tapNurseryHindiMissingLetter(tappedLetter) {
+      var curRound = MISSING_HINDI_ROUNDS[(appState.nurseryHindiMissingRound || 0) % MISSING_HINDI_ROUNDS.length];
+      if (!appState.nurseryHindiMissingFilled) appState.nurseryHindiMissingFilled = [];
+      var nextNeeded = null;
+      for (var i = 0; i < curRound.missing.length; i++) {
+        if (appState.nurseryHindiMissingFilled.indexOf(curRound.missing[i]) === -1) {
+          nextNeeded = curRound.missing[i];
+          break;
+        }
+      }
+      if (!nextNeeded) return;
+      if (tappedLetter === nextNeeded) {
+        appState.nurseryHindiMissingFilled.push(tappedLetter);
+        playTone("success");
+        speak("अक्षर " + tappedLetter + "! बहुत बढ़िया!", "hi-IN");
+        if (appState.nurseryHindiMissingFilled.length === curRound.missing.length) {
+          triggerConfetti();
+          addStar("🎉 खाली स्थान पूरे!", "शाबाश! सभी अक्षर सही क्रम में भरे!", "hi-IN");
+        }
+        renderCurrentView();
+      } else {
+        playTone("wrong");
+        speak("फिर से कोशिश करो!", "hi-IN");
+      }
+    }
+
+    function tapNurseryHindiOrderLetter(tappedLetter) {
+      var seq = (appState.nurseryHindiOrderMode === "vyanjan_order") ? HINDI_VYANJAN_ORDER_SEQ : HINDI_SWAR_ORDER_SEQ;
+      var curIdx = appState.nurseryHindiOrderCurrentIdx || 0;
+      if (curIdx >= seq.length) return;
+      var expectedLetter = seq[curIdx];
+      if (tappedLetter === expectedLetter) {
+        if (!appState.nurseryHindiOrderPlaced) appState.nurseryHindiOrderPlaced = [];
+        appState.nurseryHindiOrderPlaced.push(tappedLetter);
+        appState.nurseryHindiOrderCurrentIdx = curIdx + 1;
+        playTone("success");
+        speak("अक्षर " + tappedLetter + "!", "hi-IN");
+        if (appState.nurseryHindiOrderCurrentIdx >= seq.length) {
+          triggerConfetti();
+          addStar("🎉 क्रम पूरा!", "शानदार! सभी अक्षर सही क्रम में लगाए!", "hi-IN");
+        }
+        renderCurrentView();
+      } else {
+        playTone("wrong");
+        speak("पहले अक्षर " + expectedLetter + " ढूँढो!", "hi-IN");
+      }
+    }
+
+    function handleNurseryHindiAfterAns(isCorrect, baseChar, ansChar) {
+      var cacheKey = "nurs_h_after_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: baseChar + " ➔ " + ansChar + " ✅",
+        spoken: baseChar + " के बाद " + ansChar + " आता है! बहुत बढ़िया!",
+        lang: "hi-IN",
+        ansVal: ansChar,
+        wrongMsg: "फिर से सोचो! इसके बाद क्या आता है?"
+      });
+    }
+
+    function handleNurseryHindiBeforeAns(isCorrect, targetChar, ansChar) {
+      var cacheKey = "nurs_h_before_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: ansChar + " ➔ " + targetChar + " ✅",
+        spoken: targetChar + " से पहले " + ansChar + " आता है! शाबाश!",
+        lang: "hi-IN",
+        ansVal: ansChar,
+        wrongMsg: "फिर से सोचो! इससे पहले क्या आता है?"
+      });
+    }
+
+    function handleNurseryHindiBetweenAns(isCorrect, firstChar, ansChar, thirdChar) {
+      var cacheKey = "nurs_h_between_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: firstChar + ", " + ansChar + ", " + thirdChar + " ✅",
+        spoken: firstChar + " और " + thirdChar + " के बीच " + ansChar + " आता है!",
+        lang: "hi-IN",
+        ansVal: ansChar,
+        wrongMsg: "फिर से सोचो! बीच में कौन सा अक्षर आता है?"
+      });
+    }
+
+    function handleNurseryHindiChoose6Ans(isCorrect, letter, word, emoji) {
+      var cacheKey = "nurs_h_choose_6_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: emoji + " " + letter + " - " + word + " ✅",
+        spoken: letter + " से " + word + "! बहुत अच्छे!",
+        lang: "hi-IN",
+        ansVal: letter,
+        wrongMsg: "गलत उत्तर, फिर से सही अक्षर चुनो!"
+      });
     }
 
     function setLkgHindiSubTab(st) {
@@ -6601,6 +6805,133 @@
       wrongLine: null,
       selectedDot: null
     };
+
+    /* ---------------------------------------------------------
+       DATA: NURSERY HINDI (9 SUB-TABS: SEQUENCES & QUESTIONS)
+       --------------------------------------------------------- */
+    var HINDI_SWAR_ORDER_SEQ = ["अ", "आ", "इ", "ई", "उ", "ऊ", "ऋ", "ए", "ऐ", "ओ", "औ", "अं", "अः"];
+    var HINDI_VYANJAN_ORDER_SEQ = [
+      "क", "ख", "ग", "घ", "ङ",
+      "च", "छ", "ज", "झ", "ञ",
+      "ट", "ठ", "ड", "ढ", "ण",
+      "त", "थ", "द", "ध", "न",
+      "प", "फ", "ब", "भ", "म",
+      "य", "र", "ल", "व",
+      "श", "ष", "स", "ह",
+      "क्ष", "त्र", "ज्ञ"
+    ];
+
+    var HINDI_AFTER_QUESTIONS = [
+      { base: "अ", ans: "आ" },
+      { base: "आ", ans: "इ" },
+      { base: "इ", ans: "ई" },
+      { base: "ई", ans: "उ" },
+      { base: "उ", ans: "ऊ" },
+      { base: "ए", ans: "ऐ" },
+      { base: "ओ", ans: "औ" },
+      { base: "औ", ans: "अं" },
+      { base: "क", ans: "ख" },
+      { base: "ख", ans: "ग" },
+      { base: "ग", ans: "घ" },
+      { base: "च", ans: "छ" },
+      { base: "छ", ans: "ज" },
+      { base: "ज", ans: "झ" },
+      { base: "ट", ans: "ठ" },
+      { base: "ठ", ans: "ड" },
+      { base: "ड", ans: "ढ" },
+      { base: "त", ans: "थ" },
+      { base: "थ", ans: "द" },
+      { base: "द", ans: "ध" },
+      { base: "ध", ans: "न" },
+      { base: "प", ans: "फ" },
+      { base: "फ", ans: "ब" },
+      { base: "ब", ans: "भ" },
+      { base: "भ", ans: "म" },
+      { base: "य", ans: "र" },
+      { base: "र", ans: "ल" },
+      { base: "ल", ans: "व" },
+      { base: "श", ans: "ष" },
+      { base: "ष", ans: "स" },
+      { base: "स", ans: "ह" },
+      { base: "क्ष", ans: "त्र" },
+      { base: "त्र", ans: "ज्ञ" }
+    ];
+
+    var HINDI_BEFORE_QUESTIONS = [
+      { target: "आ", ans: "अ" },
+      { target: "इ", ans: "आ" },
+      { target: "ई", ans: "इ" },
+      { target: "उ", ans: "ई" },
+      { target: "ऊ", ans: "उ" },
+      { target: "ऐ", ans: "ए" },
+      { target: "औ", ans: "ओ" },
+      { target: "अं", ans: "औ" },
+      { target: "ख", ans: "क" },
+      { target: "ग", ans: "ख" },
+      { target: "घ", ans: "ग" },
+      { target: "छ", ans: "च" },
+      { target: "ज", ans: "छ" },
+      { target: "झ", ans: "ज" },
+      { target: "ठ", ans: "ट" },
+      { target: "ड", ans: "ठ" },
+      { target: "ढ", ans: "ड" },
+      { target: "थ", ans: "त" },
+      { target: "द", ans: "थ" },
+      { target: "ध", ans: "द" },
+      { target: "न", ans: "ध" },
+      { target: "फ", ans: "प" },
+      { target: "ब", ans: "फ" },
+      { target: "भ", ans: "ब" },
+      { target: "म", ans: "भ" },
+      { target: "र", ans: "य" },
+      { target: "ल", ans: "र" },
+      { target: "व", ans: "ल" },
+      { target: "ष", ans: "श" },
+      { target: "स", ans: "ष" },
+      { target: "ह", ans: "स" },
+      { target: "त्र", ans: "क्ष" },
+      { target: "ज्ञ", ans: "त्र" }
+    ];
+
+    var HINDI_BETWEEN_QUESTIONS = [
+      { first: "अ", third: "इ", ans: "आ" },
+      { first: "आ", third: "ई", ans: "इ" },
+      { first: "इ", third: "उ", ans: "ई" },
+      { first: "उ", third: "ऋ", ans: "ऊ" },
+      { first: "ए", third: "ओ", ans: "ऐ" },
+      { first: "ओ", third: "अं", ans: "औ" },
+      { first: "क", third: "ग", ans: "ख" },
+      { first: "ख", third: "घ", ans: "ग" },
+      { first: "च", third: "ज", ans: "छ" },
+      { first: "छ", third: "झ", ans: "ज" },
+      { first: "ट", third: "ड", ans: "ठ" },
+      { first: "ठ", third: "ढ", ans: "ड" },
+      { first: "त", third: "द", ans: "थ" },
+      { first: "थ", third: "ध", ans: "द" },
+      { first: "द", third: "न", ans: "ध" },
+      { first: "प", third: "ब", ans: "फ" },
+      { first: "फ", third: "भ", ans: "ब" },
+      { first: "ब", third: "म", ans: "भ" },
+      { first: "य", third: "ल", ans: "र" },
+      { first: "र", third: "व", ans: "ल" },
+      { first: "श", third: "स", ans: "ष" },
+      { first: "ष", third: "ह", ans: "स" },
+      { first: "क्ष", third: "ज्ञ", ans: "त्र" }
+    ];
+
+    var MISSING_HINDI_ROUNDS = [
+      { letters: ["अ", "आ", "इ", "ई", "उ"], missing: ["आ", "ई"] },
+      { letters: ["उ", "ऊ", "ऋ", "ए", "ऐ"], missing: ["ऊ", "ए"] },
+      { letters: ["ए", "ऐ", "ओ", "औ", "अं", "अः"], missing: ["ऐ", "औ"] },
+      { letters: ["क", "ख", "ग", "घ", "ङ"], missing: ["ख", "घ"] },
+      { letters: ["च", "छ", "ज", "झ", "ञ"], missing: ["छ", "झ"] },
+      { letters: ["ट", "ठ", "ड", "ढ", "ण"], missing: ["ठ", "ढ"] },
+      { letters: ["त", "थ", "द", "ध", "न"], missing: ["थ", "ध"] },
+      { letters: ["प", "फ", "ब", "भ", "म"], missing: ["फ", "भ"] },
+      { letters: ["य", "र", "ल", "व"], missing: ["र", "व"] },
+      { letters: ["श", "ष", "स", "ह"], missing: ["ष", "ह"] },
+      { letters: ["क्ष", "त्र", "ज्ञ"], missing: ["त्र"] }
+    ];
 
     var MISSING_ABC_ROUNDS = [
       { letters: ["A","B","C","D","E","F","G","H"], missing: ["B","E","H"] },
@@ -6850,6 +7181,27 @@
         if (side === "right" && mp.rightId === id) return;
       }
 
+      if (getActiveTabKey() === "swar") {
+        if (!lineDrawingState.selectedDot) {
+          lineDrawingState.selectedDot = { side: side, id: id, val: val, word: word };
+          highlightSelectedCard(side, id);
+          speak(side === "left" ? ("अक्षर " + val) : (word || val), "hi-IN");
+          return;
+        }
+        if (lineDrawingState.selectedDot.side === side) {
+          lineDrawingState.selectedDot = { side: side, id: id, val: val, word: word };
+          highlightSelectedCard(side, id);
+          speak(side === "left" ? ("अक्षर " + val) : (word || val), "hi-IN");
+          return;
+        }
+        var firstDotH = lineDrawingState.selectedDot;
+        lineDrawingState.selectedDot = null;
+        clearCardHighlights();
+        evaluateMatchingPair(firstDotH, { side: side, id: id, val: val, word: word });
+        updateMatchingSvgLines();
+        return;
+      }
+
       if (!lineDrawingState.selectedDot) {
         lineDrawingState.selectedDot = { side: side, id: id, val: val, word: word };
         highlightSelectedCard(side, id);
@@ -6890,6 +7242,36 @@
       for (var i = 0; i < lineDrawingState.matchedPairs.length; i++) {
         var mp = lineDrawingState.matchedPairs[i];
         if (mp.leftId === leftDot.id || mp.rightId === rightDot.id) return;
+      }
+
+      if (getActiveTabKey() === "swar") {
+        if (leftDot.val === rightDot.val) {
+          lineDrawingState.matchedPairs.push({
+            leftId: leftDot.id,
+            rightId: rightDot.id,
+            val: leftDot.val
+          });
+          playTone("success");
+          var speechText = "";
+          if (appState.nurseryHindiSubTab === "match_pic") {
+            speechText = leftDot.val + " से " + (rightDot.word || leftDot.word || "") + "! बहुत बढ़िया!";
+          } else {
+            speechText = "अक्षर " + leftDot.val + "! बहुत अच्छे!";
+          }
+          speak(speechText, "hi-IN");
+          updateMatchingSvgLines();
+          updateMatchedCardStyles();
+          if (lineDrawingState.matchedPairs.length >= 4) {
+            triggerConfetti();
+            addStar("🎉 सभी 4 मिलान सही!", "शाबाश! सभी अक्षर सही मिलाए!", "hi-IN");
+            renderCurrentView();
+          }
+        } else {
+          playTone("wrong");
+          triggerWrongLine(leftDot, rightDot);
+          speak("फिर से कोशिश करो!", "hi-IN");
+        }
+        return;
       }
 
       if (leftDot.val === rightDot.val) {
@@ -8548,210 +8930,479 @@ function setNurseryNumSubTab(st) {
         }
       }
 
-      // TAB 4: 🕉️ हिंदी (स्वर अ–अः व व्यंजन क–ज्ञ + अतिरिक्त) (Hindi Subject Tab ONLY)
+      // TAB 4: 🕉️ हिंदी (स्वर व व्यंजन) — 9 समर्पित Sub-tabs
       else if (tabKey === "swar") {
+        if (!appState.nurseryHindiSubTab) appState.nurseryHindiSubTab = "learn_all";
+
         if (filterBar) {
           filterBar.style.display = "flex";
-          var nSwarPills = [
-            { key: "swar", label: "🕉️ स्वर (अ–अः)" },
-            { key: "vyanjan", label: "🪔 व्यंजन (क–ज्ञ व अतिरिक्त)" }
+          var nHindiPills = [
+            { key: "learn_all", label: "📖 स्वर व व्यंजन सीखें" },
+            { key: "match_pic", label: "✏️ चित्र से मिलान" },
+            { key: "match_same", label: "🔗 समान अक्षर मिलान" },
+            { key: "after_letter", label: "➡️ बाद वाला अक्षर" },
+            { key: "before_letter", label: "⬅️ पहले वाला अक्षर" },
+            { key: "between_letter", label: "↔️ बीच वाला अक्षर" },
+            { key: "missing_letters", label: "🧩 खाली स्थान भरें" },
+            { key: "choose_6", label: "🎯 6 में से सही अक्षर चुनें" },
+            { key: "order_hindi", label: "🔢 सही क्रम में लिखें" }
           ];
-          var nspHtml = "";
-          for (var nspi = 0; nspi < nSwarPills.length; nspi++) {
-            var nsp = nSwarPills[nspi];
-            var nspCls = "filter-pill" + (appState.nurseryHindiSubTab === nsp.key ? " active" : "");
-            nspHtml += '<button class="' + nspCls + '" onclick="event.stopPropagation(); setNurseryHindiSubTab(\'' + nsp.key + '\');">' + nsp.label + '</button>';
+          var nhpHtml = "";
+          for (var nhpi = 0; nhpi < nHindiPills.length; nhpi++) {
+            var nhp = nHindiPills[nhpi];
+            var nhpCls = "filter-pill" + (appState.nurseryHindiSubTab === nhp.key ? " active" : "");
+            nhpHtml += '<button class="' + nhpCls + '" onclick="event.stopPropagation(); setNurseryHindiSubTab(\'' + nhp.key + '\');">' + nhp.label + '</button>';
           }
-          filterBar.innerHTML = nspHtml;
+          filterBar.innerHTML = nhpHtml;
         }
 
-        // Subtab A: स्वर (अ–अः)
-        if (appState.nurseryHindiSubTab === "swar") {
+        // =========================================================================
+        // SUB-TAB 1: 📖 स्वर व व्यंजन सीखें (Learn Swar & Vyanjan)
+        // =========================================================================
+        if (appState.nurseryHindiSubTab === "learn_all") {
+          var curLearnCat = appState.nurseryHindiLearnCategory || "swar";
           html += '<div class="mode-switch">';
-          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 स्वर सीखें</button>';
-          html += '  <button class="mode-btn ' + (appState.mode === "quiz_pic_to_let" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_pic_to_let\'); })">🎯 चित्र से स्वर</button>';
-          html += '  <button class="mode-btn ' + (appState.mode === "quiz_let_to_pic" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_let_to_pic\'); })">🎯 स्वर से चित्र</button>';
+          html += '  <button class="mode-btn ' + (curLearnCat === "swar" ? "active" : "") + '" onclick="safeAction(function(){ setNurseryHindiLearnCat(\'swar\'); })">🕉️ स्वर (अ–अः) (13)</button>';
+          html += '  <button class="mode-btn ' + (curLearnCat === "vyanjan" ? "active" : "") + '" onclick="safeAction(function(){ setNurseryHindiLearnCat(\'vyanjan\'); })">🪔 व्यंजन (क–ज्ञ व अतिरिक्त) (39)</button>';
           html += '</div>';
 
-          if (appState.mode === "learn") {
-            autoSpeak("swar_learn", "हिंदी स्वर. अ से अः तक. कार्ड या चित्र छूकर आवाज़ सुनें", "hi-IN");
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'हिंदी स्वर. अ से अः तक. कार्ड या चित्र छूकर आवाज़ सुनें\', \'hi-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">कार्ड या चित्र छूकर आवाज़ सुनें 🔊</div>';
-            html += '<div class="grid-items-container">';
-            for (var sIdx = 0; sIdx < DATA_SWAR.length; sIdx++) {
-              var swItem = DATA_SWAR[sIdx];
-              var swSound = swItem.sound || swItem.phonics || (swItem.letter + " से " + swItem.word);
-              html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + swSound + '\', \'hi-IN\'); })">';
-              html += '  <div class="chip-letter" style="color:#FF5722;">' + swItem.letter + '</div>';
-              html += '  <div class="chip-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + swItem.word + '\', \'hi-IN\'); })">' + swItem.emoji + '</div>';
-              html += '  <div class="chip-word">' + swItem.word + '</div>';
-              html += '</div>';
-            }
+          var learnList = (curLearnCat === "vyanjan") ? DATA_VYANJAN : DATA_SWAR;
+          var learnVoice = (curLearnCat === "vyanjan") ? "हिंदी व्यंजन. क से ज्ञ तक. कार्ड या चित्र छूकर आवाज़ सुनें" : "हिंदी स्वर. अ से अः तक. कार्ड या चित्र छूकर आवाज़ सुनें";
+          autoSpeak("nurs_h_learn_" + curLearnCat, learnVoice, "hi-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + learnVoice + '\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #D84315; text-align: center; margin: 8px 0;">कार्ड या चित्र छूकर आवाज़ सुनें 🔊</div>';
+          html += '<div class="grid-items-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 10px;">';
+          for (var hli = 0; hli < learnList.length; hli++) {
+            var hlItem = learnList[hli];
+            var hlSound = hlItem.sound || hlItem.phonics || (hlItem.letter + " से " + hlItem.word);
+            html += '<div class="item-chip-card hindi-learn-card" onclick="safeAction(function(){ speak(\'' + hlSound + '\', \'hi-IN\'); })">';
+            html += '  <div class="chip-letter" style="color: #D84315; font-size: 2.2rem !important; font-weight: 900 !important; line-height: 1.1;">' + hlItem.letter + '</div>';
+            html += '  <div class="chip-emoji safe-emoji" style="font-size: 3.2rem !important; line-height: 1; margin: 4px 0;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + hlItem.word + '\', \'hi-IN\'); })">' + hlItem.emoji + '</div>';
+            html += '  <div class="chip-word" style="font-size: 1.15rem !important; font-weight: 800; color: #4E342E;">' + hlItem.word + '</div>';
             html += '</div>';
-          } else if (appState.mode === "quiz_pic_to_let") {
-            var sqItem = DATA_SWAR[appState.quizIndex % DATA_SWAR.length];
-            var sqSound1 = sqItem.sound || sqItem.phonics || (sqItem.letter + " से " + sqItem.word);
-            var sqKey1 = "swar_p2l_" + appState.quizIndex;
-            var sOpts = getShuffledOptions(sqKey1, function() {
-              var so = [sqItem.letter];
-              while (so.length < 4) {
-                var rs = DATA_SWAR[Math.floor(Math.random() * DATA_SWAR.length)].letter;
-                if (so.indexOf(rs) === -1) so.push(rs);
-              }
-              return fisherYatesShuffle(so);
-            });
-            var isS1Answered = (quizState.isAnswered && quizState.activeKey === sqKey1);
+          }
+          html += '</div>';
+        }
 
-            autoSpeak(sqKey1, sqItem.word + ". यह किस स्वर से शुरू होता है?", "hi-IN");
+        // =========================================================================
+        // SUB-TAB 2: ✏️ चित्र से मिलान (Draw a Line)
+        // =========================================================================
+        else if (appState.nurseryHindiSubTab === "match_pic") {
+          var HINDI_ALL_CARDS = DATA_SWAR.concat(DATA_VYANJAN).filter(function(it){ return it.word !== "खाली"; });
+          var matchPicSetIdx = appState.nurseryHindiMatchSetIndex || 0;
+          var pOffset = (matchPicSetIdx * 4) % HINDI_ALL_CARDS.length;
+          var leftPicItems = [
+            HINDI_ALL_CARDS[pOffset % HINDI_ALL_CARDS.length],
+            HINDI_ALL_CARDS[(pOffset + 1) % HINDI_ALL_CARDS.length],
+            HINDI_ALL_CARDS[(pOffset + 2) % HINDI_ALL_CARDS.length],
+            HINDI_ALL_CARDS[(pOffset + 3) % HINDI_ALL_CARDS.length]
+          ];
+          var matchPicCacheKey = "nurs_h_match_pic_" + matchPicSetIdx;
+          var rightPicItems = getShuffledOptions(matchPicCacheKey, function() {
+            return fisherYatesShuffle(leftPicItems.slice());
+          });
 
-            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + sqSound1 + '\', \'hi-IN\'); })">';
-            html += '  <div class="flashcard-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + sqItem.word + '\', \'hi-IN\'); })">' + sqItem.emoji + '</div>';
-            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + sqItem.word + '\', \'hi-IN\'); })" style="font-size: 24px; font-weight: 800; color: #2C3E50;">' + (isS1Answered ? sqItem.word : "___") + '</div>';
-            html += '  <div class="audio-hint">🔊 ' + sqSound1 + '</div>';
+          var matchPicTitle = "✏️ प्रत्येक हिंदी अक्षर को उसके सही चित्र से मिलाओ!";
+          autoSpeak(matchPicCacheKey, matchPicTitle, "hi-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + matchPicTitle + '\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #C2185B; text-align: center; margin-bottom: 8px;">' + matchPicTitle + ' 🔊</div>';
+          html += '<div id="matching-board" class="matching-board-container">';
+          html += '  <svg id="matching-svg" class="matching-svg-layer"></svg>';
+          html += '  <div class="matching-cols-wrap">';
+
+          // Left Column (Big Bold Hindi Letters)
+          html += '    <div class="matching-col">';
+          for (var lpi = 0; lpi < leftPicItems.length; lpi++) {
+            var lpItem = leftPicItems[lpi];
+            var lpId = "HL_" + lpi + "_" + lpItem.letter;
+            html += '<div class="matching-card matching-left" style="min-height: 82px !important;" data-side="left" data-id="' + lpId + '" data-val="' + lpItem.letter + '" data-word="' + lpItem.word + '" onpointerdown="handleMatchPointerDown(event, \'left\', \'' + lpId + '\', \'' + lpItem.letter + '\', \'' + lpItem.word + '\')" onpointermove="handleMatchPointerMove(event)" onpointerup="handleMatchPointerUp(event)">';
+            html += '  <span class="matching-label" style="font-size: 2.3rem !important; font-weight: 900 !important; color: #C2185B; padding-left: 4px;">' + lpItem.letter + '</span>';
+            html += '  <span class="matching-dot" data-side="left" data-id="' + lpId + '"></span>';
             html += '</div>';
+          }
+          html += '    </div>';
 
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'यह किस स्वर से शुरू होता है? सही अक्षर चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">यह किस अक्षर से शुरू होता है? 🔊</div>';
-
-            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
-            for (var sj = 0; sj < sOpts.length; sj++) {
-              var isSwarOk = (sOpts[sj] === sqItem.letter);
-              var sBtnCls = "opt-btn letter-bubble";
-              if (isS1Answered) {
-                sBtnCls += isSwarOk ? " correct-choice" : " disabled-choice";
-              }
-              html += '<button class="' + sBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleSwarAns(' + isSwarOk + ', \'' + sOpts[sj] + '\', \'' + sqItem.word + '\', \'' + sqSound1 + '\', \'' + sqItem.emoji + '\'); })">' + sOpts[sj] + '</button>';
-            }
+          // Right Column (Extra Large Pictures)
+          html += '    <div class="matching-col">';
+          for (var rpi = 0; rpi < rightPicItems.length; rpi++) {
+            var rpItem = rightPicItems[rpi];
+            var rpId = "HR_" + rpi + "_" + rpItem.letter;
+            html += '<div class="matching-card matching-right" style="min-height: 82px !important;" data-side="right" data-id="' + rpId + '" data-val="' + rpItem.letter + '" data-word="' + rpItem.word + '" onpointerdown="handleMatchPointerDown(event, \'right\', \'' + rpId + '\', \'' + rpItem.letter + '\', \'' + rpItem.word + '\')" onpointermove="handleMatchPointerMove(event)" onpointerup="handleMatchPointerUp(event)">';
+            html += '  <span class="matching-dot" data-side="right" data-id="' + rpId + '"></span>';
+            html += '  <span class="safe-emoji" style="font-size: 3.2rem !important; line-height: 1;">' + rpItem.emoji + '</span>';
+            html += '  <span style="font-size: 13px; font-weight: 800; color: #37474F; margin-top: 2px;">' + rpItem.word + '</span>';
             html += '</div>';
-            html += renderCompletedPreviewCard();
-          } else {
-            var sqItem2 = DATA_SWAR[appState.quizIndex % DATA_SWAR.length];
-            var sqSound2 = sqItem2.sound || sqItem2.phonics || (sqItem2.letter + " से " + sqItem2.word);
-            var sqKey2 = "swar_l2p_" + appState.quizIndex;
-            var sPicOpts = getShuffledOptions(sqKey2, function() {
-              var sp = [sqItem2];
-              while (sp.length < 4) {
-                var rsp = DATA_SWAR[Math.floor(Math.random() * DATA_SWAR.length)];
-                if (sp.indexOf(rsp) === -1) sp.push(rsp);
-              }
-              return fisherYatesShuffle(sp);
-            });
-            var isS2Answered = (quizState.isAnswered && quizState.activeKey === sqKey2);
+          }
+          html += '    </div>';
+          html += '  </div>';
+          html += '</div>';
 
-            autoSpeak(sqKey2, sqItem2.letter + " से क्या होता है? सही चित्र चुनो", "hi-IN");
-
-            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + sqSound2 + '\', \'hi-IN\'); })">';
-            html += '  <div class="flashcard-emoji" style="font-size: 70px; font-weight: 900; color: #FF5722;">' + sqItem2.letter + '</div>';
-            html += '  <div class="audio-hint">🔊 ' + sqSound2 + '</div>';
+          var isPicMatchDone = (lineDrawingState.matchedPairs && lineDrawingState.matchedPairs.length >= 4);
+          if (isPicMatchDone) {
+            html += '<div class="quiz-completed-card" style="background:#E8F5E9;border:3px solid #4CAF50;border-radius:18px;padding:16px;text-align:center;margin:14px auto;max-width:340px;animation:popIn 0.3s ease-out;">';
+            html += '  <div style="font-size:38px;margin-bottom:4px;">🌟🏆🎉</div>';
+            html += '  <div style="font-size:20px;font-weight:900;color:#2E7D32;">सभी 4 चित्र मिलान सही!</div>';
+            html += '  <div style="margin-top:12px;">';
+            html += '    <button class="nav-btn" style="background:#1E88E5;color:#fff;padding:10px 24px;font-size:16px;font-weight:900;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(30,136,229,0.3);" onclick="safeAction(function(){ advanceNurseryHindiMatchSet(); })">Next Set ➔</button>';
+            html += '  </div>';
             html += '</div>';
-
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + sqItem2.letter + ' से क्या होता है? सही चित्र चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">' + sqItem2.letter + ' से क्या होता है? सही चित्र चुनो 🔊</div>';
-
-            html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
-            for (var sk = 0; sk < sPicOpts.length; sk++) {
-              var isSPicOk = (sPicOpts[sk].letter === sqItem2.letter);
-              var sOptBtnCls = "opt-btn";
-              if (isS2Answered) {
-                sOptBtnCls += isSPicOk ? " correct-choice" : " disabled-choice";
-              }
-              html += '<button class="' + sOptBtnCls + '" onclick="safeAction(function(){ handleSwarPicAns(' + isSPicOk + ', \'' + sPicOpts[sk].word + '\', \'' + sqItem2.letter + '\', \'' + sPicOpts[sk].emoji + '\'); })">';
-              html += '  <div class="safe-emoji" style="font-size: 34px;">' + sPicOpts[sk].emoji + '</div>';
-              html += '  <div style="font-size: 14px; font-weight: 800; margin-top: 2px;">' + sPicOpts[sk].word + '</div>';
-              html += '</button>';
-            }
-            html += '</div>';
-            html += renderCompletedPreviewCard();
           }
         }
-        // Subtab B: व्यंजन (क–ज्ञ व अतिरिक्त अक्षर: क्ष, त्र, ज्ञ, श्र, ड़, ढ़)
-        else {
-          html += '<div class="mode-switch">';
-          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 व्यंजन सीखें</button>';
-          html += '  <button class="mode-btn ' + (appState.mode === "quiz_pic_to_let" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_pic_to_let\'); })">🎯 चित्र से व्यंजन</button>';
-          html += '  <button class="mode-btn ' + (appState.mode === "quiz_let_to_pic" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_let_to_pic\'); })">🎯 व्यंजन से चित्र</button>';
+
+        // =========================================================================
+        // SUB-TAB 3: 🔗 समान अक्षर मिलान (Draw a Line)
+        // =========================================================================
+        else if (appState.nurseryHindiSubTab === "match_same") {
+          var HINDI_ALL_LETTERS = DATA_SWAR.concat(DATA_VYANJAN).filter(function(it){ return it.word !== "खाली"; });
+          var matchSameSetIdx = appState.nurseryHindiMatchSetIndex || 0;
+          var sOffset = (matchSameSetIdx * 4) % HINDI_ALL_LETTERS.length;
+          var leftSameItems = [
+            HINDI_ALL_LETTERS[sOffset % HINDI_ALL_LETTERS.length],
+            HINDI_ALL_LETTERS[(sOffset + 1) % HINDI_ALL_LETTERS.length],
+            HINDI_ALL_LETTERS[(sOffset + 2) % HINDI_ALL_LETTERS.length],
+            HINDI_ALL_LETTERS[(sOffset + 3) % HINDI_ALL_LETTERS.length]
+          ];
+          var matchSameCacheKey = "nurs_h_match_same_" + matchSameSetIdx;
+          var rightSameItems = getShuffledOptions(matchSameCacheKey, function() {
+            return fisherYatesShuffle(leftSameItems.slice());
+          });
+
+          var matchSameTitle = "🔗 रेखा खींचकर एक जैसे समान हिंदी अक्षरों को मिलाओ!";
+          autoSpeak(matchSameCacheKey, matchSameTitle, "hi-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + matchSameTitle + '\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #1565C0; text-align: center; margin-bottom: 8px;">' + matchSameTitle + ' 🔊</div>';
+          html += '<div id="matching-board" class="matching-board-container">';
+          html += '  <svg id="matching-svg" class="matching-svg-layer"></svg>';
+          html += '  <div class="matching-cols-wrap">';
+
+          // Left Column
+          html += '    <div class="matching-col">';
+          for (var lsi = 0; lsi < leftSameItems.length; lsi++) {
+            var lsItem = leftSameItems[lsi];
+            var lsId = "HSL_" + lsi + "_" + lsItem.letter;
+            html += '<div class="matching-card matching-left" style="min-height: 82px !important;" data-side="left" data-id="' + lsId + '" data-val="' + lsItem.letter + '" data-word="' + lsItem.word + '" onpointerdown="handleMatchPointerDown(event, \'left\', \'' + lsId + '\', \'' + lsItem.letter + '\', \'' + lsItem.word + '\')" onpointermove="handleMatchPointerMove(event)" onpointerup="handleMatchPointerUp(event)">';
+            html += '  <span class="matching-label" style="font-size: 2.3rem !important; font-weight: 900 !important; color: #1565C0; padding-left: 4px;">' + lsItem.letter + '</span>';
+            html += '  <span class="matching-dot" data-side="left" data-id="' + lsId + '"></span>';
+            html += '</div>';
+          }
+          html += '    </div>';
+
+          // Right Column
+          html += '    <div class="matching-col">';
+          for (var rsi = 0; rsi < rightSameItems.length; rsi++) {
+            var rsItem = rightSameItems[rsi];
+            var rsId = "HSR_" + rsi + "_" + rsItem.letter;
+            html += '<div class="matching-card matching-right" style="min-height: 82px !important;" data-side="right" data-id="' + rsId + '" data-val="' + rsItem.letter + '" data-word="' + rsItem.word + '" onpointerdown="handleMatchPointerDown(event, \'right\', \'' + rsId + '\', \'' + rsItem.letter + '\', \'' + rsItem.word + '\')" onpointermove="handleMatchPointerMove(event)" onpointerup="handleMatchPointerUp(event)">';
+            html += '  <span class="matching-dot" data-side="right" data-id="' + rsId + '"></span>';
+            html += '  <span class="matching-label" style="font-size: 2.3rem !important; font-weight: 900 !important; color: #2E7D32; padding-right: 4px;">' + rsItem.letter + '</span>';
+            html += '</div>';
+          }
+          html += '    </div>';
+          html += '  </div>';
           html += '</div>';
 
-          if (appState.mode === "learn") {
-            autoSpeak("nursery_vyanjan_learn", "हिंदी व्यंजन. क से ज्ञ और अतिरिक्त अक्षर. कार्ड या चित्र छूकर आवाज़ सुनें", "hi-IN");
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'हिंदी व्यंजन. क से ज्ञ और अतिरिक्त अक्षर. कार्ड या चित्र छूकर आवाज़ सुनें\', \'hi-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">कार्ड या चित्र छूकर आवाज़ सुनें 🔊</div>';
-            html += '<div class="grid-items-container">';
-            for (var nvi = 0; nvi < DATA_VYANJAN.length; nvi++) {
-              var nvyItem = DATA_VYANJAN[nvi];
-              html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + nvyItem.sound + '\', \'hi-IN\'); })">';
-              html += '  <div class="chip-letter" style="color:#2E7D32;">' + nvyItem.letter + '</div>';
-              html += '  <div class="chip-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + nvyItem.word + '\', \'hi-IN\'); })">' + nvyItem.emoji + '</div>';
-              html += '  <div class="chip-word">' + nvyItem.word + '</div>';
-              html += '</div>';
-            }
+          var isSameMatchDone = (lineDrawingState.matchedPairs && lineDrawingState.matchedPairs.length >= 4);
+          if (isSameMatchDone) {
+            html += '<div class="quiz-completed-card" style="background:#E8F5E9;border:3px solid #4CAF50;border-radius:18px;padding:16px;text-align:center;margin:14px auto;max-width:340px;animation:popIn 0.3s ease-out;">';
+            html += '  <div style="font-size:38px;margin-bottom:4px;">🌟🏆🎉</div>';
+            html += '  <div style="font-size:20px;font-weight:900;color:#2E7D32;">समान अक्षर मिलान पूरा!</div>';
+            html += '  <div style="margin-top:12px;">';
+            html += '    <button class="nav-btn" style="background:#1E88E5;color:#fff;padding:10px 24px;font-size:16px;font-weight:900;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(30,136,229,0.3);" onclick="safeAction(function(){ advanceNurseryHindiMatchSet(); })">Next Set ➔</button>';
+            html += '  </div>';
             html += '</div>';
-          } else if (appState.mode === "quiz_pic_to_let") {
-            var nvyTarget = DATA_VYANJAN[appState.quizIndex % DATA_VYANJAN.length];
-            var nvyCacheKey = "nurs_vyanjan_" + appState.quizIndex;
-            var nvyOpts = getShuffledOptions(nvyCacheKey, function() {
-              var nvo = [nvyTarget.letter];
-              while (nvo.length < 4) {
-                var rnvy = DATA_VYANJAN[Math.floor(Math.random() * DATA_VYANJAN.length)].letter;
-                if (nvo.indexOf(rnvy) === -1) nvo.push(rnvy);
+          }
+        }
+
+        // =========================================================================
+        // SUB-TAB 4: ➡️ बाद वाला अक्षर (After)
+        // =========================================================================
+        else if (appState.nurseryHindiSubTab === "after_letter") {
+          var afterQ = HINDI_AFTER_QUESTIONS[appState.quizIndex % HINDI_AFTER_QUESTIONS.length];
+          var afterBaseH = afterQ.base;
+          var afterAnsH = afterQ.ans;
+          var qCacheKeyAfter = "nurs_h_after_" + appState.quizIndex;
+          var afterOptsH = getShuffledOptions(qCacheKeyAfter, function() {
+            var pool = [afterAnsH];
+            var candidatePool = ["क","ख","ग","घ","च","छ","ज","झ","ट","ठ","ड","ढ","त","थ","द","ध","न","प","फ","ब","भ","म","य","र","ल","व","श","ष","स","ह","अ","आ","इ","ई","उ","ऊ","ए","ऐ","ओ","औ"];
+            while (pool.length < 4) {
+              var rCandidate = candidatePool[Math.floor(Math.random() * candidatePool.length)];
+              if (pool.indexOf(rCandidate) === -1 && rCandidate !== afterBaseH) {
+                pool.push(rCandidate);
               }
-              return fisherYatesShuffle(nvo);
-            });
-            var isNVyAnswered = (quizState.isAnswered && quizState.activeKey === nvyCacheKey);
-
-            autoSpeak(nvyCacheKey, nvyTarget.word + ". यह किस व्यंजन से शुरू होता है?", "hi-IN");
-
-            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + nvyTarget.sound + '\', \'hi-IN\'); })">';
-            html += '  <div class="flashcard-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + nvyTarget.word + '\', \'hi-IN\'); })">' + nvyTarget.emoji + '</div>';
-            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + nvyTarget.word + '\', \'hi-IN\'); })" style="font-size: 24px; font-weight: 800; color: #2C3E50;">' + (isNVyAnswered ? nvyTarget.word : "___") + '</div>';
-            html += '  <div class="audio-hint">🔊 ' + nvyTarget.sound + '</div>';
-            html += '</div>';
-
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'यह किस व्यंजन से शुरू होता है? सही अक्षर चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">यह किस व्यंजन से शुरू होता है? 🔊</div>';
-
-            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
-            for (var nvi2 = 0; nvi2 < nvyOpts.length; nvi2++) {
-              var isNVOk = (nvyOpts[nvi2] === nvyTarget.letter);
-              var nvBtnCls = "opt-btn letter-bubble";
-              if (isNVyAnswered) {
-                nvBtnCls += isNVOk ? " correct-choice" : " disabled-choice";
-              }
-              html += '<button class="' + nvBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleVyanjanAns(' + isNVOk + ', \'' + nvyTarget.sound + '\', \'' + nvyOpts[nvi2] + '\', \'' + nvyTarget.word + '\', \'' + nvyTarget.emoji + '\', \'' + nvyCacheKey + '\'); })">' + nvyOpts[nvi2] + '</button>';
             }
+            return fisherYatesShuffle(pool);
+          });
+          var isAfterAnsweredH = (quizState.isAnswered && quizState.activeKey === qCacheKeyAfter);
+
+          autoSpeak(qCacheKeyAfter, afterBaseH + " के बाद कौन सा अक्षर आता है?", "hi-IN");
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + afterBaseH + ' के बाद क्या आता है?\', \'hi-IN\'); })">';
+          html += '  <div class="touch-speak-item" style="font-size: 2.8rem !important; font-weight: 900; color: #D84315; margin: 10px 0;">' + afterBaseH + ' <span style="font-size: 2.4rem; color: #78909C;">➔</span> <span class="dash-blank" style="font-size: 2.4rem;">' + (isAfterAnsweredH ? afterAnsH : "___") + '</span></div>';
+          html += '  <div class="audio-hint">🔊 ' + afterBaseH + ' के बाद क्या आता है?</div>';
+          html += '</div>';
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + afterBaseH + ' के बाद कौन सा अक्षर आता है?\', \'hi-IN\'); })" style="font-size: 15px; font-weight: 800; color: #546E7A; text-align: center; margin-top: 8px;">' + afterBaseH + ' के बाद कौन सा अक्षर आता है? 🔊</div>';
+
+          html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
+          for (var ahoi = 0; ahoi < afterOptsH.length; ahoi++) {
+            var isAhOk = (afterOptsH[ahoi] === afterAnsH);
+            var ahBtnCls = "opt-btn hindi-opt-btn";
+            if (isAfterAnsweredH) {
+              ahBtnCls += isAhOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + ahBtnCls + '" style="min-height: 70px !important; font-size: 1.9rem !important; font-weight: 900 !important;" onclick="safeAction(function(){ handleNurseryHindiAfterAns(' + isAhOk + ', \'' + afterBaseH + '\', \'' + afterAnsH + '\'); })">' + afterOptsH[ahoi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // =========================================================================
+        // SUB-TAB 5: ⬅️ पहले वाला अक्षर (Before)
+        // =========================================================================
+        else if (appState.nurseryHindiSubTab === "before_letter") {
+          var beforeQ = HINDI_BEFORE_QUESTIONS[appState.quizIndex % HINDI_BEFORE_QUESTIONS.length];
+          var beforeTargetH = beforeQ.target;
+          var beforeAnsH = beforeQ.ans;
+          var qCacheKeyBefore = "nurs_h_before_" + appState.quizIndex;
+          var beforeOptsH = getShuffledOptions(qCacheKeyBefore, function() {
+            var pool = [beforeAnsH];
+            var candidatePool = ["क","ख","ग","घ","च","छ","ज","झ","ट","ठ","ड","ढ","त","थ","द","ध","न","प","फ","ब","भ","म","य","र","ल","व","श","ष","स","ह","अ","आ","इ","ई","उ","ऊ","ए","ऐ","ओ","औ"];
+            while (pool.length < 4) {
+              var rCandidate = candidatePool[Math.floor(Math.random() * candidatePool.length)];
+              if (pool.indexOf(rCandidate) === -1 && rCandidate !== beforeTargetH) {
+                pool.push(rCandidate);
+              }
+            }
+            return fisherYatesShuffle(pool);
+          });
+          var isBeforeAnsweredH = (quizState.isAnswered && quizState.activeKey === qCacheKeyBefore);
+
+          autoSpeak(qCacheKeyBefore, beforeTargetH + " से पहले कौन सा अक्षर आता है?", "hi-IN");
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + beforeTargetH + ' से पहले क्या आता है?\', \'hi-IN\'); })">';
+          html += '  <div class="touch-speak-item" style="font-size: 2.8rem !important; font-weight: 900; color: #0277BD; margin: 10px 0;"><span class="dash-blank" style="font-size: 2.4rem;">' + (isBeforeAnsweredH ? beforeAnsH : "___") + '</span> <span style="font-size: 2.4rem; color: #78909C;">➔</span> ' + beforeTargetH + '</div>';
+          html += '  <div class="audio-hint">🔊 ' + beforeTargetH + ' से पहले क्या आता है?</div>';
+          html += '</div>';
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + beforeTargetH + ' से पहले कौन सा अक्षर आता है?\', \'hi-IN\'); })" style="font-size: 15px; font-weight: 800; color: #546E7A; text-align: center; margin-top: 8px;">' + beforeTargetH + ' से पहले कौन सा अक्षर आता है? 🔊</div>';
+
+          html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
+          for (var bhoi = 0; bhoi < beforeOptsH.length; bhoi++) {
+            var isBhOk = (beforeOptsH[bhoi] === beforeAnsH);
+            var bhBtnCls = "opt-btn hindi-opt-btn";
+            if (isBeforeAnsweredH) {
+              bhBtnCls += isBhOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + bhBtnCls + '" style="min-height: 70px !important; font-size: 1.9rem !important; font-weight: 900 !important;" onclick="safeAction(function(){ handleNurseryHindiBeforeAns(' + isBhOk + ', \'' + beforeTargetH + '\', \'' + beforeAnsH + '\'); })">' + beforeOptsH[bhoi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // =========================================================================
+        // SUB-TAB 6: ↔️ बीच वाला अक्षर (Between)
+        // =========================================================================
+        else if (appState.nurseryHindiSubTab === "between_letter") {
+          var betweenQ = HINDI_BETWEEN_QUESTIONS[appState.quizIndex % HINDI_BETWEEN_QUESTIONS.length];
+          var firstCharH = betweenQ.first;
+          var thirdCharH = betweenQ.third;
+          var betweenAnsH = betweenQ.ans;
+          var qCacheKeyBetween = "nurs_h_between_" + appState.quizIndex;
+          var betweenOptsH = getShuffledOptions(qCacheKeyBetween, function() {
+            var pool = [betweenAnsH];
+            var candidatePool = ["क","ख","ग","घ","च","छ","ज","झ","ट","ठ","ड","ढ","त","थ","द","ध","न","प","फ","ब","भ","म","य","र","ल","व","श","ष","स","ह","अ","आ","इ","ई","उ","ऊ","ए","ऐ","ओ","औ"];
+            while (pool.length < 4) {
+              var rCandidate = candidatePool[Math.floor(Math.random() * candidatePool.length)];
+              if (pool.indexOf(rCandidate) === -1 && rCandidate !== firstCharH && rCandidate !== thirdCharH) {
+                pool.push(rCandidate);
+              }
+            }
+            return fisherYatesShuffle(pool);
+          });
+          var isBetweenAnsweredH = (quizState.isAnswered && quizState.activeKey === qCacheKeyBetween);
+
+          autoSpeak(qCacheKeyBetween, firstCharH + " और " + thirdCharH + " के बीच कौन सा अक्षर आता है?", "hi-IN");
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + firstCharH + ' और ' + thirdCharH + ' के बीच क्या आता है?\', \'hi-IN\'); })">';
+          html += '  <div class="touch-speak-item" style="font-size: 2.6rem !important; font-weight: 900; color: #2E7D32; margin: 10px 0;">' + firstCharH + ', <span class="dash-blank" style="font-size: 2.4rem;">' + (isBetweenAnsweredH ? betweenAnsH : "___") + '</span>, ' + thirdCharH + '</div>';
+          html += '  <div class="audio-hint">🔊 ' + firstCharH + ' और ' + thirdCharH + ' के बीच क्या आता है?</div>';
+          html += '</div>';
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + firstCharH + ' और ' + thirdCharH + ' के बीच क्या आता है?\', \'hi-IN\'); })" style="font-size: 15px; font-weight: 800; color: #546E7A; text-align: center; margin-top: 8px;">' + firstCharH + ' और ' + thirdCharH + ' के बीच क्या आता है? 🔊</div>';
+
+          html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
+          for (var bthoi = 0; bthoi < betweenOptsH.length; bthoi++) {
+            var isBthOk = (betweenOptsH[bthoi] === betweenAnsH);
+            var bthBtnCls = "opt-btn hindi-opt-btn";
+            if (isBetweenAnsweredH) {
+              bthBtnCls += isBthOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + bthBtnCls + '" style="min-height: 70px !important; font-size: 1.9rem !important; font-weight: 900 !important;" onclick="safeAction(function(){ handleNurseryHindiBetweenAns(' + isBthOk + ', \'' + firstCharH + '\', \'' + betweenAnsH + '\', \'' + thirdCharH + '\'); })">' + betweenOptsH[bthoi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // =========================================================================
+        // SUB-TAB 7: 🧩 खाली स्थान भरें (Missing Letters)
+        // =========================================================================
+        else if (appState.nurseryHindiSubTab === "missing_letters") {
+          var curHRound = MISSING_HINDI_ROUNDS[(appState.nurseryHindiMissingRound || 0) % MISSING_HINDI_ROUNDS.length];
+          var filledHList = appState.nurseryHindiMissingFilled || [];
+          var isHMissingDone = (filledHList.length >= curHRound.missing.length);
+
+          autoSpeak("nurs_h_missing_" + (appState.nurseryHindiMissingRound || 0), "खाली स्थान में सही हिंदी अक्षर भरो!", "hi-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + "खाली स्थान में सही हिंदी अक्षर भरो!" + '\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #1565C0; text-align: center; margin-bottom: 8px;">खाली स्थान में सही अक्षर भरो: 🔊</div>';
+
+          // Sequence Track
+          html += '<div class="missing-seq-track" style="gap: 8px; margin: 10px auto;">';
+          for (var hsi = 0; hsi < curHRound.letters.length; hsi++) {
+            var hLet = curHRound.letters[hsi];
+            var isHMissPos = (curHRound.missing.indexOf(hLet) !== -1);
+            if (!isHMissPos) {
+              html += '<div class="seq-box solid" style="font-size: 1.8rem !important; font-weight: 900; min-height: 54px; min-width: 50px;">' + hLet + '</div>';
+            } else {
+              var isThisHFilled = (filledHList.indexOf(hLet) !== -1);
+              if (isThisHFilled) {
+                html += '<div class="seq-box filled" style="font-size: 1.8rem !important; font-weight: 900; min-height: 54px; min-width: 50px;">' + hLet + '</div>';
+              } else {
+                html += '<div class="seq-box blank" style="min-height: 54px; min-width: 50px;"><span class="dash-blank" style="font-size: 1.6rem;">___</span></div>';
+              }
+            }
+          }
+          html += '</div>';
+
+          if (isHMissingDone) {
+            html += '<div class="quiz-completed-card" style="background:#E8F5E9;border:3px solid #4CAF50;border-radius:18px;padding:16px;text-align:center;margin:14px auto;max-width:340px;animation:popIn 0.3s ease-out;">';
+            html += '  <div style="font-size:38px;margin-bottom:4px;">🌟🏆🎉</div>';
+            html += '  <div style="font-size:20px;font-weight:900;color:#2E7D32;">सभी खाली स्थान सही भरे!</div>';
+            html += '  <div style="margin-top:12px;">';
+            html += '    <button class="nav-btn" style="background:#1E88E5;color:#fff;padding:10px 24px;font-size:16px;font-weight:900;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(30,136,229,0.3);" onclick="safeAction(function(){ advanceNurseryHindiMissingRound(); })">Next Set ➔</button>';
+            html += '  </div>';
             html += '</div>';
-            html += renderCompletedPreviewCard();
           } else {
-            var nvyTarget2 = DATA_VYANJAN[appState.quizIndex % DATA_VYANJAN.length];
-            var nvyCacheKey2 = "nurs_vyanjan_pic_" + appState.quizIndex;
-            var nvyPicOpts = getShuffledOptions(nvyCacheKey2, function() {
-              var nvpo = [nvyTarget2];
-              while (nvpo.length < 4) {
-                var rnvpo = DATA_VYANJAN[Math.floor(Math.random() * DATA_VYANJAN.length)];
-                if (nvpo.indexOf(rnvpo) === -1) nvpo.push(rnvpo);
-              }
-              return fisherYatesShuffle(nvpo);
+            html += '<div style="font-size:13px;font-weight:800;color:#546E7A;text-align:center;margin-top:12px;">नीचे से सही हिंदी अक्षर चुनो:</div>';
+            var missHChoicesKey = "nurs_h_miss_opts_" + (appState.nurseryHindiMissingRound || 0);
+            var missingHChoices = getShuffledOptions(missHChoicesKey, function() {
+              return fisherYatesShuffle(curHRound.missing.slice());
             });
-            var isNVy2Answered = (quizState.isAnswered && quizState.activeKey === nvyCacheKey2);
 
-            autoSpeak(nvyCacheKey2, nvyTarget2.letter + " से क्या होता है? सही चित्र चुनो", "hi-IN");
-
-            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + nvyTarget2.sound + '\', \'hi-IN\'); })">';
-            html += '  <div class="flashcard-emoji" style="font-size: 70px; font-weight: 900; color: #2E7D32;">' + nvyTarget2.letter + '</div>';
-            html += '  <div class="audio-hint">🔊 ' + nvyTarget2.sound + '</div>';
-            html += '</div>';
-
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + nvyTarget2.letter + ' से क्या होता है? सही चित्र चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">' + nvyTarget2.letter + ' से क्या होता है? सही चित्र चुनो 🔊</div>';
-
-            html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
-            for (var nvk = 0; nvk < nvyPicOpts.length; nvk++) {
-              var isNVPicOk = (nvyPicOpts[nvk].letter === nvyTarget2.letter);
-              var nvyOptBtnCls = "opt-btn";
-              if (isNVy2Answered) {
-                nvyOptBtnCls += isNVPicOk ? " correct-choice" : " disabled-choice";
-              }
-              html += '<button class="' + nvyOptBtnCls + '" onclick="safeAction(function(){ handleVyanjanPicAns(' + isNVPicOk + ', \'' + nvyPicOpts[nvk].word + '\', \'' + nvyTarget2.letter + '\', \'' + nvyPicOpts[nvk].emoji + '\', \'' + nvyCacheKey2 + '\'); })">';
-              html += '  <div class="safe-emoji" style="font-size: 34px;">' + nvyPicOpts[nvk].emoji + '</div>';
-              html += '  <div style="font-size: 14px; font-weight: 800; margin-top: 2px;">' + nvyPicOpts[nvk].word + '</div>';
-              html += '</button>';
+            html += '<div style="display:flex;justify-content:center;gap:12px;margin-top:10px;flex-wrap:wrap;">';
+            for (var mhci = 0; mhci < missingHChoices.length; mhci++) {
+              var mhChoice = missingHChoices[mhci];
+              var isHPlaced = (filledHList.indexOf(mhChoice) !== -1);
+              var mhBtnCls = "order-tile-btn missing-tile-btn" + (isHPlaced ? " disabled-choice" : "");
+              html += '<button class="' + mhBtnCls + '" style="min-width: 72px !important; min-height: 64px !important; font-size: 1.85rem !important; font-weight: 900 !important; border-radius: 16px !important; padding: 10px 16px !important;" onclick="safeAction(function(){ tapNurseryHindiMissingLetter(\'' + mhChoice + '\'); })">' + mhChoice + '</button>';
             }
             html += '</div>';
-            html += renderCompletedPreviewCard();
+          }
+        }
+
+        // =========================================================================
+        // SUB-TAB 8: 🎯 6 में से सही अक्षर चुनें (Choose from 6)
+        // =========================================================================
+        else if (appState.nurseryHindiSubTab === "choose_6") {
+          var HINDI_CHOOSE_ITEMS = DATA_SWAR.concat(DATA_VYANJAN).filter(function(it){ return it.word !== "खाली"; });
+          var target6H = HINDI_CHOOSE_ITEMS[appState.quizIndex % HINDI_CHOOSE_ITEMS.length];
+          var qCacheKey6H = "nurs_h_choose_6_" + appState.quizIndex;
+          var opts6H = getShuffledOptions(qCacheKey6H, function() {
+            var o = [target6H.letter];
+            while (o.length < 6) {
+              var rItemH = HINDI_CHOOSE_ITEMS[Math.floor(Math.random() * HINDI_CHOOSE_ITEMS.length)];
+              if (o.indexOf(rItemH.letter) === -1) o.push(rItemH.letter);
+            }
+            return fisherYatesShuffle(o);
+          });
+          var isAnswered6H = (quizState.isAnswered && quizState.activeKey === qCacheKey6H);
+
+          autoSpeak(qCacheKey6H, target6H.word + " किस अक्षर से शुरू होता है?", "hi-IN");
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + target6H.sound + '\', \'hi-IN\'); })">';
+          html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 4.5rem !important; line-height: 1.1; margin: 10px 0;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + target6H.word + '\', \'hi-IN\'); })">' + target6H.emoji + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + target6H.sound + '\', \'hi-IN\'); })" style="font-size: 26px; font-weight: 800; color: #2C3E50;">' + (isAnswered6H ? (target6H.letter + " - " + target6H.word) : "___") + '</div>';
+          html += '  <div class="audio-hint">🔊 ' + target6H.sound + '</div>';
+          html += '</div>';
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + target6H.word + ' किस अक्षर से शुरू होता है? सही अक्षर चुनो\', \'hi-IN\'); })" style="font-size: 15px; font-weight: 800; color: #546E7A; margin-top: 8px;">' + target6H.word + ' किस अक्षर से शुरू होता है? 🔊</div>';
+
+          // 3x2 Grid for 6 Options
+          html += '<div class="options-grid-3" style="display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 380px !important; margin: 14px auto 0 !important;">';
+          for (var o6hi = 0; o6hi < opts6H.length; o6hi++) {
+            var isOk6H = (opts6H[o6hi] === target6H.letter);
+            var btnCls6H = "opt-btn hindi-opt-btn";
+            if (isAnswered6H) {
+              btnCls6H += isOk6H ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + btnCls6H + '" style="min-height: 70px !important; font-size: 1.9rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleNurseryHindiChoose6Ans(' + isOk6H + ', \'' + target6H.letter + '\', \'' + target6H.word + '\', \'' + target6H.emoji + '\'); })">' + opts6H[o6hi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // =========================================================================
+        // SUB-TAB 9: 🔢 सही क्रम में लिखें (Write in Order)
+        // =========================================================================
+        else if (appState.nurseryHindiSubTab === "order_hindi") {
+          var curOrderMode = appState.nurseryHindiOrderMode || "swar_order";
+          html += '<div class="mode-switch">';
+          html += '  <button class="mode-btn ' + (curOrderMode === "swar_order" ? "active" : "") + '" onclick="safeAction(function(){ setNurseryHindiOrderMode(\'swar_order\'); })">🕉️ स्वर क्रम (अ से अः)</button>';
+          html += '  <button class="mode-btn ' + (curOrderMode === "vyanjan_order" ? "active" : "") + '" onclick="safeAction(function(){ setNurseryHindiOrderMode(\'vyanjan_order\'); })">🪔 व्यंजन क्रम (क से ज्ञ)</button>';
+          html += '</div>';
+
+          var fullSeq = (curOrderMode === "vyanjan_order") ? HINDI_VYANJAN_ORDER_SEQ : HINDI_SWAR_ORDER_SEQ;
+          var curOrderIdx = appState.nurseryHindiOrderCurrentIdx || 0;
+          var isAllOrderDone = (curOrderIdx >= fullSeq.length);
+          var nextTargetChar = !isAllOrderDone ? fullSeq[curOrderIdx] : "";
+          var placedList = appState.nurseryHindiOrderPlaced || [];
+
+          var orderTitle = (curOrderMode === "vyanjan_order") ? "क से ज्ञ तक अक्षरों को सही क्रम में टैप करो!" : "अ से अः तक स्वरों को सही क्रम में टैप करो!";
+          autoSpeak("nurs_h_order_" + curOrderMode + "_" + (appState.nurseryHindiOrderRound || 0), orderTitle + " अक्षर " + nextTargetChar + " ढूँढो!", "hi-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + orderTitle + '\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #1565C0; text-align: center; margin-bottom: 8px;">' + orderTitle + ' 🔊</div>';
+
+          // Upper Sequence Display Track
+          html += '<div class="az-order-track" style="max-height: 140px; overflow-y: auto; padding: 6px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; background: #FAFAFA; border: 2px dashed #B0BEC5; border-radius: 16px; margin: 8px auto; max-width: 420px;">';
+          for (var oi = 0; oi < fullSeq.length; oi++) {
+            var ch = fullSeq[oi];
+            var isPlaced = (oi < curOrderIdx);
+            var isCurrentTarget = (oi === curOrderIdx);
+            var boxStyle = "min-height: 54px; min-width: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.65rem; font-weight: 900;";
+            if (isPlaced) {
+              html += '<div style="' + boxStyle + ' background: #E8F5E9; border: 2px solid #4CAF50; color: #2E7D32;">' + ch + '</div>';
+            } else if (isCurrentTarget) {
+              html += '<div style="' + boxStyle + ' background: #FFF9C4; border: 2px dashed #FBC02D; color: #F57F17; animation: pulse 1s infinite;"><span class="dash-blank" style="font-size: 1.4rem;">___</span></div>';
+            } else {
+              html += '<div style="' + boxStyle + ' background: #ECEFF1; border: 1px dashed #CFD8DC; color: #B0BEC5;">' + (oi + 1) + '</div>';
+            }
+          }
+          html += '</div>';
+
+          if (isAllOrderDone) {
+            html += '<div class="quiz-completed-card" style="background:#E8F5E9;border:3px solid #4CAF50;border-radius:18px;padding:16px;text-align:center;margin:14px auto;max-width:340px;animation:popIn 0.3s ease-out;">';
+            html += '  <div style="font-size:38px;margin-bottom:4px;">🌟🏆🎉</div>';
+            html += '  <div style="font-size:20px;font-weight:900;color:#2E7D32;">शानदार! पूरा क्रम सही लिखा!</div>';
+            html += '  <div style="margin-top:12px;">';
+            html += '    <button class="nav-btn" style="background:#1E88E5;color:#fff;padding:10px 24px;font-size:16px;font-weight:900;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(30,136,229,0.3);" onclick="safeAction(function(){ resetNurseryHindiOrderGame(); })">फिर से खेलें 🔄</button>';
+            html += '  </div>';
+            html += '</div>';
+          } else {
+            html += '<div style="font-size:14px;font-weight:900;color:#D84315;text-align:center;margin:6px 0;">अगला अक्षर चुनो: <span style="font-size: 24px; color: #E91E63; font-weight: 900;">' + nextTargetChar + '</span></div>';
+
+            var orderCacheKey = "nurs_h_order_tiles_" + curOrderMode + "_" + (appState.nurseryHindiOrderRound || 0);
+            var shuffledLetters = getShuffledOptions(orderCacheKey, function() {
+              return fisherYatesShuffle(fullSeq.slice());
+            });
+
+            // 4-Column Wide Grid for Hindi Tiles
+            html += '<div class="hindi-order-grid" style="display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 10px !important; width: 100% !important; max-width: 420px !important; margin: 10px auto 0 !important;">';
+            for (var ti = 0; ti < shuffledLetters.length; ti++) {
+              var tileChar = shuffledLetters[ti];
+              var isAlreadyPlaced = (placedList.indexOf(tileChar) !== -1);
+              var tileCls = "hindi-order-tile" + (isAlreadyPlaced ? " placed" : "");
+              html += '<button class="' + tileCls + '" onclick="safeAction(function(){ tapNurseryHindiOrderLetter(\'' + tileChar + '\'); })">' + tileChar + '</button>';
+            }
+            html += '</div>';
           }
         }
       }
