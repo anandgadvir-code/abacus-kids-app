@@ -5,464 +5,122 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Abacus Kids - The Abacus Academy, Jodhpur</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+Devanagari:wght@500;700;800&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-    body {
-      margin: 0;
-      font-family: 'Fredoka', 'Noto Sans Devanagari', sans-serif;
-      background-color: #FFFDF7;
-      color: #2D3436;
-      overflow-x: hidden;
-    }
-    @keyframes bounceSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
-    @keyframes popIn { 0% { transform: scale(0.75); opacity: 0; } 70% { transform: scale(1.06); } 100% { transform: scale(1); opacity: 1; } }
-    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
-    .anim-float { animation: bounceSlow 2.6s ease-in-out infinite; }
-    .anim-pop { animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-    .anim-shake { animation: shake 0.35s ease-in-out; }
+    body { margin: 0; font-family: sans-serif; background-color: #FFFDF7; color: #2D3436; overflow-x: hidden; }
     .btn-3d { transition: all 0.12s ease; }
-    .btn-3d:active { transform: translateY(4px); border-bottom-width: 2px !important; }
+    .btn-3d:active { transform: translateY(3px); }
   </style>
+  <script>
+    window.onerror = function(msg, url, line) {
+      var el = document.getElementById('app');
+      if (el) el.innerHTML = '<div style="padding:20px;color:#b91c1c;font-weight:bold;">Script Error (Line ' + line + '): ' + msg + '</div>';
+    };
+  </script>
 </head>
 <body>
   <div id="app" class="max-w-lg mx-auto min-h-screen flex flex-col">
-    <div style="padding:24px;text-align:center;font-weight:bold;color:#0288D1;">Loading Abacus Kids...</div>
+    <div style="padding:24px;text-align:center;font-weight:bold;color:#0288D1;">Starting Abacus Kids...</div>
   </div>
 
   <script>
-    // --- AUDIO & AUTO-SPEECH ENGINE ---
-    var lastAutoSpokenKey = '';
+    var lastSpoken = "";
 
     function speak(text, lang) {
-      lang = lang || 'en-IN';
-      if (!('speechSynthesis' in window) || !text) return;
       try {
+        if (!window.speechSynthesis || !text) return;
         window.speechSynthesis.cancel();
-        var u = new SpeechSynthesisUtterance(text);
-        u.lang = lang;
-        u.rate = 0.86;
-        u.pitch = 1.15;
+        var u = new SpeechSynthesisUtterance(String(text));
+        u.lang = lang || "en-IN";
+        u.rate = 0.88;
+        u.pitch = 1.1;
         window.speechSynthesis.speak(u);
       } catch (e) {}
     }
 
     function autoSpeak(key, text, lang) {
-      lang = lang || 'en-IN';
-      if (lastAutoSpokenKey === key) return;
-      lastAutoSpokenKey = key;
-      setTimeout(function() { speak(text, lang); }, 260);
+      if (lastSpoken === key) return;
+      lastSpoken = key;
+      setTimeout(function() { speak(text, lang); }, 250);
     }
 
     function playTone(type) {
       try {
-        var AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return;
-        var ctx = new AudioCtx();
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        var ctx = new AC();
         var osc = ctx.createOscillator();
         var gain = ctx.createGain();
         osc.connect(gain);
         gain.connect(ctx.destination);
         var now = ctx.currentTime;
-        if (type === 'pop') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(440, now);
-          osc.frequency.exponentialRampToValueAtTime(720, now + 0.09);
-          gain.gain.setValueAtTime(0.18, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.09);
-          osc.start(now); osc.stop(now + 0.09);
-        } else if (type === 'success') {
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(523.25, now);
-          osc.frequency.setValueAtTime(659.25, now + 0.1);
-          osc.frequency.setValueAtTime(783.99, now + 0.2);
-          osc.frequency.setValueAtTime(1046.5, now + 0.3);
-          gain.gain.setValueAtTime(0.24, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-          osc.start(now); osc.stop(now + 0.5);
-        } else if (type === 'wrong') {
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(220, now);
-          osc.frequency.linearRampToValueAtTime(160, now + 0.25);
-          gain.gain.setValueAtTime(0.14, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
-          osc.start(now); osc.stop(now + 0.25);
-        }
+        osc.type = type === "wrong" ? "sawtooth" : "sine";
+        osc.frequency.setValueAtTime(type === "wrong" ? 200 : 520, now);
+        osc.frequency.exponentialRampToValueAtTime(type === "wrong" ? 140 : 880, now + 0.18);
+        gain.gain.setValueAtTime(0.18, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
       } catch (e) {}
     }
 
-    // --- CURRICULUM DATA ---
-    var NURSERY_ENG_AZ = [
-      { prompt: 'A for Apple', speak: 'A for Apple', emoji: '🍎', ans: 'A', opts: ['A', 'B', 'C'] },
-      { prompt: 'B for Ball', speak: 'B for Ball', emoji: '⚽', ans: 'B', opts: ['D', 'B', 'P'] },
-      { prompt: 'C for Car', speak: 'C for Car', emoji: '🚗', ans: 'C', opts: ['G', 'O', 'C'] },
-      { prompt: 'D for Dog', speak: 'D for Dog', emoji: '🐶', ans: 'D', opts: ['D', 'B', 'Q'] },
-      { prompt: 'E for Elephant', speak: 'E for Elephant', emoji: '🐘', ans: 'E', opts: ['E', 'F', 'H'] },
-      { prompt: 'F for Fish', speak: 'F for Fish', emoji: '🐟', ans: 'F', opts: ['E', 'F', 'T'] },
-      { prompt: 'G for Grapes', speak: 'G for Grapes', emoji: '🍇', ans: 'G', opts: ['C', 'G', 'J'] },
-      { prompt: 'H for Horse', speak: 'H for Horse', emoji: '🐎', ans: 'H', opts: ['H', 'N', 'M'] },
-      { prompt: 'I for Ice Cream', speak: 'I for Ice Cream', emoji: '🍦', ans: 'I', opts: ['L', 'T', 'I'] },
-      { prompt: 'J for Joker', speak: 'J for Joker', emoji: '🤡', ans: 'J', opts: ['J', 'I', 'U'] },
-      { prompt: 'K for Kite', speak: 'K for Kite', emoji: '🪁', ans: 'K', opts: ['K', 'R', 'X'] },
-      { prompt: 'L for Lion', speak: 'L for Lion', emoji: '🦁', ans: 'L', opts: ['I', 'L', 'T'] },
-      { prompt: 'M for Mango', speak: 'M for Mango', emoji: '🥭', ans: 'M', opts: ['W', 'N', 'M'] },
-      { prompt: 'N for Nest', speak: 'N for Nest', emoji: '🪺', ans: 'N', opts: ['M', 'N', 'H'] },
-      { prompt: 'O for Orange', speak: 'O for Orange', emoji: '🍊', ans: 'O', opts: ['Q', 'C', 'O'] },
-      { prompt: 'P for Peacock', speak: 'P for Peacock', emoji: '🦚', ans: 'P', opts: ['P', 'B', 'R'] },
-      { prompt: 'Q for Queen', speak: 'Q for Queen', emoji: '👑', ans: 'Q', opts: ['O', 'Q', 'G'] },
-      { prompt: 'R for Rabbit', speak: 'R for Rabbit', emoji: '🐇', ans: 'R', opts: ['P', 'K', 'R'] },
-      { prompt: 'S for Sun', speak: 'S for Sun', emoji: '☀️', ans: 'S', opts: ['Z', 'C', 'S'] },
-      { prompt: 'T for Tiger', speak: 'T for Tiger', emoji: '🐯', ans: 'T', opts: ['T', 'I', 'L'] },
-      { prompt: 'U for Umbrella', speak: 'U for Umbrella', emoji: '☂️', ans: 'U', opts: ['V', 'U', 'W'] },
-      { prompt: 'V for Van', speak: 'V for Van', emoji: '🚐', ans: 'V', opts: ['U', 'W', 'V'] },
-      { prompt: 'W for Watch', speak: 'W for Watch', emoji: '⌚', ans: 'W', opts: ['M', 'W', 'V'] },
-      { prompt: 'X for Xylophone', speak: 'X for Xylophone', emoji: '🎹', ans: 'X', opts: ['K', 'Y', 'X'] },
-      { prompt: 'Y for Yak', speak: 'Y for Yak', emoji: '🐂', ans: 'Y', opts: ['V', 'Y', 'T'] },
-      { prompt: 'Z for Zebra', speak: 'Z for Zebra', emoji: '🦓', ans: 'Z', opts: ['S', 'N', 'Z'] }
+    var NURSERY_AZ = [
+      { p: "A for Apple", e: "🍎", a: "A", o: ["A", "B", "C"] },
+      { p: "B for Ball", e: "⚽", a: "B", o: ["D", "B", "P"] },
+      { p: "C for Car", e: "🚗", a: "C", o: ["G", "O", "C"] },
+      { p: "D for Dog", e: "🐶", a: "D", o: ["D", "B", "Q"] },
+      { p: "E for Elephant", e: "🐘", a: "E", o: ["E", "F", "H"] },
+      { p: "F for Fish", e: "🐟", a: "F", o: ["E", "F", "T"] },
+      { p: "G for Grapes", e: "🍇", a: "G", o: ["C", "G", "J"] },
+      { p: "H for Horse", e: "🐎", a: "H", o: ["H", "N", "M"] },
+      { p: "I for Ice Cream", e: "🍦", a: "I", o: ["L", "T", "I"] },
+      { p: "J for Joker", e: "🤡", a: "J", o: ["J", "I", "U"] },
+      { p: "K for Kite", e: "🪁", a: "K", o: ["K", "R", "X"] },
+      { p: "L for Lion", e: "🦁", a: "L", o: ["I", "L", "T"] },
+      { p: "M for Mango", e: "🥭", a: "M", o: ["W", "N", "M"] },
+      { p: "N for Nest", e: "🪺", a: "N", o: ["M", "N", "H"] },
+      { p: "O for Orange", e: "🍊", a: "O", o: ["Q", "C", "O"] },
+      { p: "P for Peacock", e: "🦚", a: "P", o: ["P", "B", "R"] },
+      { p: "Q for Queen", e: "👑", a: "Q", o: ["O", "Q", "G"] },
+      { p: "R for Rabbit", e: "🐇", a: "R", o: ["P", "K", "R"] },
+      { p: "S for Sun", e: "☀️", a: "S", o: ["Z", "C", "S"] },
+      { p: "T for Tiger", e: "🐯", a: "T", o: ["T", "I", "L"] },
+      { p: "U for Umbrella", e: "☂️", a: "U", o: ["V", "U", "W"] },
+      { p: "V for Van", e: "🚐", a: "V", o: ["U", "W", "V"] },
+      { p: "W for Watch", e: "⌚", a: "W", o: ["M", "W", "V"] },
+      { p: "X for Xylophone", e: "🎹", a: "X", o: ["K", "Y", "X"] },
+      { p: "Y for Yak", e: "🐂", a: "Y", o: ["V", "Y", "T"] },
+      { p: "Z for Zebra", e: "🦓", a: "Z", o: ["S", "N", "Z"] }
     ];
 
-    var NURSERY_HIN_SWAR = [
-      { prompt: 'अ से अनार', speak: 'अ से अनार', emoji: '🍎', ans: 'अ', opts: ['अ', 'आ', 'इ'], lang: 'hi-IN' },
-      { prompt: 'आ से आम', speak: 'आ से आम', emoji: '🥭', ans: 'आ', opts: ['उ', 'आ', 'ए'], lang: 'hi-IN' },
-      { prompt: 'इ से इमली', speak: 'इ से इमली', emoji: '🌿', ans: 'इ', opts: ['इ', 'ई', 'ऊ'], lang: 'hi-IN' },
-      { prompt: 'ई से ईख', speak: 'ई से ईख', emoji: '🎋', ans: 'ई', opts: ['इ', 'ई', 'ए'], lang: 'hi-IN' },
-      { prompt: 'उ से उल्लू', speak: 'उ से उल्लू', emoji: '🦉', ans: 'उ', opts: ['अ', 'ओ', 'उ'], lang: 'hi-IN' },
-      { prompt: 'ऊ से ऊंट', speak: 'ऊ से ऊंट', emoji: '🐫', ans: 'ऊ', opts: ['उ', 'ऊ', 'औ'], lang: 'hi-IN' },
-      { prompt: 'ऋ से ऋषि', speak: 'ऋ से ऋषि', emoji: '🧘', ans: 'ऋ', opts: ['ऋ', 'ए', 'अं'], lang: 'hi-IN' },
-      { prompt: 'ए से एड़ी', speak: 'ए से एड़ी', emoji: '🦶', ans: 'ए', opts: ['ए', 'ऐ', 'अं'], lang: 'hi-IN' },
-      { prompt: 'ऐ से ऐनक', speak: 'ऐ से ऐनक', emoji: '👓', ans: 'ऐ', opts: ['ए', 'ऐ', 'ओ'], lang: 'hi-IN' },
-      { prompt: 'ओ से ओखली', speak: 'ओ से ओखली', emoji: '🥣', ans: 'ओ', opts: ['औ', 'ओ', 'आ'], lang: 'hi-IN' },
-      { prompt: 'औ से औरत', speak: 'औ से औरत', emoji: '👩', ans: 'औ', opts: ['ओ', 'औ', 'अः'], lang: 'hi-IN' },
-      { prompt: 'अं से अंगूर', speak: 'अं से अंगूर', emoji: '🍇', ans: 'अं', opts: ['अं', 'अः', 'अ'], lang: 'hi-IN' }
+    var NURSERY_SWAR = [
+      { p: "अ से अनार", e: "🍎", a: "अ", o: ["अ", "आ", "इ"] },
+      { p: "आ से आम", e: "🥭", a: "आ", o: ["उ", "आ", "ए"] },
+      { p: "इ से इमली", e: "🌿", a: "इ", o: ["इ", "ई", "ऊ"] },
+      { p: "ई से ईख", e: "🎋", a: "ई", o: ["इ", "ई", "ए"] },
+      { p: "उ से उल्लू", e: "🦉", a: "उ", o: ["अ", "ओ", "उ"] },
+      { p: "ऊ से ऊंट", e: "🐫", a: "ऊ", o: ["उ", "ऊ", "औ"] },
+      { p: "ऋ से ऋषि", e: "🧘", a: "ऋ", o: ["ऋ", "ए", "अं"] },
+      { p: "ए से एड़ी", e: "🦶", a: "ए", o: ["ए", "ऐ", "अं"] },
+      { p: "ऐ से ऐनक", e: "👓", a: "ऐ", o: ["ए", "ऐ", "ओ"] },
+      { p: "ओ से ओखली", e: "🥣", a: "ओ", o: ["औ", "ओ", "आ"] },
+      { p: "औ से औरत", e: "👩", a: "औ", o: ["ओ", "औ", "अः"] },
+      { p: "अं से अंगूर", e: "🍇", a: "अं", o: ["अं", "अः", "अ"] }
     ];
 
-    var NURSERY_SOUND_PIC = [
-      { ask: 'Tap on C for Car', speak: 'C for Car. Tap on Car', ans: '🚗', opts: [{ e: '🍎', n: 'Apple' }, { e: '🚗', n: 'Car' }, { e: '🐱', n: 'Cat' }] },
-      { ask: 'क से कबूतर पर टैप करें', speak: 'क से कबूतर पर टैप करें', lang: 'hi-IN', ans: '🕊️', opts: [{ e: '🕊️', n: 'कबूतर' }, { e: '🐇', n: 'खरगोश' }, { e: '🐟', n: 'मछली' }] },
-      { ask: 'Tap on E for Elephant', speak: 'E for Elephant. Tap on Elephant', ans: '🐘', opts: [{ e: '🦁', n: 'Lion' }, { e: '🐘', n: 'Elephant' }, { e: '🍌', n: 'Banana' }] },
-      { ask: 'म से मछली पर टैप करें', speak: 'म से मछली पर टैप करें', lang: 'hi-IN', ans: '🐟', opts: [{ e: '🐘', n: 'हाथी' }, { e: '🦚', n: 'मोर' }, { e: '🐟', n: 'मछली' }] },
-      { ask: 'Tap on M for Monkey', speak: 'M for Monkey. Tap on Monkey', ans: '🐒', opts: [{ e: '🐒', n: 'Monkey' }, { e: '🐘', n: 'Elephant' }, { e: '🦆', n: 'Duck' }] },
-      { ask: 'ह से हाथी पर टैप करें', speak: 'ह से हाथी पर टैप करें', lang: 'hi-IN', ans: '🐘', opts: [{ e: '🐎', n: 'घोड़ा' }, { e: '🐘', n: 'हाथी' }, { e: '🐒', n: 'बंदर' }] },
-      { ask: 'Tap on P for Peacock', speak: 'P for Peacock. Tap on Peacock', ans: '🦚', opts: [{ e: '🦜', n: 'Parrot' }, { e: '🦉', n: 'Owl' }, { e: '🦚', n: 'Peacock' }] },
-      { ask: 'त से तोता पर टैप करें', speak: 'त से तोता पर टैप करें', lang: 'hi-IN', ans: '🦜', opts: [{ e: '🦜', n: 'तोता' }, { e: '🦆', n: 'बत्तख' }, { e: '🕊️', n: 'कबूतर' }] },
-      { ask: 'Tap on U for Umbrella', speak: 'U for Umbrella. Tap on Umbrella', ans: '☂️', opts: [{ e: '⌚', n: 'Watch' }, { e: '☂️', n: 'Umbrella' }, { e: '🪁', n: 'Kite' }] },
-      { ask: 'श से शेर पर टैप करें', speak: 'श से शेर पर टैप करें', lang: 'hi-IN', ans: '🦁', opts: [{ e: '🐯', n: 'बाघ' }, { e: '🦁', n: 'शेर' }, { e: '🐄', n: 'गाय' }] }
+    var SOUND_PIC = [
+      { ask: "Tap on C for Car", sp: "C for Car. Tap on Car", lg: "en-IN", ans: "🚗", opts: [{ e: "🍎", n: "Apple" }, { e: "🚗", n: "Car" }, { e: "🐱", n: "Cat" }] },
+      { ask: "क से कबूतर पर टैप करें", sp: "क से कबूतर पर टैप करें", lg: "hi-IN", ans: "🕊️", opts: [{ e: "🕊️", n: "कबूतर" }, { e: "🐇", n: "खरगोश" }, { e: "🐟", n: "मछली" }] },
+      { ask: "Tap on E for Elephant", sp: "E for Elephant. Tap on Elephant", lg: "en-IN", ans: "🐘", opts: [{ e: "🦁", n: "Lion" }, { e: "🐘", n: "Elephant" }, { e: "🍌", n: "Banana" }] },
+      { ask: "म से मछली पर टैप करें", sp: "म से मछली पर टैप करें", lg: "hi-IN", ans: "🐟", opts: [{ e: "🐘", n: "हाथी" }, { e: "🦚", n: "मोर" }, { e: "🐟", n: "मछली" }] },
+      { ask: "Tap on P for Peacock", sp: "P for Peacock. Tap on Peacock", lg: "en-IN", ans: "🦚", opts: [{ e: "🦜", n: "Parrot" }, { e: "🦉", n: "Owl" }, { e: "🦚", n: "Peacock" }] },
+      { ask: "ह से हाथी पर टैप करें", sp: "ह से हाथी पर टैप करें", lg: "hi-IN", ans: "🐘", opts: [{ e: "🐎", n: "घोड़ा" }, { e: "🐘", n: "हाथी" }, { e: "🐒", n: "बंदर" }] },
+      { ask: "Tap on U for Umbrella", sp: "U for Umbrella. Tap on Umbrella", lg: "en-IN", ans: "☂️", opts: [{ e: "⌚", n: "Watch" }, { e: "☂️", n: "Umbrella" }, { e: "🪁", n: "Kite" }] },
+      { ask: "श से शेर पर टैप करें", sp: "श से शेर पर टैप करें", lg: "hi-IN", ans: "🦁", opts: [{ e: "🐯", n: "बाघ" }, { e: "🦁", n: "शेर" }, { e: "🐄", n: "गाय" }] }
     ];
 
-    var NURSERY_BAB = [
-      { kind: 'After', speak: 'What comes after A, B?', seq: ['A', 'B', '?'], ans: 'C', opts: ['C', 'D', 'E'] },
-      { kind: 'Before', speak: 'What comes before E, F?', seq: ['?', 'E', 'F'], ans: 'D', opts: ['C', 'D', 'G'] },
-      { kind: 'Between', speak: 'What comes between G and I?', seq: ['G', '?', 'I'], ans: 'H', opts: ['H', 'J', 'K'] },
-      { kind: 'बाद में (After)', speak: 'अ, आ के बाद क्या आता है?', seq: ['अ', 'आ', '?'], ans: 'इ', opts: ['इ', 'उ', 'ए'], lang: 'hi-IN' },
-      { kind: 'बीच में (Between)', speak: 'इ और उ के बीच क्या आता है?', seq: ['इ', '?', 'उ'], ans: 'ई', opts: ['अ', 'ई', 'ऊ'], lang: 'hi-IN' },
-      { kind: 'After Number', speak: 'What comes after 7, 8?', seq: ['7', '8', '?'], ans: '9', opts: ['6', '9', '10'] },
-      { kind: 'Between Number', speak: 'What comes between 14 and 16?', seq: ['14', '?', '16'], ans: '15', opts: ['13', '15', '17'] },
-      { kind: 'Before Number', speak: 'What comes before 20, 21?', seq: ['?', '20', '21'], ans: '19', opts: ['18', '19', '22'] },
-      { kind: 'After Letter', speak: 'What comes after M, N?', seq: ['M', 'N', '?'], ans: 'O', opts: ['O', 'P', 'Q'] },
-      { kind: 'Between Letter', speak: 'What comes between X and Z?', seq: ['X', '?', 'Z'], ans: 'Y', opts: ['W', 'Y', 'V'] }
-    ];
-
-    var SHAPES_COLORS = [
-      { name: 'Circle (गोला)', speak: 'Circle. गोला', shape: 'rounded-full', bg: '#FF7675', opts: ['Circle', 'Square', 'Triangle'] },
-      { name: 'Square (चौकोर)', speak: 'Square. चौकोर', shape: 'rounded-2xl', bg: '#74B9FF', opts: ['Circle', 'Square', 'Star'] },
-      { name: 'Yellow Star (पीला तारा)', speak: 'Yellow Star. पीला तारा', emoji: '⭐', bg: '#FFF3CD', opts: ['Red Heart', 'Yellow Star', 'Green Leaf'] },
-      { name: 'Red Heart (लाल दिल)', speak: 'Red Heart. लाल दिल', emoji: '❤️', bg: '#FFE3E3', opts: ['Red Heart', 'Blue Diamond', 'Yellow Star'] },
-      { name: 'Blue Diamond (नीला हीरा)', speak: 'Blue Diamond. नीला हीरा', emoji: '💎', bg: '#E3F2FD', opts: ['Green Circle', 'Blue Diamond', 'Pink Flower'] },
-      { name: 'Green Leaf (हरी पत्ती)', speak: 'Green Leaf. हरी पत्ती', emoji: '🍃', bg: '#D4EDDA', opts: ['Blue Water', 'Green Leaf', 'Orange Sun'] },
-      { name: 'Orange Triangle (त्रिकोण)', speak: 'Orange Triangle. त्रिकोण', emoji: '🔺', bg: '#FFE8CC', opts: ['Orange Triangle', 'Purple Square', 'Yellow Moon'] },
-      { name: 'Yellow Moon (पीला चांद)', speak: 'Yellow Moon. पीला चांद', emoji: '🌙', bg: '#FFF9DB', opts: ['Red Apple', 'Yellow Moon', 'Blue Cloud'] }
-    ];
-
-    var NUMBER_WORDS_1_100 = {
-      1:'One',2:'Two',3:'Three',4:'Four',5:'Five',6:'Six',7:'Seven',8:'Eight',9:'Nine',10:'Ten',
-      11:'Eleven',12:'Twelve',13:'Thirteen',14:'Fourteen',15:'Fifteen',16:'Sixteen',17:'Seventeen',18:'Eighteen',19:'Nineteen',20:'Twenty',
-      22:'Twenty-Two',25:'Twenty-Five',28:'Twenty-Eight',30:'Thirty',33:'Thirty-Three',36:'Thirty-Six',40:'Forty',44:'Forty-Four',48:'Forty-Eight',50:'Fifty',
-      55:'Fifty-Five',60:'Sixty',64:'Sixty-Four',70:'Seventy',75:'Seventy-Five',80:'Eighty',85:'Eighty-Five',90:'Ninety',95:'Ninety-Five',100:'One Hundred'
-    };
-
-    var LKG_WORDS = [
-      { lang: 'hi-IN', emoji: '🪷', word: 'कमल', letters: ['क', 'म', 'ल'], pool: ['ल', 'क', 'र', 'म'] },
-      { lang: 'hi-IN', emoji: '🏠', word: 'घर', letters: ['घ', 'र'], pool: ['र', 'न', 'घ', 'ल'] },
-      { lang: 'hi-IN', emoji: '🚌', word: 'बस', letters: ['ब', 'स'], pool: ['स', 'क', 'ब', 'म'] },
-      { lang: 'hi-IN', emoji: '🍉', word: 'फल', letters: ['फ', 'ल'], pool: ['ल', 'फ', 'ज', 'न'] },
-      { lang: 'hi-IN', emoji: '🚰', word: 'नल', letters: ['न', 'ल'], pool: ['ल', 'क', 'न', 'प'] },
-      { lang: 'hi-IN', emoji: '🐊', word: 'मगर', letters: ['म', 'ग', 'र'], pool: ['र', 'म', 'ल', 'ग'] },
-      { lang: 'hi-IN', emoji: '🦆', word: 'बतख', letters: ['ब', 'त', 'ख'], pool: ['ख', 'ब', 'त', 'स'] },
-      { lang: 'hi-IN', emoji: '🛣️', word: 'सड़क', letters: ['स', 'ड़', 'क'], pool: ['क', 'स', 'ड़', 'म'] },
-      { lang: 'en-IN', emoji: '🐱', word: 'CAT', letters: ['C', 'A', 'T'], pool: ['T', 'C', 'O', 'A'] },
-      { lang: 'en-IN', emoji: '🐶', word: 'DOG', letters: ['D', 'O', 'G'], pool: ['G', 'D', 'A', 'O'] },
-      { lang: 'en-IN', emoji: '☀️', word: 'SUN', letters: ['S', 'U', 'N'], pool: ['N', 'S', 'I', 'U'] },
-      { lang: 'en-IN', emoji: '🚌', word: 'BUS', letters: ['B', 'U', 'S'], pool: ['S', 'B', 'E', 'U'] },
-      { lang: 'en-IN', emoji: '🦇', word: 'BAT', letters: ['B', 'A', 'T'], pool: ['T', 'A', 'B', 'O'] },
-      { lang: 'en-IN', emoji: '🎩', word: 'HAT', letters: ['H', 'A', 'T'], pool: ['A', 'H', 'E', 'T'] },
-      { lang: 'en-IN', emoji: '🐔', word: 'HEN', letters: ['H', 'E', 'N'], pool: ['N', 'H', 'I', 'E'] },
-      { lang: 'en-IN', emoji: '🦊', word: 'FOX', letters: ['F', 'O', 'X'], pool: ['X', 'F', 'U', 'O'] }
-    ];
-
-    var VYANJAN_LIST = ['क','ख','ग','घ','ङ','च','छ','ज','झ','ञ','ट','ठ','ड','ढ','ण','त','थ','द','ध','न','प','फ','ब','भ','म','य','र','ल','व','श','ष','स','ह','क्ष','त्र','ज्ञ'];
-
-    var UKG_CVC = [
-      { emoji: '🐱', word: 'CAT', pre: 'C', post: 'T', ans: 'A', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '🖊️', word: 'PEN', pre: 'P', post: 'N', ans: 'E', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '🐷', word: 'PIG', pre: 'P', post: 'G', ans: 'I', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '🐶', word: 'DOG', pre: 'D', post: 'G', ans: 'O', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '☀️', word: 'SUN', pre: 'S', post: 'N', ans: 'U', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '🐟', word: 'FISH', pre: 'F', post: 'SH', ans: 'I', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '🦆', word: 'DUCK', pre: 'D', post: 'CK', ans: 'U', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '🎂', word: 'CAKE', pre: 'C', post: 'KE', ans: 'A', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '🛏️', word: 'BED', pre: 'B', post: 'D', ans: 'E', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '☕', word: 'CUP', pre: 'C', post: 'P', ans: 'U', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '🐸', word: 'FROG', pre: 'FR', post: 'G', ans: 'O', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '⭐', word: 'STAR', pre: 'ST', post: 'R', ans: 'A', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '🚢', word: 'SHIP', pre: 'SH', post: 'P', ans: 'I', opts: ['A', 'E', 'I', 'O', 'U'] },
-      { emoji: '🌳', word: 'TREE', pre: 'TR', post: 'E', ans: 'E', opts: ['A', 'E', 'I', 'O', 'U'] }
-    ];
-
-    var UKG_MATRA = [
-      { emoji: '🚗', word: 'कार', pre: 'क', post: 'र', ans: 'ा', opts: ['ा', 'ि', 'ी', 'ु', 'े'] },
-      { emoji: '📖', word: 'किताब', pre: 'क', post: 'ताब', ans: 'ि', opts: ['ा', 'ि', 'ी', 'ो', 'ै'] },
-      { emoji: '🐟', word: 'मछली', pre: 'मछल', post: '', ans: 'ी', opts: ['ि', 'ी', 'ु', 'े', 'ौ'] },
-      { emoji: '🌹', word: 'गुलाब', pre: 'ग', post: 'लाब', ans: 'ु', opts: ['ा', 'ि', 'ु', 'ू', 'ो'] },
-      { emoji: '☀️', word: 'सूरज', pre: 'स', post: 'रज', ans: 'ू', opts: ['ु', 'ू', 'े', 'ो', 'ा'] },
-      { emoji: '🍌', word: 'केला', pre: 'क', post: 'ला', ans: 'े', opts: ['ा', 'ी', 'ु', 'े', 'ै'] },
-      { emoji: '👜', word: 'थैला', pre: 'थ', post: 'ला', ans: 'ै', opts: ['े', 'ै', 'ो', 'ौ', 'ा'] },
-      { emoji: '🦚', word: 'मोर', pre: 'म', post: 'र', ans: 'ो', opts: ['ि', 'ु', 'े', 'ो', 'ौ'] },
-      { emoji: '⛵', word: 'नौका', pre: 'न', post: 'का', ans: 'ौ', opts: ['ो', 'ौ', 'ा', 'ी', 'े'] },
-      { emoji: '🐘', word: 'हाथी', pre: 'हाथ', post: '', ans: 'ी', opts: ['ि', 'ी', 'ु', 'े', 'ो'] },
-      { emoji: '👑', word: 'राजा', pre: 'राज', post: '', ans: 'ा', opts: ['ा', 'ि', 'ी', 'ु', 'े'] },
-      { emoji: '🦜', word: 'तोता', pre: 'त', post: 'ता', ans: 'ो', opts: ['ा', 'ि', 'े', 'ो', 'ौ'] }
-    ];
-
-    var PICTURE_WORLD = {
-      Animals: [
-        { e: '🦁', en: 'Lion', hi: 'शेर' }, { e: '🐘', en: 'Elephant', hi: 'हाथी' },
-        { e: '🐯', en: 'Tiger', hi: 'बाघ' }, { e: '🐒', en: 'Monkey', hi: 'बंदर' },
-        { e: '🐄', en: 'Cow', hi: 'गाय' }, { e: '🐕', en: 'Dog', hi: 'कुत्ता' }
-      ],
-      Birds: [
-        { e: '🦚', en: 'Peacock', hi: 'मोर' }, { e: '🦜', en: 'Parrot', hi: 'तोता' },
-        { e: '🦉', en: 'Owl', hi: 'उल्लू' }, { e: '🦆', en: 'Duck', hi: 'बत्तख' },
-        { e: '🕊️', en: 'Pigeon', hi: 'कबूतर' }, { e: '🦅', en: 'Eagle', hi: 'बाज़' }
-      ],
-      Fruits: [
-        { e: '🍎', en: 'Apple', hi: 'सेब' }, { e: '🥭', en: 'Mango', hi: 'आम' },
-        { e: '🍌', en: 'Banana', hi: 'केला' }, { e: '🍇', en: 'Grapes', hi: 'अंगूर' },
-        { e: '🍊', en: 'Orange', hi: 'संतरा' }, { e: '🍉', en: 'Watermelon', hi: 'तरबूज' }
-      ],
-      Vegetables: [
-        { e: '🥔', en: 'Potato', hi: 'आलू' }, { e: '🍅', en: 'Tomato', hi: 'टमाटर' },
-        { e: '🥕', en: 'Carrot', hi: 'गाजर' }, { e: '🧅', en: 'Onion', hi: 'प्याज' },
-        { e: '🍆', en: 'Brinjal', hi: 'बैंगन' }, { e: '🌽', en: 'Corn', hi: 'मक्का' }
-      ],
-      Vehicles: [
-        { e: '🚗', en: 'Car', hi: 'कार' }, { e: '🚌', en: 'Bus', hi: 'बस' },
-        { e: '🚂', en: 'Train', hi: 'रेलगाड़ी' }, { e: '✈️', en: 'Aeroplane', hi: 'हवाई जहाज' },
-        { e: '🚲', en: 'Bicycle', hi: 'साइकिल' }, { e: '🚢', en: 'Ship', hi: 'जहाज' }
-      ],
-      BodyParts: [
-        { e: '👀', en: 'Eyes', hi: 'आंखें' }, { e: '👃', en: 'Nose', hi: 'नाक' },
-        { e: '👂', en: 'Ears', hi: 'कान' }, { e: '👄', en: 'Lips', hi: 'होंठ' },
-        { e: '✋', en: 'Hand', hi: 'हाथ' }, { e: '🦶', en: 'Foot', hi: 'पैर' }
-      ]
-    };
-
-    var SHADOW_DATA = [
-      { target: '🐘', name: 'Elephant', opts: ['🦁', '🐘', '🦒'] },
-      { target: '🍎', name: 'Apple', opts: ['🍌', '🍇', '🍎'] },
-      { target: '✈️', name: 'Aeroplane', opts: ['✈️', '🚗', '🚢'] },
-      { target: '🦚', name: 'Peacock', opts: ['🦉', '🦆', '🦚'] },
-      { target: '🚗', name: 'Car', opts: ['🚌', '🚗', '🚲'] },
-      { target: '🐢', name: 'Turtle', opts: ['🐸', '🐢', '🦀'] },
-      { target: '☂️', name: 'Umbrella', opts: ['☂️', '🪁', '🎈'] },
-      { target: '🍌', name: 'Banana', opts: ['🍎', '🥭', '🍌'] }
-    ];
-
-    var ODD_DATA = [
-      { items: ['🍎', '🍌', '🥭', '🚗'], ans: '🚗', hint: 'Car is a Vehicle!' },
-      { items: ['🦁', '🐯', '🐘', '🦜'], ans: '🦜', hint: 'Parrot is a Bird!' },
-      { items: ['अ', 'आ', 'इ', 'क'], ans: 'क', hint: 'क व्यंजन है!' },
-      { items: ['2', '4', '6', 'A'], ans: 'A', hint: 'A is a Letter!' },
-      { items: ['🥔', '🍅', '🥕', '⚽'], ans: '⚽', hint: 'Ball is a Toy!' },
-      { items: ['🚗', '🚌', '🚂', '🐶'], ans: '🐶', hint: 'Dog is an Animal!' },
-      { items: ['👀', '👃', '👂', '🍌'], ans: '🍌', hint: 'Banana is a Fruit!' }
-    ];
-
-    // --- APP STATE ---
-    var state = {
-      screen: 'home',
-      tab: 0,
-      nurseryLang: 'eng',
-      stars: 0,
-      qIdx: 0,
-      feedback: null,
-      builtLetters: [],
-      dragFilled: false,
-      picCat: 'Animals',
-      picQuizMode: false,
-      picTarget: null,
-      countNum: 6,
-      mathPair: { a: 4, b: 2, op: '+' },
-      memCards: [],
-      memFlipped: [],
-      memMatched: []
-    };
-
-    function initMemoryGame() {
-      var icons = ['🍎', '🚗', '🐘', '🦚', '⭐', '🦁'];
-      var deck = icons.concat(icons).sort(function() { return Math.random() - 0.5; });
-      state.memCards = deck;
-      state.memFlipped = [];
-      state.memMatched = [];
-    }
-
-    function addStar() {
-      state.stars += 1;
-      state.feedback = 'ok';
-      playTone('success');
-      render();
-      setTimeout(function() {
-        state.feedback = null;
-        state.qIdx += 1;
-        state.builtLetters = [];
-        state.dragFilled = false;
-        state.countNum = Math.floor(Math.random() * 14) + 2;
-        var a = Math.floor(Math.random() * 5) + 1;
-        var b = Math.floor(Math.random() * 4) + 1;
-        state.mathPair = { a: Math.max(a, b) + 1, b: b, op: Math.random() > 0.4 ? '+' : '-' };
-        render();
-      }, 1150);
-    }
-
-    function wrongAns() {
-      state.feedback = 'no';
-      playTone('wrong');
-      speak('Try again', 'en-IN');
-      render();
-      setTimeout(function() { state.feedback = null; render(); }, 650);
-    }
-
-    function go(screen, tab) {
-      tab = tab || 0;
-      playTone('pop');
-      lastAutoSpokenKey = '';
-      state.screen = screen;
-      state.tab = tab;
-      state.qIdx = 0;
-      state.feedback = null;
-      state.builtLetters = [];
-      state.dragFilled = false;
-      state.picQuizMode = false;
-      if (screen === 'brain' && tab === 2) initMemoryGame();
-      render();
-    }
-
-    function headerHTML(title, colorClass) {
-      return '<div class="sticky top-0 z-20 px-4 py-3 flex items-center justify-between bg-[#FFFDF7]/95 backdrop-blur border-b border-amber-100">' +
-        '<button onclick="go(\'home\')" class="btn-3d bg-white border-2 border-b-4 border-slate-200 px-3 py-1.5 rounded-2xl font-bold text-slate-700 text-sm">🏠 Home</button>' +
-        '<div class="font-bold text-base ' + colorClass + '">' + title + '</div>' +
-        '<div class="bg-amber-100 border-2 border-amber-300 px-3 py-1 rounded-2xl font-bold text-amber-800 text-sm flex items-center gap-1">⭐ <span>' + state.stars + '</span></div>' +
-      '</div>';
-    }
-
-    function renderHome() {
-      return '<div class="p-5 flex-1 flex flex-col justify-between">' +
-        '<div>' +
-          '<div class="bg-white rounded-3xl p-4 shadow-sm border-2 border-amber-200 flex items-center gap-3.5 mb-5">' +
-            '<img src="logo.jpeg" onerror="this.style.display=\'none\'" alt="Logo" class="w-16 h-16 object-contain rounded-2xl border border-amber-100 bg-white p-1" />' +
-            '<div>' +
-              '<div class="text-xs font-bold uppercase tracking-wider text-orange-600">The Abacus Academy, Jodhpur</div>' +
-              '<h1 class="text-2xl font-extrabold text-slate-800 leading-tight">Abacus Kids</h1>' +
-              '<p class="text-xs text-slate-500 font-medium">Smart Audio-Visual Learning App</p>' +
-            '</div>' +
-            '<div class="ml-auto bg-amber-100 border border-amber-300 px-3 py-1.5 rounded-2xl text-center">' +
-              '<div class="text-lg leading-none">⭐</div>' +
-              '<div class="text-xs font-extrabold text-amber-800">' + state.stars + '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="text-sm font-bold text-slate-600 mb-3 px-1">अपनी क्लास चुनें (Select Your Class):</div>' +
-          '<div class="space-y-3.5">' +
-            '<button onclick="go(\'nursery\'); speak(\'Welcome to Nursery Class\')" class="btn-3d w-full text-left bg-[#E1F5FE] border-2 border-b-4 border-[#0288D1] rounded-3xl p-4 flex items-center justify-between">' +
-              '<div>' +
-                '<span class="inline-block bg-[#0288D1] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full mb-1">Age 3–4 Years</span>' +
-                '<h2 class="text-2xl font-extrabold text-[#01579B]">Nursery Class</h2>' +
-                '<p class="text-xs font-semibold text-[#0277BD] mt-0.5">Full A–Z • अ–अः • Counting 1–50 • Shapes</p>' +
-              '</div>' +
-              '<div class="text-5xl anim-float">🧸</div>' +
-            '</button>' +
-            '<button onclick="go(\'lkg\'); speak(\'Welcome to L K G Class\')" class="btn-3d w-full text-left bg-[#F1F8E9] border-2 border-b-4 border-[#689F38] rounded-3xl p-4 flex items-center justify-between">' +
-              '<div>' +
-                '<span class="inline-block bg-[#689F38] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full mb-1">Age 4–5 Years</span>' +
-                '<h2 class="text-2xl font-extrabold text-[#33691E]">LKG Class</h2>' +
-                '<p class="text-xs font-semibold text-[#558B2F] mt-0.5">क–ज्ञ • शब्द निर्माण • 1–100 & Names • More/Less</p>' +
-              '</div>' +
-              '<div class="text-5xl anim-float">🚂</div>' +
-            '</button>' +
-            '<button onclick="go(\'ukg\'); speak(\'Welcome to U K G Class\')" class="btn-3d w-full text-left bg-[#FFF8E1] border-2 border-b-4 border-[#F57C00] rounded-3xl p-4 flex items-center justify-between">' +
-              '<div>' +
-                '<span class="inline-block bg-[#F57C00] text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full mb-1">Age 5–6 Years</span>' +
-                '<h2 class="text-2xl font-extrabold text-[#E65100]">UKG Class</h2>' +
-                '<p class="text-xs font-semibold text-[#EF6C00] mt-0.5">CVC Words • सभी मात्राएं • 1–100 Names • +/-</p>' +
-              '</div>' +
-              '<div class="text-5xl anim-float">🚀</div>' +
-            '</button>' +
-          '</div>' +
-          '<div class="grid grid-cols-2 gap-3 mt-4">' +
-            '<button onclick="go(\'pictures\'); speak(\'Picture World\')" class="btn-3d bg-[#F3E5F5] border-2 border-b-4 border-[#8E24AA] rounded-3xl p-3.5 text-center">' +
-              '<div class="text-3xl mb-1">🦁</div>' +
-              '<div class="font-extrabold text-[#4A148C] text-sm">Picture World</div>' +
-              '<div class="text-[11px] text-[#6A1B9A]">6 Categories • 36 Pics</div>' +
-            '</button>' +
-            '<button onclick="go(\'brain\'); speak(\'Brain Booster Games\')" class="btn-3d bg-[#FCE4EC] border-2 border-b-4 border-[#D81B60] rounded-3xl p-3.5 text-center">' +
-              '<div class="text-3xl mb-1">🧠</div>' +
-              '<div class="font-extrabold text-[#880E4F] text-sm">Brain Booster</div>' +
-              '<div class="text-[11px] text-[#AD1457]">Shadow • Odd • Memory</div>' +
-            '</button>' +
-          '</div>' +
-        '</div>' +
-        '<div class="text-center text-[11px] text-slate-400 mt-5 font-medium">Eye-Safe Pastel Learning • The Abacus Academy, Jodhpur</div>' +
-      '</div>';
-    }
-
-    function tabsHTML(tabs, activeColor) {
-      return '<div class="flex gap-2 overflow-x-auto px-4 py-2.5 bg-white/70 border-b border-slate-100">' +
-        tabs.map(function(t, i) {
-          var cls = state.tab === i ? activeColor + ' text-white border-transparent shadow-sm' : 'bg-white text-slate-600 border-slate-200';
-          return '<button onclick="lastAutoSpokenKey=\'\'; state.tab=' + i + '; state.qIdx=0; state.builtLetters=[]; state.dragFilled=false; if(state.screen===\'brain\'&&' + i + '===2) initMemoryGame(); playTone(\'pop\'); render();" class="px-3.5 py-1.5 rounded-2xl text-xs font-bold whitespace-nowrap border-2 transition ' + cls + '">' + t + '</button>';
-        }).join('') +
-      '</div>';
-    }
-
-    function renderNursery() {
-      var tabs = ['🔤 A–Z / अ–अः', '🔊 Sound & Pic', '↔️ Before/After', '🔢 Count 1–50', '🎨 Shapes'];
-      var body = '';
-
-      if (state.tab === 0) {
-        var list = state.nurseryLang === 'eng' ? NURSERY_ENG_AZ : NURSERY_HIN_SWAR;
-        var item = list[state.qIdx % list.length];
-        var lang = item.lang || 'en-IN';
-        autoSpeak('nur0-' + state.nurseryLang + '-' + state.qIdx, item.speak, lang);
-
-        body = '<div class="text-center anim-pop">' +
-          '<div class="flex justify-center gap-2 mb-3">' +
-            '<button onclick="lastAutoSpokenKey=\'\'; state.nurseryLang=\'eng\'; state.qIdx=0; render();" class="px-3.5 py-1 rounded-xl text-xs font-bold ' + (state.nurseryLang === 'eng' ? 'bg-sky-600 text-white' : 'bg-sky-100 text-sky-800') + '">A to Z (26)</button>' +
-            '<button onclick="lastAutoSpokenKey=\'\'; state.nurseryLang=\'hin\'; state.qIdx=0; render();" class="px-3.5 py-1 rounded-xl text-xs font-bold ' + (state.nurseryLang === 'hin' ? 'bg-sky-600 text-white' : 'bg-sky-100 text-sky-800') + '">अ से अः (12)</button>' +
-          '</div>' +
-          '<div onclick="speak(\'' + item.speak + '\', \'' + lang + '\')" class="mx-auto w-44 h-44 bg-white rounded-3xl border-4 border-sky-200 shadow-sm flex flex-col items-center justify-center cursor-pointer mb-3">' +
-            '<div class="text-7xl">' + item.emoji + '</div>' +
-            '<div class="text-sm font-extrabold text-sky-700 mt-2">🔊 ' + item.prompt + '</div>' +
-          '</div>' +
-          '<div class="text-xs font-bold text-slate-500 mb-3">सही अक्षर पर टैप करें (' + ((state.qIdx % list.length) + 1) + '/' + list.length + ')</div>' +
-          '<div class="grid grid-cols-3 gap-3 max-w-xs mx-auto">' +
-            item.opts.map(function(o) {
-              var act = o === item.ans ? 'speak(\'' + item.speak + '\', \'' + lang + '\'); addStar()' : 'wrongAns()';
-              return '<button onclick="' + act + '" class="btn-3d bg-white border-2 border-b-4 border-sky-400 rounded-3xl py-5 text-4xl font-extrabold text-slate-800">' + o + '</button>';
-            }).join('') +
-          '</div>' +
-        '</div>';
-      } else if (state.tab === 1) {
-        var item = NURSERY_SOUND_PIC[state.qIdx % NURSERY_SOUND_PIC.length];
-        var lang = item.lang || 'en-IN';
-        autoSpeak('nur1-' + state.qIdx, item.speak, lang);
-
-        body = '<div class="text-center anim-pop">' +
-          '<button onclick="speak(\'' + item.speak + '\', \'' + lang + '\')" class="btn-3d bg-sky-500 border-b-4 border-sky-700 text-white px-5 py-3 rounded-2xl font-bold text-base mb-5 inline-flex items
+    var BAB_LIST = [
+      { kind: "After", sp: "What comes after A, B?", lg: "en-IN", seq: ["A", "B", "?"], ans: "C", opts: ["C", "D", "E"] },
+      { kind: "Before", sp: "What comes before E, F?", lg: "en-IN", seq: ["?", "E", "F"], ans: "D", opts: ["C", "D", "G"] },
+      { kind: "Between", sp: "What comes between G and I?", lg: "en-IN", seq: ["G", "?", "I"], ans: "H", opts: ["H", "J", "K"] },
+      { kind: "बाद में (After)", sp: "अ, आ के बाद क्या आता है?", lg: "hi
