@@ -1195,6 +1195,240 @@
       0% { transform: scale(0.9); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
+    /* =========================================================
+       NURSERY ABC WORKBOOK & MATCHING BOARD STYLES
+       ========================================================= */
+    .matching-board-container {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      margin: 10px auto;
+      padding: 10px 4px;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+      box-sizing: border-box;
+    }
+    .matching-cols-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      position: relative;
+      z-index: 5;
+      gap: 30px;
+    }
+    .matching-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 48%;
+      box-sizing: border-box;
+    }
+    .matching-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      cursor: pointer;
+      touch-action: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+      user-select: none;
+      -webkit-user-select: none;
+      box-sizing: border-box;
+      min-height: 58px;
+    }
+    .matching-card:active {
+      transform: scale(0.96);
+    }
+    .matching-card.matching-left {
+      background: #E3F2FD;
+      border: 2px solid #90CAF9;
+      justify-content: space-between;
+    }
+    .matching-card.matching-right {
+      background: #FFF3E0;
+      border: 2px solid #FFCC80;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+    .matching-card.selected-matching-card {
+      border-color: #FF9800 !important;
+      box-shadow: 0 0 0 3px rgba(255,152,0,0.35), 0 4px 12px rgba(0,0,0,0.12) !important;
+      transform: scale(1.03);
+    }
+    .matching-card.matched-matching-card {
+      border-color: #4CAF50 !important;
+      background: #E8F5E9 !important;
+      box-shadow: 0 2px 6px rgba(76,175,80,0.2) !important;
+    }
+    .matching-card.shake-wrong {
+      animation: shakeCard 0.4s ease-in-out;
+      border-color: #F44336 !important;
+      background: #FFEBEE !important;
+    }
+    @keyframes shakeCard {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .matching-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      flex-shrink: 0;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .matching-left .matching-dot {
+      background: #1976D2;
+      margin-left: 6px;
+    }
+    .matching-right .matching-dot {
+      background: #E65100;
+      margin-right: 6px;
+    }
+    .matched-matching-card .matching-dot {
+      background: #4CAF50 !important;
+      transform: scale(1.15);
+    }
+    .matching-label {
+      font-size: 26px;
+      font-weight: 900;
+      color: #0D47A1;
+      line-height: 1;
+    }
+    .matching-right .matching-label {
+      font-size: 16px;
+      font-weight: 800;
+      color: #E65100;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .matching-svg-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+    /* Missing Letters Boxes */
+    .missing-seq-track {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin: 14px auto;
+      max-width: 360px;
+    }
+    .seq-box {
+      width: 44px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      font-size: 24px;
+      font-weight: 900;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+      transition: all 0.2s ease;
+    }
+    .seq-box.solid {
+      background: #E3F2FD;
+      border: 2px solid #90CAF9;
+      color: #1565C0;
+    }
+    .seq-box.blank {
+      background: #FFF;
+      border: 2px dashed #FF9800;
+      color: #FF9800;
+      animation: pulseBorder 1.5s infinite;
+    }
+    .seq-box.filled {
+      background: #E8F5E9;
+      border: 2px solid #4CAF50;
+      color: #2E7D32;
+      animation: popIn 0.3s ease-out;
+    }
+    @keyframes pulseBorder {
+      0%, 100% { border-color: #FF9800; }
+      50% { border-color: #F57C00; box-shadow: 0 0 8px rgba(255,152,0,0.4); }
+    }
+    /* Write A-Z Order Boxes */
+    .order-box-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      margin: 12px auto;
+      max-width: 360px;
+    }
+    .order-slot {
+      height: 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      border: 1.5px solid #CFD8DC;
+      background: #ECEFF1;
+      color: #78909C;
+      transition: all 0.2s ease;
+    }
+    .order-slot.target {
+      border-color: #FF9800;
+      background: #FFF8E1;
+      color: #E65100;
+      font-weight: 900;
+      box-shadow: 0 0 8px rgba(255,152,0,0.5);
+      animation: pulseBorder 1.2s infinite;
+    }
+    .order-slot.placed {
+      border-color: #4CAF50;
+      background: #E8F5E9;
+      color: #2E7D32;
+      font-weight: 900;
+      font-size: 18px;
+    }
+    .order-tiles-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      margin: 14px auto;
+      max-width: 360px;
+    }
+    .order-tile-btn {
+      height: 48px;
+      border-radius: 10px;
+      background: #E1F5FE;
+      border: 2px solid #81D4FA;
+      color: #0277BD;
+      font-size: 22px;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+      touch-action: manipulation;
+      transition: transform 0.1s ease, background 0.15s ease;
+    }
+    .order-tile-btn:active {
+      transform: scale(0.92);
+    }
+    .order-tile-btn.placed {
+      opacity: 0.2;
+      pointer-events: none;
+      background: #ECEFF1;
+      border-color: #CFD8DC;
+      color: #9E9E9E;
+    }
   </style>
 </head>
 <body>
@@ -2270,6 +2504,13 @@
       // Curriculum Sub-tabs
       nurseryNumSubTab: "count", // count, shapes, before_after
       nurseryHindiSubTab: "swar", // swar, vyanjan
+      nurseryAbcSubTab: "match_picture", // match_picture, match_same, match_small, missing_letters, choose_letter, order_az
+      nurseryAbcMatchSetIndex: 0,
+      nurseryAbcMissingRound: 0,
+      nurseryAbcMissingFilled: [],
+      nurseryAbcOrderCurrentIdx: 0,
+      nurseryAbcOrderPlaced: [],
+      nurseryAbcOrderRound: 0,
       lkgHindiSubTab: "vyanjan", // vyanjan, swar
       matraBuilderIndex: 0,
       matraBuilderSlots: [],
@@ -6126,7 +6367,400 @@
       }
     }
 
-    function setNurseryNumSubTab(st) {
+    
+    /* =========================================================
+       NURSERY ABC WORKBOOK LINE-DRAWING ENGINE & HANDLERS
+       ========================================================= */
+    var lineDrawingState = {
+      isDrawing: false,
+      startDot: null,
+      currentPos: { x: 0, y: 0 },
+      matchedPairs: [],
+      wrongLine: null,
+      selectedDot: null
+    };
+
+    var MISSING_ABC_ROUNDS = [
+      { letters: ["A","B","C","D","E","F","G","H"], missing: ["B","E","H"] },
+      { letters: ["I","J","K","L","M","N","O","P"], missing: ["J","M","P"] },
+      { letters: ["Q","R","S","T","U","V","W","X"], missing: ["R","U","W"] },
+      { letters: ["S","T","U","V","W","X","Y","Z"], missing: ["T","V","Y"] },
+      { letters: ["A","B","C","D","E","F","G","H","I","J"], missing: ["C","F","I"] },
+      { letters: ["K","L","M","N","O","P","Q","R","S","T"], missing: ["L","O","R"] }
+    ];
+
+    function setNurseryAbcSubTab(st) {
+      appState.nurseryAbcSubTab = st;
+      appState.quizIndex = 0;
+      resetQuizQuestionState();
+      lineDrawingState.matchedPairs = [];
+      lineDrawingState.selectedDot = null;
+      lineDrawingState.wrongLine = null;
+      lineDrawingState.isDrawing = false;
+      renderCurrentView();
+      scrollActiveFilterPill();
+    }
+
+    function advanceNurseryAbcMatchSet() {
+      appState.nurseryAbcMatchSetIndex++;
+      lineDrawingState.matchedPairs = [];
+      lineDrawingState.selectedDot = null;
+      lineDrawingState.wrongLine = null;
+      lineDrawingState.isDrawing = false;
+      renderCurrentView();
+    }
+
+    function advanceNurseryAbcMissingRound() {
+      appState.nurseryAbcMissingRound++;
+      appState.nurseryAbcMissingFilled = [];
+      renderCurrentView();
+    }
+
+    function resetNurseryOrderGame() {
+      appState.nurseryAbcOrderCurrentIdx = 0;
+      appState.nurseryAbcOrderPlaced = [];
+      appState.nurseryAbcOrderRound = (appState.nurseryAbcOrderRound || 0) + 1;
+      renderCurrentView();
+    }
+
+    function tapNurseryMissingLetter(tappedLetter) {
+      var curRound = MISSING_ABC_ROUNDS[appState.nurseryAbcMissingRound % MISSING_ABC_ROUNDS.length];
+      if (!appState.nurseryAbcMissingFilled) appState.nurseryAbcMissingFilled = [];
+
+      var nextNeeded = null;
+      for (var i = 0; i < curRound.missing.length; i++) {
+        if (appState.nurseryAbcMissingFilled.indexOf(curRound.missing[i]) === -1) {
+          nextNeeded = curRound.missing[i];
+          break;
+        }
+      }
+      if (!nextNeeded) return;
+
+      if (tappedLetter === nextNeeded) {
+        appState.nurseryAbcMissingFilled.push(tappedLetter);
+        playTone("success");
+        speak(tappedLetter + "! Good job!", "en-IN");
+        if (appState.nurseryAbcMissingFilled.length === curRound.missing.length) {
+          triggerConfetti();
+          addStar("🎉 Missing Letters Done!", "Superb! All missing letters filled correctly!", "en-IN");
+        }
+        renderCurrentView();
+      } else {
+        playTone("wrong");
+        markWrong("Try again! Look for letter " + nextNeeded, "en-IN");
+      }
+    }
+
+    function tapNurseryOrderTile(letter) {
+      if (typeof appState.nurseryAbcOrderCurrentIdx !== "number") {
+        appState.nurseryAbcOrderCurrentIdx = 0;
+      }
+      if (!appState.nurseryAbcOrderPlaced) {
+        appState.nurseryAbcOrderPlaced = [];
+      }
+      if (appState.nurseryAbcOrderCurrentIdx >= DATA_AZ.length) return;
+
+      var targetItem = DATA_AZ[appState.nurseryAbcOrderCurrentIdx];
+      var targetLetter = targetItem.letter;
+
+      if (letter === targetLetter) {
+        appState.nurseryAbcOrderPlaced.push(letter);
+        appState.nurseryAbcOrderCurrentIdx++;
+        playTone("success");
+        speak(letter + "! " + targetItem.word + "!", "en-IN");
+
+        if (appState.nurseryAbcOrderCurrentIdx === DATA_AZ.length) {
+          triggerConfetti();
+          addStar("🏆 A–Z Master!", "Hooray! You completed all 26 letters from A to Z in correct order! Awesome!", "en-IN");
+        }
+        renderCurrentView();
+      } else {
+        playTone("wrong");
+        markWrong("Find letter " + targetLetter, "en-IN");
+      }
+    }
+
+    function updateMatchingSvgLines() {
+      var svg = document.getElementById("matching-svg");
+      var board = document.getElementById("matching-board");
+      if (!svg || !board) return;
+      var bRect = board.getBoundingClientRect();
+      var linesHtml = "";
+
+      for (var i = 0; i < lineDrawingState.matchedPairs.length; i++) {
+        var pair = lineDrawingState.matchedPairs[i];
+        var leftDot = board.querySelector('.matching-dot[data-id="' + pair.leftId + '"]');
+        var rightDot = board.querySelector('.matching-dot[data-id="' + pair.rightId + '"]');
+        if (leftDot && rightDot) {
+          var lRect = leftDot.getBoundingClientRect();
+          var rRect = rightDot.getBoundingClientRect();
+          var x1 = lRect.left + lRect.width / 2 - bRect.left;
+          var y1 = lRect.top + lRect.height / 2 - bRect.top;
+          var x2 = rRect.left + rRect.width / 2 - bRect.left;
+          var y2 = rRect.top + rRect.height / 2 - bRect.top;
+          linesHtml += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="#4CAF50" stroke-width="6" stroke-linecap="round" />';
+          linesHtml += '<circle cx="' + x1 + '" cy="' + y1 + '" r="6" fill="#4CAF50" />';
+          linesHtml += '<circle cx="' + x2 + '" cy="' + y2 + '" r="6" fill="#4CAF50" />';
+        }
+      }
+
+      if (lineDrawingState.isDrawing && lineDrawingState.startDot) {
+        var sx = lineDrawingState.startDot.x;
+        var sy = lineDrawingState.startDot.y;
+        var cx = lineDrawingState.currentPos.x;
+        var cy = lineDrawingState.currentPos.y;
+        linesHtml += '<line x1="' + sx + '" y1="' + sy + '" x2="' + cx + '" y2="' + cy + '" stroke="#2196F3" stroke-width="5" stroke-linecap="round" stroke-dasharray="8,6" />';
+        linesHtml += '<circle cx="' + sx + '" cy="' + sy + '" r="7" fill="#2196F3" />';
+        linesHtml += '<circle cx="' + cx + '" cy="' + cy + '" r="5" fill="#FF9800" />';
+      }
+
+      if (lineDrawingState.wrongLine) {
+        var wl = lineDrawingState.wrongLine;
+        linesHtml += '<line x1="' + wl.x1 + '" y1="' + wl.y1 + '" x2="' + wl.x2 + '" y2="' + wl.y2 + '" stroke="#F44336" stroke-width="5" stroke-linecap="round" />';
+      }
+
+      svg.innerHTML = linesHtml;
+    }
+
+    function initMatchingSvgAfterRender() {
+      setTimeout(function() {
+        updateMatchingSvgLines();
+        updateMatchedCardStyles();
+      }, 35);
+    }
+
+    function handleMatchPointerDown(e, side, id, val, word) {
+      if (e.button && e.button !== 0) return;
+      var board = document.getElementById("matching-board");
+      if (!board) return;
+
+      for (var i = 0; i < lineDrawingState.matchedPairs.length; i++) {
+        var mp = lineDrawingState.matchedPairs[i];
+        if (side === "left" && mp.leftId === id) return;
+        if (side === "right" && mp.rightId === id) return;
+      }
+
+      var bRect = board.getBoundingClientRect();
+      var card = e.currentTarget;
+      var dot = card.querySelector(".matching-dot");
+      var dRect = (dot || card).getBoundingClientRect();
+      var sx = dRect.left + dRect.width / 2 - bRect.left;
+      var sy = dRect.top + dRect.height / 2 - bRect.top;
+
+      lineDrawingState.isDrawing = true;
+      lineDrawingState.startDot = {
+        side: side,
+        id: id,
+        val: val,
+        word: word,
+        x: sx,
+        y: sy,
+        startX: e.clientX,
+        startY: e.clientY
+      };
+      lineDrawingState.currentPos = { x: sx, y: sy };
+
+      try {
+        if (card.setPointerCapture && e.pointerId !== undefined) {
+          card.setPointerCapture(e.pointerId);
+        }
+      } catch (err) {}
+
+      updateMatchingSvgLines();
+    }
+
+    function handleMatchPointerMove(e) {
+      if (!lineDrawingState.isDrawing || !lineDrawingState.startDot) return;
+      var board = document.getElementById("matching-board");
+      if (!board) return;
+      var bRect = board.getBoundingClientRect();
+      lineDrawingState.currentPos = {
+        x: e.clientX - bRect.left,
+        y: e.clientY - bRect.top
+      };
+      updateMatchingSvgLines();
+    }
+
+    function handleMatchPointerUp(e) {
+      if (!lineDrawingState.isDrawing || !lineDrawingState.startDot) return;
+      var start = lineDrawingState.startDot;
+      lineDrawingState.isDrawing = false;
+
+      try {
+        if (e.currentTarget && e.currentTarget.releasePointerCapture && e.pointerId !== undefined) {
+          e.currentTarget.releasePointerCapture(e.pointerId);
+        }
+      } catch (err) {}
+
+      var targetElem = document.elementFromPoint(e.clientX, e.clientY);
+      var targetCard = targetElem ? targetElem.closest(".matching-card") : null;
+
+      if (targetCard) {
+        var targetSide = targetCard.getAttribute("data-side");
+        var targetId = targetCard.getAttribute("data-id");
+        var targetVal = targetCard.getAttribute("data-val");
+        var targetWord = targetCard.getAttribute("data-word");
+
+        if (targetSide && targetSide !== start.side) {
+          evaluateMatchingPair(start, {
+            side: targetSide,
+            id: targetId,
+            val: targetVal,
+            word: targetWord
+          });
+          updateMatchingSvgLines();
+          return;
+        }
+      }
+
+      var dist = Math.hypot(e.clientX - start.startX, e.clientY - start.startY);
+      if (dist < 12) {
+        handleMatchCardTap(start.side, start.id, start.val, start.word);
+      } else {
+        updateMatchingSvgLines();
+      }
+    }
+
+    function handleMatchCardTap(side, id, val, word) {
+      for (var i = 0; i < lineDrawingState.matchedPairs.length; i++) {
+        var mp = lineDrawingState.matchedPairs[i];
+        if (side === "left" && mp.leftId === id) return;
+        if (side === "right" && mp.rightId === id) return;
+      }
+
+      if (!lineDrawingState.selectedDot) {
+        lineDrawingState.selectedDot = { side: side, id: id, val: val, word: word };
+        highlightSelectedCard(side, id);
+        if (appState.nurseryAbcSubTab === "match_picture") {
+          speak(side === "left" ? "Letter " + val : (word || val), "en-IN");
+        } else if (appState.nurseryAbcSubTab === "match_small") {
+          speak(side === "left" ? "Capital " + val : "Small " + val.toLowerCase(), "en-IN");
+        } else {
+          speak("Letter " + val, "en-IN");
+        }
+        return;
+      }
+
+      if (lineDrawingState.selectedDot.side === side) {
+        lineDrawingState.selectedDot = { side: side, id: id, val: val, word: word };
+        highlightSelectedCard(side, id);
+        if (appState.nurseryAbcSubTab === "match_picture") {
+          speak(side === "left" ? "Letter " + val : (word || val), "en-IN");
+        } else if (appState.nurseryAbcSubTab === "match_small") {
+          speak(side === "left" ? "Capital " + val : "Small " + val.toLowerCase(), "en-IN");
+        } else {
+          speak("Letter " + val, "en-IN");
+        }
+        return;
+      }
+
+      var firstDot = lineDrawingState.selectedDot;
+      lineDrawingState.selectedDot = null;
+      clearCardHighlights();
+      evaluateMatchingPair(firstDot, { side: side, id: id, val: val, word: word });
+      updateMatchingSvgLines();
+    }
+
+    function evaluateMatchingPair(dot1, dot2) {
+      var leftDot = dot1.side === "left" ? dot1 : dot2;
+      var rightDot = dot1.side === "right" ? dot1 : dot2;
+
+      for (var i = 0; i < lineDrawingState.matchedPairs.length; i++) {
+        var mp = lineDrawingState.matchedPairs[i];
+        if (mp.leftId === leftDot.id || mp.rightId === rightDot.id) return;
+      }
+
+      if (leftDot.val === rightDot.val) {
+        lineDrawingState.matchedPairs.push({
+          leftId: leftDot.id,
+          rightId: rightDot.id,
+          val: leftDot.val
+        });
+        playTone("success");
+
+        var speechText = "";
+        if (appState.nurseryAbcSubTab === "match_picture") {
+          speechText = leftDot.val + " for " + (rightDot.word || leftDot.word || "") + "! Great job!";
+        } else if (appState.nurseryAbcSubTab === "match_small") {
+          speechText = "Capital " + leftDot.val + ", Small " + leftDot.val.toLowerCase() + "!";
+        } else {
+          speechText = "Letter " + leftDot.val + " matches Letter " + leftDot.val + "! Awesome!";
+        }
+        speak(speechText, "en-IN");
+
+        updateMatchingSvgLines();
+        updateMatchedCardStyles();
+
+        if (lineDrawingState.matchedPairs.length >= 4) {
+          triggerConfetti();
+          addStar("🎉 All 4 Matched!", "Awesome! All 4 letters matched correctly!", "en-IN");
+          renderCurrentView();
+        }
+      } else {
+        playTone("wrong");
+        triggerWrongLine(leftDot, rightDot);
+        speak("Try again!", "en-IN");
+      }
+    }
+
+    function triggerWrongLine(dot1, dot2) {
+      var board = document.getElementById("matching-board");
+      if (!board) return;
+      var bRect = board.getBoundingClientRect();
+      var lElem = board.querySelector('.matching-dot[data-id="' + dot1.id + '"]');
+      var rElem = board.querySelector('.matching-dot[data-id="' + dot2.id + '"]');
+      if (lElem && rElem) {
+        var lRect = lElem.getBoundingClientRect();
+        var rRect = rElem.getBoundingClientRect();
+        lineDrawingState.wrongLine = {
+          x1: lRect.left + lRect.width / 2 - bRect.left,
+          y1: lRect.top + lRect.height / 2 - bRect.top,
+          x2: rRect.left + rRect.width / 2 - bRect.left,
+          y2: rRect.top + rRect.height / 2 - bRect.top
+        };
+        updateMatchingSvgLines();
+        var card1 = board.querySelector('.matching-card[data-id="' + dot1.id + '"]');
+        var card2 = board.querySelector('.matching-card[data-id="' + dot2.id + '"]');
+        if (card1) card1.classList.add("shake-wrong");
+        if (card2) card2.classList.add("shake-wrong");
+        setTimeout(function() {
+          lineDrawingState.wrongLine = null;
+          if (card1) card1.classList.remove("shake-wrong");
+          if (card2) card2.classList.remove("shake-wrong");
+          updateMatchingSvgLines();
+        }, 450);
+      }
+    }
+
+    function highlightSelectedCard(side, id) {
+      clearCardHighlights();
+      var card = document.querySelector('.matching-card[data-id="' + id + '"]');
+      if (card) card.classList.add("selected-matching-card");
+    }
+
+    function clearCardHighlights() {
+      var cards = document.querySelectorAll(".matching-card.selected-matching-card");
+      for (var i = 0; i < cards.length; i++) {
+        cards[i].classList.remove("selected-matching-card");
+      }
+    }
+
+    function updateMatchedCardStyles() {
+      for (var i = 0; i < lineDrawingState.matchedPairs.length; i++) {
+        var mp = lineDrawingState.matchedPairs[i];
+        var lc = document.querySelector('.matching-card[data-id="' + mp.leftId + '"]');
+        var rc = document.querySelector('.matching-card[data-id="' + mp.rightId + '"]');
+        if (lc) lc.classList.add("matched-matching-card");
+        if (rc) rc.classList.add("matched-matching-card");
+      }
+    }
+
+    window.addEventListener("resize", function() {
+      if (appState.section === "nursery" && appState.tabKey === "abc") {
+        updateMatchingSvgLines();
+      }
+    });
+function setNurseryNumSubTab(st) {
       appState.nurseryNumSubTab = st;
       appState.quizIndex = 0;
       resetQuizQuestionState();
@@ -6461,99 +7095,274 @@
         }
       }
 
-      // TAB 2: 🔤 ABC & Letters
+      // TAB 2: 🔤 ABC & Letters (6 Interactive Workbook Sub-tabs)
       else if (tabKey === "abc") {
-        if (filterBar) filterBar.style.display = "none";
+        if (!appState.nurseryAbcSubTab) appState.nurseryAbcSubTab = "match_picture";
 
-        html += '<div class="mode-switch">';
-        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn A–Z</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz_pic_to_let" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_pic_to_let\'); })">🎯 Picture to Letter</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz_let_to_pic" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_let_to_pic\'); })">🎯 Letter to Picture</button>';
-        html += '</div>';
+        if (filterBar) {
+          filterBar.style.display = "flex";
+          var nAbcPills = [
+            { key: "match_picture", label: "✏️ Match with Picture" },
+            { key: "match_same", label: "🔗 Match Same Letter" },
+            { key: "match_small", label: "🔠 Capital to Small" },
+            { key: "missing_letters", label: "🧩 Missing Letters" },
+            { key: "choose_letter", label: "🎯 Choose Letter" },
+            { key: "order_az", label: "🔢 Write A–Z Order" }
+          ];
+          var nahHtml = "";
+          for (var nai = 0; nai < nAbcPills.length; nai++) {
+            var nap = nAbcPills[nai];
+            var napCls = "filter-pill" + (appState.nurseryAbcSubTab === nap.key ? " active" : "");
+            nahHtml += '<button class="' + napCls + '" onclick="event.stopPropagation(); setNurseryAbcSubTab(\'' + nap.key + '\');">' + nap.label + '</button>';
+          }
+          filterBar.innerHTML = nahHtml;
+        }
 
-        if (appState.mode === "learn") {
-          autoSpeak("nursery_learn_abc", "English Alphabet A to Z. Tap any letter or picture to hear sound!", "en-IN");
-          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'English Alphabet A to Z. Tap any letter or picture to hear sound!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap card or picture to hear sound 🔊</div>';
-          html += '<div class="grid-items-container">';
-          for (var i = 0; i < DATA_AZ.length; i++) {
-            var item = DATA_AZ[i];
-            html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + item.letter + ' for ' + item.word + '\', \'en-IN\'); })">';
-            html += '  <div class="chip-letter">' + item.letter + '</div>';
-            html += '  <div class="chip-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + item.word + '\', \'en-IN\'); })">' + item.emoji + '</div>';
-            html += '  <div class="chip-word">' + item.word + '</div>';
+        // =========================================================================
+        // SUB-TAB 1, 2, 3: LINE DRAWING MATCHING BOARDS
+        // =========================================================================
+        if (appState.nurseryAbcSubTab === "match_picture" || appState.nurseryAbcSubTab === "match_same" || appState.nurseryAbcSubTab === "match_small") {
+          var setOffset = (appState.nurseryAbcMatchSetIndex * 4) % DATA_AZ.length;
+          var leftItems = [
+            DATA_AZ[setOffset % DATA_AZ.length],
+            DATA_AZ[(setOffset + 1) % DATA_AZ.length],
+            DATA_AZ[(setOffset + 2) % DATA_AZ.length],
+            DATA_AZ[(setOffset + 3) % DATA_AZ.length]
+          ];
+
+          var matchSubKey = appState.nurseryAbcSubTab + "_" + appState.nurseryAbcMatchSetIndex;
+          var rightItems = getShuffledOptions(matchSubKey, function() {
+            return fisherYatesShuffle(leftItems.slice());
+          });
+
+          var subTitle = "";
+          var subVoice = "";
+          if (appState.nurseryAbcSubTab === "match_picture") {
+            subTitle = "✏️ Draw a line from each Capital Letter to its picture!";
+            subVoice = "Draw a line from each Capital Letter to its matching picture!";
+          } else if (appState.nurseryAbcSubTab === "match_same") {
+            subTitle = "🔗 Draw a line to match the same Capital Letters!";
+            subVoice = "Draw a line to match the same Capital Letters!";
+          } else {
+            subTitle = "🔠 Draw a line from Capital letter to its Small letter!";
+            subVoice = "Draw a line from Capital letter to its Small letter!";
+          }
+
+          autoSpeak("nurs_abc_" + matchSubKey, subVoice, "en-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + subVoice + '\', \'en-IN\'); })" style="font-size: 14px; font-weight: 800; color: #1565C0; text-align: center; margin-bottom: 8px;">' + subTitle + ' 🔊</div>';
+
+          // Matching Board Container with touch-action: none for zero page scrolling
+          html += '<div id="matching-board" class="matching-board-container">';
+          html += '  <svg id="matching-svg" class="matching-svg-layer"></svg>';
+          html += '  <div class="matching-cols-wrap">';
+
+          // Left Column
+          html += '    <div class="matching-col">';
+          for (var li = 0; li < leftItems.length; li++) {
+            var lItem = leftItems[li];
+            var lId = "L_" + li + "_" + lItem.letter;
+            html += '<div class="matching-card matching-left" data-side="left" data-id="' + lId + '" data-val="' + lItem.letter + '" data-word="' + lItem.word + '" onpointerdown="handleMatchPointerDown(event, \'left\', \'' + lId + '\', \'' + lItem.letter + '\', \'' + lItem.word + '\')" onpointermove="handleMatchPointerMove(event)" onpointerup="handleMatchPointerUp(event)">';
+            html += '  <span class="matching-label">' + lItem.letter + '</span>';
+            html += '  <span class="matching-dot" data-side="left" data-id="' + lId + '"></span>';
             html += '</div>';
           }
+          html += '    </div>';
+
+          // Right Column
+          html += '    <div class="matching-col">';
+          for (var ri = 0; ri < rightItems.length; ri++) {
+            var rItem = rightItems[ri];
+            var rId = "R_" + ri + "_" + rItem.letter;
+            html += '<div class="matching-card matching-right" data-side="right" data-id="' + rId + '" data-val="' + rItem.letter + '" data-word="' + rItem.word + '" onpointerdown="handleMatchPointerDown(event, \'right\', \'' + rId + '\', \'' + rItem.letter + '\', \'' + rItem.word + '\')" onpointermove="handleMatchPointerMove(event)" onpointerup="handleMatchPointerUp(event)">';
+            html += '  <span class="matching-dot" data-side="right" data-id="' + rId + '"></span>';
+            if (appState.nurseryAbcSubTab === "match_picture") {
+              html += '  <span class="matching-label" style="font-size:15px;"><span class="safe-emoji" style="font-size:22px;">' + rItem.emoji + '</span> ' + rItem.word + '</span>';
+            } else if (appState.nurseryAbcSubTab === "match_same") {
+              html += '  <span class="matching-label">' + rItem.letter + '</span>';
+            } else {
+              html += '  <span class="matching-label" style="color:#C2185B;">' + rItem.letter.toLowerCase() + '</span>';
+            }
+            html += '</div>';
+          }
+          html += '    </div>';
+
+          html += '  </div>'; // .matching-cols-wrap
+          html += '</div>'; // #matching-board
+
+          // When all 4 are matched
+          if (lineDrawingState.matchedPairs && lineDrawingState.matchedPairs.length >= 4) {
+            html += '<div class="quiz-completed-card" style="background:#E8F5E9;border:3px solid #4CAF50;border-radius:18px;padding:16px;text-align:center;margin:14px auto;max-width:340px;animation:popIn 0.3s ease-out;">';
+            html += '  <div style="font-size:38px;margin-bottom:4px;">🎉🌟✨</div>';
+            html += '  <div style="font-size:20px;font-weight:900;color:#2E7D32;">All 4 Matched! Fantastic Job!</div>';
+            html += '  <div style="margin-top:12px;">';
+            html += '    <button class="nav-btn" style="background:#1E88E5;color:#fff;padding:10px 24px;font-size:16px;font-weight:900;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(30,136,229,0.3);" onclick="safeAction(function(){ advanceNurseryAbcMatchSet(); })">Next Set ➔</button>';
+            html += '  </div>';
+            html += '</div>';
+          }
+
+          initMatchingSvgAfterRender();
+        }
+
+        // =========================================================================
+        // SUB-TAB 4: 🧩 FILL IN THE MISSING LETTERS (A–Z)
+        // =========================================================================
+        else if (appState.nurseryAbcSubTab === "missing_letters") {
+          var curRound = MISSING_ABC_ROUNDS[appState.nurseryAbcMissingRound % MISSING_ABC_ROUNDS.length];
+          var filledList = appState.nurseryAbcMissingFilled || [];
+          var isMissingComplete = (filledList.length >= curRound.missing.length);
+
+          autoSpeak("nurs_missing_" + appState.nurseryAbcMissingRound, "Fill in the missing letters in alphabet order!", "en-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Fill in the missing letters in alphabet order!\', \'en-IN\'); })" style="font-size: 14px; font-weight: 800; color: #1565C0; text-align: center; margin-bottom: 8px;">Fill in the missing letters in ABC order: 🔊</div>';
+
+          // Sequence Track
+          html += '<div class="missing-seq-track">';
+          for (var si = 0; si < curRound.letters.length; si++) {
+            var letChar = curRound.letters[si];
+            var isMissingPos = (curRound.missing.indexOf(letChar) !== -1);
+            if (!isMissingPos) {
+              html += '<div class="seq-box solid">' + letChar + '</div>';
+            } else {
+              var isThisFilled = (filledList.indexOf(letChar) !== -1);
+              if (isThisFilled) {
+                html += '<div class="seq-box filled">' + letChar + '</div>';
+              } else {
+                html += '<div class="seq-box blank"><span class="dash-blank">___</span></div>';
+              }
+            }
+          }
           html += '</div>';
-        } else if (appState.mode === "quiz_pic_to_let") {
-          var target = DATA_AZ[appState.quizIndex % DATA_AZ.length];
-          var qCacheKey = "nursery_az_p2l_" + appState.quizIndex;
-          var opts = getShuffledOptions(qCacheKey, function() {
-            var o = [target.letter];
-            while (o.length < 4) {
+
+          if (isMissingComplete) {
+            html += '<div class="quiz-completed-card" style="background:#E8F5E9;border:3px solid #4CAF50;border-radius:18px;padding:16px;text-align:center;margin:14px auto;max-width:340px;animation:popIn 0.3s ease-out;">';
+            html += '  <div style="font-size:38px;margin-bottom:4px;">🌟🏆🎉</div>';
+            html += '  <div style="font-size:20px;font-weight:900;color:#2E7D32;">Sequence Completed Correctly!</div>';
+            html += '  <div style="margin-top:12px;">';
+            html += '    <button class="nav-btn" style="background:#1E88E5;color:#fff;padding:10px 24px;font-size:16px;font-weight:900;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(30,136,229,0.3);" onclick="safeAction(function(){ advanceNurseryAbcMissingRound(); })">Next Set ➔</button>';
+            html += '  </div>';
+            html += '</div>';
+          } else {
+            // Find next needed letter
+            var nextNeededLet = "";
+            for (var mi = 0; mi < curRound.missing.length; mi++) {
+              if (filledList.indexOf(curRound.missing[mi]) === -1) {
+                nextNeededLet = curRound.missing[mi];
+                break;
+              }
+            }
+
+            html += '<div style="font-size:13px;font-weight:800;color:#546E7A;text-align:center;margin-top:12px;">Tap the correct missing letter below:</div>';
+
+            // Options: Shuffled missing letters
+            var missCacheKey = "nurs_miss_opts_" + appState.nurseryAbcMissingRound;
+            var missingChoices = getShuffledOptions(missCacheKey, function() {
+              return fisherYatesShuffle(curRound.missing.slice());
+            });
+
+            html += '<div style="display:flex;justify-content:center;gap:12px;margin-top:10px;flex-wrap:wrap;">';
+            for (var mci = 0; mci < missingChoices.length; mci++) {
+              var mChoice = missingChoices[mci];
+              var isAlreadyPlaced = (filledList.indexOf(mChoice) !== -1);
+              var btnCls = "letter-bubble" + (isAlreadyPlaced ? " disabled-choice" : "");
+              html += '<button class="' + btnCls + '" style="font-size:28px;width:56px;height:56px;" onclick="safeAction(function(){ tapNurseryMissingLetter(\'' + mChoice + '\'); })">' + mChoice + '</button>';
+            }
+            html += '</div>';
+          }
+        }
+
+        // =========================================================================
+        // SUB-TAB 5: 🎯 CHOOSE LETTER (FROM 6 LETTERS)
+        // =========================================================================
+        else if (appState.nurseryAbcSubTab === "choose_letter") {
+          var target6 = DATA_AZ[appState.quizIndex % DATA_AZ.length];
+          var qCacheKey6 = "nurs_choose_6_" + appState.quizIndex;
+          var opts6 = getShuffledOptions(qCacheKey6, function() {
+            var o = [target6.letter];
+            while (o.length < 6) {
               var r = DATA_AZ[Math.floor(Math.random() * DATA_AZ.length)].letter;
               if (o.indexOf(r) === -1) o.push(r);
             }
             return fisherYatesShuffle(o);
           });
-          var isAnswered = (quizState.isAnswered && quizState.activeKey === qCacheKey);
+          var isAnswered6 = (quizState.isAnswered && quizState.activeKey === qCacheKey6);
 
-          autoSpeak(qCacheKey, target.word + ". Which letter does " + target.word + " start with?", "en-IN");
+          autoSpeak(qCacheKey6, target6.word + ". Which letter does " + target6.word + " start with?", "en-IN");
 
-          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + target.phonics + '\', \'en-IN\'); })">';
-          html += '  <div class="flashcard-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + target.word + '\', \'en-IN\'); })">' + target.emoji + '</div>';
-          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + target.word + '\', \'en-IN\'); })" style="font-size: 24px; font-weight: 800; color: #2C3E50;">' + (isAnswered ? target.word : "___") + '</div>';
-          html += '  <div class="audio-hint">🔊 ' + target.phonics + '</div>';
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + target6.phonics + '\', \'en-IN\'); })">';
+          html += '  <div class="flashcard-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + target6.word + '\', \'en-IN\'); })">' + target6.emoji + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + target6.word + '\', \'en-IN\'); })" style="font-size: 26px; font-weight: 800; color: #2C3E50;">' + (isAnswered6 ? (target6.letter + " - " + target6.word) : "___") + '</div>';
+          html += '  <div class="audio-hint">🔊 ' + target6.phonics + '</div>';
           html += '</div>';
 
-          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Which letter does ' + target.word + ' start with?\', \'en-IN\'); })" style="font-size: 15px; font-weight: 800; color: #546E7A; margin-top: 8px;">Which letter does ' + target.word + ' start with? 🔊</div>';
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Which letter does ' + target6.word + ' start with?\', \'en-IN\'); })" style="font-size: 15px; font-weight: 800; color: #546E7A; margin-top: 8px;">Which letter does ' + target6.word + ' start with? 🔊</div>';
 
-          html += '<div style="display: flex; justify-content: center; gap: 10px; margin-top: 14px; flex-wrap: wrap;">';
-          for (var j = 0; j < opts.length; j++) {
-            var isOk = (opts[j] === target.letter);
-            var btnCls = "letter-bubble";
-            if (isAnswered) {
-              btnCls += isOk ? " correct-choice" : " disabled-choice";
+          // 3x2 Grid for 6 Options
+          html += '<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;max-width:320px;margin:14px auto 0;">';
+          for (var o6i = 0; o6i < opts6.length; o6i++) {
+            var isOk6 = (opts6[o6i] === target6.letter);
+            var btnCls6 = "letter-bubble";
+            if (isAnswered6) {
+              btnCls6 += isOk6 ? " correct-choice" : " disabled-choice";
             }
-            html += '<button class="' + btnCls + '" onclick="safeAction(function(){ handleNurseryLetterAns(' + isOk + ', \'' + opts[j] + ' for ' + target.word + '\', \'en-IN\', \'' + target.letter + '\', \'' + target.word + '\', \'' + target.emoji + '\'); })">' + opts[j] + '</button>';
+            html += '<button class="' + btnCls6 + '" style="font-size:30px;width:100%;height:56px;" onclick="safeAction(function(){ handleNurseryLetterAns(' + isOk6 + ', \'' + opts6[o6i] + ' for ' + target6.word + '\', \'en-IN\', \'' + target6.letter + '\', \'' + target6.word + '\', \'' + target6.emoji + '\', \'' + qCacheKey6 + '\'); })">' + opts6[o6i] + '</button>';
           }
           html += '</div>';
           html += renderCompletedPreviewCard();
-        } else {
-          var target2 = DATA_AZ[appState.quizIndex % DATA_AZ.length];
-          var qCacheKey2 = "nursery_az_l2p_" + appState.quizIndex;
-          var picOpts = getShuffledOptions(qCacheKey2, function() {
-            var po = [target2];
-            while (po.length < 4) {
-              var rp = DATA_AZ[Math.floor(Math.random() * DATA_AZ.length)];
-              if (po.indexOf(rp) === -1) po.push(rp);
+        }
+
+        // =========================================================================
+        // SUB-TAB 6: 🔢 WRITE A–Z IN CORRECT ORDER (BY TAPPING)
+        // =========================================================================
+        else if (appState.nurseryAbcSubTab === "order_az") {
+          var curTargetIdx = appState.nurseryAbcOrderCurrentIdx || 0;
+          var isAllAzComplete = (curTargetIdx >= DATA_AZ.length);
+          var nextTargetChar = !isAllAzComplete ? DATA_AZ[curTargetIdx].letter : "";
+
+          autoSpeak("nurs_order_az_" + (appState.nurseryAbcOrderRound || 0), "Tap letters in alphabetical order from A to Z! Find letter " + nextTargetChar, "en-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Tap letters in order from A to Z! Find letter ' + nextTargetChar + '\', \'en-IN\'); })" style="font-size: 14px; font-weight: 800; color: #1565C0; text-align: center; margin-bottom: 6px;">Tap letters in A–Z order: Find letter <span style="font-size:18px;color:#E65100;font-weight:900;">' + (isAllAzComplete ? "Done!" : nextTargetChar) + '</span> 🔊</div>';
+
+          // 26 Numbered Boxes (Top Grid)
+          html += '<div class="order-box-grid">';
+          for (var bi = 0; bi < DATA_AZ.length; bi++) {
+            var boxLet = DATA_AZ[bi].letter;
+            if (bi < curTargetIdx) {
+              html += '<div class="order-slot placed">' + boxLet + '</div>';
+            } else if (bi === curTargetIdx) {
+              html += '<div class="order-slot target"><span class="dash-blank" style="font-size:16px;">___</span></div>';
+            } else {
+              html += '<div class="order-slot">' + (bi + 1) + '</div>';
             }
-            return fisherYatesShuffle(po);
-          });
-          var isAnswered2 = (quizState.isAnswered && quizState.activeKey === qCacheKey2);
-
-          autoSpeak(qCacheKey2, "Letter " + target2.letter + ". " + target2.phonics + ". Tap the picture that starts with letter " + target2.letter + "!", "en-IN");
-
-          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + target2.phonics + '\', \'en-IN\'); })">';
-          html += '  <div class="flashcard-emoji" style="font-size: 70px; font-weight: 900; color: #1E88E5;">' + target2.letter + '</div>';
-          html += '  <div class="audio-hint">🔊 ' + target2.phonics + '</div>';
-          html += '</div>';
-
-          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Tap the matching picture for letter ' + target2.letter + '\', \'en-IN\'); })" style="font-size: 15px; font-weight: 800; color: #546E7A; margin-top: 8px;">Tap the picture for letter ' + target2.letter + ': 🔊</div>';
-
-          html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
-          for (var k = 0; k < picOpts.length; k++) {
-            var isPicOk = (picOpts[k].letter === target2.letter);
-            var optBtnCls = "opt-btn";
-            if (isAnswered2) {
-              optBtnCls += isPicOk ? " correct-choice" : " disabled-choice";
-            }
-            html += '<button class="' + optBtnCls + '" onclick="safeAction(function(){ handleNurseryPicAns(' + isPicOk + ', \'' + picOpts[k].word + '\', \'' + target2.phonics + '\', \'en-IN\', \'' + target2.letter + '\', \'' + picOpts[k].emoji + '\'); })">';
-            html += '  <div class="safe-emoji" style="font-size: 34px;">' + picOpts[k].emoji + '</div>';
-            html += '  <div style="font-size: 14px; font-weight: 800; margin-top: 2px;">' + picOpts[k].word + '</div>';
-            html += '</button>';
           }
           html += '</div>';
-          html += renderCompletedPreviewCard();
+
+          if (isAllAzComplete) {
+            html += '<div class="quiz-completed-card" style="background:#E8F5E9;border:3px solid #4CAF50;border-radius:18px;padding:18px;text-align:center;margin:14px auto;max-width:340px;animation:popIn 0.3s ease-out;">';
+            html += '  <div style="font-size:42px;margin-bottom:4px;">🏆🌟🎉</div>';
+            html += '  <div style="font-size:22px;font-weight:900;color:#2E7D32;">A to Z Master!</div>';
+            html += '  <div style="font-size:14px;font-weight:700;color:#388E3C;margin-top:4px;">You completed all 26 letters in correct order!</div>';
+            html += '  <div style="margin-top:14px;">';
+            html += '    <button class="nav-btn" style="background:#43A047;color:#fff;padding:10px 24px;font-size:16px;font-weight:900;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(67,160,71,0.3);" onclick="safeAction(function(){ resetNurseryOrderGame(); })">Play Again 🔄</button>';
+            html += '  </div>';
+            html += '</div>';
+          } else {
+            // 26 Shuffled Tile Buttons (Bottom Grid)
+            var orderTilesKey = "nurs_order_tiles_round_" + (appState.nurseryAbcOrderRound || 0);
+            var shuffled26 = getShuffledOptions(orderTilesKey, function() {
+              return fisherYatesShuffle(DATA_AZ.map(function(x){ return x.letter; }));
+            });
+
+            html += '<div class="order-tiles-grid">';
+            for (var ti = 0; ti < shuffled26.length; ti++) {
+              var tChar = shuffled26[ti];
+              var targetCharIdx = DATA_AZ.findIndex(function(x){ return x.letter === tChar; });
+              var isPlaced = (targetCharIdx !== -1 && targetCharIdx < curTargetIdx);
+              var tileCls = "order-tile-btn" + (isPlaced ? " placed" : "");
+              html += '<button class="' + tileCls + '" onclick="safeAction(function(){ tapNurseryOrderTile(\'' + tChar + '\'); })">' + tChar + '</button>';
+            }
+            html += '</div>';
+          }
         }
       }
 
@@ -8496,8 +9305,8 @@
       });
     }
 
-    function handleNurseryLetterAns(isCorrect, speech, lang, letter, word, emoji) {
-      var cacheKey = "nursery_az_p2l_" + appState.quizIndex;
+    function handleNurseryLetterAns(isCorrect, speech, lang, letter, word, emoji, customKey) {
+      var cacheKey = customKey || ("nursery_az_p2l_" + appState.quizIndex);
       handleQuizAnswerSubmit(isCorrect, {
         key: cacheKey,
         display: (letter || "") + " for " + (word || "") + " " + (emoji || "🌟"),
