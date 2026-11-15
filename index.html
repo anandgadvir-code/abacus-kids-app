@@ -4,27 +4,84 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Abacus Kids - The Abacus Academy, Jodhpur</title>
-  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-    body { margin: 0; font-family: sans-serif; background-color: #FFFDF7; color: #2D3436; overflow-x: hidden; }
-    .btn-3d { transition: all 0.12s ease; }
-    .btn-3d:active { transform: translateY(3px); }
+    body { margin: 0; font-family: sans-serif; background: #FFFDF7; color: #2D3436; }
+    .wrap { max-width: 500px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; }
+    .hdr { position: sticky; top: 0; z-index: 20; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; background: #FFFDF7; border-bottom: 2px solid #FDE68A; }
+    .btn { cursor: pointer; border: none; font-family: inherit; transition: transform 0.1s; }
+    .btn:active { transform: scale(0.96); }
+    .btn-home { background: #fff; border: 2px solid #CBD5E1; padding: 6px 12px; border-radius: 14px; font-weight: bold; color: #334155; font-size: 14px; }
+    .star-pill { background: #FEF3C7; border: 2px solid #FCD34D; padding: 4px 12px; border-radius: 14px; font-weight: bold; color: #92400E; font-size: 14px; }
+    .card-home { width: 100%; text-align: left; border-radius: 22px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .tabs { display: flex; gap: 8px; overflow-x: auto; padding: 10px 14px; background: #fff; border-bottom: 1px solid #E2E8F0; }
+    .tab-btn { padding: 7px 14px; border-radius: 16px; font-size: 12px; font-weight: bold; white-space: nowrap; border: 2px solid #E2E8F0; background: #fff; color: #475569; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 340px; margin: 0 auto; }
+    .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 360px; margin: 0 auto; }
+    .grid1 { display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 320px; margin: 0 auto; }
+    .opt-btn { background: #fff; border: 2px solid #38BDF8; border-bottom-width: 4px; border-radius: 20px; padding: 16px 8px; font-size: 28px; font-weight: 800; color: #1E293B; text-align: center; }
+    .toast { position: fixed; top: 42%; left: 50%; transform: translate(-50%, -50%); padding: 14px 26px; border-radius: 22px; font-size: 24px; font-weight: 800; color: #fff; z-index: 99; box-shadow: 0 10px 25px rgba(0,0,0,0.2); pointer-events: none; }
   </style>
-  <script>
-    window.onerror = function(msg, url, line) {
-      var el = document.getElementById('app');
-      if (el) el.innerHTML = '<div style="padding:20px;color:#b91c1c;font-weight:bold;">Script Error (Line ' + line + '): ' + msg + '</div>';
-    };
-  </script>
 </head>
 <body>
-  <div id="app" class="max-w-lg mx-auto min-h-screen flex flex-col">
-    <div style="padding:24px;text-align:center;font-weight:bold;color:#0288D1;">Starting Abacus Kids...</div>
+  <div id="app" class="wrap">
+    <div style="padding:18px;flex:1;">
+      <div style="background:#fff;border:2px solid #FDE68A;border-radius:22px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+        <img src="logo.jpeg" onerror="this.style.display='none'" style="width:60px;height:60px;object-fit:contain;border-radius:14px;border:1px solid #FEF3C7;" />
+        <div>
+          <div style="font-size:11px;font-weight:bold;color:#EA580C;text-transform:uppercase;">The Abacus Academy, Jodhpur</div>
+          <div style="font-size:24px;font-weight:900;color:#1E293B;">Abacus Kids</div>
+          <div style="font-size:12px;color:#64748B;">Audio-Visual Kids Learning App</div>
+        </div>
+      </div>
+
+      <div style="font-size:14px;font-weight:bold;color:#475569;margin-bottom:12px;">अपनी क्लास चुनें (Select Your Class):</div>
+
+      <button onclick="go('nursery')" class="btn card-home" style="background:#E1F5FE;border:2px solid #0288D1;border-bottom-width:4px;">
+        <div>
+          <span style="background:#0288D1;color:#fff;font-size:11px;font-weight:bold;padding:3px 10px;border-radius:12px;">Age 3-4 Years</span>
+          <div style="font-size:22px;font-weight:900;color:#01579B;margin-top:4px;">Nursery Class</div>
+          <div style="font-size:12px;font-weight:bold;color:#0277BD;">Full A-Z • अ-अः • Counting 1-50 • Shapes</div>
+        </div>
+        <div style="font-size:44px;">🧸</div>
+      </button>
+
+      <button onclick="go('lkg')" class="btn card-home" style="background:#F1F8E9;border:2px solid #689F38;border-bottom-width:4px;">
+        <div>
+          <span style="background:#689F38;color:#fff;font-size:11px;font-weight:bold;padding:3px 10px;border-radius:12px;">Age 4-5 Years</span>
+          <div style="font-size:22px;font-weight:900;color:#33691E;margin-top:4px;">LKG Class</div>
+          <div style="font-size:12px;font-weight:bold;color:#558B2F;">क-ज्ञ • शब्द निर्माण • 1-100 & Names • More/Less</div>
+        </div>
+        <div style="font-size:44px;">🚂</div>
+      </button>
+
+      <button onclick="go('ukg')" class="btn card-home" style="background:#FFF8E1;border:2px solid #F57C00;border-bottom-width:4px;">
+        <div>
+          <span style="background:#F57C00;color:#fff;font-size:11px;font-weight:bold;padding:3px 10px;border-radius:12px;">Age 5-6 Years</span>
+          <div style="font-size:22px;font-weight:900;color:#E65100;margin-top:4px;">UKG Class</div>
+          <div style="font-size:12px;font-weight:bold;color:#EF6C00;">CVC Words • सभी मात्राएं • 1-100 Names • +/-</div>
+        </div>
+        <div style="font-size:44px;">🚀</div>
+      </button>
+
+      <div class="grid2" style="max-width:100%;margin-top:6px;">
+        <button onclick="go('pictures')" class="btn" style="background:#F3E5F5;border:2px solid #8E24AA;border-bottom-width:4px;border-radius:22px;padding:14px;text-align:center;">
+          <div style="font-size:32px;">🦁</div>
+          <div style="font-weight:900;color:#4A148C;font-size:15px;">Picture World</div>
+          <div style="font-size:11px;color:#6A1B9A;">6 Categories • 36 Pics</div>
+        </button>
+        <button onclick="go('brain')" class="btn" style="background:#FCE4EC;border:2px solid #D81B60;border-bottom-width:4px;border-radius:22px;padding:14px;text-align:center;">
+          <div style="font-size:32px;">🧠</div>
+          <div style="font-weight:900;color:#880E4F;font-size:15px;">Brain Booster</div>
+          <div style="font-size:11px;color:#AD1457;">Shadow • Odd • Memory</div>
+        </button>
+      </div>
+    </div>
   </div>
 
   <script>
     var lastSpoken = "";
+    var HOME_HTML = document.getElementById("app").innerHTML;
 
     function speak(text, lang) {
       try {
@@ -55,12 +112,12 @@
         gain.connect(ctx.destination);
         var now = ctx.currentTime;
         osc.type = type === "wrong" ? "sawtooth" : "sine";
-        osc.frequency.setValueAtTime(type === "wrong" ? 200 : 520, now);
-        osc.frequency.exponentialRampToValueAtTime(type === "wrong" ? 140 : 880, now + 0.18);
+        osc.frequency.setValueAtTime(type === "wrong" ? 200 : 540, now);
+        osc.frequency.exponentialRampToValueAtTime(type === "wrong" ? 140 : 880, now + 0.16);
         gain.gain.setValueAtTime(0.18, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
         osc.start(now);
-        osc.stop(now + 0.2);
+        osc.stop(now + 0.18);
       } catch (e) {}
     }
 
@@ -123,4 +180,558 @@
       { kind: "After", sp: "What comes after A, B?", lg: "en-IN", seq: ["A", "B", "?"], ans: "C", opts: ["C", "D", "E"] },
       { kind: "Before", sp: "What comes before E, F?", lg: "en-IN", seq: ["?", "E", "F"], ans: "D", opts: ["C", "D", "G"] },
       { kind: "Between", sp: "What comes between G and I?", lg: "en-IN", seq: ["G", "?", "I"], ans: "H", opts: ["H", "J", "K"] },
-      { kind: "बाद में (After)", sp: "अ, आ के बाद क्या आता है?", lg: "hi
+      { kind: "बाद में (After)", sp: "अ, आ के बाद क्या आता है?", lg: "hi-IN", seq: ["अ", "आ", "?"], ans: "इ", opts: ["इ", "उ", "ए"] },
+      { kind: "बीच में (Between)", sp: "इ और उ के बीच क्या आता है?", lg: "hi-IN", seq: ["इ", "?", "उ"], ans: "ई", opts: ["अ", "ई", "ऊ"] },
+      { kind: "After Number", sp: "What comes after 7, 8?", lg: "en-IN", seq: ["7", "8", "?"], ans: "9", opts: ["6", "9", "10"] },
+      { kind: "Between Number", sp: "What comes between 14 and 16?", lg: "en-IN", seq: ["14", "?", "16"], ans: "15", opts: ["13", "15", "17"] }
+    ];
+
+    var SHAPES_LIST = [
+      { name: "Circle", sp: "Circle. गोला", emoji: "🔴", opts: ["Circle", "Square", "Triangle"] },
+      { name: "Square", sp: "Square. चौकोर", emoji: "🟦", opts: ["Circle", "Square", "Star"] },
+      { name: "Yellow Star", sp: "Yellow Star. पीला तारा", emoji: "⭐", opts: ["Red Heart", "Yellow Star", "Green Leaf"] },
+      { name: "Red Heart", sp: "Red Heart. लाल दिल", emoji: "❤️", opts: ["Red Heart", "Blue Diamond", "Yellow Star"] },
+      { name: "Blue Diamond", sp: "Blue Diamond. नीला हीरा", emoji: "💎", opts: ["Green Circle", "Blue Diamond", "Pink Flower"] },
+      { name: "Orange Triangle", sp: "Orange Triangle. त्रिकोण", emoji: "🔺", opts: ["Orange Triangle", "Purple Square", "Yellow Moon"] }
+    ];
+
+    var NUM_NAMES = {
+      1:"One",2:"Two",3:"Three",4:"Four",5:"Five",6:"Six",7:"Seven",8:"Eight",9:"Nine",10:"Ten",
+      11:"Eleven",12:"Twelve",13:"Thirteen",14:"Fourteen",15:"Fifteen",16:"Sixteen",17:"Seventeen",18:"Eighteen",19:"Nineteen",20:"Twenty",
+      25:"Twenty-Five",30:"Thirty",35:"Thirty-Five",40:"Forty",45:"Forty-Five",50:"Fifty",
+      60:"Sixty",70:"Seventy",80:"Eighty",90:"Ninety",100:"One Hundred"
+    };
+
+    var LKG_WORDS = [
+      { lg: "hi-IN", e: "🪷", w: "कमल", l: ["क", "म", "ल"], p: ["ल", "क", "र", "म"] },
+      { lg: "hi-IN", e: "🏠", w: "घर", l: ["घ", "र"], p: ["र", "न", "घ", "ल"] },
+      { lg: "hi-IN", e: "🚌", w: "बस", l: ["ब", "स"], p: ["स", "क", "ब", "म"] },
+      { lg: "hi-IN", e: "🍉", w: "फल", l: ["फ", "ल"], p: ["ल", "फ", "ज", "न"] },
+      { lg: "hi-IN", e: "🚰", w: "नल", l: ["न", "ल"], p: ["ल", "क", "न", "प"] },
+      { lg: "hi-IN", e: "🐊", w: "मगर", l: ["म", "ग", "र"], p: ["र", "म", "ल", "ग"] },
+      { lg: "hi-IN", e: "🦆", w: "बतख", l: ["ब", "त", "ख"], p: ["ख", "ब", "त", "स"] },
+      { lg: "en-IN", e: "🐱", w: "CAT", l: ["C", "A", "T"], p: ["T", "C", "O", "A"] },
+      { lg: "en-IN", e: "🐶", w: "DOG", l: ["D", "O", "G"], p: ["G", "D", "A", "O"] },
+      { lg: "en-IN", e: "☀️", w: "SUN", l: ["S", "U", "N"], p: ["N", "S", "I", "U"] },
+      { lg: "en-IN", e: "🚌", w: "BUS", l: ["B", "U", "S"], p: ["S", "B", "E", "U"] },
+      { lg: "en-IN", e: "🎩", w: "HAT", l: ["H", "A", "T"], p: ["A", "H", "E", "T"] },
+      { lg: "en-IN", e: "🦊", w: "FOX", l: ["F", "O", "X"], p: ["X", "F", "U", "O"] }
+    ];
+
+    var VYANJAN = ["क","ख","ग","घ","ङ","च","छ","ज","झ","ञ","ट","ठ","ड","ढ","ण","त","थ","द","ध","न","प","फ","ब","भ","म","य","र","ल","व","श","ष","स","ह","क्ष","त्र","ज्ञ"];
+
+    var UKG_CVC = [
+      { e: "🐱", w: "CAT", pre: "C", post: "T", ans: "A", opts: ["A", "E", "I", "O", "U"] },
+      { e: "🖊️", w: "PEN", pre: "P", post: "N", ans: "E", opts: ["A", "E", "I", "O", "U"] },
+      { e: "🐷", w: "PIG", pre: "P", post: "G", ans: "I", opts: ["A", "E", "I", "O", "U"] },
+      { e: "🐶", w: "DOG", pre: "D", post: "G", ans: "O", opts: ["A", "E", "I", "O", "U"] },
+      { e: "☀️", w: "SUN", pre: "S", post: "N", ans: "U", opts: ["A", "E", "I", "O", "U"] },
+      { e: "🐟", w: "FISH", pre: "F", post: "SH", ans: "I", opts: ["A", "E", "I", "O", "U"] },
+      { e: "🦆", w: "DUCK", pre: "D", post: "CK", ans: "U", opts: ["A", "E", "I", "O", "U"] },
+      { e: "🛏️", w: "BED", pre: "B", post: "D", ans: "E", opts: ["A", "E", "I", "O", "U"] },
+      { e: "☕", w: "CUP", pre: "C", post: "P", ans: "U", opts: ["A", "E", "I", "O", "U"] },
+      { e: "⭐", w: "STAR", pre: "ST", post: "R", ans: "A", opts: ["A", "E", "I", "O", "U"] }
+    ];
+
+    var UKG_MATRA = [
+      { e: "🚗", w: "कार", pre: "क", post: "र", ans: "ा", opts: ["ा", "ि", "ी", "ु", "े"] },
+      { e: "📖", w: "किताब", pre: "क", post: "ताब", ans: "ि", opts: ["ा", "ि", "ी", "ो", "ै"] },
+      { e: "🐟", w: "मछली", pre: "मछल", post: "", ans: "ी", opts: ["ि", "ी", "ु", "े", "ौ"] },
+      { e: "🌹", w: "गुलाब", pre: "ग", post: "लाब", ans: "ु", opts: ["ा", "ि", "ु", "ू", "ो"] },
+      { e: "☀️", w: "सूरज", pre: "स", post: "रज", ans: "ू", opts: ["ु", "ू", "े", "ो", "ा"] },
+      { e: "🍌", w: "केला", pre: "क", post: "ला", ans: "े", opts: ["ा", "ी", "ु", "े", "ै"] },
+      { e: "👜", w: "थैला", pre: "थ", post: "ला", ans: "ै", opts: ["े", "ै", "ो", "ौ", "ा"] },
+      { e: "🦚", w: "मोर", pre: "म", post: "र", ans: "ो", opts: ["ि", "ु", "े", "ो", "ौ"] },
+      { e: "⛵", w: "नौका", pre: "न", post: "का", ans: "ौ", opts: ["ो", "ौ", "ा", "ी", "े"] },
+      { e: "🐘", w: "हाथी", pre: "हाथ", post: "", ans: "ी", opts: ["ि", "ी", "ु", "े", "ो"] }
+    ];
+
+    var PIC_WORLD = {
+      Animals: [
+        { e: "🦁", en: "Lion", hi: "शेर" }, { e: "🐘", en: "Elephant", hi: "हाथी" },
+        { e: "🐯", en: "Tiger", hi: "बाघ" }, { e: "🐒", en: "Monkey", hi: "बंदर" },
+        { e: "🐄", en: "Cow", hi: "गाय" }, { e: "🐕", en: "Dog", hi: "कुत्ता" }
+      ],
+      Birds: [
+        { e: "🦚", en: "Peacock", hi: "मोर" }, { e: "🦜", en: "Parrot", hi: "तोता" },
+        { e: "🦉", en: "Owl", hi: "उल्लू" }, { e: "🦆", en: "Duck", hi: "बत्तख" },
+        { e: "🕊️", en: "Pigeon", hi: "कबूतर" }, { e: "🦅", en: "Eagle", hi: "बाज़" }
+      ],
+      Fruits: [
+        { e: "🍎", en: "Apple", hi: "सेब" }, { e: "🥭", en: "Mango", hi: "आम" },
+        { e: "🍌", en: "Banana", hi: "केला" }, { e: "🍇", en: "Grapes", hi: "अंगूर" },
+        { e: "🍊", en: "Orange", hi: "संतरा" }, { e: "🍉", en: "Watermelon", hi: "तरबूज" }
+      ],
+      Vegetables: [
+        { e: "🥔", en: "Potato", hi: "आलू" }, { e: "🍅", en: "Tomato", hi: "टमाटर" },
+        { e: "🥕", en: "Carrot", hi: "गाजर" }, { e: "🧅", en: "Onion", hi: "प्याज" },
+        { e: "🍆", en: "Brinjal", hi: "बैंगन" }, { e: "🌽", en: "Corn", hi: "मक्का" }
+      ],
+      Vehicles: [
+        { e: "🚗", en: "Car", hi: "कार" }, { e: "🚌", en: "Bus", hi: "बस" },
+        { e: "🚂", en: "Train", hi: "रेलगाड़ी" }, { e: "✈️", en: "Aeroplane", hi: "हवाई जहाज" },
+        { e: "🚲", en: "Bicycle", hi: "साइकिल" }, { e: "🚢", en: "Ship", hi: "जहाज" }
+      ],
+      BodyParts: [
+        { e: "👀", en: "Eyes", hi: "आंखें" }, { e: "👃", en: "Nose", hi: "नाक" },
+        { e: "👂", en: "Ears", hi: "कान" }, { e: "👄", en: "Lips", hi: "होंठ" },
+        { e: "✋", en: "Hand", hi: "हाथ" }, { e: "🦶", en: "Foot", hi: "पैर" }
+      ]
+    };
+
+    var SHADOWS = [
+      { t: "🐘", n: "Elephant", o: ["🦁", "🐘", "🦒"] },
+      { t: "🍎", n: "Apple", o: ["🍌", "🍇", "🍎"] },
+      { t: "✈️", n: "Aeroplane", o: ["✈️", "🚗", "🚢"] },
+      { t: "🦚", n: "Peacock", o: ["🦉", "🦆", "🦚"] },
+      { t: "🚗", n: "Car", o: ["🚌", "🚗", "🚲"] },
+      { t: "🐢", n: "Turtle", o: ["🐸", "🐢", "🦀"] }
+    ];
+
+    var ODDS = [
+      { items: ["🍎", "🍌", "🥭", "🚗"], ans: "🚗" },
+      { items: ["🦁", "🐯", "🐘", "🦜"], ans: "🦜" },
+      { items: ["अ", "आ", "इ", "क"], ans: "क" },
+      { items: ["2", "4", "6", "A"], ans: "A" },
+      { items: ["🥔", "🍅", "🥕", "⚽"], ans: "⚽" },
+      { items: ["🚗", "🚌", "🚂", "🐶"], ans: "🐶" }
+    ];
+
+    var state = {
+      screen: "home", tab: 0, nurLang: "eng", stars: 0, qIdx: 0, fb: "",
+      built: [], filled: false, picCat: "Animals", picQuiz: false, picTarget: null,
+      countNum: 5, mathA: 4, mathB: 2, mathOp: "+", memCards: [], memOpen: [], memDone: []
+    };
+
+    function initMem() {
+      var icons = ["🍎", "🚗", "🐘", "🦚", "⭐", "🦁"];
+      state.memCards = icons.concat(icons).sort(function() { return Math.random() - 0.5; });
+      state.memOpen = [];
+      state.memDone = [];
+    }
+
+    function addStar() {
+      state.stars += 1;
+      state.fb = "ok";
+      playTone("success");
+      render();
+      setTimeout(function() {
+        state.fb = "";
+        state.qIdx += 1;
+        state.built = [];
+        state.filled = false;
+        state.countNum = Math.floor(Math.random() * 12) + 2;
+        state.mathA = Math.floor(Math.random() * 5) + 4;
+        state.mathB = Math.floor(Math.random() * 3) + 1;
+        state.mathOp = Math.random() > 0.4 ? "+" : "-";
+        render();
+      }, 1050);
+    }
+
+    function wrongAns() {
+      state.fb = "no";
+      playTone("wrong");
+      speak("Try again", "en-IN");
+      render();
+      setTimeout(function() { state.fb = ""; render(); }, 650);
+    }
+
+    function go(scr) {
+      playTone("pop");
+      lastSpoken = "";
+      state.screen = scr;
+      state.tab = 0;
+      state.qIdx = 0;
+      state.fb = "";
+      state.built = [];
+      state.filled = false;
+      state.picQuiz = false;
+      if (scr === "home") {
+        document.getElementById("app").innerHTML = HOME_HTML;
+        return;
+      }
+      speak(scr + " class");
+      render();
+    }
+
+    function setTab(i) {
+      playTone("pop");
+      lastSpoken = "";
+      state.tab = i;
+      state.qIdx = 0;
+      state.built = [];
+      state.filled = false;
+      if (state.screen === "brain" && i === 2) initMem();
+      render();
+    }
+
+    function checkAns(isOk, spText, lg) {
+      if (isOk) { speak(spText, lg || "en-IN"); addStar(); }
+      else { wrongAns(); }
+    }
+
+    function headerHTML(title, color) {
+      return '<div class="hdr">' +
+        '<button onclick="go(\'home\')" class="btn btn-home">🏠 Home</button>' +
+        '<div style="font-weight:900;font-size:17px;color:' + color + ';">' + title + '</div>' +
+        '<div class="star-pill">⭐ ' + state.stars + '</div>' +
+      '</div>';
+    }
+
+    function tabsHTML(tabs, bg) {
+      var h = '<div class="tabs">';
+      for (var i = 0; i < tabs.length; i++) {
+        var st = state.tab === i ? 'background:' + bg + ';color:#fff;border-color:' + bg + ';' : '';
+        h += '<button onclick="setTab(' + i + ')" class="btn tab-btn" style="' + st + '">' + tabs[i] + '</button>';
+      }
+      return h + '</div>';
+    }
+
+    function renderNursery() {
+      var tabs = ["🔤 A-Z / अ-अः", "🔊 Sound & Pic", "↔️ Before/After", "🔢 Count 1-50", "🎨 Shapes"];
+      var body = "";
+      if (state.tab === 0) {
+        var list = state.nurLang === "eng" ? NURSERY_AZ : NURSERY_SWAR;
+        var lg = state.nurLang === "eng" ? "en-IN" : "hi-IN";
+        var item = list[state.qIdx % list.length];
+        autoSpeak("n0-" + state.nurLang + "-" + state.qIdx, item.p, lg);
+        var btns = "";
+        for (var i = 0; i < item.o.length; i++) {
+          var opt = item.o[i];
+          btns += '<button onclick="checkAns(' + (opt === item.a) + ', \'' + item.p + '\', \'' + lg + '\')" class="btn opt-btn">' + opt + '</button>';
+        }
+        body = '<div style="text-align:center;">' +
+          '<div style="display:flex;justify-content:center;gap:8px;margin-bottom:14px;">' +
+            '<button onclick="lastSpoken=\'\'; state.nurLang=\'eng\'; state.qIdx=0; render();" class="btn" style="padding:6px 14px;border-radius:12px;font-weight:bold;font-size:12px;background:' + (state.nurLang==="eng"?"#0288D1":"#E0F2FE") + ';color:' + (state.nurLang==="eng"?"#fff":"#0369A1") + ';">A to Z (26)</button>' +
+            '<button onclick="lastSpoken=\'\'; state.nurLang=\'hin\'; state.qIdx=0; render();" class="btn" style="padding:6px 14px;border-radius:12px;font-weight:bold;font-size:12px;background:' + (state.nurLang==="hin"?"#0288D1":"#E0F2FE") + ';color:' + (state.nurLang==="hin"?"#fff":"#0369A1") + ';">अ से अः (12)</button>' +
+          '</div>' +
+          '<div onclick="speak(\'' + item.p + '\', \'' + lg + '\')" style="margin:0 auto 12px;width:180px;height:180px;background:#fff;border:4px solid #BAE6FD;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;">' +
+            '<div style="font-size:74px;">' + item.e + '</div>' +
+            '<div style="font-size:15px;font-weight:800;color:#0369A1;margin-top:6px;">🔊 ' + item.p + '</div>' +
+          '</div>' +
+          '<div style="font-size:12px;font-weight:bold;color:#64748B;margin-bottom:12px;">सही अक्षर पर टैप करें (' + ((state.qIdx % list.length) + 1) + '/' + list.length + ')</div>' +
+          '<div class="grid3">' + btns + '</div>' +
+        '</div>';
+      } else if (state.tab === 1) {
+        var item = SOUND_PIC[state.qIdx % SOUND_PIC.length];
+        autoSpeak("n1-" + state.qIdx, item.sp, item.lg);
+        var btns = "";
+        for (var i = 0; i < item.opts.length; i++) {
+          var o = item.opts[i];
+          btns += '<button onclick="checkAns(' + (o.e === item.ans) + ', \'' + o.n + '\', \'' + item.lg + '\')" class="btn opt-btn" style="padding:14px 4px;"><div style="font-size:48px;">' + o.e + '</div><div style="font-size:12px;color:#475569;margin-top:4px;">' + o.n + '</div></button>';
+        }
+        body = '<div style="text-align:center;">' +
+          '<button onclick="speak(\'' + item.sp + '\', \'' + item.lg + '\')" class="btn" style="background:#0288D1;color:#fff;padding:12px 20px;border-radius:18px;font-weight:bold;font-size:16px;margin-bottom:20px;">🔊 ' + item.ask + '</button>' +
+          '<div class="grid3">' + btns + '</div>' +
+        '</div>';
+      } else if (state.tab === 2) {
+        var item = BAB_LIST[state.qIdx % BAB_LIST.length];
+        autoSpeak("n2-" + state.qIdx, item.sp, item.lg);
+        var seqHtml = "";
+        for (var i = 0; i < item.seq.length; i++) {
+          var s = item.seq[i];
+          var st = s === "?" ? "background:#FEF3C7;border:3px dashed #F59E0B;color:#D97706;" : "background:#fff;border:2px solid #7DD3FC;color:#1E293B;";
+          seqHtml += '<div style="width:74px;height:74px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900;' + st + '">' + s + '</div>';
+        }
+        var btns = "";
+        for (var j = 0; j < item.opts.length; j++) {
+          var o = item.opts[j];
+          btns += '<button onclick="checkAns(' + (o === item.ans) + ', \'' + o + '\', \'' + item.lg + '\')" class="btn opt-btn" style="background:#E0F2FE;">' + o + '</button>';
+        }
+        body = '<div style="text-align:center;">' +
+          '<div style="font-size:14px;font-weight:bold;color:#0369A1;margin-bottom:16px;">🔊 ' + item.kind + ' — खाली जगह भरें</div>' +
+          '<div style="display:flex;justify-content:center;gap:12px;margin-bottom:22px;">' + seqHtml + '</div>' +
+          '<div class="grid3">' + btns + '</div>' +
+        '</div>';
+      } else if (state.tab === 3) {
+        var n = state.countNum;
+        autoSpeak("n3-" + state.qIdx + "-" + n, "Count the strawberries");
+        var opts = [n, n + 1, n > 1 ? n - 1 : 4].sort(function() { return Math.random() - 0.5; });
+        var berries = "";
+        for (var i = 0; i < n; i++) berries += '<span style="font-size:30px;margin:2px;">🍓</span>';
+        var btns = "";
+        for (var j = 0; j < opts.length; j++) {
+          var o = opts[j];
+          btns += '<button onclick="checkAns(' + (o === n) + ', \'' + o + '\', \'en-IN\')" class="btn opt-btn">' + o + '</button>';
+        }
+        var chart = "";
+        for (var k = 1; k <= 50; k++) {
+          chart += '<button onclick="speak(\'' + k + '\')" class="btn" style="background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px;padding:6px 0;font-size:12px;font-weight:bold;color:#0C4A6E;">' + k + '</button>';
+        }
+        body = '<div style="text-align:center;">' +
+          '<div style="font-size:13px;font-weight:bold;color:#0369A1;margin-bottom:8px;">🔊 गिनें और सही नंबर चुनें (Count & Tap)</div>' +
+          '<div style="background:#fff;border:2px solid #BAE6FD;border-radius:22px;padding:14px;max-width:320px;margin:0 auto 14px;display:flex;flex-wrap:wrap;justify-content:center;">' + berries + '</div>' +
+          '<div class="grid3" style="margin-bottom:18px;">' + btns + '</div>' +
+          '<div style="font-size:12px;font-weight:bold;color:#64748B;margin-bottom:6px;">1 to 50 Counting (टैप करके सुनें)</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-height:150px;overflow-y:auto;">' + chart + '</div>' +
+        '</div>';
+      } else {
+        var item = SHAPES_LIST[state.qIdx % SHAPES_LIST.length];
+        autoSpeak("n4-" + state.qIdx, item.sp);
+        var btns = "";
+        for (var i = 0; i < item.opts.length; i++) {
+          var o = item.opts[i];
+          btns += '<button onclick="checkAns(' + (item.name === o) + ', \'' + item.sp + '\', \'en-IN\')" class="btn opt-btn" style="font-size:18px;padding:14px;">' + o + '</button>';
+        }
+        body = '<div style="text-align:center;">' +
+          '<div style="font-size:14px;font-weight:bold;color:#0369A1;margin-bottom:14px;">🔊 आकार पहचानें (Shapes)</div>' +
+          '<div onclick="speak(\'' + item.sp + '\')" style="margin:0 auto 18px;width:130px;height:130px;background:#fff;border:2px solid #BAE6FD;border-radius:26px;display:flex;align-items:center;justify-content:center;font-size:72px;">' + item.emoji + '</div>' +
+          '<div class="grid1">' + btns + '</div>' +
+        '</div>';
+      }
+      return headerHTML("Nursery Class", "#0288D1") + tabsHTML(tabs, "#0288D1") + '<div style="padding:16px;flex:1;">' + body + '</div>';
+    }
+
+    function tapLkg(ch) {
+      var item = LKG_WORDS[state.qIdx % LKG_WORDS.length];
+      playTone("pop");
+      speak(ch, item.lg);
+      state.built.push(ch);
+      if (state.built.length === item.l.length) {
+        if (state.built.join("") === item.l.join("")) {
+          setTimeout(function() { speak(item.w, item.lg); addStar(); }, 350);
+        } else {
+          setTimeout(function() { state.built = []; wrongAns(); }, 350);
+        }
+      } else { render(); }
+    }
+
+    function renderLKG() {
+      var tabs = ["🧩 शब्द बनाएं", "अ व्यंजन (क-ज्ञ)", "🔢 1-100 & Names", "⚖️ More / Less"];
+      var body = "";
+      if (state.tab === 0) {
+        var item = LKG_WORDS[state.qIdx % LKG_WORDS.length];
+        autoSpeak("l0-" + state.qIdx, item.w, item.lg);
+        var boxes = "";
+        for (var i = 0; i < item.l.length; i++) {
+          var ch = state.built[i];
+          var st = ch ? "background:#ECFCCB;border:2px solid #65A30D;color:#365314;" : "background:#fff;border:2px dashed #84CC16;color:#CBD5E1;";
+          boxes += '<div style="width:62px;height:62px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;' + st + '">' + (ch || "?") + '</div>';
+        }
+        var pool = "";
+        for (var j = 0; j < item.p.length; j++) {
+          var c = item.p[j];
+          pool += '<button onclick="tapLkg(\'' + c + '\')" class="btn" style="width:62px;height:62px;background:#fff;border:2px solid #84CC16;border-bottom-width:4px;border-radius:16px;font-size:28px;font-weight:900;">' + c + '</button>';
+        }
+        body = '<div style="text-align:center;">' +
+          '<div style="font-size:12px;font-weight:bold;color:#3F6212;background:#ECFCCB;display:inline-block;padding:5px 12px;border-radius:14px;margin-bottom:12px;">🔊 अक्षरों को सही क्रम में टैप करके शब्द बनाएं</div>' +
+          '<div onclick="speak(\'' + item.w + '\', \'' + item.lg + '\')" style="font-size:74px;margin-bottom:12px;">' + item.e + '</div>' +
+          '<div style="display:flex;justify-content:center;gap:10px;margin-bottom:20px;">' + boxes + '</div>' +
+          '<div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;">' + pool + '</div>' +
+        '</div>';
+      } else if (state.tab === 1) {
+        var grid = "";
+        for (var i = 0; i < VYANJAN.length; i++) {
+          var v = VYANJAN[i];
+          grid += '<button onclick="playTone(\'pop\'); speak(\'' + v + '\', \'hi-IN\')" class="btn" style="background:#fff;border:2px solid #84CC16;border-radius:14px;padding:10px 0;font-size:22px;font-weight:900;color:#1A2E05;">' + v + '</button>';
+        }
+        body = '<div style="text-align:center;"><div style="font-size:13px;font-weight:bold;color:#3F6212;margin-bottom:12px;">किसी भी व्यंजन पर टैप करके सुनें</div><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;">' + grid + '</div></div>';
+      } else if (state.tab === 2) {
+        var keys = Object.keys(NUM_NAMES).map(Number);
+        var target = keys[state.qIdx % keys.length];
+        autoSpeak("l2-" + state.qIdx, "Find number name for " + target);
+        var opts = [target, keys[(state.qIdx + 3) % keys.length], keys[(state.qIdx + 7) % keys.length]].sort(function() { return Math.random() - 0.5; });
+        var btns = "";
+        for (var i = 0; i < opts.length; i++) {
+          var o = opts[i];
+          btns += '<button onclick="checkAns(' + (o === target) + ', \'' + NUM_NAMES[o] + '\', \'en-IN\')" class="btn opt-btn" style="border-color:#84CC16;font-size:18px;padding:12px;">' + NUM_NAMES[o] + '</button>';
+        }
+        var c100 = "";
+        for (var n = 1; n <= 100; n++) c100 += '<button onclick="speak(\'' + n + '\')" class="btn" style="background:#F7FEE7;border-radius:6px;padding:4px 0;font-size:11px;font-weight:bold;color:#365314;">' + n + '</button>';
+        body = '<div style="text-align:center;">' +
+          '<div style="font-size:13px;font-weight:bold;color:#3F6212;margin-bottom:8px;">🔊 Number Name पहचानें</div>' +
+          '<div style="margin:0 auto 14px;width:110px;height:90px;background:#ECFCCB;border:2px solid #84CC16;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:#365314;">' + target + '</div>' +
+          '<div class="grid1" style="margin-bottom:16px;">' + btns + '</div>' +
+          '<div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-height:140px;overflow-y:auto;background:#fff;padding:8px;border-radius:16px;border:1px solid #D9F99D;">' + c100 + '</div>' +
+        '</div>';
+      } else {
+        autoSpeak("l3-" + state.qIdx, "Tap the box with more balloons");
+        var left = (state.qIdx % 4) + 2;
+        var right = left + 3;
+        var lb = ""; for (var i = 0; i < left; i++) lb += '<span style="font-size:28px;">🎈</span>';
+        var rb = ""; for (var j = 0; j < right; j++) rb += '<span style="font-size:28px;">🎈</span>';
+        body = '<div style="text-align:center;">' +
+          '<div style="font-size:14px;font-weight:bold;color:#3F6212;margin-bottom:16px;">🔊 किस बॉक्स में ज़्यादा (MORE) हैं? टैप करें!</div>' +
+          '<div class="grid2">' +
+            '<button onclick="wrongAns()" class="btn" style="background:#fff;border:2px solid #84CC16;border-bottom-width:4px;border-radius:22px;padding:14px;min-height:140px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;">' + lb + '</button>' +
+            '<button onclick="checkAns(true, \'More balloons\', \'en-IN\')" class="btn" style="background:#fff;border:2px solid #84CC16;border-bottom-width:4px;border-radius:22px;padding:14px;min-height:140px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px;">' + rb + '</button>' +
+          '</div>' +
+        '</div>';
+      }
+      return headerHTML("LKG Class", "#689F38") + tabsHTML(tabs, "#689F38") + '<div style="padding:16px;flex:1;">' + body + '</div>';
+    }
+
+    function checkUkg(val, mode) {
+      var item = mode === "cvc" ? UKG_CVC[state.qIdx % UKG_CVC.length] : UKG_MATRA[state.qIdx % UKG_MATRA.length];
+      if (val === item.ans) {
+        state.filled = true;
+        speak(item.w, mode === "matra" ? "hi-IN" : "en-IN");
+        addStar();
+      } else { wrongAns(); }
+    }
+
+    function renderUKG() {
+      var tabs = ["🧲 CVC Words", "🪄 हिंदी मात्रा", "💯 Names 1-100", "➕ Visual +/-"];
+      var body = "";
+      if (state.tab === 0) {
+        var item = UKG_CVC[state.qIdx % UKG_CVC.length];
+        autoSpeak("u0-" + state.qIdx, "Complete the word " + item.w);
+        var btns = "";
+        for (var i = 0; i < item.opts.length; i++) {
+          var v = item.opts[i];
+          btns += '<button onclick="checkUkg(\'' + v + '\', \'cvc\')" class="btn" style="width:52px;height:52px;background:#F97316;color:#fff;border-radius:16px;font-size:24px;font-weight:900;">' + v + '</button>';
+        }
+        var dzSt = state.filled ? "background:#A7F3D0;border:3px solid #10B981;color:#065F46;" : "background:#FEF3C7;border:3px dashed #F97316;color:#EA580C;";
+        body = '<div style="text-align:center;">' +
+          '<div style="font-size:12px;font-weight:bold;color:#9A3412;background:#FFEDD5;display:inline-block;padding:5px 12px;border-radius:14px;margin-bottom:12px;">🔊 सही Vowel पर टैप करके शब्द पूरा करें</div>' +
+          '<div onclick="speak(\'' + item.w + '\')" style="font-size:74px;margin-bottom:12px;">' + item.e + '</div>' +
+          '<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:16px 0;">' +
+            '<div style="width:62px;height:62px;background:#fff;border:2px solid #FDBA74;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;">' + item.pre + '</div>' +
+            '<div style="width:74px;height:74px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;' + dzSt + '">' + (state.filled ? item.ans : "?") + '</div>' +
+            '<div style="width:62px;height:62px;background:#fff;border:2px solid #FDBA74;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;">' + item.post + '</div>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:center;gap:8px;margin-top:20px;">' + btns + '</div>' +
+        '</div>';
+      } else if (state.tab === 1) {
+        var item = UKG_MATRA[state.qIdx % UKG_MATRA.length];
+        autoSpeak("u1-" + state.qIdx, item.w, "hi-IN");
+        var btns = "";
+        for (var i = 0; i < item.opts.length; i++) {
+          var m = item.opts[i];
+          btns += '<button onclick="checkUkg(\'' + m + '\', \'matra\')" class="btn" style="width:52px;height:52px;background:#F59E0B;color:#fff;border-radius:16px;font-size:28px;font-weight:900;">' + m + '</button>';
+        }
+        var dzSt = state.filled ? "background:#A7F3D0;border:3px solid #10B981;color:#065F46;" : "background:#FEF3C7;border:3px dashed #F59E0B;color:#D97706;";
+        body = '<div style="text-align:center;">' +
+          '<div style="font-size:12px;font-weight:bold;color:#9A3412;background:#FFEDD5;display:inline-block;padding:5px 12px;border-radius:14px;margin-bottom:12px;">🔊 सही मात्रा पर टैप करके शब्द पूरा करें</div>' +
+          '<div onclick="speak(\'' + item.w + '\', \'hi-IN\')" style="font-size:74px;margin-bottom:12px;">' + item.e + '</div>' +
+          '<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:16px 0;">' +
+            '<div style="padding:0 14px;height:62px;background:#fff;border:2px solid #FDBA74;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;">' + item.pre + '</div>' +
+            '<div style="width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900;' + dzSt + '">' + (state.filled ? item.ans : "?") + '</div>' +
+            (item.post ? '<div style="padding:0 14px;height:62px;background:#fff;border:2px solid #FDBA74;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;">' + item.post + '</div>' : '') +
+          '</div>' +
+          '<div style="display:flex;justify-content:center;gap:8px;margin-top:20px;">' + btns + '</div>' +
+        '</div>';
+      } else if (state.tab === 2) {
+        var keys = Object.keys(NUM_NAMES).map(Number);
+        var target = keys[(state.qIdx + 10) % keys.length];
+        autoSpeak("u2-" + state.qIdx, "Find number name for " + target);
+        var opts = [target, keys[(state.qIdx + 4) % keys.length], keys[(state.qIdx + 17) % keys.length]].sort(function() { return Math.random() - 0.5; });
+        var btns = "";
+        for (var i = 0; i < opts.length; i++) {
+          var o = opts[i];
+          btns += '<button onclick="checkAns(' + (o === target) + ', \'' + NUM_NAMES[o] + '\', \'en-IN\')" class="btn opt-btn" style="border-color:#F97316;font-size:18px;padding:13px;">' + NUM_NAMES[o] + '</button>';
+        }
+        body = '<div style="text-align:center;">' +
+          '<div style="font-size:13px;font-weight:bold;color:#9A3412;margin-bottom:8px;">🔊 Number Names (1 to 100)</div>' +
+          '<div style="margin:0 auto 16px;width:120px;height:90px;background:#FEF3C7;border:2px solid #F97316;border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:#9A3412;">' + target + '</div>' +
+          '<div class="grid1">' + btns + '</div>' +
+        '</div>';
+      } else {
+        var a = state.mathA, b = state.mathB, op = state.mathOp;
+        var ans = op === "+" ? a + b : a - b;
+        autoSpeak("u3-" + state.qIdx, "What is " + a + (op === "+" ? " plus " : " minus ") + b);
+        var opts = [ans, ans + 1, Math.max(0, ans - 1)].sort(function() { return Math.random() - 0.5; });
+        var apA = ""; for (var i = 0; i < a; i++) apA += "🍎";
+        var apB = ""; for (var j = 0; j < b; j++) apB += "🍏";
+        var btns = "";
+        for (var k = 0; k < opts.length; k++) {
+          var o = opts[k];
+          btns += '<button onclick="checkAns(' + (o === ans) + ', \'' + o + '\', \'en-IN\')" class="btn opt-btn" style="border-color:#F97316;">' + o + '</button>';
+        }
+        body = '<div style="text-align:center;">' +
+          '<div style="font-size:13px;font-weight:bold;color:#9A3412;margin-bottom:12px;">🔊 चित्र गिनकर हल करें</div>' +
+          '<div style="background:#fff;border:2px solid #FED7AA;border-radius:22px;padding:14px;max-width:300px;margin:0 auto 18px;">' +
+            '<div style="font-size:24px;">' + apA + '</div>' +
+            '<div style="font-size:30px;font-weight:900;color:#EA580C;margin:6px 0;">' + a + ' ' + op + ' ' + b + ' = ?</div>' +
+            '<div style="font-size:24px;">' + apB + '</div>' +
+          '</div>' +
+          '<div class="grid3">' + btns + '</div>' +
+        '</div>';
+      }
+      return headerHTML("UKG Class", "#F57C00") + tabsHTML(tabs, "#F57C00") + '<div style="padding:16px;flex:1;">' + body + '</div>';
+    }
+
+    function setPicCat(c) { playTone("pop"); state.picCat = c; state.picQuiz = false; render(); }
+
+    function togglePicQuiz() {
+      var list = PIC_WORLD[state.picCat];
+      state.picQuiz = !state.picQuiz;
+      state.picTarget = list[Math.floor(Math.random() * list.length)];
+      if (state.picQuiz && state.picTarget) speak("Where is " + state.picTarget.en);
+      render();
+    }
+
+    function tapPic(idx) {
+      var list = PIC_WORLD[state.picCat];
+      var it = list[idx];
+      if (!state.picQuiz) { playTone("pop"); speak(it.en + ". " + it.hi); }
+      else if (state.picTarget && it.en === state.picTarget.en) {
+        speak(it.en + ". " + it.hi);
+        state.picTarget = list[Math.floor(Math.random() * list.length)];
+        setTimeout(function() { if (state.picTarget) speak("Where is " + state.picTarget.en); }, 1200);
+        addStar();
+      } else { wrongAns(); }
+    }
+
+    function renderPictures() {
+      var cats = Object.keys(PIC_WORLD);
+      var list = PIC_WORLD[state.picCat];
+      var catBar = "";
+      for (var i = 0; i < cats.length; i++) {
+        var c = cats[i];
+        var st = state.picCat === c ? "background:#8E24AA;color:#fff;border-color:#8E24AA;" : "";
+        catBar += '<button onclick="setPicCat(\'' + c + '\')" class="btn tab-btn" style="' + st + '">' + c + '</button>';
+      }
+      var cards = "";
+      for (var j = 0; j < list.length; j++) {
+        var it = list[j];
+        cards += '<button onclick="tapPic(' + j + ')" class="btn" style="background:#fff;border:2px solid #CE93D8;border-bottom-width:4px;border-radius:22px;padding:14px;display:flex;flex-direction:column;align-items:center;">' +
+          '<span style="font-size:54px;margin-bottom:6px;">' + it.e + '</span>' +
+          '<span style="font-size:16px;font-weight:900;color:#1E293B;">' + it.en + '</span>' +
+          '<span style="font-size:12px;font-weight:bold;color:#7B1FA2;">' + it.hi + '</span>' +
+        '</button>';
+      }
+      return headerHTML("Picture World", "#8E24AA") +
+        '<div class="tabs">' + catBar + '</div>' +
+        '<div style="padding:16px;flex:1;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">' +
+            '<span style="font-size:12px;font-weight:bold;color:#6A1B9A;">' + (state.picQuiz ? "सही चित्र पर टैप करें!" : "चित्र पर टैप करके नाम सुनें:") + '</span>' +
+            '<button onclick="togglePicQuiz()" class="btn" style="background:#F3E5F5;border:1px solid #CE93D8;color:#4A148C;padding:5px 12px;border-radius:12px;font-size:12px;font-weight:bold;">' + (state.picQuiz ? "📖 Learn" : "🎯 Quiz") + '</button>' +
+          '</div>' +
+          (state.picQuiz && state.picTarget ? '<div onclick="speak(\'Where is ' + state.picTarget.en + '\')" style="background:#8E24AA;color:#fff;border-radius:16px;padding:10px;text-align:center;font-weight:bold;margin-bottom:14px;">🔊 Find: ' + state.picTarget.en + ' (' + state.picTarget.hi + ')</div>' : '') +
+          '<div class="grid2">' + cards + '</div>' +
+        '</div>';
+    }
+
+    function flipCard(idx) {
+      if (state.memOpen.length >= 2 || state.memOpen.indexOf(idx) !== -1 || state.memDone.indexOf(idx) !== -1) return;
+      playTone("pop");
+      state.memOpen.push(idx);
+      render();
+      if (state.memOpen.length === 2) {
+        var a = state.memOpen[0], b = state.memOpen[1];
+        if (state.memCards[a] === state.memCards[b]) {
+          state.memDone.push(a, b);
+          state.memOpen = [];
+          state.stars += 1;
+          playTone("success");
+          speak("Match!");
+          if (state.memDone.length === state.memCards.length) { setTimeout(function() { initMem(); render(); }, 1100); }
+          else { render(); }
+        } else { setTimeout(function() { state.memOpen = []; render(); }, 700); }
+      }
+    }
+
+    function renderBrain() {
+      var tabs = ["👤 Shadow", "🔍 Odd One", "🃏 Memory"];
+      var body = "";
+      if (state.tab === 0) {
+        var item = SHADOWS[state.qIdx % SHADOWS.length];
+        autoSpeak("b0-" + state.qIdx, "Whose shadow is this?");
+        var btns = "";
+        for (var i = 0; i < item.o.length; i++) {
+          var o = item.o[i];
+          btns += '<button onclick="checkAns(' + (o === item.t) + ', \'' + item.n + '\', \'en-IN\')" class="btn opt-btn" style="border-color:#F472B6;font-size:44px;">' + o + '</button>';
+        }
+        body = '<div style="text-align:center;">' +
+          '<div style="font-size:13px;font-weight:bold;color:#9D174D;margin-bottom:12px;">🔊 यह किसकी परछाई है? पहचान
