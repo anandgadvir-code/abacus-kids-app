@@ -3183,14 +3183,18 @@
           html += '</div>';
         } else if (appState.mode === "quiz_pic_to_let") {
           var qItem = DATA_AZ[appState.quizIndex % DATA_AZ.length];
-          autoSpeak("nursery_az_q1_" + appState.quizIndex, "Look at the picture. Which letter does " + qItem.word + " start with?", "en-IN");
+          var qKey1 = "nursery_az_p2l_" + appState.quizIndex;
+          var opts = getShuffledOptions(qKey1, function() {
+            var o = [qItem.letter];
+            while (o.length < 3) {
+              var r = DATA_AZ[Math.floor(Math.random() * DATA_AZ.length)].letter;
+              if (o.indexOf(r) === -1) o.push(r);
+            }
+            return fisherYatesShuffle(o);
+          });
+          var isQ1Answered = (quizState.isAnswered && quizState.activeKey === qKey1);
 
-          var opts = [qItem.letter];
-          while (opts.length < 3) {
-            var randLetter = DATA_AZ[Math.floor(Math.random() * DATA_AZ.length)].letter;
-            if (opts.indexOf(randLetter) === -1) opts.push(randLetter);
-          }
-          opts.sort(function() { return Math.random() - 0.5; });
+          autoSpeak(qKey1, "Look at the picture. Which letter does " + qItem.word + " start with?", "en-IN");
 
           html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + qItem.word + '! ' + qItem.phonics + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + qItem.word + '! ' + qItem.phonics + '\', \'en-IN\'); }, event)">';
           html += '  <div class="flashcard-emoji">' + qItem.emoji + '</div>';
@@ -3202,19 +3206,28 @@
           html += '<div class="options-grid-3">';
           for (var o = 0; o < opts.length; o++) {
             var isCorrect = (opts[o] === qItem.letter);
-            html += '<button class="opt-btn" onclick="safeAction(function(){ handleNurseryLetterAns(' + isCorrect + ', \'' + qItem.phonics + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ handleNurseryLetterAns(' + isCorrect + ', \'' + qItem.phonics + '\', \'en-IN\'); }, event)">' + opts[o] + '</button>';
+            var oBtnCls = "opt-btn";
+            if (isQ1Answered) {
+              oBtnCls += isCorrect ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + oBtnCls + '" onclick="safeAction(function(){ handleNurseryLetterAns(' + isCorrect + ', \'' + qItem.phonics + '\', \'en-IN\', \'' + qItem.letter + '\', \'' + qItem.word + '\', \'' + qItem.emoji + '\'); })" ontouchend="safeAction(function(){ handleNurseryLetterAns(' + isCorrect + ', \'' + qItem.phonics + '\', \'en-IN\', \'' + qItem.letter + '\', \'' + qItem.word + '\', \'' + qItem.emoji + '\'); }, event)">' + opts[o] + '</button>';
           }
           html += '</div>';
+          html += renderCompletedPreviewCard();
         } else {
           var qItem2 = DATA_AZ[appState.quizIndex % DATA_AZ.length];
-          autoSpeak("nursery_az_q2_" + appState.quizIndex, "Letter " + qItem2.letter + ". Which picture starts with " + qItem2.letter + "?", "en-IN");
+          var qKey2 = "nursery_az_l2p_" + appState.quizIndex;
+          var picOpts = getShuffledOptions(qKey2, function() {
+            var p = [qItem2];
+            while (p.length < 4) {
+              var rItem = DATA_AZ[Math.floor(Math.random() * DATA_AZ.length)];
+              if (p.indexOf(rItem) === -1) p.push(rItem);
+            }
+            return fisherYatesShuffle(p);
+          });
+          var isQ2Answered = (quizState.isAnswered && quizState.activeKey === qKey2);
 
-          var picOpts = [qItem2];
-          while (picOpts.length < 4) {
-            var rItem = DATA_AZ[Math.floor(Math.random() * DATA_AZ.length)];
-            if (picOpts.indexOf(rItem) === -1) picOpts.push(rItem);
-          }
-          picOpts.sort(function() { return Math.random() - 0.5; });
+          autoSpeak(qKey2, "Letter " + qItem2.letter + ". Which picture starts with " + qItem2.letter + "?", "en-IN");
 
           html += '<div style="text-align: center; margin: 10px 0;">';
           html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Letter ' + qItem2.letter + '. ' + qItem2.phonics + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Letter ' + qItem2.letter + '. ' + qItem2.phonics + '\', \'en-IN\'); }, event)" style="font-size: 72px; font-weight: 900; color: #0288D1; background: #E1F5FE; border-radius: 24px; padding: 10px 24px; display: inline-block;">' + qItem2.letter + '</div>';
@@ -3224,12 +3237,17 @@
           html += '<div class="options-grid-4">';
           for (var po = 0; po < picOpts.length; po++) {
             var isPOk = (picOpts[po].letter === qItem2.letter);
-            html += '<button class="opt-btn" onclick="safeAction(function(){ handleNurseryPicAns(' + isPOk + ', \'' + picOpts[po].word + '\', \'' + qItem2.phonics + '\'); })" ontouchend="safeAction(function(){ handleNurseryPicAns(' + isPOk + ', \'' + picOpts[po].word + '\', \'' + qItem2.phonics + '\'); }, event)">';
+            var poBtnCls = "opt-btn";
+            if (isQ2Answered) {
+              poBtnCls += isPOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + poBtnCls + '" onclick="safeAction(function(){ handleNurseryPicAns(' + isPOk + ', \'' + picOpts[po].word + '\', \'' + qItem2.phonics + '\', \'en-IN\', \'' + qItem2.letter + '\', \'' + picOpts[po].emoji + '\'); })" ontouchend="safeAction(function(){ handleNurseryPicAns(' + isPOk + ', \'' + picOpts[po].word + '\', \'' + qItem2.phonics + '\', \'en-IN\', \'' + qItem2.letter + '\', \'' + picOpts[po].emoji + '\'); }, event)">';
             html += '  <span class="safe-emoji" style="font-size: 48px;">' + picOpts[po].emoji + '</span>';
             html += '  <span style="font-size: 13px; font-weight: 700; color: #455A64; margin-top: 4px;">' + picOpts[po].word + '</span>';
             html += '</button>';
           }
           html += '</div>';
+          html += renderCompletedPreviewCard();
         }
       }
 
@@ -3328,7 +3346,12 @@
         } else {
           var quizNum = (appState.quizIndex % 15) + 2;
           autoSpeak("count_quiz_" + appState.quizIndex, "Count the objects and tap the right number!", "en-IN");
-          var countOpts = [quizNum, quizNum + 1, Math.max(1, quizNum - 1)].sort(function() { return Math.random() - 0.5; });
+          var countKey = "nursery_count_" + appState.quizIndex;
+          var countOpts = getShuffledOptions(countKey, function() {
+            var co = [quizNum, quizNum + 1, Math.max(1, quizNum - 1)];
+            return fisherYatesShuffle(co);
+          });
+          var isCountAnswered = (quizState.isAnswered && quizState.activeKey === countKey);
 
           html += '<div style="text-align:center;margin: 10px 0;">';
           html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Count the objects and tap the right number\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Count the objects and tap the right number\', \'en-IN\'); }, event)" style="font-size: 16px; font-weight: 800; color: #455A64;">Count the items: 🔊</div>';
@@ -3342,9 +3365,14 @@
           html += '<div class="options-grid-3">';
           for (var co = 0; co < countOpts.length; co++) {
             var isCountOk = (countOpts[co] === quizNum);
-            html += '<button class="opt-btn" onclick="safeAction(function(){ handleNurseryCountAns(' + isCountOk + ', ' + quizNum + '); })" ontouchend="safeAction(function(){ handleNurseryCountAns(' + isCountOk + ', ' + quizNum + '); }, event)">' + countOpts[co] + '</button>';
+            var coBtnCls = "opt-btn";
+            if (isCountAnswered) {
+              coBtnCls += isCountOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + coBtnCls + '" onclick="safeAction(function(){ handleNurseryCountAns(' + isCountOk + ', ' + quizNum + '); })" ontouchend="safeAction(function(){ handleNurseryCountAns(' + isCountOk + ', ' + quizNum + '); }, event)">' + countOpts[co] + '</button>';
           }
           html += '</div>';
+          html += renderCompletedPreviewCard();
         }
       }
 
@@ -3365,12 +3393,16 @@
         } else {
           var shapeTarget = DATA_SHAPES[appState.quizIndex % DATA_SHAPES.length];
           autoSpeak("shape_quiz_" + appState.quizIndex, "Find the " + shapeTarget.name, "en-IN");
-          var shapeOpts = [shapeTarget];
-          while (shapeOpts.length < 3) {
-            var rShape = DATA_SHAPES[Math.floor(Math.random() * DATA_SHAPES.length)];
-            if (shapeOpts.indexOf(rShape) === -1) shapeOpts.push(rShape);
-          }
-          shapeOpts.sort(function() { return Math.random() - 0.5; });
+          var shapeKey = "nursery_shape_" + appState.quizIndex;
+          var shapeOpts = getShuffledOptions(shapeKey, function() {
+            var so = [shapeTarget];
+            while (so.length < 3) {
+              var rShape = DATA_SHAPES[Math.floor(Math.random() * DATA_SHAPES.length)];
+              if (so.indexOf(rShape) === -1) so.push(rShape);
+            }
+            return fisherYatesShuffle(so);
+          });
+          var isShapeAnswered = (quizState.isAnswered && quizState.activeKey === shapeKey);
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Find the ' + shapeTarget.name + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Find the ' + shapeTarget.name + '\', \'en-IN\'); }, event)" style="text-align: center; margin: 18px 0; width: 100%;">';
           html += '  <div style="font-size: 15px; font-weight: bold; color: #546E7A;">Tap on: 🔊</div>';
@@ -3380,94 +3412,113 @@
           html += '<div class="options-grid-3">';
           for (var sho = 0; sho < shapeOpts.length; sho++) {
             var isShapeOk = (shapeOpts[sho].name === shapeTarget.name);
-            html += '<button class="opt-btn" onclick="safeAction(function(){ handleNurseryShapeAns(' + isShapeOk + ', \'' + shapeTarget.name + '\'); })" ontouchend="safeAction(function(){ handleNurseryShapeAns(' + isShapeOk + ', \'' + shapeTarget.name + '\'); }, event)">';
+            var shBtnCls = "opt-btn";
+            if (isShapeAnswered) {
+              shBtnCls += isShapeOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + shBtnCls + '" onclick="safeAction(function(){ handleNurseryShapeAns(' + isShapeOk + ', \'' + shapeTarget.name + '\', \'' + shapeTarget.emoji + '\'); })" ontouchend="safeAction(function(){ handleNurseryShapeAns(' + isShapeOk + ', \'' + shapeTarget.name + '\', \'' + shapeTarget.emoji + '\'); }, event)">';
             html += '  <span class="safe-emoji" style="font-size: 44px;">' + shapeOpts[sho].emoji + '</span>';
             html += '</button>';
           }
           html += '</div>';
+          html += renderCompletedPreviewCard();
         }
       }
 
       // TAB 4: Before / After (100% English 50+ procedural engine)
       else if (appState.tabIndex === 4) {
         var baItem = DATA_BEFORE_AFTER[appState.quizIndex % DATA_BEFORE_AFTER.length];
-        autoSpeak("ba_q_" + appState.quizIndex, baItem.speak, baItem.lang);
+        var baCacheKey = "ba_" + appState.quizIndex;
+        var baOpts = getShuffledOptions(baCacheKey, function() {
+          return fisherYatesShuffle(baItem.options);
+        });
+        var isBaAnswered = (quizState.isAnswered && quizState.activeKey === baCacheKey);
+
+        autoSpeak(baCacheKey, baItem.speak, baItem.lang);
+
+        var promptStr = isBaAnswered
+          ? baItem.prompt.replace(/<span class="dash-blank">___<\/span>/g, '<span class="dash-blank filled-blank">' + baItem.ans + '</span>')
+          : baItem.prompt;
 
         html += '<div style="text-align:center;margin: 14px 0 20px;">';
         html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\'); })" ontouchend="safeAction(function(){ speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\'); }, event)" style="font-size: 18px; font-weight: 800; color: #0277BD; margin-bottom: 12px;">' + baItem.q + ' 🔊</div>';
-        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\'); })" ontouchend="safeAction(function(){ speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\'); }, event)" style="font-size: 34px; font-weight: 900; letter-spacing: 4px; background: #E1F5FE; border: 3px solid #0288D1; border-radius: 20px; padding: 14px 20px; display: inline-block; color: #01579B;">' + baItem.prompt + '</div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\'); })" ontouchend="safeAction(function(){ speak(\'' + baItem.speak + '\', \'' + baItem.lang + '\'); }, event)" style="font-size: 34px; font-weight: 900; letter-spacing: 4px; background: #E1F5FE; border: 3px solid #0288D1; border-radius: 20px; padding: 14px 20px; display: inline-block; color: #01579B;">' + promptStr + '</div>';
         html += '</div>';
 
         html += '<div class="options-grid-3">';
-        for (var bao = 0; bao < baItem.options.length; bao++) {
-          var isBaOk = (baItem.options[bao] === baItem.ans);
-          html += '<button class="opt-btn" onclick="safeAction(function(){ handleBeforeAfterAns(' + isBaOk + ', \'' + baItem.ans + '\', \'' + baItem.lang + '\'); })" ontouchend="safeAction(function(){ handleBeforeAfterAns(' + isBaOk + ', \'' + baItem.ans + '\', \'' + baItem.lang + '\'); }, event)">' + baItem.options[bao] + '</button>';
+        for (var bao = 0; bao < baOpts.length; bao++) {
+          var isBaOk = (baOpts[bao] === baItem.ans);
+          var baBtnCls = "opt-btn";
+          if (isBaAnswered) {
+            baBtnCls += isBaOk ? " correct-choice" : " disabled-choice";
+          }
+          html += '<button class="' + baBtnCls + '" onclick="safeAction(function(){ handleBeforeAfterAns(' + isBaOk + ', \'' + baItem.ans + '\', \'' + baItem.lang + '\'); })" ontouchend="safeAction(function(){ handleBeforeAfterAns(' + isBaOk + ', \'' + baItem.ans + '\', \'' + baItem.lang + '\'); }, event)">' + baOpts[bao] + '</button>';
         }
         html += '</div>';
+        html += renderCompletedPreviewCard();
       }
 
       view.innerHTML = html;
     }
 
-    function handleNurseryLetterAns(isCorrect, speech, lang) {
-      if (isCorrect) {
-        addStar("Superb! " + speech, speech + "! Great job!", lang || "en-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong(lang === "hi-IN" ? "गलत जवाब, फिर कोशिश करो" : "Try again!", lang);
-      }
+    function handleNurseryLetterAns(isCorrect, speech, lang, letter, word, emoji) {
+      var cacheKey = "nursery_az_p2l_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (letter || "") + " for " + (word || "") + " " + (emoji || "🌟"),
+        spoken: (speech || "Great job!") + "! " + (word || "") + "!",
+        lang: lang || "en-IN",
+        ansVal: letter,
+        wrongMsg: lang === "hi-IN" ? "गलत जवाब, फिर कोशिश करो" : "Try again!"
+      });
     }
 
-    function handleNurseryPicAns(isCorrect, word, phonics, lang) {
-      if (isCorrect) {
-        addStar("Awesome! " + word, phonics + "! " + word, lang || "en-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        speak(word, lang || "en-IN");
-        markWrong(lang === "hi-IN" ? "यह नहीं है, सही चित्र पहचानें" : "Try again!", lang);
-      }
+    function handleNurseryPicAns(isCorrect, word, phonics, lang, letter, emoji) {
+      var cacheKey = "nursery_az_l2p_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (letter || "") + " for " + (word || "") + " " + (emoji || ""),
+        spoken: (phonics || "") + "! " + (word || "") + "!",
+        lang: lang || "en-IN",
+        ansVal: word,
+        wrongMsg: lang === "hi-IN" ? "यह नहीं है, सही चित्र पहचानें" : "Try again!"
+      });
     }
 
     function handleNurseryCountAns(isCorrect, count) {
-      if (isCorrect) {
-        addStar("Correct Count: " + count, count + "! Great counting!", "en-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong("Wrong count, count again!");
-      }
+      var cacheKey = "nursery_count_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: "Count = " + count + " ⭐",
+        spoken: "Count is " + count + "! " + getNumberWord(count) + "!",
+        lang: "en-IN",
+        ansVal: count,
+        wrongMsg: "Wrong count, count again!"
+      });
     }
 
-    function handleNurseryShapeAns(isCorrect, shapeName) {
-      if (isCorrect) {
-        addStar("Awesome! " + shapeName, "Yes! That is " + shapeName, "en-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong("Not this shape, try again!");
-      }
+    function handleNurseryShapeAns(isCorrect, shapeName, emoji) {
+      var cacheKey = "nursery_shape_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: "Shape: " + shapeName + " " + (emoji || ""),
+        spoken: "Yes! That is " + shapeName + "!",
+        lang: "en-IN",
+        ansVal: shapeName,
+        wrongMsg: "Not this shape, try again!"
+      });
     }
 
     function handleBeforeAfterAns(isCorrect, ans, lang) {
-      if (isCorrect) {
-        addStar("Correct Answer: " + ans, "Great! Answer is " + ans, lang || "en-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong("Think again!", lang);
-      }
+      var cacheKey = "ba_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: ans + " ✅",
+        spoken: "Correct! The answer is " + ans + "!",
+        lang: lang || "en-IN",
+        ansVal: ans,
+        wrongMsg: "Think again!"
+      });
     }
 
     /* =========================================================
@@ -3649,7 +3700,13 @@
           // LKG EVS Quiz (25+ questions)
           var qList = DATA_LKG_EVS.quiz;
           var qObj = qList[appState.quizIndex % qList.length];
-          autoSpeak("lkg_evs_q_" + appState.quizIndex, qObj.q, "en-IN");
+          var lkgEvsKey = "lkg_evs_q_" + appState.quizIndex;
+          var evsOpts = getShuffledOptions(lkgEvsKey, function() {
+            return fisherYatesShuffle(qObj.options);
+          });
+          var isLkgEvsAnswered = (quizState.isAnswered && quizState.activeKey === lkgEvsKey);
+
+          autoSpeak(lkgEvsKey, qObj.q, "en-IN");
 
           html += '<div style="text-align: center; margin: 12px 0 16px;">';
           html += '  <span class="section-badge" style="background:#2E7D32;">LKG EVS Quiz #' + ((appState.quizIndex % qList.length) + 1) + ' / ' + qList.length + '</span>';
@@ -3657,11 +3714,16 @@
           html += '</div>';
 
           html += '<div style="display: flex; flex-direction: column; gap: 10px; max-width: 360px; margin: 0 auto;">';
-          for (var qo = 0; qo < qObj.options.length; qo++) {
-            var isEvsOk = (qObj.options[qo] === qObj.ans);
-            html += '<button class="opt-btn" style="padding: 14px 10px; font-size: 20px; color: #2E7D32; border-color: #81C784;" onclick="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\'); })" ontouchend="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\'); }, event)">' + qObj.options[qo] + '</button>';
+          for (var qo = 0; qo < evsOpts.length; qo++) {
+            var isEvsOk = (evsOpts[qo] === qObj.ans);
+            var evsBtnCls = "opt-btn";
+            if (isLkgEvsAnswered) {
+              evsBtnCls += isEvsOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + evsBtnCls + '" style="padding: 14px 10px; font-size: 20px; color: #2E7D32; border-color: #81C784;" onclick="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\', \'' + lkgEvsKey + '\'); })" ontouchend="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\', \'' + lkgEvsKey + '\'); }, event)">' + evsOpts[qo] + '</button>';
           }
           html += '</div>';
+          html += renderCompletedPreviewCard();
         }
       }
 
@@ -3767,12 +3829,18 @@
         if (appState.wordSlots.length === wordObj.letters.length) {
           var builtWord = appState.wordSlots.join("");
           if (builtWord === wordObj.word) {
-            addStar("अद्भुत! " + wordObj.word, wordObj.sound + "! बहुत बढ़िया!", "hi-IN");
-            setTimeout(function() {
-              appState.wordCurrentIndex++;
-              appState.wordSlots = [];
-              renderCurrentView();
-            }, 1300);
+            handleQuizAnswerSubmit(true, {
+              key: "shabda_" + appState.wordCurrentIndex,
+              display: wordObj.word + " " + wordObj.emoji,
+              spoken: wordObj.sound + "! " + wordObj.word + "!",
+              lang: "hi-IN",
+              ansVal: wordObj.word,
+              advanceFn: function() {
+                appState.wordCurrentIndex++;
+                appState.wordSlots = [];
+                renderCurrentView();
+              }
+            });
           } else {
             markWrong("गलत शब्द बना, दोबारा जोड़ें", "hi-IN");
             setTimeout(function() {
@@ -3784,52 +3852,53 @@
       }
     }
 
-    function handleVyanjanAns(isCorrect, sound) {
-      if (isCorrect) {
-        addStar("सही उत्तर! " + sound, sound, "hi-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong("गलत व्यंजन, फिर से कोशिश करें", "hi-IN");
-      }
+    function handleVyanjanAns(isCorrect, sound, letter, word, emoji) {
+      var cacheKey = "lkg_vyanjan_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (letter || "") + " से " + (word || "") + " " + (emoji || ""),
+        spoken: (sound || "") + "! " + (word || "") + "!",
+        lang: "hi-IN",
+        ansVal: letter,
+        wrongMsg: "गलत व्यंजन, फिर से कोशिश करें"
+      });
     }
 
-    function handleNumNameAns(isCorrect, spelling) {
-      if (isCorrect) {
-        addStar("Awesome! " + spelling, "Correct! " + spelling, "en-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong("Incorrect spelling, try again!");
-      }
+    function handleNumNameAns(isCorrect, spelling, num) {
+      var cacheKey = "lkg_numname_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (num || "") + " = " + spelling,
+        spoken: (num || "") + " is " + spelling + "!",
+        lang: "en-IN",
+        ansVal: spelling,
+        wrongMsg: "Incorrect spelling, try again!"
+      });
     }
 
-    function handlePreMathAns(isCorrect, name) {
-      if (isCorrect) {
-        addStar("Very Good! " + name, "Correct! " + name, "en-IN");
-        setTimeout(function() {
-          appState.preMathIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong("Try again!");
-      }
+    function handlePreMathAns(isCorrect, name, emoji) {
+      var cacheKey = "lkg_premath_" + appState.preMathIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (name || "") + " " + (emoji || ""),
+        spoken: "Correct! " + (name || "") + "!",
+        lang: "en-IN",
+        ansVal: name,
+        advanceFn: function() { appState.preMathIndex++; renderCurrentView(); },
+        wrongMsg: "Try again!"
+      });
     }
 
-    function handleEvsQuizAns(isCorrect, ans) {
-      if (isCorrect) {
-        addStar("Great Job! " + ans, "Correct! The answer is " + ans, "en-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong("Think carefully and try again!");
-      }
+    function handleEvsQuizAns(isCorrect, ans, customKey) {
+      var cacheKey = customKey || ("evs_quiz_" + appState.quizIndex);
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: ans + " ✅",
+        spoken: "Correct! The answer is " + ans + "!",
+        lang: "en-IN",
+        ansVal: ans,
+        wrongMsg: "Think carefully and try again!"
+      });
     }
 
     /* =========================================================
@@ -3873,22 +3942,36 @@
           html += '</div>';
         } else {
           var cvcQ = wordList[appState.quizIndex % wordList.length];
-          autoSpeak("cvc_q_" + appState.quizIndex, cvcQ.word + ". What vowel is missing in " + cvcQ.word + "?", "en-IN");
+          var cvcCacheKey = "cvc_" + appState.phonicsVowel + "_" + appState.quizIndex;
+          var vOptsArr = getShuffledOptions(cvcCacheKey, function() {
+            return fisherYatesShuffle(["A", "E", "I", "O", "U"]);
+          });
+          var isCvcAnswered = (quizState.isAnswered && quizState.activeKey === cvcCacheKey);
+
+          autoSpeak(cvcCacheKey, cvcQ.word + ". What vowel is missing in " + cvcQ.word + "?", "en-IN");
+
+          var promptWord = isCvcAnswered
+            ? cvcQ.pre + ' <span class="dash-blank filled-blank">' + cvcQ.ans + '</span> ' + cvcQ.post
+            : cvcQ.pre + ' <span class="dash-blank">___</span> ' + cvcQ.post;
 
           html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + cvcQ.word + '! ' + cvcQ.sound + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcQ.word + '! ' + cvcQ.sound + '\', \'en-IN\'); }, event)">';
           html += '  <div class="flashcard-emoji">' + cvcQ.emoji + '</div>';
-          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + cvcQ.pre + ', blank, ' + cvcQ.post + '. ' + cvcQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcQ.pre + ', blank, ' + cvcQ.post + '. ' + cvcQ.word + '\', \'en-IN\'); }, event)" style="font-size: 38px; font-weight: 900; color: #E65100; letter-spacing: 4px;">' + cvcQ.pre + ' <span class="dash-blank">___</span> ' + cvcQ.post + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + cvcQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cvcQ.word + '\', \'en-IN\'); }, event)" style="font-size: 38px; font-weight: 900; color: #E65100; letter-spacing: 4px;">' + promptWord + '</div>';
           html += '  <div class="audio-hint" style="background:#FFF3E0;color:#E65100;">🔊 ' + cvcQ.sound + '</div>';
           html += '</div>';
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Pick the correct vowel for ' + cvcQ.word + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Pick the correct vowel for ' + cvcQ.word + '\', \'en-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Pick the correct vowel: 🔊</div>';
-          var vOptsArr = ["A", "E", "I", "O", "U"];
           html += '<div style="display: flex; justify-content: center; gap: 8px; margin-top: 14px; flex-wrap: wrap;">';
           for (var voi = 0; voi < vOptsArr.length; voi++) {
             var isVowelOk = (vOptsArr[voi] === cvcQ.ans);
-            html += '<button class="letter-bubble" style="background:#FFF3E0;border-color:#FF9800;color:#BF360C;" onclick="safeAction(function(){ handleCvcAns(' + isVowelOk + ', \'' + cvcQ.sound + '\', \'' + vOptsArr[voi] + '\'); })" ontouchend="safeAction(function(){ handleCvcAns(' + isVowelOk + ', \'' + cvcQ.sound + '\', \'' + vOptsArr[voi] + '\'); }, event)">' + vOptsArr[voi] + '</button>';
+            var optBtnClass = "letter-bubble";
+            if (isCvcAnswered) {
+              optBtnClass += isVowelOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + optBtnClass + '" style="background:#FFF3E0;border-color:#FF9800;color:#BF360C;" onclick="safeAction(function(){ handleCvcAns(' + isVowelOk + ', \'' + cvcQ.sound + '\', \'' + vOptsArr[voi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\'); })" ontouchend="safeAction(function(){ handleCvcAns(' + isVowelOk + ', \'' + cvcQ.sound + '\', \'' + vOptsArr[voi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\'); }, event)">' + vOptsArr[voi] + '</button>';
           }
           html += '</div>';
+          html += renderCompletedPreviewCard();
         }
       }
 
@@ -3962,7 +4045,13 @@
           // UKG EVS Quiz (35+ questions)
           var qList = DATA_UKG_EVS.quiz;
           var qObj = qList[appState.quizIndex % qList.length];
-          autoSpeak("ukg_evs_q_" + appState.quizIndex, qObj.q, "en-IN");
+          var ukgEvsKey = "ukg_evs_q_" + appState.quizIndex;
+          var evsOpts = getShuffledOptions(ukgEvsKey, function() {
+            return fisherYatesShuffle(qObj.options);
+          });
+          var isUkgEvsAnswered = (quizState.isAnswered && quizState.activeKey === ukgEvsKey);
+
+          autoSpeak(ukgEvsKey, qObj.q, "en-IN");
 
           html += '<div style="text-align: center; margin: 12px 0 16px;">';
           html += '  <span class="section-badge" style="background:#E65100;">UKG EVS Quiz #' + ((appState.quizIndex % qList.length) + 1) + ' / ' + qList.length + '</span>';
@@ -3970,11 +4059,16 @@
           html += '</div>';
 
           html += '<div style="display: flex; flex-direction: column; gap: 10px; max-width: 360px; margin: 0 auto;">';
-          for (var qo = 0; qo < qObj.options.length; qo++) {
-            var isEvsOk = (qObj.options[qo] === qObj.ans);
-            html += '<button class="opt-btn" style="padding: 14px 10px; font-size: 20px; color: #E65100; border-color: #FFB74D;" onclick="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\'); })" ontouchend="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\'); }, event)">' + qObj.options[qo] + '</button>';
+          for (var qo = 0; qo < evsOpts.length; qo++) {
+            var isEvsOk = (evsOpts[qo] === qObj.ans);
+            var evsBtnCls = "opt-btn";
+            if (isUkgEvsAnswered) {
+              evsBtnCls += isEvsOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + evsBtnCls + '" style="padding: 14px 10px; font-size: 20px; color: #E65100; border-color: #FFB74D;" onclick="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\', \'' + ukgEvsKey + '\'); })" ontouchend="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\', \'' + ukgEvsKey + '\'); }, event)">' + evsOpts[qo] + '</button>';
           }
           html += '</div>';
+          html += renderCompletedPreviewCard();
         }
       }
 
@@ -4024,105 +4118,135 @@
           html += '</div>';
         } else {
           var mqItem = mWordList[appState.quizIndex % mWordList.length];
-          autoSpeak("matra_q_" + appState.quizIndex, mqItem.full + " में कौन सी मात्रा लगेगी?", "hi-IN");
+          var matraCacheKey = "matra_" + appState.matraFilter + "_" + appState.quizIndex;
+          var matraOpts = getShuffledOptions(matraCacheKey, function() {
+            var distPool = ["ा", "ि", "ी", "ु", "ू", "े", "ै", "ो", "ौ"].filter(function(m) { return m !== mqItem.ans; });
+            var shPool = fisherYatesShuffle(distPool);
+            return fisherYatesShuffle([mqItem.ans, shPool[0], shPool[1]]);
+          });
+          var isMatraAnswered = (quizState.isAnswered && quizState.activeKey === matraCacheKey);
+
+          autoSpeak(matraCacheKey, mqItem.full + " में कौन सी मात्रा लगेगी?", "hi-IN");
+
+          var matraPrompt = isMatraAnswered
+            ? mqItem.missing.replace(/<span class="dash-blank">___<\/span>/g, '<span class="dash-blank filled-blank">' + mqItem.ans + '</span>')
+            : mqItem.missing;
 
           html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + mqItem.full + '! ' + mqItem.sound + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + mqItem.full + '! ' + mqItem.sound + '\', \'hi-IN\'); }, event)">';
           html += '  <div class="flashcard-emoji">' + mqItem.emoji + '</div>';
-          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + mqItem.full + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + mqItem.full + '\', \'hi-IN\'); }, event)" style="font-size: 34px; font-weight: 900; color: #D84315;">' + mqItem.missing + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + mqItem.full + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + mqItem.full + '\', \'hi-IN\'); }, event)" style="font-size: 34px; font-weight: 900; color: #D84315;">' + matraPrompt + '</div>';
           html += '  <div class="audio-hint" style="background:#FFF3E0;color:#E65100;">🔊 ' + mqItem.full + '</div>';
           html += '</div>';
 
           html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'सही मात्रा चुनो\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'सही मात्रा चुनो\', \'hi-IN\'); }, event)" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">सही मात्रा चुनो: 🔊</div>';
-          var matraOpts = [mqItem.ans, "ि", "ी", "ु", "े", "ो"].filter(function(x, pos, self) {
-            return self.indexOf(x) === pos;
-          }).slice(0, 3).sort(function() { return Math.random() - 0.5; });
-
           html += '<div class="options-grid-3">';
           for (var mo = 0; mo < matraOpts.length; mo++) {
             var isMatraOk = (matraOpts[mo] === mqItem.ans);
-            html += '<button class="opt-btn" style="border-color:#FFB74D;color:#E65100;font-size:32px;" onclick="safeAction(function(){ handleMatraAns(' + isMatraOk + ', \'' + mqItem.sound + '\'); })" ontouchend="safeAction(function(){ handleMatraAns(' + isMatraOk + ', \'' + mqItem.sound + '\'); }, event)">' + matraOpts[mo] + '</button>';
+            var mBtnCls = "opt-btn";
+            if (isMatraAnswered) {
+              mBtnCls += isMatraOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + mBtnCls + '" style="border-color:#FFB74D;color:#E65100;font-size:32px;" onclick="safeAction(function(){ handleMatraAns(' + isMatraOk + ', \'' + mqItem.sound + '\', \'' + mqItem.full + '\', \'' + mqItem.emoji + '\'); })" ontouchend="safeAction(function(){ handleMatraAns(' + isMatraOk + ', \'' + mqItem.sound + '\', \'' + mqItem.full + '\', \'' + mqItem.emoji + '\'); }, event)">' + matraOpts[mo] + '</button>';
           }
           html += '</div>';
+          html += renderCompletedPreviewCard();
         }
       }
 
       // TAB 4: Addition & Subtraction (100% English)
       else if (appState.tabIndex === 4) {
         filterBar.style.display = "none";
-        var op = (appState.quizIndex % 2 === 0) ? "+" : "-";
-        var a = Math.floor(Math.random() * 4) + 3;
-        var b = Math.floor(Math.random() * 3) + 1;
-        if (op === "-" && a < b) {
-          var tmp = a; a = b; b = tmp;
-        }
-        var correctMath = (op === "+") ? (a + b) : (a - b);
-        var mathSpoken = (op === "+") ? (a + " plus " + b + " equals what?") : (a + " minus " + b + " equals what?");
-        autoSpeak("math_q_" + appState.quizIndex, mathSpoken, "en-IN");
+        var mathCacheKey = "math_" + appState.quizIndex;
+        var mathItem = getShuffledOptions(mathCacheKey, function() {
+          var op = (appState.quizIndex % 2 === 0) ? "+" : "-";
+          var a = Math.floor(Math.random() * 4) + 3;
+          var b = Math.floor(Math.random() * 3) + 1;
+          if (op === "-" && a < b) { var tmp = a; a = b; b = tmp; }
+          var ans = (op === "+") ? (a + b) : (a - b);
+          var mOpts = [ans, ans + 1, Math.max(0, ans - 1)];
+          if (mOpts[1] === mOpts[0]) mOpts[1] = ans + 2;
+          if (mOpts[2] === mOpts[0] || mOpts[2] === mOpts[1]) mOpts[2] = ans + 3;
+          return { a: a, b: b, op: op, ans: ans, options: fisherYatesShuffle(mOpts) };
+        });
+        var isMathAnswered = (quizState.isAnswered && quizState.activeKey === mathCacheKey);
+
+        var mathSpoken = (mathItem.op === "+")
+          ? (mathItem.a + " plus " + mathItem.b + " equals what?")
+          : (mathItem.a + " minus " + mathItem.b + " equals what?");
+        autoSpeak(mathCacheKey, mathSpoken, "en-IN");
+
+        var equationBlank = isMathAnswered
+          ? '<span class="dash-blank filled-blank">' + mathItem.ans + '</span>'
+          : '<span class="dash-blank">___</span>';
 
         html += '<div style="text-align:center;margin: 12px 0;">';
-        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + mathSpoken + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + mathSpoken + '\', \'en-IN\'); }, event)" style="font-size: 40px; font-weight: 900; color: #E65100;">' + a + ' ' + op + ' ' + b + ' = <span class="dash-blank">___</span></div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + mathSpoken + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + mathSpoken + '\', \'en-IN\'); }, event)" style="font-size: 38px; font-weight: 900; color: #E65100;">' + mathItem.a + ' ' + mathItem.op + ' ' + mathItem.b + ' = ' + equationBlank + '</div>';
         html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Count the objects below\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Count the objects below\', \'en-IN\'); }, event)" style="font-size: 13px; font-weight: bold; color: #795548;">Count the objects below: 🔊</div>';
         html += '</div>';
 
         html += '<div class="math-counters-row" style="max-width: 340px; margin: 10px auto;" onclick="safeAction(function(){ speak(\'' + mathSpoken + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + mathSpoken + '\', \'en-IN\'); }, event)">';
-        for (var ga = 0; ga < a; ga++) {
+        for (var ga = 0; ga < mathItem.a; ga++) {
           html += '<span class="touch-speak-item safe-emoji" style="font-size: 32px;">🍎</span>';
         }
-        html += '<span class="math-symbol">' + op + '</span>';
-        for (var gb = 0; gb < b; gb++) {
-          var cross = (op === "-") ? ' style="filter: grayscale(1); opacity: 0.5;"' : '';
+        html += '<span class="math-symbol">' + mathItem.op + '</span>';
+        for (var gb = 0; gb < mathItem.b; gb++) {
+          var cross = (mathItem.op === "-") ? ' style="filter: grayscale(1); opacity: 0.5;"' : '';
           html += '<span class="touch-speak-item safe-emoji" style="font-size: 32px;"' + cross + '>🍎</span>';
         }
         html += '</div>';
 
-        var mathOpts = [correctMath, correctMath + 1, Math.max(0, correctMath - 1)].sort(function() { return Math.random() - 0.5; });
-
         html += '<div class="options-grid-3" style="max-width: 320px; margin: 18px auto 0;">';
-        for (var mopt = 0; mopt < mathOpts.length; mopt++) {
-          var isMathOk = (mathOpts[mopt] === correctMath);
-          html += '<button class="opt-btn" onclick="safeAction(function(){ handleMathAns(' + isMathOk + ', ' + correctMath + '); })" ontouchend="safeAction(function(){ handleMathAns(' + isMathOk + ', ' + correctMath + '); }, event)">' + mathOpts[mopt] + '</button>';
+        for (var mopt = 0; mopt < mathItem.options.length; mopt++) {
+          var isMathOk = (mathItem.options[mopt] === mathItem.ans);
+          var mBtnCls = "opt-btn";
+          if (isMathAnswered) {
+            mBtnCls += isMathOk ? " correct-choice" : " disabled-choice";
+          }
+          html += '<button class="' + mBtnCls + '" onclick="safeAction(function(){ handleMathAns(' + isMathOk + ', ' + mathItem.ans + ', ' + mathItem.a + ', \'' + mathItem.op + '\', ' + mathItem.b + '); })" ontouchend="safeAction(function(){ handleMathAns(' + isMathOk + ', ' + mathItem.ans + ', ' + mathItem.a + ', \'' + mathItem.op + '\', ' + mathItem.b + '); }, event)">' + mathItem.options[mopt] + '</button>';
         }
         html += '</div>';
+        html += renderCompletedPreviewCard();
       }
 
       view.innerHTML = html;
     }
 
-    function handleCvcAns(isCorrect, sound, letter) {
+    function handleCvcAns(isCorrect, sound, letter, word, emoji) {
       speak(letter, "en-IN");
-      if (isCorrect) {
-        addStar("Superb! " + sound, sound + "! Perfect!", "en-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong("Wrong vowel, try again!");
-      }
+      var cacheKey = "cvc_" + appState.phonicsVowel + "_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (word || "") + " " + (emoji || "🌟"),
+        spoken: (sound || "") + "! " + (word || "") + "!",
+        lang: "en-IN",
+        ansVal: letter,
+        wrongMsg: "Wrong vowel, try again!"
+      });
     }
 
-    function handleMatraAns(isCorrect, sound) {
-      if (isCorrect) {
-        addStar("शाबाश! सही मात्रा", sound, "hi-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong("गलत मात्रा, फिर से देखो", "hi-IN");
-      }
+    function handleMatraAns(isCorrect, sound, full, emoji) {
+      var cacheKey = "matra_" + appState.matraFilter + "_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: (full || "") + " " + (emoji || ""),
+        spoken: (sound || "") + "! " + (full || "") + "!",
+        lang: "hi-IN",
+        ansVal: full,
+        wrongMsg: "गलत मात्रा, फिर से देखो"
+      });
     }
 
-    function handleMathAns(isCorrect, ans) {
-      if (isCorrect) {
-        addStar("Correct! = " + ans, "Awesome! The answer is " + ans, "en-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong("Incorrect count, try again!");
-      }
+    function handleMathAns(isCorrect, ans, a, op, b) {
+      var cacheKey = "math_" + appState.quizIndex;
+      var opWord = (op === "+") ? "plus" : "minus";
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: a + " " + op + " " + b + " = " + ans + " 🍎",
+        spoken: a + " " + opWord + " " + b + " equals " + ans + "! Correct!",
+        lang: "en-IN",
+        ansVal: ans,
+        wrongMsg: "Incorrect count, try again!"
+      });
     }
 
     /* =========================================================
@@ -4184,17 +4308,16 @@
       view.innerHTML = html;
     }
 
-    function handlePicWorldAns(isCorrect, en) {
-      if (isCorrect) {
-        addStar("Awesome! " + en, "Very good! That is " + en, "en-IN");
-        setTimeout(function() {
-          appState.quizIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        speak(en, "en-IN");
-        markWrong("That is " + en + ". Try again!");
-      }
+    function handlePicWorldAns(isCorrect, en, emoji) {
+      var cacheKey = "picworld_" + appState.picCategory + "_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: en + " " + (emoji || ""),
+        spoken: "Very good! That is " + en + "!",
+        lang: "en-IN",
+        ansVal: en,
+        wrongMsg: "That is " + en + ". Try again!"
+      });
     }
 
     /* =========================================================
@@ -4217,14 +4340,25 @@
         html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + sTarget.name + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + sTarget.name + '\', \'en-IN\'); }, event)" style="font-size: 20px; font-weight: 900; color: #880E4F;">' + sTarget.name + '</div>';
         html += '</div>';
 
+        var shadowKey = "shadow_" + appState.brainIndex;
+        var sOpts = getShuffledOptions(shadowKey, function() {
+          return fisherYatesShuffle(sTarget.options);
+        });
+        var isShadowAnswered = (quizState.isAnswered && quizState.activeKey === shadowKey);
+
         html += '<div class="options-grid-3">';
-        for (var so = 0; so < sTarget.options.length; so++) {
-          var isShadowOk = (sTarget.options[so] === sTarget.correct);
-          html += '<button class="opt-btn" style="border-color:#F48FB1;box-shadow:0 5px 0 #D81B60;" onclick="safeAction(function(){ handleShadowAns(' + isShadowOk + ', \'' + sTarget.name + '\'); })" ontouchend="safeAction(function(){ handleShadowAns(' + isShadowOk + ', \'' + sTarget.name + '\'); }, event)">';
-          html += '  <span class="safe-emoji" style="font-size: 48px; filter: brightness(0) opacity(0.85);">' + sTarget.options[so] + '</span>';
+        for (var so = 0; so < sOpts.length; so++) {
+          var isShadowOk = (sOpts[so] === sTarget.correct);
+          var shBtnCls = "opt-btn";
+          if (isShadowAnswered) {
+            shBtnCls += isShadowOk ? " correct-choice" : " disabled-choice";
+          }
+          html += '<button class="' + shBtnCls + '" style="border-color:#F48FB1;box-shadow:0 5px 0 #D81B60;" onclick="safeAction(function(){ handleShadowAns(' + isShadowOk + ', \'' + sTarget.name + '\', \'' + sTarget.emoji + '\'); })" ontouchend="safeAction(function(){ handleShadowAns(' + isShadowOk + ', \'' + sTarget.name + '\', \'' + sTarget.emoji + '\'); }, event)">';
+          html += '  <span class="safe-emoji" style="font-size: 48px; filter: brightness(0) opacity(0.85);">' + sOpts[so] + '</span>';
           html += '</button>';
         }
         html += '</div>';
+        html += renderCompletedPreviewCard();
       }
 
       // TAB 1: Odd One Out
@@ -4237,14 +4371,25 @@
         html += '  <div style="font-size: 12px; font-weight: bold; color: #546E7A;">Tap the item that does not belong:</div>';
         html += '</div>';
 
+        var oddKey = "odd_" + appState.brainIndex;
+        var oddItems = getShuffledOptions(oddKey, function() {
+          return fisherYatesShuffle(oddObj.items);
+        });
+        var isOddAnswered = (quizState.isAnswered && quizState.activeKey === oddKey);
+
         html += '<div class="options-grid-4">';
-        for (var oi = 0; oi < oddObj.items.length; oi++) {
-          var itm = oddObj.items[oi];
-          html += '<button class="opt-btn" style="border-color:#F48FB1;box-shadow:0 5px 0 #D81B60;padding:20px 8px;" onclick="safeAction(function(){ handleOddAns(' + itm.isOdd + ', \'' + (itm.reason || "Good job!") + '\', \'' + itm.name + '\'); })" ontouchend="safeAction(function(){ handleOddAns(' + itm.isOdd + ', \'' + (itm.reason || "Good job!") + '\', \'' + itm.name + '\'); }, event)">';
+        for (var oi = 0; oi < oddItems.length; oi++) {
+          var itm = oddItems[oi];
+          var oddBtnCls = "opt-btn";
+          if (isOddAnswered) {
+            oddBtnCls += itm.isOdd ? " correct-choice" : " disabled-choice";
+          }
+          html += '<button class="' + oddBtnCls + '" style="border-color:#F48FB1;box-shadow:0 5px 0 #D81B60;padding:20px 8px;" onclick="safeAction(function(){ handleOddAns(' + itm.isOdd + ', \'' + (itm.reason || "Good job!") + '\', \'' + itm.name + '\', \'' + itm.emoji + '\'); })" ontouchend="safeAction(function(){ handleOddAns(' + itm.isOdd + ', \'' + (itm.reason || "Good job!") + '\', \'' + itm.name + '\', \'' + itm.emoji + '\'); }, event)">';
           html += '  <span class="safe-emoji" style="font-size: 52px;">' + itm.emoji + '</span>';
           html += '</button>';
         }
         html += '</div>';
+        html += renderCompletedPreviewCard();
       }
 
       // TAB 2: Memory Flip Game
@@ -4337,29 +4482,31 @@
       }
     }
 
-    function handleShadowAns(isCorrect, name) {
-      if (isCorrect) {
-        addStar("Great Match! " + name, "Perfect shadow of " + name, "en-IN");
-        setTimeout(function() {
-          appState.brainIndex++;
-          renderCurrentView();
-        }, 1200);
-      } else {
-        markWrong("Not the right shadow, try again!");
-      }
+    function handleShadowAns(isCorrect, name, emoji) {
+      var cacheKey = "shadow_" + appState.brainIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: "Match: " + name + " " + (emoji || ""),
+        spoken: "Great match! Perfect shadow of " + name + "!",
+        lang: "en-IN",
+        ansVal: name,
+        advanceFn: function() { appState.brainIndex++; renderCurrentView(); },
+        wrongMsg: "Not the right shadow, try again!"
+      });
     }
 
-    function handleOddAns(isOdd, reason, name) {
+    function handleOddAns(isOdd, reason, name, emoji) {
       if (name) speak(name, "en-IN");
-      if (isOdd) {
-        addStar("Awesome! Odd One Out", reason, "en-IN");
-        setTimeout(function() {
-          appState.brainIndex++;
-          renderCurrentView();
-        }, 1300);
-      } else {
-        markWrong("This belongs to the group, look closely!");
-      }
+      var cacheKey = "odd_" + appState.brainIndex;
+      handleQuizAnswerSubmit(isOdd, {
+        key: cacheKey,
+        display: "Odd One Out: " + name + " " + (emoji || ""),
+        spoken: "Awesome! " + name + " is the odd one out! " + (reason || ""),
+        lang: "en-IN",
+        ansVal: name,
+        advanceFn: function() { appState.brainIndex++; renderCurrentView(); },
+        wrongMsg: "This belongs to the group, look closely!"
+      });
     }
 
     /* =========================================================
