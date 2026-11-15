@@ -1447,6 +1447,140 @@
       border-color: #CFD8DC;
       color: #B0BEC5;
     }
+    /* =========================================================
+       NURSERY NUMBERS WORKBOOK & 14 SUB-TABS STYLES
+       ========================================================= */
+    .count-grid-50 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 420px;
+      margin: 12px auto;
+    }
+    .count-grid-btn {
+      min-height: 52px;
+      border-radius: 14px;
+      border: 2px solid #90CAF9;
+      background: #E3F2FD;
+      color: #0D47A1;
+      font-size: 1.5rem;
+      font-weight: 900;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.06);
+      transition: transform 0.1s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+    .count-grid-btn:active {
+      transform: scale(0.92);
+    }
+    .count-grid-btn.auto-count-active {
+      border-color: #FF9800 !important;
+      background: #FFF8E1 !important;
+      color: #E65100 !important;
+      box-shadow: 0 0 12px rgba(255,152,0,0.65) !important;
+      transform: scale(1.08) !important;
+    }
+    .tap-count-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin: 14px auto;
+      max-width: 380px;
+      padding: 10px;
+      background: #FAFAFA;
+      border-radius: 18px;
+      border: 2px dashed #CFD8DC;
+    }
+    .tap-count-item {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      background: #FFFFFF;
+      border: 2px solid #B0BEC5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      position: relative;
+      cursor: pointer;
+      touch-action: manipulation;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+      transition: transform 0.12s ease, border-color 0.15s ease;
+      user-select: none;
+    }
+    .tap-count-item:active {
+      transform: scale(0.92);
+    }
+    .tap-count-item.counted {
+      background: #E8F5E9;
+      border-color: #4CAF50;
+      box-shadow: 0 3px 8px rgba(76,175,80,0.25);
+    }
+    .tap-count-badge {
+      position: absolute;
+      top: -7px;
+      right: -7px;
+      background: #E91E63;
+      color: #FFFFFF;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      font-size: 12px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+      animation: popIn 0.25s ease-out;
+    }
+    .odd-even-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      border-radius: 14px;
+      background: #FFFFFF;
+      border: 2px solid #E0E0E0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .odd-even-row:active {
+      transform: scale(0.98);
+    }
+    .odd-even-row.is-even {
+      border-color: #81C784;
+      background: #F1F8E9;
+    }
+    .odd-even-row.is-odd {
+      border-color: #FFB74D;
+      background: #FFF8E1;
+    }
+    .compare-card-btn {
+      min-height: 110px;
+      border-radius: 18px;
+      border: 2.5px solid #CFD8DC;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      touch-action: manipulation;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      transition: transform 0.12s ease, border-color 0.15s ease;
+      padding: 12px 8px;
+      width: 100%;
+    }
+    .compare-card-btn:active {
+      transform: scale(0.95);
+    }
   </style>
 </head>
 <body>
@@ -2529,6 +2663,11 @@
       nurseryAbcOrderCurrentIdx: 0,
       nurseryAbcOrderPlaced: [],
       nurseryAbcOrderRound: 0,
+      nurseryAbcOrderRound: 0,
+      nurseryNumMatchSetIndex: 0,
+      nurseryNumMissingRound: 0,
+      nurseryNumMissingFilled: [],
+      nurseryTapCounted: [],
       lkgHindiSubTab: "vyanjan", // vyanjan, swar
       matraBuilderIndex: 0,
       matraBuilderSlots: [],
@@ -6778,10 +6917,241 @@
         updateMatchingSvgLines();
       }
     });
+
+    /* =========================================================
+       NURSERY NUMBERS 14 SUB-TABS ENGINE & HANDLERS
+       ========================================================= */
+    var autoCountingTimer = null;
+    var autoCountingCurrent = 1;
+
+    var DATA_NURSERY_COMPARISONS = [
+      { q: "Which one is BIGGER?", speak: "Which one is bigger?", opt1: { name: "Elephant", emoji: "🐘", isAns: true }, opt2: { name: "Ant", emoji: "🐜", isAns: false }, sound: "Elephant is bigger than Ant!" },
+      { q: "Which one is SMALLER?", speak: "Which one is smaller?", opt1: { name: "Watermelon", emoji: "🍉", isAns: false }, opt2: { name: "Cherry", emoji: "🍒", isAns: true }, sound: "Cherry is smaller than Watermelon!" },
+      { q: "Which one is BIGGER?", speak: "Which one is bigger?", opt1: { name: "Car", emoji: "🚗", isAns: true }, opt2: { name: "Bicycle", emoji: "🚲", isAns: false }, sound: "Car is bigger than Bicycle!" },
+      { q: "Which one is TALLER?", speak: "Which one is taller?", opt1: { name: "Giraffe", emoji: "🦒", isAns: true }, opt2: { name: "Puppy", emoji: "🐶", isAns: false }, sound: "Giraffe is taller than Puppy!" },
+      { q: "Which one is SHORTER?", speak: "Which one is shorter?", opt1: { name: "Tree", emoji: "🌴", isAns: false }, opt2: { name: "Mushroom", emoji: "🍄", isAns: true }, sound: "Mushroom is shorter than Tree!" },
+      { q: "Which one is TALLER?", speak: "Which one is taller?", opt1: { name: "Building", emoji: "🏢", isAns: true }, opt2: { name: "Tent", emoji: "⛺", isAns: false }, sound: "Building is taller than Tent!" },
+      { q: "Which one is HEAVIER?", speak: "Which one is heavier?", opt1: { name: "Rock", emoji: "🪨", isAns: true }, opt2: { name: "Feather", emoji: "🪶", isAns: false }, sound: "Rock is heavier than Feather!" },
+      { q: "Which one is LIGHTER?", speak: "Which one is lighter?", opt1: { name: "Bus", emoji: "🚌", isAns: false }, opt2: { name: "Balloon", emoji: "🎈", isAns: true }, sound: "Balloon is lighter than Bus!" },
+      { q: "Which one is HEAVIER?", speak: "Which one is heavier?", opt1: { name: "Hippo", emoji: "🦛", isAns: true }, opt2: { name: "Butterfly", emoji: "🦋", isAns: false }, sound: "Hippo is heavier than Butterfly!" },
+      { q: "Which one is BIGGER?", speak: "Which one is bigger?", opt1: { name: "Whale", emoji: "🐋", isAns: true }, opt2: { name: "Goldfish", emoji: "🐟", isAns: false }, sound: "Whale is bigger than Goldfish!" },
+      { q: "Which one is TALLER?", speak: "Which one is taller?", opt1: { name: "Ladder", emoji: "🪜", isAns: true }, opt2: { name: "Chair", emoji: "🪑", isAns: false }, sound: "Ladder is taller than Chair!" },
+      { q: "Which one is LIGHTER?", speak: "Which one is lighter?", opt1: { name: "Leaf", emoji: "🍃", isAns: true }, opt2: { name: "Log", emoji: "🪵", isAns: false }, sound: "Leaf is lighter than Log!" }
+    ];
+
+    var DATA_SHAPE_OBJECTS_QUIZ = [
+      { obj: "Pizza Slice", emoji: "🍕", shape: "Triangle", shapeEmoji: "🔺" },
+      { obj: "Soccer Ball", emoji: "⚽", shape: "Circle", shapeEmoji: "⚪" },
+      { obj: "Gift Box", emoji: "🎁", shape: "Square", shapeEmoji: "⏹️" },
+      { obj: "Door", emoji: "🚪", shape: "Rectangle", shapeEmoji: "🟩" },
+      { obj: "Night Star", emoji: "⭐", shape: "Star", shapeEmoji: "⭐️" },
+      { obj: "Love Heart", emoji: "❤️", shape: "Heart", shapeEmoji: "💖" },
+      { obj: "Egg", emoji: "🥚", shape: "Oval", shapeEmoji: "🥚" },
+      { obj: "Wall Clock", emoji: "⏰", shape: "Circle", shapeEmoji: "⚪" },
+      { obj: "Television", emoji: "📺", shape: "Rectangle", shapeEmoji: "🟩" },
+      { obj: "Tricycle Wheel", emoji: "🛞", shape: "Circle", shapeEmoji: "⚪" }
+    ];
+
+    var MISSING_NUM_ROUNDS = [
+      { nums: [1, 2, 3, 4, 5, 6], missing: [2, 5] },
+      { nums: [5, 6, 7, 8, 9, 10], missing: [6, 9] },
+      { nums: [10, 11, 12, 13, 14, 15], missing: [11, 14] },
+      { nums: [15, 16, 17, 18, 19, 20], missing: [17, 19] },
+      { nums: [1, 2, 3, 4, 5, 6, 7, 8], missing: [3, 6] },
+      { nums: [9, 10, 11, 12, 13, 14, 15, 16], missing: [10, 13, 15] },
+      { nums: [13, 14, 15, 16, 17, 18, 19, 20], missing: [14, 17, 19] }
+    ];
+
+    function toggleAutoCount50() {
+      if (autoCountingTimer) {
+        clearInterval(autoCountingTimer);
+        autoCountingTimer = null;
+        renderCurrentView();
+      } else {
+        autoCountingCurrent = 1;
+        speak(autoCountingCurrent + "! " + getNumberWord(autoCountingCurrent), "en-IN");
+        renderCurrentView();
+        autoCountingTimer = setInterval(function() {
+          autoCountingCurrent++;
+          if (autoCountingCurrent > 50) {
+            clearInterval(autoCountingTimer);
+            autoCountingTimer = null;
+            speak("Counting complete! Fantastic job!", "en-IN");
+            triggerConfetti();
+            renderCurrentView();
+          } else {
+            speak(autoCountingCurrent + "! " + getNumberWord(autoCountingCurrent), "en-IN");
+            highlightAutoCountNumber(autoCountingCurrent);
+          }
+        }, 1200);
+      }
+    }
+
+    function highlightAutoCountNumber(n) {
+      var btns = document.querySelectorAll(".count-grid-btn");
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.remove("auto-count-active");
+      }
+      var activeBtn = document.querySelector('.count-grid-btn[data-num="' + n + '"]');
+      if (activeBtn) {
+        activeBtn.classList.add("auto-count-active");
+        try { activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch(e) {}
+      }
+    }
+
+    function tapToCountItem(index, total) {
+      if (!appState.nurseryTapCounted) appState.nurseryTapCounted = [];
+      if (appState.nurseryTapCounted.indexOf(index) === -1) {
+        appState.nurseryTapCounted.push(index);
+        var curCount = appState.nurseryTapCounted.length;
+        playTone("click");
+        speak(curCount + "! " + getNumberWord(curCount), "en-IN");
+        renderCurrentView();
+      }
+    }
+
+    function advanceNurseryNumMatchSet() {
+      appState.nurseryNumMatchSetIndex++;
+      lineDrawingState.matchedPairs = [];
+      lineDrawingState.selectedDot = null;
+      lineDrawingState.wrongLine = null;
+      lineDrawingState.isDrawing = false;
+      renderCurrentView();
+    }
+
+    function advanceNurseryNumMissingRound() {
+      appState.nurseryNumMissingRound++;
+      appState.nurseryNumMissingFilled = [];
+      renderCurrentView();
+    }
+
+    function tapNurseryMissingNum(tappedNum) {
+      var curRound = MISSING_NUM_ROUNDS[appState.nurseryNumMissingRound % MISSING_NUM_ROUNDS.length];
+      if (!appState.nurseryNumMissingFilled) appState.nurseryNumMissingFilled = [];
+
+      var nextNeeded = null;
+      for (var i = 0; i < curRound.missing.length; i++) {
+        if (appState.nurseryNumMissingFilled.indexOf(curRound.missing[i]) === -1) {
+          nextNeeded = curRound.missing[i];
+          break;
+        }
+      }
+      if (!nextNeeded) return;
+
+      if (tappedNum === nextNeeded) {
+        appState.nurseryNumMissingFilled.push(tappedNum);
+        playTone("success");
+        speak(tappedNum + "! " + getNumberWord(tappedNum) + "! Good job!", "en-IN");
+        if (appState.nurseryNumMissingFilled.length === curRound.missing.length) {
+          triggerConfetti();
+          addStar("🎉 Missing Numbers Done!", "Superb! All missing numbers filled correctly!", "en-IN");
+        }
+        renderCurrentView();
+      } else {
+        playTone("wrong");
+        markWrong("Try again! Find number " + nextNeeded, "en-IN");
+      }
+    }
+
+    function handleNurseryAfterAns(isCorrect, n, ans) {
+      var cacheKey = "nurs_after_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: n + " ➔ " + ans + " ✅",
+        spoken: "After " + n + " comes " + ans + "! Great job!",
+        lang: "en-IN",
+        ansVal: ans,
+        wrongMsg: "Think again! What comes next?"
+      });
+    }
+
+    function handleNurseryBeforeAns(isCorrect, n, ans) {
+      var cacheKey = "nurs_before_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: ans + " ➔ " + n + " ✅",
+        spoken: "Before " + n + " comes " + ans + "! Awesome!",
+        lang: "en-IN",
+        ansVal: ans,
+        wrongMsg: "Think again! What comes before?"
+      });
+    }
+
+    function handleNurseryBetweenAns(isCorrect, n, ans) {
+      var cacheKey = "nurs_between_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: n + ", " + ans + ", " + (n + 2) + " ✅",
+        spoken: ans + " comes between " + n + " and " + (n + 2) + "!",
+        lang: "en-IN",
+        ansVal: ans,
+        wrongMsg: "Think again! What comes between?"
+      });
+    }
+
+    function handleNurseryOddEvenAns(isCorrect, n, isEven) {
+      var cacheKey = "nurs_odd_even_" + appState.quizIndex;
+      var lbl = isEven ? "EVEN (All Paired 👫)" : "ODD (1 Left Alone 🧍)";
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: n + " is " + (isEven ? "EVEN 👫" : "ODD 🧍") + " ✅",
+        spoken: n + " is " + (isEven ? "Even, all items are paired!" : "Odd, one item is left alone!"),
+        lang: "en-IN",
+        ansVal: lbl,
+        wrongMsg: "Try again! Look at the pairs!"
+      });
+    }
+
+    function handleNurseryNumNameAns(isCorrect, n, spelling) {
+      var cacheKey = "nurs_numname_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: n + " = " + spelling + " ✅",
+        spoken: n + " is spelled " + spelling + "! Great job!",
+        lang: "en-IN",
+        ansVal: spelling,
+        wrongMsg: "Try again! Match the spelling!"
+      });
+    }
+
+    function handleNurseryCompareAns(isCorrect, prompt, chosenName, sound) {
+      var cacheKey = "nurs_compare_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: chosenName + " ✅",
+        spoken: (sound || ("Correct! " + chosenName + "!")) + " Fantastic!",
+        lang: "en-IN",
+        ansVal: chosenName,
+        wrongMsg: "Try again! Look at the size carefully!"
+      });
+    }
+
+    function handleNurseryShapeObjectAns(isCorrect, objName, shapeName, shapeEmoji) {
+      var cacheKey = "nurs_shape_obj_" + appState.quizIndex;
+      handleQuizAnswerSubmit(isCorrect, {
+        key: cacheKey,
+        display: objName + " = " + shapeName + " " + (shapeEmoji || "") + " ✅",
+        spoken: objName + " is a " + shapeName + "! Well done!",
+        lang: "en-IN",
+        ansVal: shapeName,
+        wrongMsg: "Try again! What shape does it look like?"
+      });
+    }
 function setNurseryNumSubTab(st) {
+      if (autoCountingTimer) {
+        clearInterval(autoCountingTimer);
+        autoCountingTimer = null;
+      }
       appState.nurseryNumSubTab = st;
       appState.quizIndex = 0;
+      appState.nurseryTapCounted = [];
       resetQuizQuestionState();
+      if (lineDrawingState) {
+        lineDrawingState.matchedPairs = [];
+        lineDrawingState.selectedDot = null;
+        lineDrawingState.wrongLine = null;
+        lineDrawingState.isDrawing = false;
+      }
       renderCurrentView();
       scrollActiveFilterPill();
     }
@@ -7393,180 +7763,723 @@ function setNurseryNumSubTab(st) {
         }
       }
 
-      // TAB 3: 🔢 Numbers & Counting (1-20 Counting, Shapes, Before/After)
+      // TAB 3: 🔢 Numbers & Counting (14 Dedicated Nursery Sub-Tabs)
       else if (tabKey === "numbers") {
-        if (filterBar) {
-          filterBar.style.display = "flex";
-          var nPills = [
-            { key: "counting", label: "🔢 1-20 Counting" },
-            { key: "shapes", label: "🔺 Basic Shapes" },
-            { key: "before_after", label: "↔️ Before & After" }
-          ];
-          var npHtml = "";
-          for (var npi = 0; npi < nPills.length; npi++) {
-            var np = nPills[npi];
-            var npCls = "filter-pill" + (appState.nurseryNumSubTab === np.key ? " active" : "");
-            npHtml += '<button class="' + npCls + '" onclick="event.stopPropagation(); setNurseryNumSubTab(\'' + np.key + '\');">' + np.label + '</button>';
-          }
-          filterBar.innerHTML = npHtml;
+        if (!appState.nurseryNumSubTab || appState.nurseryNumSubTab === "count" || appState.nurseryNumSubTab === "counting") {
+          appState.nurseryNumSubTab = "count_50";
         }
 
-        // Sub 1: 1-20 Counting
-        if (appState.nurseryNumSubTab === "counting") {
+        if (filterBar) {
+          filterBar.style.display = "flex";
+          var nNumPills = [
+            { key: "count_50", label: "🔢 Counting 1–50" },
+            { key: "count_tap_10", label: "👆 Count & Tap (1–10)" },
+            { key: "count_tap_20", label: "👆 Count & Tap (11–20)" },
+            { key: "match_num", label: "🔗 Match Same Number" },
+            { key: "match_pic_num", label: "✏️ Match with Pictures" },
+            { key: "after_num", label: "➡️ After Numbers" },
+            { key: "before_num", label: "⬅️ Before Numbers" },
+            { key: "between_num", label: "↔️ Between Numbers" },
+            { key: "odd_even", label: "⚖️ Odd & Even" },
+            { key: "names_1_10", label: "📝 Number Names (1–10)" },
+            { key: "names_11_20", label: "📝 Number Names (11–20)" },
+            { key: "compare_size", label: "🐘 Biggest, Tallest & Heaviest" },
+            { key: "shapes_objects", label: "🔷 Shapes & Objects" },
+            { key: "missing_num", label: "🧩 Missing Numbers (1–20)" }
+          ];
+          var nnpHtml = "";
+          for (var nnpi = 0; nnpi < nNumPills.length; nnpi++) {
+            var nnp = nNumPills[nnpi];
+            var nnpCls = "filter-pill" + (appState.nurseryNumSubTab === nnp.key ? " active" : "");
+            nnpHtml += '<button class="' + nnpCls + '" onclick="event.stopPropagation(); setNurseryNumSubTab(\'' + nnp.key + '\');">' + nnp.label + '</button>';
+          }
+          filterBar.innerHTML = nnpHtml;
+        }
+
+        // =========================================================================
+        // SUB-TAB 1: 🔢 COUNTING 1–50 (Wide 5-Col Grid + Auto Count 1-50)
+        // =========================================================================
+        if (appState.nurseryNumSubTab === "count_50") {
+          autoSpeak("nurs_count_50", "Numbers 1 to 50. Tap any number to hear pronunciation!", "en-IN");
+
+          html += '<div style="display:flex;justify-content:space-between;align-items:center;max-width:420px;margin:0 auto 10px;padding:0 4px;flex-wrap:wrap;gap:8px;">';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Numbers 1 to 50. Tap any number to hear sound!\', \'en-IN\'); })" style="font-size:14px;font-weight:800;color:#1565C0;">Tap any number (1–50) 🔊</div>';
+          var isAutoOn = !!autoCountingTimer;
+          html += '  <button onclick="safeAction(function(){ toggleAutoCount50(); })" style="background:' + (isAutoOn ? "#F44336" : "#43A047") + ';color:#fff;border:none;border-radius:12px;padding:8px 14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.1);">';
+          html += (isAutoOn ? "⏸️ Stop Auto Count" : "▶️ Auto Count 1–50");
+          html += '  </button>';
+          html += '</div>';
+
+          html += '<div class="count-grid-50">';
+          for (var cNum = 1; cNum <= 50; cNum++) {
+            var isCurrentAuto = (isAutoOn && autoCountingCurrent === cNum);
+            var btnCls = "count-grid-btn" + (isCurrentAuto ? " auto-count-active" : "");
+            var colBg = "#E3F2FD";
+            var colBorder = "#90CAF9";
+            var colTxt = "#0D47A1";
+            if (cNum > 10 && cNum <= 20) { colBg = "#E8F5E9"; colBorder = "#A5D6A7"; colTxt = "#1B5E20"; }
+            else if (cNum > 20 && cNum <= 30) { colBg = "#FFF3E0"; colBorder = "#FFCC80"; colTxt = "#E65100"; }
+            else if (cNum > 30 && cNum <= 40) { colBg = "#F3E5F5"; colBorder = "#CE93D8"; colTxt = "#4A148C"; }
+            else if (cNum > 40 && cNum <= 50) { colBg = "#E0F2F1"; colBorder = "#80CBC4"; colTxt = "#004D40"; }
+
+            html += '<button class="' + btnCls + '" data-num="' + cNum + '" style="background:' + colBg + ';border-color:' + colBorder + ';color:' + colTxt + ';" onclick="safeAction(function(){ speak(\'' + cNum + '! ' + getNumberWord(cNum) + '\', \'en-IN\'); })">' + cNum + '</button>';
+          }
+          html += '</div>';
+        }
+
+        // =========================================================================
+        // SUB-TAB 2: 👆 COUNT & TAP (1–10)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "count_tap_10") {
+          var countTarget10 = (appState.quizIndex % 10) + 1;
+          var cacheKey10 = "nurs_count_tap_10_" + appState.quizIndex;
+          var countOpts10 = getShuffledOptions(cacheKey10, function() {
+            var co = [countTarget10];
+            while (co.length < 4) {
+              var rc = Math.floor(Math.random() * 10) + 1;
+              if (co.indexOf(rc) === -1) co.push(rc);
+            }
+            return fisherYatesShuffle(co);
+          });
+          var isAnswered10 = (quizState.isAnswered && quizState.activeKey === cacheKey10);
+          var emojiPool10 = ["🍎", "🎈", "🐱", "🐶", "🚗", "⭐", "🍓", "🐟", "🌸", "🐻"];
+          var curEmoji10 = emojiPool10[appState.quizIndex % emojiPool10.length];
+
+          autoSpeak(cacheKey10, "Tap each item to count! How many " + curEmoji10 + " do you see?", "en-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Tap each item to count! Then choose the number below!\', \'en-IN\'); })" style="font-size:14px;font-weight:800;color:#1565C0;text-align:center;margin-bottom:6px;">Tap each item to count (1–10): 🔊</div>';
+
+          // Interactive Touch Counting Container
+          html += '<div class="tap-count-container">';
+          var countedList10 = appState.nurseryTapCounted || [];
+          for (var ti = 0; ti < countTarget10; ti++) {
+            var isTapped = (countedList10.indexOf(ti) !== -1);
+            var itemCls = "tap-count-item" + (isTapped ? " counted" : "");
+            html += '<div class="' + itemCls + '" onclick="safeAction(function(){ tapToCountItem(' + ti + ', ' + countTarget10 + '); })">';
+            if (isTapped) {
+              var tapRank = countedList10.indexOf(ti) + 1;
+              html += '  <span class="tap-count-badge">' + tapRank + '</span>';
+            }
+            html += '  <span class="safe-emoji">' + curEmoji10 + '</span>';
+            html += '</div>';
+          }
+          html += '</div>';
+
+          html += '<div style="font-size:13px;font-weight:800;color:#546E7A;text-align:center;margin:6px 0;">Counted: <span style="font-size:16px;color:#E91E63;font-weight:900;">' + countedList10.length + ' / ' + countTarget10 + '</span>. Choose the correct number:</div>';
+
+          // 4 Options Grid
+          html += '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;max-width:380px;margin:10px auto 0;">';
+          for (var coi = 0; coi < countOpts10.length; coi++) {
+            var isCountOk = (countOpts10[coi] === countTarget10);
+            var cBtnCls = "order-tile-btn";
+            if (isAnswered10) {
+              cBtnCls += isCountOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + cBtnCls + '" onclick="safeAction(function(){ handleNurseryCountAns(' + isCountOk + ', ' + countTarget10 + '); })">' + countOpts10[coi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // =========================================================================
+        // SUB-TAB 3: 👆 COUNT & TAP (11–20)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "count_tap_20") {
+          var countTarget20 = (appState.quizIndex % 10) + 11;
+          var cacheKey20 = "nurs_count_tap_20_" + appState.quizIndex;
+          var countOpts20 = getShuffledOptions(cacheKey20, function() {
+            var co = [countTarget20];
+            while (co.length < 4) {
+              var rc = Math.floor(Math.random() * 10) + 11;
+              if (co.indexOf(rc) === -1) co.push(rc);
+            }
+            return fisherYatesShuffle(co);
+          });
+          var isAnswered20 = (quizState.isAnswered && quizState.activeKey === cacheKey20);
+          var emojiPool20 = ["⭐", "🍓", "🍎", "🎈", "🚗", "🌸", "🐟", "🐱", "🐶", "💎"];
+          var curEmoji20 = emojiPool20[appState.quizIndex % emojiPool20.length];
+
+          autoSpeak(cacheKey20, "Tap each item to count! How many items do you see?", "en-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Tap each item to count (11 to 20)!\', \'en-IN\'); })" style="font-size:14px;font-weight:800;color:#1565C0;text-align:center;margin-bottom:6px;">Tap each item to count (11–20): 🔊</div>';
+
+          html += '<div class="tap-count-container">';
+          var countedList20 = appState.nurseryTapCounted || [];
+          for (var t2i = 0; t2i < countTarget20; t2i++) {
+            var isTapped20 = (countedList20.indexOf(t2i) !== -1);
+            var itemCls20 = "tap-count-item" + (isTapped20 ? " counted" : "");
+            html += '<div class="' + itemCls20 + '" style="width:48px;height:48px;font-size:26px;" onclick="safeAction(function(){ tapToCountItem(' + t2i + ', ' + countTarget20 + '); })">';
+            if (isTapped20) {
+              var tapRank20 = countedList20.indexOf(t2i) + 1;
+              html += '  <span class="tap-count-badge" style="width:20px;height:20px;font-size:11px;">' + tapRank20 + '</span>';
+            }
+            html += '  <span class="safe-emoji">' + curEmoji20 + '</span>';
+            html += '</div>';
+          }
+          html += '</div>';
+
+          html += '<div style="font-size:13px;font-weight:800;color:#546E7A;text-align:center;margin:6px 0;">Counted: <span style="font-size:16px;color:#E91E63;font-weight:900;">' + countedList20.length + ' / ' + countTarget20 + '</span>. Choose the correct number:</div>';
+
+          html += '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;max-width:380px;margin:10px auto 0;">';
+          for (var co2i = 0; co2i < countOpts20.length; co2i++) {
+            var isCountOk20 = (countOpts20[co2i] === countTarget20);
+            var cBtnCls20 = "order-tile-btn";
+            if (isAnswered20) {
+              cBtnCls20 += isCountOk20 ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + cBtnCls20 + '" onclick="safeAction(function(){ handleNurseryCountAns(' + isCountOk20 + ', ' + countTarget20 + '); })">' + countOpts20[co2i] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // =========================================================================
+        // SUB-TAB 4 & 5: LINE DRAWING MATCHING BOARDS (Numbers & Pictures)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "match_num" || appState.nurseryNumSubTab === "match_pic_num") {
+          var numOffset = (appState.nurseryNumMatchSetIndex * 4) % 20;
+          var leftNums = [numOffset + 1, numOffset + 2, numOffset + 3, numOffset + 4];
+          var matchNumKey = appState.nurseryNumSubTab + "_" + appState.nurseryNumMatchSetIndex;
+          var rightNums = getShuffledOptions(matchNumKey, function() {
+            return fisherYatesShuffle(leftNums.slice());
+          });
+
+          var isPicMatch = (appState.nurseryNumSubTab === "match_pic_num");
+          var matchTitle = isPicMatch ? "✏️ Draw a line from each Number to its pictures!" : "🔗 Draw a line to match the same Numbers!";
+          autoSpeak("nurs_match_num_" + matchNumKey, matchTitle, "en-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + matchTitle + '\', \'en-IN\'); })" style="font-size:14px;font-weight:800;color:#1565C0;text-align:center;margin-bottom:8px;">' + matchTitle + ' 🔊</div>';
+
+          html += '<div id="matching-board" class="matching-board-container">';
+          html += '  <svg id="matching-svg" class="matching-svg-layer"></svg>';
+          html += '  <div class="matching-cols-wrap">';
+
+          // Left Column
+          html += '    <div class="matching-col">';
+          for (var lni = 0; lni < leftNums.length; lni++) {
+            var lNum = leftNums[lni];
+            var lId = "L_num_" + lni + "_" + lNum;
+            html += '<div class="matching-card matching-left" data-side="left" data-id="' + lId + '" data-val="' + lNum + '" data-word="' + getNumberWord(lNum) + '" onpointerdown="handleMatchPointerDown(event, \'left\', \'' + lId + '\', \'' + lNum + '\', \'' + getNumberWord(lNum) + '\')" onpointermove="handleMatchPointerMove(event)" onpointerup="handleMatchPointerUp(event)">';
+            html += '  <span class="matching-label" style="font-size:2.1rem;padding-left:4px;">' + lNum + '</span>';
+            html += '  <span class="matching-dot" data-side="left" data-id="' + lId + '"></span>';
+            html += '</div>';
+          }
+          html += '    </div>';
+
+          // Right Column
+          html += '    <div class="matching-col">';
+          var emojiListMatch = ["🍎", "🚗", "⭐", "🎈"];
+          for (var rni = 0; rni < rightNums.length; rni++) {
+            var rNum = rightNums[rni];
+            var rId = "R_num_" + rni + "_" + rNum;
+            var rEmoji = emojiListMatch[rni % emojiListMatch.length];
+            html += '<div class="matching-card matching-right" data-side="right" data-id="' + rId + '" data-val="' + rNum + '" data-word="' + getNumberWord(rNum) + '" onpointerdown="handleMatchPointerDown(event, \'right\', \'' + rId + '\', \'' + rNum + '\', \'' + getNumberWord(rNum) + '\')" onpointermove="handleMatchPointerMove(event)" onpointerup="handleMatchPointerUp(event)">';
+            html += '  <span class="matching-dot" data-side="right" data-id="' + rId + '"></span>';
+            if (isPicMatch) {
+              var picGroup = "";
+              for (var pi = 0; pi < rNum && pi < 5; pi++) { picGroup += rEmoji; }
+              html += '  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:2px 0;">';
+              html += '    <span class="safe-emoji" style="font-size:24px;line-height:1.2;">' + picGroup + '</span>';
+              html += '    <span class="matching-pic-caption">(' + rNum + ')</span>';
+              html += '  </div>';
+            } else {
+              html += '  <span class="matching-label" style="font-size:2.1rem;color:#E65100;padding-left:6px;">' + rNum + '</span>';
+            }
+            html += '</div>';
+          }
+          html += '    </div>';
+
+          html += '  </div>';
+          html += '</div>';
+
+          if (lineDrawingState.matchedPairs && lineDrawingState.matchedPairs.length >= 4) {
+            html += '<div class="quiz-completed-card" style="background:#E8F5E9;border:3px solid #4CAF50;border-radius:18px;padding:16px;text-align:center;margin:14px auto;max-width:340px;animation:popIn 0.3s ease-out;">';
+            html += '  <div style="font-size:38px;margin-bottom:4px;">🎉🌟✨</div>';
+            html += '  <div style="font-size:20px;font-weight:900;color:#2E7D32;">All 4 Numbers Matched!</div>';
+            html += '  <div style="margin-top:12px;">';
+            html += '    <button class="nav-btn" style="background:#1E88E5;color:#fff;padding:10px 24px;font-size:16px;font-weight:900;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(30,136,229,0.3);" onclick="safeAction(function(){ advanceNurseryNumMatchSet(); })">Next Set ➔</button>';
+            html += '  </div>';
+            html += '</div>';
+          }
+
+          initMatchingSvgAfterRender();
+        }
+
+        // =========================================================================
+        // SUB-TAB 6: ➡️ AFTER NUMBERS (What comes AFTER?)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "after_num") {
+          var afterBase = (appState.quizIndex % 18) + 1;
+          var afterAns = afterBase + 1;
+          var afterKey = "nurs_after_" + appState.quizIndex;
+          var afterOpts = getShuffledOptions(afterKey, function() {
+            var ao = [afterAns];
+            var candidatePool = [afterAns + 1, afterAns + 2, afterAns - 1, afterAns - 2, afterAns + 3, afterAns + 4].filter(function(x) { return x > 0; });
+            var shCand = fisherYatesShuffle(candidatePool);
+            for (var ci = 0; ci < shCand.length && ao.length < 4; ci++) {
+              if (ao.indexOf(shCand[ci]) === -1) ao.push(shCand[ci]);
+            }
+            while (ao.length < 4) {
+              var fallback = ao.length + 1;
+              if (ao.indexOf(fallback) === -1) ao.push(fallback);
+              else ao.push(fallback + 10);
+            }
+            return fisherYatesShuffle(ao);
+          });
+          var isAfterAnswered = (quizState.isAnswered && quizState.activeKey === afterKey);
+
+          autoSpeak(afterKey, "What comes after " + afterBase + "?", "en-IN");
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'What comes after ' + afterBase + '?\', \'en-IN\'); })">';
+          html += '  <div style="font-size:42px;font-weight:900;color:#1565C0;padding:12px 0;">' + afterBase + ' <span style="color:#FF9800;">➔</span> <span class="dash-blank">' + (isAfterAnswered ? afterAns : "___") + '</span></div>';
+          html += '  <div class="audio-hint">🔊 What comes after ' + afterBase + '?</div>';
+          html += '</div>';
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'What comes after ' + afterBase + '?\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">What comes AFTER ' + afterBase + '? 🔊</div>';
+
+          html += '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+          for (var aoi = 0; aoi < afterOpts.length; aoi++) {
+            var isAOk = (afterOpts[aoi] === afterAns);
+            var aBtnCls = "order-tile-btn";
+            if (isAfterAnswered) {
+              aBtnCls += isAOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + aBtnCls + '" onclick="safeAction(function(){ handleNurseryAfterAns(' + isAOk + ', ' + afterBase + ', ' + afterAns + '); })">' + afterOpts[aoi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // =========================================================================
+        // SUB-TAB 7: ⬅️ BEFORE NUMBERS (What comes BEFORE?)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "before_num") {
+          var beforeBase = (appState.quizIndex % 18) + 2;
+          var beforeAns = beforeBase - 1;
+          var beforeKey = "nurs_before_" + appState.quizIndex;
+          var beforeOpts = getShuffledOptions(beforeKey, function() {
+            var bo = [beforeAns];
+            var candidatePool = [beforeAns + 1, beforeAns + 2, beforeAns - 1, beforeAns - 2, beforeAns + 3, beforeAns + 4].filter(function(x) { return x > 0; });
+            var shCand = fisherYatesShuffle(candidatePool);
+            for (var ci = 0; ci < shCand.length && bo.length < 4; ci++) {
+              if (bo.indexOf(shCand[ci]) === -1) bo.push(shCand[ci]);
+            }
+            while (bo.length < 4) {
+              var fallback = bo.length + 1;
+              if (bo.indexOf(fallback) === -1) bo.push(fallback);
+              else bo.push(fallback + 10);
+            }
+            return fisherYatesShuffle(bo);
+          });
+          var isBeforeAnswered = (quizState.isAnswered && quizState.activeKey === beforeKey);
+
+          autoSpeak(beforeKey, "What comes before " + beforeBase + "?", "en-IN");
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'What comes before ' + beforeBase + '?\', \'en-IN\'); })">';
+          html += '  <div style="font-size:42px;font-weight:900;color:#1565C0;padding:12px 0;"><span class="dash-blank">' + (isBeforeAnswered ? beforeAns : "___") + '</span> <span style="color:#FF9800;">➔</span> ' + beforeBase + '</div>';
+          html += '  <div class="audio-hint">🔊 What comes before ' + beforeBase + '?</div>';
+          html += '</div>';
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'What comes before ' + beforeBase + '?\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">What comes BEFORE ' + beforeBase + '? 🔊</div>';
+
+          html += '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+          for (var boi = 0; boi < beforeOpts.length; boi++) {
+            var isBOk = (beforeOpts[boi] === beforeAns);
+            var bBtnCls = "order-tile-btn";
+            if (isBeforeAnswered) {
+              bBtnCls += isBOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + bBtnCls + '" onclick="safeAction(function(){ handleNurseryBeforeAns(' + isBOk + ', ' + beforeBase + ', ' + beforeAns + '); })">' + beforeOpts[boi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // =========================================================================
+        // SUB-TAB 8: ↔️ BETWEEN NUMBERS (What comes BETWEEN?)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "between_num") {
+          var betweenBase = (appState.quizIndex % 18) + 1;
+          var betweenAns = betweenBase + 1;
+          var betweenKey = "nurs_between_" + appState.quizIndex;
+          var betweenOpts = getShuffledOptions(betweenKey, function() {
+            var bto = [betweenAns];
+            var candidatePool = [betweenAns + 1, betweenAns + 2, betweenAns - 1, betweenAns - 2, betweenAns + 3, betweenAns + 4].filter(function(x) { return x > 0; });
+            var shCand = fisherYatesShuffle(candidatePool);
+            for (var ci = 0; ci < shCand.length && bto.length < 4; ci++) {
+              if (bto.indexOf(shCand[ci]) === -1) bto.push(shCand[ci]);
+            }
+            while (bto.length < 4) {
+              var fallback = bto.length + 1;
+              if (bto.indexOf(fallback) === -1) bto.push(fallback);
+              else bto.push(fallback + 10);
+            }
+            return fisherYatesShuffle(bto);
+          });
+          var isBetweenAnswered = (quizState.isAnswered && quizState.activeKey === betweenKey);
+
+          autoSpeak(betweenKey, "What comes between " + betweenBase + " and " + (betweenBase + 2) + "?", "en-IN");
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'What number comes between ' + betweenBase + ' and ' + (betweenBase + 2) + '?\', \'en-IN\'); })">';
+          html += '  <div style="font-size:38px;font-weight:900;color:#1565C0;padding:12px 0;">' + betweenBase + ', <span class="dash-blank">' + (isBetweenAnswered ? betweenAns : "___") + '</span>, ' + (betweenBase + 2) + '</div>';
+          html += '  <div class="audio-hint">🔊 What comes between ' + betweenBase + ' and ' + (betweenBase + 2) + '?</div>';
+          html += '</div>';
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'What comes between ' + betweenBase + ' and ' + (betweenBase + 2) + '?\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">What comes BETWEEN ' + betweenBase + ' and ' + (betweenBase + 2) + '? 🔊</div>';
+
+          html += '<div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+          for (var btoi = 0; btoi < betweenOpts.length; btoi++) {
+            var isBtOk = (betweenOpts[btoi] === betweenAns);
+            var btBtnCls = "order-tile-btn";
+            if (isBetweenAnswered) {
+              btBtnCls += isBtOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + btBtnCls + '" onclick="safeAction(function(){ handleNurseryBetweenAns(' + isBtOk + ', ' + betweenBase + ', ' + betweenAns + '); })">' + betweenOpts[btoi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // =========================================================================
+        // SUB-TAB 9: ⚖️ ODD & EVEN NUMBERS (Visual Pairing)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "odd_even") {
           html += '<div class="mode-switch">';
-          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Numbers 1-20</button>';
-          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Counting Quiz</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Pairs (1–10)</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Odd vs Even Quiz</button>';
           html += '</div>';
 
           if (appState.mode === "learn") {
-            autoSpeak("nurs_count_learn", "Numbers 1 to 20. Tap any number to hear pronunciation!", "en-IN");
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Numbers 1 to 20. Tap any number to hear sound!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any number to hear pronunciation 🔊</div>';
-            html += '<div class="grid-items-container">';
-            for (var cNum = 1; cNum <= 20; cNum++) {
-              html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + cNum + '! ' + getNumberWord(cNum) + '\', \'en-IN\'); })">';
-              html += '  <div class="chip-letter" style="color: #FF8F00;">' + cNum + '</div>';
-              html += '  <div class="chip-word" style="font-size: 15px; font-weight: 800;">' + getNumberWord(cNum) + '</div>';
+            autoSpeak("nurs_oddeven_learn", "Odd and Even Numbers. Even numbers are all paired! Odd numbers have one left alone!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Even numbers are all paired! Odd numbers have one left alone!\', \'en-IN\'); })" style="font-size:13px;font-weight:800;color:#546E7A;text-align:center;margin-bottom:8px;">Tap each number to see if it is Even or Odd 🔊</div>';
+
+            html += '<div style="max-width:420px;margin:0 auto;">';
+            for (var oeNum = 1; oeNum <= 10; oeNum++) {
+              var isEvenNum = (oeNum % 2 === 0);
+              var numPairs = Math.floor(oeNum / 2);
+              var pairVisual = "";
+              for (var pi = 0; pi < numPairs; pi++) { pairVisual += "👫 "; }
+              if (!isEvenNum) { pairVisual += "🧍"; }
+              var rowCls = "odd-even-row " + (isEvenNum ? "is-even" : "is-odd");
+
+              html += '<div class="' + rowCls + '" onclick="safeAction(function(){ speak(\'' + oeNum + ' is ' + (isEvenNum ? "Even! All paired up!" : "Odd! One is left alone!") + '\', \'en-IN\'); })">';
+              html += '  <div style="font-size:22px;font-weight:900;color:#0D47A1;min-width:32px;">' + oeNum + '</div>';
+              html += '  <div style="font-size:20px;letter-spacing:2px;">' + pairVisual + '</div>';
+              html += '  <div style="font-size:13px;font-weight:900;color:' + (isEvenNum ? "#2E7D32" : "#E65100") + ';">' + (isEvenNum ? "EVEN ✅" : "ODD 🧍") + '</div>';
               html += '</div>';
             }
             html += '</div>';
           } else {
-            var countTarget = (appState.quizIndex % 10) + 1;
-            var countCacheKey = "nursery_count_" + appState.quizIndex;
-            var countOpts = getShuffledOptions(countCacheKey, function() {
-              var co = [countTarget];
-              while (co.length < 4) {
-                var rc = Math.floor(Math.random() * 10) + 1;
-                if (co.indexOf(rc) === -1) co.push(rc);
-              }
-              return fisherYatesShuffle(co);
-            });
-            var isCountAnswered = (quizState.isAnswered && quizState.activeKey === countCacheKey);
+            var oeTarget = (appState.quizIndex % 10) + 1;
+            var oeIsEven = (oeTarget % 2 === 0);
+            var oeCacheKey = "nurs_oddeven_" + appState.quizIndex;
+            var isOeAnswered = (quizState.isAnswered && quizState.activeKey === oeCacheKey);
 
-            autoSpeak(countCacheKey, "Count the stars! How many stars do you see?", "en-IN");
+            var pairsCount = Math.floor(oeTarget / 2);
+            var visDisplay = "";
+            for (var pii = 0; pii < pairsCount; pii++) { visDisplay += "👫 "; }
+            if (!oeIsEven) { visDisplay += "🧍"; }
 
-            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'How many stars are there?\', \'en-IN\'); })">';
-            html += '  <div style="font-size: 32px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 10px;">';
-            for (var st = 0; st < countTarget; st++) {
-              html += '<span class="safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + (st + 1) + '\', \'en-IN\'); })">⭐</span>';
-            }
-            html += '  </div>';
-            html += '  <div class="audio-hint">🔊 Tap stars to count one by one</div>';
+            autoSpeak(oeCacheKey, "Look at number " + oeTarget + ". Is it Even or Odd?", "en-IN");
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'Number ' + oeTarget + '! Look at the pairs.\', \'en-IN\'); })">';
+            html += '  <div style="font-size:48px;font-weight:900;color:#1565C0;margin-bottom:6px;">' + oeTarget + '</div>';
+            html += '  <div style="font-size:28px;letter-spacing:4px;padding:6px 0;">' + visDisplay + '</div>';
+            html += '  <div class="audio-hint">🔊 Are all items paired, or is one left alone?</div>';
             html += '</div>';
 
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'How many stars do you see?\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">How many stars do you see? 🔊</div>';
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Is ' + oeTarget + ' Even or Odd?\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">Is ' + oeTarget + ' EVEN or ODD? 🔊</div>';
 
-            html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
-            for (var cqi = 0; cqi < countOpts.length; cqi++) {
-              var isCountOk = (countOpts[cqi] === countTarget);
-              var countBtnCls = "opt-btn";
-              if (isCountAnswered) {
-                countBtnCls += isCountOk ? " correct-choice" : " disabled-choice";
+            html += '<div style="display:flex;gap:12px;max-width:380px;margin:12px auto 0;justify-content:center;">';
+            var oeChoices = [
+              { label: "EVEN (All Paired 👫)", isEven: true },
+              { label: "ODD (1 Left Alone 🧍)", isEven: false }
+            ];
+            for (var oci = 0; oci < oeChoices.length; oci++) {
+              var choice = oeChoices[oci];
+              var isCorrectChoice = (choice.isEven === oeIsEven);
+              var btnStyle = choice.isEven ? "background:#E8F5E9;border-color:#81C784;color:#1B5E20;" : "background:#FFF8E1;border-color:#FFB74D;color:#E65100;";
+              var oeBtnCls = "order-tile-btn";
+              if (isOeAnswered) {
+                oeBtnCls += isCorrectChoice ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + countBtnCls + '" onclick="safeAction(function(){ handleNurseryCountAns(' + isCountOk + ', ' + countTarget + '); })">' + countOpts[cqi] + '</button>';
+              html += '<button class="' + oeBtnCls + '" style="font-size:15px;min-height:56px;flex:1;' + btnStyle + '" onclick="safeAction(function(){ handleNurseryOddEvenAns(' + isCorrectChoice + ', ' + oeTarget + ', ' + oeIsEven + '); })">' + choice.label + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
           }
         }
-        // Sub 2: Shapes
-        else if (appState.nurseryNumSubTab === "shapes") {
+
+        // =========================================================================
+        // SUB-TAB 10: 📝 NUMBER NAMES (1–10)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "names_1_10") {
           html += '<div class="mode-switch">';
-          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Shapes</button>';
-          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Shape Quiz</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Names (1–10)</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Spelling Quiz</button>';
           html += '</div>';
 
           if (appState.mode === "learn") {
-            autoSpeak("nurs_shapes_learn", "Basic Shapes. Circle, Square, Triangle, Rectangle, Star, Heart. Tap any shape!", "en-IN");
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Basic Shapes. Tap any shape to hear its name!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any shape to hear its name 🔊</div>';
+            autoSpeak("nurs_names_10_learn", "Number names 1 to 10. Tap any card to hear pronunciation!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Number names 1 to 10. Tap any card!\', \'en-IN\'); })" style="font-size:13px;font-weight:800;color:#546E7A;text-align:center;margin-bottom:8px;">Tap each number to hear its spelling 🔊</div>';
+
             html += '<div class="grid-items-container">';
-            for (var shi = 0; shi < DATA_SHAPES.length; shi++) {
-              var shItem = DATA_SHAPES[shi];
-              html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + shItem.name + '! ' + shItem.sound + '\', \'en-IN\'); })">';
-              html += '  <div class="chip-emoji safe-emoji">' + shItem.emoji + '</div>';
-              html += '  <div class="chip-word" style="font-size: 16px; font-weight: 800; color: #1565C0;">' + shItem.name + '</div>';
-              html += '  <div style="font-size: 11px; font-weight: 600; color: #546E7A; margin-top: 2px;">' + shItem.sound + '</div>';
+            for (var n1 = 1; n1 <= 10; n1++) {
+              var w1 = getNumberWord(n1).toUpperCase();
+              html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + n1 + '! ' + w1 + '\', \'en-IN\'); })">';
+              html += '  <div class="chip-letter" style="color:#1565C0;">' + n1 + '</div>';
+              html += '  <div class="chip-word" style="font-size:15px;font-weight:900;color:#E65100;">' + w1 + '</div>';
               html += '</div>';
             }
             html += '</div>';
           } else {
-            var shTarget = DATA_SHAPES[appState.quizIndex % DATA_SHAPES.length];
-            var shCacheKey = "nursery_shape_" + appState.quizIndex;
-            var shOpts = getShuffledOptions(shCacheKey, function() {
-              var sho = [shTarget.name];
+            var nnTarget1 = (appState.quizIndex % 10) + 1;
+            var nnSpelling1 = getNumberWord(nnTarget1).toUpperCase();
+            var nnKey1 = "nurs_names_10_" + appState.quizIndex;
+            var nnOpts1 = getShuffledOptions(nnKey1, function() {
+              var no = [nnSpelling1];
+              while (no.length < 4) {
+                var rn = Math.floor(Math.random() * 10) + 1;
+                var rw = getNumberWord(rn).toUpperCase();
+                if (no.indexOf(rw) === -1) no.push(rw);
+              }
+              return fisherYatesShuffle(no);
+            });
+            var isNn1Answered = (quizState.isAnswered && quizState.activeKey === nnKey1);
+
+            autoSpeak(nnKey1, "What is the spelling for number " + nnTarget1 + "?", "en-IN");
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'Number ' + nnTarget1 + '\', \'en-IN\'); })">';
+            html += '  <div style="font-size:58px;font-weight:900;color:#1565C0;">' + nnTarget1 + '</div>';
+            html += '  <div class="audio-hint">🔊 What is the spelling for ' + nnTarget1 + '?</div>';
+            html += '</div>';
+
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the correct spelling for ' + nnTarget1 + '\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">Choose the spelling for ' + nnTarget1 + ': 🔊</div>';
+
+            html += '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+            for (var noi1 = 0; noi1 < nnOpts1.length; noi1++) {
+              var isNnOk1 = (nnOpts1[noi1] === nnSpelling1);
+              var nnBtnCls1 = "order-tile-btn";
+              if (isNn1Answered) {
+                nnBtnCls1 += isNnOk1 ? " correct-choice" : " disabled-choice";
+              }
+              html += '<button class="' + nnBtnCls1 + '" style="font-size:16px;" onclick="safeAction(function(){ handleNurseryNumNameAns(' + isNnOk1 + ', ' + nnTarget1 + ', \'' + nnSpelling1 + '\'); })">' + nnOpts1[noi1] + '</button>';
+            }
+            html += '</div>';
+            html += renderCompletedPreviewCard();
+          }
+        }
+
+        // =========================================================================
+        // SUB-TAB 11: 📝 NUMBER NAMES (11–20)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "names_11_20") {
+          html += '<div class="mode-switch">';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Names (11–20)</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Spelling Quiz</button>';
+          html += '</div>';
+
+          if (appState.mode === "learn") {
+            autoSpeak("nurs_names_20_learn", "Number names 11 to 20. Tap any card to hear pronunciation!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Number names 11 to 20. Tap any card!\', \'en-IN\'); })" style="font-size:13px;font-weight:800;color:#546E7A;text-align:center;margin-bottom:8px;">Tap each number to hear its spelling 🔊</div>';
+
+            html += '<div class="grid-items-container">';
+            for (var n2 = 11; n2 <= 20; n2++) {
+              var w2 = getNumberWord(n2).toUpperCase();
+              html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + n2 + '! ' + w2 + '\', \'en-IN\'); })">';
+              html += '  <div class="chip-letter" style="color:#1B5E20;">' + n2 + '</div>';
+              html += '  <div class="chip-word" style="font-size:14px;font-weight:900;color:#0D47A1;">' + w2 + '</div>';
+              html += '</div>';
+            }
+            html += '</div>';
+          } else {
+            var nnTarget2 = (appState.quizIndex % 10) + 11;
+            var nnSpelling2 = getNumberWord(nnTarget2).toUpperCase();
+            var nnKey2 = "nurs_names_20_" + appState.quizIndex;
+            var nnOpts2 = getShuffledOptions(nnKey2, function() {
+              var no2 = [nnSpelling2];
+              while (no2.length < 4) {
+                var rn2 = Math.floor(Math.random() * 10) + 11;
+                var rw2 = getNumberWord(rn2).toUpperCase();
+                if (no2.indexOf(rw2) === -1) no2.push(rw2);
+              }
+              return fisherYatesShuffle(no2);
+            });
+            var isNn2Answered = (quizState.isAnswered && quizState.activeKey === nnKey2);
+
+            autoSpeak(nnKey2, "What is the spelling for number " + nnTarget2 + "?", "en-IN");
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'Number ' + nnTarget2 + '\', \'en-IN\'); })">';
+            html += '  <div style="font-size:58px;font-weight:900;color:#1B5E20;">' + nnTarget2 + '</div>';
+            html += '  <div class="audio-hint">🔊 What is the spelling for ' + nnTarget2 + '?</div>';
+            html += '</div>';
+
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the correct spelling for ' + nnTarget2 + '\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">Choose the spelling for ' + nnTarget2 + ': 🔊</div>';
+
+            html += '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+            for (var noi2 = 0; noi2 < nnOpts2.length; noi2++) {
+              var isNnOk2 = (nnOpts2[noi2] === nnSpelling2);
+              var nnBtnCls2 = "order-tile-btn";
+              if (isNn2Answered) {
+                nnBtnCls2 += isNnOk2 ? " correct-choice" : " disabled-choice";
+              }
+              html += '<button class="' + nnBtnCls2 + '" style="font-size:15px;" onclick="safeAction(function(){ handleNurseryNumNameAns(' + isNnOk2 + ', ' + nnTarget2 + ', \'' + nnSpelling2 + '\'); })">' + nnOpts2[noi2] + '</button>';
+            }
+            html += '</div>';
+            html += renderCompletedPreviewCard();
+          }
+        }
+
+        // =========================================================================
+        // SUB-TAB 12: 🐘 BIGGEST, TALLEST & HEAVIEST (Pre-Math Comparisons)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "compare_size") {
+          var cmpItem = DATA_NURSERY_COMPARISONS[appState.quizIndex % DATA_NURSERY_COMPARISONS.length];
+          var cmpKey = "nurs_compare_" + appState.quizIndex;
+          var isCmpAnswered = (quizState.isAnswered && quizState.activeKey === cmpKey);
+
+          autoSpeak(cmpKey, cmpItem.speak, "en-IN");
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + cmpItem.speak + '\', \'en-IN\'); })">';
+          html += '  <div style="font-size:24px;font-weight:900;color:#1565C0;padding:6px 0;">' + cmpItem.q + '</div>';
+          html += '  <div class="audio-hint">🔊 ' + cmpItem.speak + '</div>';
+          html += '</div>';
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + cmpItem.speak + '\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">' + cmpItem.q + ' 🔊</div>';
+
+          // 2 Large Comparison Cards
+          html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:380px;margin:12px auto 0;">';
+          var cmpChoices = [cmpItem.opt1, cmpItem.opt2];
+          for (var ci = 0; ci < cmpChoices.length; ci++) {
+            var cOpt = cmpChoices[ci];
+            var isCorrectCmp = !!cOpt.isAns;
+            var cCardCls = "compare-card-btn";
+            if (isCmpAnswered) {
+              cCardCls += isCorrectCmp ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + cCardCls + '" onclick="safeAction(function(){ handleNurseryCompareAns(' + isCorrectCmp + ', \'' + cmpItem.q + '\', \'' + cOpt.name + '\', \'' + cmpItem.sound + '\'); })">';
+            html += '  <span class="safe-emoji" style="font-size:3.2rem;line-height:1;">' + cOpt.emoji + '</span>';
+            html += '  <span style="font-size:16px;font-weight:800;color:#2C3E50;margin-top:8px;">' + cOpt.name + '</span>';
+            html += '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // =========================================================================
+        // SUB-TAB 13: 🔷 SHAPES & OBJECTS (Real-World Object Match)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "shapes_objects") {
+          html += '<div class="mode-switch">';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Shapes</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Match Object Quiz</button>';
+          html += '</div>';
+
+          if (appState.mode === "learn") {
+            autoSpeak("nurs_shapes_learn", "Basic Shapes. Circle, Square, Triangle, Rectangle, Star, Heart, Oval. Tap any shape!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Basic Shapes. Tap any shape to hear its name!\', \'en-IN\'); })" style="font-size:13px;font-weight:800;color:#546E7A;text-align:center;margin-bottom:8px;">Tap each shape to hear its name 🔊</div>';
+
+            html += '<div class="grid-items-container">';
+            for (var shi = 0; shi < DATA_SHAPES.length; shi++) {
+              var shItem = DATA_SHAPES[shi];
+              html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + shItem.name + '! ' + (shItem.desc || "") + '\', \'en-IN\'); })">';
+              html += '  <div class="chip-emoji safe-emoji" style="font-size:36px;">' + shItem.emoji + '</div>';
+              html += '  <div class="chip-word" style="font-size:16px;font-weight:900;color:#1565C0;">' + shItem.name + '</div>';
+              html += '</div>';
+            }
+            html += '</div>';
+          } else {
+            var shObjTarget = DATA_SHAPE_OBJECTS_QUIZ[appState.quizIndex % DATA_SHAPE_OBJECTS_QUIZ.length];
+            var shObjKey = "nurs_shape_obj_" + appState.quizIndex;
+            var shObjOpts = getShuffledOptions(shObjKey, function() {
+              var sho = [shObjTarget.shape];
               while (sho.length < 4) {
                 var rsh = DATA_SHAPES[Math.floor(Math.random() * DATA_SHAPES.length)].name;
                 if (sho.indexOf(rsh) === -1) sho.push(rsh);
               }
               return fisherYatesShuffle(sho);
             });
-            var isShAnswered = (quizState.isAnswered && quizState.activeKey === shCacheKey);
+            var isShObjAnswered = (quizState.isAnswered && quizState.activeKey === shObjKey);
 
-            autoSpeak(shCacheKey, "Which shape is this?", "en-IN");
+            autoSpeak(shObjKey, "What shape is " + shObjTarget.obj + "?", "en-IN");
 
-            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + shTarget.name + '\', \'en-IN\'); })">';
-            html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 70px;">' + shTarget.emoji + '</div>';
-            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + shTarget.name + '\', \'en-IN\'); })" style="font-size: 24px; font-weight: 800; color: #1565C0;">' + (isShAnswered ? shTarget.name : "___") + '</div>';
-            html += '  <div class="audio-hint">🔊 Tap to hear hint</div>';
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'What shape is ' + shObjTarget.obj + '?\', \'en-IN\'); })">';
+            html += '  <div class="safe-emoji" style="font-size:68px;line-height:1;margin-bottom:6px;">' + shObjTarget.emoji + '</div>';
+            html += '  <div style="font-size:22px;font-weight:900;color:#1565C0;">' + shObjTarget.obj + '</div>';
+            html += '  <div class="audio-hint">🔊 What shape does ' + shObjTarget.obj + ' look like?</div>';
             html += '</div>';
 
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Which shape is this?\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Which shape is this? 🔊</div>';
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'What shape is ' + shObjTarget.obj + '?\', \'en-IN\'); })" style="font-size:15px;font-weight:800;color:#546E7A;text-align:center;margin-top:8px;">What shape is ' + shObjTarget.obj + '? 🔊</div>';
 
-            html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
-            for (var shoe = 0; shoe < shOpts.length; shoe++) {
-              var isShOk = (shOpts[shoe] === shTarget.name);
-              var shBtnCls = "opt-btn";
-              if (isShAnswered) {
-                shBtnCls += isShOk ? " correct-choice" : " disabled-choice";
+            html += '<div style="display:grid;grid-template-columns:repeat(2, 1fr);gap:10px;max-width:380px;margin:12px auto 0;">';
+            for (var shoi = 0; shoi < shObjOpts.length; shoi++) {
+              var isShObjOk = (shObjOpts[shoi] === shObjTarget.shape);
+              var shBtnCls = "order-tile-btn";
+              if (isShObjAnswered) {
+                shBtnCls += isShObjOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + shBtnCls + '" onclick="safeAction(function(){ handleNurseryShapeAns(' + isShOk + ', \'' + shTarget.name + '\', \'' + shTarget.emoji + '\'); })">' + shOpts[shoe] + '</button>';
+              html += '<button class="' + shBtnCls + '" style="font-size:16px;" onclick="safeAction(function(){ handleNurseryShapeObjectAns(' + isShObjOk + ', \'' + shObjTarget.obj + '\', \'' + shObjTarget.shape + '\', \'' + shObjTarget.shapeEmoji + '\'); })">' + shObjOpts[shoi] + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
           }
         }
-        // Sub 3: Before & After Numbers
-        else {
-          var baItem = (appState.quizIndex % 15) + 3;
-          var baType = (appState.quizIndex % 2 === 0) ? "after" : "before";
-          var baAns = (baType === "after") ? (baItem + 1) : (baItem - 1);
-          var baKey = "ba_" + appState.quizIndex;
-          var baOpts = getShuffledOptions(baKey, function() {
-            var bao = [baAns];
-            while (bao.length < 4) {
-              var rba = baAns + Math.floor(Math.random() * 5) - 2;
-              if (rba > 0 && bao.indexOf(rba) === -1) bao.push(rba);
+
+        // =========================================================================
+        // SUB-TAB 14: 🧩 MISSING NUMBERS (1–20)
+        // =========================================================================
+        else if (appState.nurseryNumSubTab === "missing_num") {
+          var curNumRound = MISSING_NUM_ROUNDS[appState.nurseryNumMissingRound % MISSING_NUM_ROUNDS.length];
+          var filledNums = appState.nurseryNumMissingFilled || [];
+          var isMissingNumsDone = (filledNums.length >= curNumRound.missing.length);
+
+          autoSpeak("nurs_missing_num_" + appState.nurseryNumMissingRound, "Fill in the missing numbers in sequence!", "en-IN");
+
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Fill in the missing numbers in order!\', \'en-IN\'); })" style="font-size:14px;font-weight:800;color:#1565C0;text-align:center;margin-bottom:8px;">Fill in the missing numbers in order: 🔊</div>';
+
+          // Sequence Track
+          html += '<div class="missing-seq-track">';
+          for (var sni = 0; sni < curNumRound.nums.length; sni++) {
+            var nVal = curNumRound.nums[sni];
+            var isMissPos = (curNumRound.missing.indexOf(nVal) !== -1);
+            if (!isMissPos) {
+              html += '<div class="seq-box solid">' + nVal + '</div>';
+            } else {
+              var isThisNumFilled = (filledNums.indexOf(nVal) !== -1);
+              if (isThisNumFilled) {
+                html += '<div class="seq-box filled">' + nVal + '</div>';
+              } else {
+                html += '<div class="seq-box blank"><span class="dash-blank">___</span></div>';
+              }
             }
-            return fisherYatesShuffle(bao);
-          });
-          var isBaAnswered = (quizState.isAnswered && quizState.activeKey === baKey);
-
-          var baPrompt = (baType === "after")
-            ? ("What comes after " + baItem + "?")
-            : ("What comes before " + baItem + "?");
-          autoSpeak(baKey, baPrompt, "en-IN");
-
-          var baDisplay = (baType === "after")
-            ? (baItem + " ➔ " + (isBaAnswered ? baAns : "___"))
-            : ((isBaAnswered ? baAns : "___") + " ➔ " + baItem);
-
-          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + baPrompt + '\', \'en-IN\'); })">';
-          html += '  <div style="font-size: 40px; font-weight: 900; color: #E65100; padding: 12px 0;">' + baDisplay + '</div>';
-          html += '  <div class="audio-hint">🔊 ' + baPrompt + '</div>';
-          html += '</div>';
-
-          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + baPrompt + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">' + baPrompt + ' 🔊</div>';
-
-          html += '<div class="options-grid-2" style="max-width: 320px; margin: 14px auto 0;">';
-          for (var bai = 0; bai < baOpts.length; bai++) {
-            var isBaOk = (baOpts[bai] === baAns);
-            var baBtnCls = "opt-btn";
-            if (isBaAnswered) {
-              baBtnCls += isBaOk ? " correct-choice" : " disabled-choice";
-            }
-            html += '<button class="' + baBtnCls + '" onclick="safeAction(function(){ handleBeforeAfterAns(' + isBaOk + ', ' + baAns + ', \'en-IN\'); })">' + baOpts[bai] + '</button>';
           }
           html += '</div>';
-          html += renderCompletedPreviewCard();
+
+          if (isMissingNumsDone) {
+            html += '<div class="quiz-completed-card" style="background:#E8F5E9;border:3px solid #4CAF50;border-radius:18px;padding:16px;text-align:center;margin:14px auto;max-width:340px;animation:popIn 0.3s ease-out;">';
+            html += '  <div style="font-size:38px;margin-bottom:4px;">🌟🏆🎉</div>';
+            html += '  <div style="font-size:20px;font-weight:900;color:#2E7D32;">Number Sequence Complete!</div>';
+            html += '  <div style="margin-top:12px;">';
+            html += '    <button class="nav-btn" style="background:#1E88E5;color:#fff;padding:10px 24px;font-size:16px;font-weight:900;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(30,136,229,0.3);" onclick="safeAction(function(){ advanceNurseryNumMissingRound(); })">Next Set ➔</button>';
+            html += '  </div>';
+            html += '</div>';
+          } else {
+            html += '<div style="font-size:13px;font-weight:800;color:#546E7A;text-align:center;margin-top:12px;">Tap the correct missing number below:</div>';
+
+            var missNumOptsKey = "nurs_miss_num_opts_" + appState.nurseryNumMissingRound;
+            var numMissingChoices = getShuffledOptions(missNumOptsKey, function() {
+              return fisherYatesShuffle(curNumRound.missing.slice());
+            });
+
+            html += '<div style="display:flex;justify-content:center;gap:12px;margin-top:10px;flex-wrap:wrap;">';
+            for (var nmci = 0; nmci < numMissingChoices.length; nmci++) {
+              var nmChoice = numMissingChoices[nmci];
+              var isPlacedNum = (filledNums.indexOf(nmChoice) !== -1);
+              var nBtnCls = "order-tile-btn" + (isPlacedNum ? " disabled-choice" : "");
+              html += '<button class="' + nBtnCls + '" style="font-size:26px;width:64px;height:56px;" onclick="safeAction(function(){ tapNurseryMissingNum(' + nmChoice + '); })">' + nmChoice + '</button>';
+            }
+            html += '</div>';
+          }
         }
       }
 
