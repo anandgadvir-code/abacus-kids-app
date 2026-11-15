@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#FF5252" />
-  <meta name="description" content="Abacus Kids - The Abacus Academy, Jodhpur: High-grade IXL & NCERT Balvatika learning app with Hybrid Native TTS, Phonics, Pre-Math, Matras, and Brain Boosters." />
+  <meta name="description" content="Abacus Kids - The Abacus Academy, Jodhpur: English Medium IXL, Starfall & NCERT Balvatika learning app with Hybrid Native TTS, Phonics, EVS, and Math." />
   <title>Abacus Kids - The Abacus Academy, Jodhpur</title>
   <style>
     :root {
@@ -14,6 +14,7 @@
       --blue: #2196F3;
       --purple: #9C27B0;
       --pink: #E91E63;
+      --teal: #009688;
       --bg: #FFFDF9;
       --card-bg: #FFFFFF;
       --text-dark: #2C3E50;
@@ -359,7 +360,7 @@
       padding: 24px 16px;
       text-align: center;
       margin: 10px auto;
-      max-width: 330px;
+      max-width: 340px;
       width: 100%;
       box-shadow: 0 8px 24px rgba(33, 150, 243, 0.15);
       cursor: pointer;
@@ -446,7 +447,7 @@
     /* Small Grid items (A-Z & Swar Grid) */
     .grid-items-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(82px, 1fr));
       gap: 8px;
       max-height: calc(100vh - 220px);
       overflow-y: auto;
@@ -479,7 +480,7 @@
       pointer-events: none;
     }
     .chip-word {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       color: #616161;
       white-space: nowrap;
@@ -637,7 +638,7 @@
     }
     .mode-btn {
       flex: 1;
-      min-width: 100px;
+      min-width: 110px;
       padding: 8px 12px;
       border: none;
       background: transparent;
@@ -708,7 +709,7 @@
 
     <!-- Top Sticky Header -->
     <header class="app-header">
-      <div class="header-left" onclick="safeAction(function() { speak('Abacus Kids. The Abacus Academy Jodhpur', 'hi-IN'); })" ontouchend="safeAction(function() { speak('Abacus Kids. The Abacus Academy Jodhpur', 'hi-IN'); }, event)">
+      <div class="header-left" onclick="safeAction(function() { speak('Abacus Kids. The Abacus Academy Jodhpur', 'en-IN'); })" ontouchend="safeAction(function() { speak('Abacus Kids. The Abacus Academy Jodhpur', 'en-IN'); }, event)">
         <img src="logo.jpeg" alt="Logo" class="logo-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23FF9800\'/><text x=\'50\' y=\'62\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-weight=\'bold\'>A</text></svg>';" />
         <div>
           <div class="academy-badge">The Abacus Academy, Jodhpur</div>
@@ -716,7 +717,7 @@
         </div>
       </div>
       <div class="header-actions">
-        <div class="star-counter" id="star-badge" onclick="safeAction(function() { speak(appState.stars + ' Stars! शाबाश!', 'hi-IN'); })" ontouchend="safeAction(function() { speak(appState.stars + ' Stars! शाबाश!', 'hi-IN'); }, event)" title="Earned Stars">
+        <div class="star-counter" id="star-badge" onclick="safeAction(function() { speak(appState.stars + ' Stars! Great job!', 'en-IN'); })" ontouchend="safeAction(function() { speak(appState.stars + ' Stars! Great job!', 'en-IN'); }, event)" title="Earned Stars">
           <span class="safe-emoji">⭐</span> <span id="star-count">0</span>
         </div>
         <button id="btn-sound-toggle" class="nav-icon-btn" onclick="safeAction(toggleSound)" ontouchend="safeAction(toggleSound, event)" title="Sound On/Off">
@@ -731,7 +732,7 @@
     <!-- Sub Navigation Tabs Bar (Rendered dynamically when inside a section) -->
     <div id="subtabs-bar" class="subtabs-bar" style="display:none;"></div>
 
-    <!-- Filter Pills Bar (For Phonics vowels, Matras, etc.) -->
+    <!-- Filter Pills Bar (For Phonics vowels, Matras, EVS topics, etc.) -->
     <div id="filter-pills-bar" class="filter-pills-bar" style="display:none;"></div>
 
     <!-- Main Dynamic Content Container -->
@@ -784,7 +785,6 @@
       }
     }
 
-    // Unlock on all primary gestures
     ['touchstart', 'touchend', 'click', 'pointerdown'].forEach(function(ev) {
       window.addEventListener(ev, unlockAudioContext, { passive: true });
     });
@@ -840,7 +840,7 @@
       } catch (e) {}
     }
 
-    // Hybrid TTS: Capacitor Native TTS first, Web Speech API fallback
+    // Hybrid TTS Engine: Capacitor Native TTS first, Web Speech API fallback
     var availableVoices = [];
     function loadVoices() {
       if (window.speechSynthesis) {
@@ -861,7 +861,6 @@
       var cleanText = String(text).replace(/___+/g, 'blank');
       var targetLang = lang || (containsHindi(cleanText) ? "hi-IN" : "en-IN");
 
-      // 1. Try Capacitor Native TextToSpeech plugin if available in Android APK
       var cap = window.Capacitor;
       var ttsPlugin = (cap && cap.Plugins && cap.Plugins.TextToSpeech) || (window.plugins && window.plugins.tts);
       if (ttsPlugin) {
@@ -878,12 +877,9 @@
             fallbackWebSpeech(cleanText, targetLang);
           });
           return;
-        } catch(err) {
-          // Fall through to Web Speech
-        }
+        } catch(err) {}
       }
 
-      // 2. Fallback to window.speechSynthesis
       fallbackWebSpeech(cleanText, targetLang);
     }
 
@@ -997,16 +993,22 @@
     var appState = {
       section: "home", // home, nursery, lkg, ukg, picture_world, brain_booster
       tabIndex: 0,
-      mode: "learn", // learn, quiz_pic_to_let, quiz_let_to_pic
+      mode: "learn", // learn, quiz_pic_to_let, quiz_let_to_pic, quiz
       quizIndex: 0,
       stars: 0,
       // UKG Phonics
       phonicsVowel: "a", // a, e, i, o, u
       // UKG Matra Filter
       matraFilter: "all",
+      // LKG EVS Topic
+      lkgEvsTopic: "body",
+      lkgEvsQuizIndex: 0,
+      // UKG EVS Topic
+      ukgEvsTopic: "seasons",
+      ukgEvsQuizIndex: 0,
       // Counting
       countTargetNumber: 5,
-      // LKG Word building
+      // LKG Word building (Hindi)
       wordCurrentIndex: 0,
       wordSlots: [],
       // LKG Pre-math & Senses
@@ -1026,12 +1028,8 @@
       document.getElementById("star-count").textContent = appState.stars;
       playTone("success");
       triggerConfetti();
-      showToast(message || "🎉 शानदार! (Very Good!)", "success");
-      if (speechText) {
-        speak(speechText, speechLang || "hi-IN");
-      } else {
-        speak("बहुत बढ़िया!", "hi-IN");
-      }
+      showToast(message || "🎉 Awesome! Great job!", "success");
+      speak(speechText || "Awesome! Great job!", speechLang || "en-IN");
     }
 
     function showToast(text, type) {
@@ -1043,74 +1041,76 @@
       }, 1200);
     }
 
-    function markWrong(speechText) {
+    function markWrong(speechText, lang) {
       playTone("wrong");
-      showToast("❌ फिर से कोशिश करो (Try Again)", "wrong");
-      speak(speechText || "फिर से कोशिश करो", "hi-IN");
+      showToast("❌ Try Again!", "wrong");
+      speak(speechText || "Try again!", lang || "en-IN");
     }
 
     /* ---------------------------------------------------------
-       DATA: NURSERY (A-Z, Swar, 1-50, Shapes)
+       DATA: NURSERY (A-Z English, Hindi Swar, 1-50, Shapes)
        --------------------------------------------------------- */
     var DATA_AZ = [
-      { letter: "A", word: "Apple", hindi: "सेब", emoji: "🍎", phonics: "A for Apple" },
-      { letter: "B", word: "Ball", hindi: "गेंद", emoji: "⚽", phonics: "B for Ball" },
-      { letter: "C", word: "Car", hindi: "कार", emoji: "🚗", phonics: "C for Car" },
-      { letter: "D", word: "Dog", hindi: "कुत्ता", emoji: "🐶", phonics: "D for Dog" },
-      { letter: "E", word: "Elephant", hindi: "हाथी", emoji: "🐘", phonics: "E for Elephant" },
-      { letter: "F", word: "Fish", hindi: "मछली", emoji: "🐟", phonics: "F for Fish" },
-      { letter: "G", word: "Grapes", hindi: "अंगूर", emoji: "🍇", phonics: "G for Grapes" },
-      { letter: "H", word: "Horse", hindi: "घोड़ा", emoji: "🐴", phonics: "H for Horse" },
-      { letter: "I", word: "Ice Cream", hindi: "आइसक्रीम", emoji: "🍦", phonics: "I for Ice Cream" },
-      { letter: "J", word: "Joker", hindi: "जोकर", emoji: "🃏", phonics: "J for Joker" },
-      { letter: "K", word: "Kite", hindi: "पतंग", emoji: "🪁", phonics: "K for Kite" },
-      { letter: "L", word: "Lion", hindi: "शेर", emoji: "🦁", phonics: "L for Lion" },
-      { letter: "M", word: "Mango", hindi: "आम", emoji: "🥭", phonics: "M for Mango" },
-      { letter: "N", word: "Nest", hindi: "घोंसला", emoji: "🪺", phonics: "N for Nest" },
-      { letter: "O", word: "Orange", hindi: "संतरा", emoji: "🍊", phonics: "O for Orange" },
-      { letter: "P", word: "Peacock", hindi: "मोर", emoji: "🦚", phonics: "P for Peacock" },
-      { letter: "Q", word: "Queen", hindi: "रानी", emoji: "👑", phonics: "Q for Queen" },
-      { letter: "R", word: "Rabbit", hindi: "खरगोश", emoji: "🐰", phonics: "R for Rabbit" },
-      { letter: "S", word: "Sun", hindi: "सूरज", emoji: "☀️", phonics: "S for Sun" },
-      { letter: "T", word: "Tiger", hindi: "बाघ", emoji: "🐯", phonics: "T for Tiger" },
-      { letter: "U", word: "Umbrella", hindi: "छाता", emoji: "☂️", phonics: "U for Umbrella" },
-      { letter: "V", word: "Van", hindi: "वैन", emoji: "🚐", phonics: "V for Van" },
-      { letter: "W", word: "Watch", hindi: "घड़ी", emoji: "⌚", phonics: "W for Watch" },
-      { letter: "X", word: "Xylophone", hindi: "ज़ायलोफ़ोन", emoji: "🎹", phonics: "X for Xylophone" },
-      { letter: "Y", word: "Yak", hindi: "याक", emoji: "🐂", phonics: "Y for Yak" },
-      { letter: "Z", word: "Zebra", hindi: "ज़ेब्रा", emoji: "🦓", phonics: "Z for Zebra" }
+      { letter: "A", word: "Apple", emoji: "🍎", phonics: "A for Apple" },
+      { letter: "B", word: "Ball", emoji: "⚽", phonics: "B for Ball" },
+      { letter: "C", word: "Car", emoji: "🚗", phonics: "C for Car" },
+      { letter: "D", word: "Dog", emoji: "🐶", phonics: "D for Dog" },
+      { letter: "E", word: "Elephant", emoji: "🐘", phonics: "E for Elephant" },
+      { letter: "F", word: "Fish", emoji: "🐟", phonics: "F for Fish" },
+      { letter: "G", word: "Grapes", emoji: "🍇", phonics: "G for Grapes" },
+      { letter: "H", word: "Horse", emoji: "🐴", phonics: "H for Horse" },
+      { letter: "I", word: "Ice Cream", emoji: "🍦", phonics: "I for Ice Cream" },
+      { letter: "J", word: "Joker", emoji: "🃏", phonics: "J for Joker" },
+      { letter: "K", word: "Kite", emoji: "🪁", phonics: "K for Kite" },
+      { letter: "L", word: "Lion", emoji: "🦁", phonics: "L for Lion" },
+      { letter: "M", word: "Mango", emoji: "🥭", phonics: "M for Mango" },
+      { letter: "N", word: "Nest", emoji: "🪺", phonics: "N for Nest" },
+      { letter: "O", word: "Orange", emoji: "🍊", phonics: "O for Orange" },
+      { letter: "P", word: "Peacock", emoji: "🦚", phonics: "P for Peacock" },
+      { letter: "Q", word: "Queen", emoji: "👑", phonics: "Q for Queen" },
+      { letter: "R", word: "Rabbit", emoji: "🐰", phonics: "R for Rabbit" },
+      { letter: "S", word: "Sun", emoji: "☀️", phonics: "S for Sun" },
+      { letter: "T", word: "Tiger", emoji: "🐯", phonics: "T for Tiger" },
+      { letter: "U", word: "Umbrella", emoji: "☂️", phonics: "U for Umbrella" },
+      { letter: "V", word: "Van", emoji: "🚐", phonics: "V for Van" },
+      { letter: "W", word: "Watch", emoji: "⌚", phonics: "W for Watch" },
+      { letter: "X", word: "Xylophone", emoji: "🎹", phonics: "X for Xylophone" },
+      { letter: "Y", word: "Yak", emoji: "🐂", phonics: "Y for Yak" },
+      { letter: "Z", word: "Zebra", emoji: "🦓", phonics: "Z for Zebra" }
     ];
 
+    // Hindi Subject Tab ONLY: Nursery Hindi Swar
     var DATA_SWAR = [
-      { letter: "अ", word: "अनार", hindi: "Pomegranate", emoji: "🍎", phonics: "अ से अनार" },
-      { letter: "आ", word: "आम", hindi: "Mango", emoji: "🥭", phonics: "आ से आम" },
-      { letter: "इ", word: "इमली", hindi: "Tamarind", emoji: "🌿", phonics: "इ से इमली" },
-      { letter: "ई", word: "ईख", hindi: "Sugarcane", emoji: "🎋", phonics: "ई से ईख" },
-      { letter: "उ", word: "उल्लू", hindi: "Owl", emoji: "🦉", phonics: "उ से उल्लू" },
-      { letter: "ऊ", word: "ऊन", hindi: "Wool", emoji: "🧶", phonics: "ऊ से ऊन" },
-      { letter: "ऋ", word: "ऋषि", hindi: "Sage", emoji: "🧘", phonics: "ऋ से ऋषि" },
-      { letter: "ए", word: "एड़ी", hindi: "Heel", emoji: "🦶", phonics: "ए से एड़ी" },
-      { letter: "ऐ", word: "ऐनक", hindi: "Spectacles", emoji: "👓", phonics: "ऐ से ऐनक" },
-      { letter: "ओ", word: "ओखली", hindi: "Mortar", emoji: "🥣", phonics: "ओ से ओखली" },
-      { letter: "औ", word: "औरत", hindi: "Woman", emoji: "👩", phonics: "औ से औरत" },
-      { letter: "अं", word: "अंगूर", hindi: "Grapes", emoji: "🍇", phonics: "अं से अंगूर" },
-      { letter: "अः", word: "खाली", hindi: "Aha Khali", emoji: "✨", phonics: "अः खाली" }
+      { letter: "अ", word: "अनार", emoji: "🍎", phonics: "अ से अनार" },
+      { letter: "आ", word: "आम", emoji: "🥭", phonics: "आ से आम" },
+      { letter: "इ", word: "इमली", emoji: "🌿", phonics: "इ से इमली" },
+      { letter: "ई", word: "ईख", emoji: "🎋", phonics: "ई से ईख" },
+      { letter: "उ", word: "उल्लू", emoji: "🦉", phonics: "उ से उल्लू" },
+      { letter: "ऊ", word: "ऊन", emoji: "🧶", phonics: "ऊ से ऊन" },
+      { letter: "ऋ", word: "ऋषि", emoji: "🧘", phonics: "ऋ से ऋषि" },
+      { letter: "ए", word: "एड़ी", emoji: "🦶", phonics: "ए से एड़ी" },
+      { letter: "ऐ", word: "ऐनक", emoji: "👓", phonics: "ऐ से ऐनक" },
+      { letter: "ओ", word: "ओखली", emoji: "🥣", phonics: "ओ से ओखली" },
+      { letter: "औ", word: "औरत", emoji: "👩", phonics: "औ से औरत" },
+      { letter: "अं", word: "अंगूर", emoji: "🍇", phonics: "अं से अंगूर" },
+      { letter: "अः", word: "खाली", emoji: "✨", phonics: "अः खाली" }
     ];
 
     var DATA_SHAPES = [
-      { name: "Circle", hindi: "वृत्त / गोल", emoji: "🔴", desc: "Round with no corners" },
-      { name: "Square", hindi: "वर्ग / चौकोर", emoji: "🟦", desc: "4 equal sides" },
-      { name: "Triangle", hindi: "त्रिभुज / त्रिकोण", emoji: "🔺", desc: "3 sides and 3 corners" },
-      { name: "Rectangle", hindi: "आयत", emoji: "🟩", desc: "Opposite sides equal" },
-      { name: "Star", hindi: "तारा", emoji: "⭐", desc: "Twinkling star shape" },
-      { name: "Heart", hindi: "दिल", emoji: "❤️", desc: "Cute heart shape" },
-      { name: "Diamond", hindi: "हीरा", emoji: "💎", desc: "Sparkling diamond" },
-      { name: "Oval", hindi: "अंडाकार", emoji: "🥚", desc: "Egg shape" }
+      { name: "Circle", emoji: "🔴", desc: "Round shape with no corners" },
+      { name: "Square", emoji: "🟦", desc: "Four equal sides and four corners" },
+      { name: "Triangle", emoji: "🔺", desc: "Three sides and three corners" },
+      { name: "Rectangle", emoji: "🟩", desc: "Opposite sides are equal" },
+      { name: "Star", emoji: "⭐", desc: "Five-pointed shining star" },
+      { name: "Heart", emoji: "❤️", desc: "Lovely heart shape" },
+      { name: "Diamond", emoji: "💎", desc: "Sparkling diamond rhombus" },
+      { name: "Oval", emoji: "🥚", desc: "Egg shape rounded curve" }
     ];
 
     /* ---------------------------------------------------------
-       DATA: LKG (Vyanjan, 1-100 Names, Pre-Math, Opposites, Shabda)
+       DATA: LKG (Hindi Vyanjan, 1-100 Names, EVS, Pre-Math & Opposites, Hindi Word Building)
        --------------------------------------------------------- */
+    // Hindi Subject Tab ONLY: LKG Hindi Vyanjan
     var DATA_VYANJAN = [
       { letter: "क", word: "कबूतर", emoji: "🕊️", sound: "क से कबूतर" },
       { letter: "ख", word: "खरगोश", emoji: "🐰", sound: "ख से खरगोश" },
@@ -1161,6 +1161,7 @@
       return tens[t] + (rem > 0 ? ("-" + ones[rem]) : "");
     }
 
+    // Hindi Subject Tab ONLY: LKG Hindi Word Building
     var DATA_SHABDA = [
       { word: "घर", letters: ["घ", "र"], pool: ["घ", "र", "ल", "प"], emoji: "🏠", sound: "घ-र, घर" },
       { word: "नल", letters: ["न", "ल"], pool: ["ल", "क", "न", "म"], emoji: "🚰", sound: "न-ल, नल" },
@@ -1174,73 +1175,261 @@
       { word: "सड़क", letters: ["स", "ड़", "क"], pool: ["क", "स", "ड़", "म"], emoji: "🛣️", sound: "स-ड़-क, सड़क" }
     ];
 
-    // Pre-Math Concepts (NCERT Balvatika: Big/Small, Tall/Short, Inside/Outside, Pattern)
+    // Pre-Math Concepts (100% English)
     var DATA_PRE_MATH = [
       {
-        concept: "Big vs Small (बड़ा और छोटा)",
-        prompt: "Which one is BIG? (बड़ा कौन सा है?)",
-        speak: "Which one is big? बड़ा कौन सा है?",
-        optA: { name: "Elephant (बड़ा)", emoji: "🐘", correct: true },
-        optB: { name: "Mouse (छोटा)", emoji: "🐭", correct: false }
+        concept: "Big vs Small",
+        prompt: "Which one is BIG?",
+        speak: "Which one is big?",
+        optA: { name: "Elephant (Big)", emoji: "🐘", correct: true },
+        optB: { name: "Mouse (Small)", emoji: "🐭", correct: false }
       },
       {
-        concept: "Tall vs Short (लंबा और छोटा)",
-        prompt: "Which one is TALL? (लंबा कौन सा है?)",
-        speak: "Which one is tall? लंबा कौन सा है?",
-        optA: { name: "Giraffe (लंबा)", emoji: "🦒", correct: true },
-        optB: { name: "Puppy (छोटा)", emoji: "🐶", correct: false }
+        concept: "Tall vs Short",
+        prompt: "Which one is TALL?",
+        speak: "Which one is tall?",
+        optA: { name: "Giraffe (Tall)", emoji: "🦒", correct: true },
+        optB: { name: "Puppy (Short)", emoji: "🐶", correct: false }
       },
       {
-        concept: "Inside vs Outside (अंदर और बाहर)",
-        prompt: "Where is the bird? (चिड़िया घोंसले के अंदर है)",
-        speak: "The bird is inside the nest. घोंसले के अंदर",
-        optA: { name: "Inside (अंदर)", emoji: "🪺", correct: true },
-        optB: { name: "Outside (बाहर)", emoji: "🌳", correct: false }
+        concept: "Inside vs Outside",
+        prompt: "Where is the bird?",
+        speak: "The bird is inside the nest.",
+        optA: { name: "Inside", emoji: "🪺", correct: true },
+        optB: { name: "Outside", emoji: "🌳", correct: false }
       },
       {
-        concept: "Pattern Completion (पैटर्न पूरा करें)",
+        concept: "Pattern Completion",
         prompt: "🍎 🍌 🍎 🍌 <span class=\"dash-blank\">___</span>",
         speak: "Apple, Banana, Apple, Banana, what comes next?",
-        optA: { name: "Apple (🍎)", emoji: "🍎", correct: true },
-        optB: { name: "Grapes (🍇)", emoji: "🍇", correct: false }
+        optA: { name: "Apple", emoji: "🍎", correct: true },
+        optB: { name: "Grapes", emoji: "🍇", correct: false }
       },
       {
-        concept: "Pattern Completion (पैटर्न पूरा करें)",
+        concept: "Pattern Completion",
         prompt: "🔴 🟦 🔴 🟦 <span class=\"dash-blank\">___</span>",
         speak: "Red Circle, Blue Square, Red Circle, Blue Square, what comes next?",
-        optA: { name: "Red Circle (🔴)", emoji: "🔴", correct: true },
-        optB: { name: "Green (🟩)", emoji: "🟩", correct: false }
+        optA: { name: "Red Circle", emoji: "🔴", correct: true },
+        optB: { name: "Green Square", emoji: "🟩", correct: false }
       }
     ];
 
-    // 16 Pairs of Opposites
+    // 16 Pairs of Opposites (100% English)
     var DATA_OPPOSITES = [
-      { a: "Hot (गर्म)", eA: "☕", b: "Cold (ठंडा)", eB: "🍦" },
-      { a: "Day (दिन)", eA: "☀️", b: "Night (रात)", eB: "🌙" },
-      { a: "Happy (खुश)", eA: "😊", b: "Sad (उदास)", eB: "😢" },
-      { a: "Big (बड़ा)", eA: "🐘", b: "Small (छोटा)", eB: "🐜" },
-      { a: "Fast (तेज़)", eA: "🏎️", b: "Slow (धीमा)", eB: "🐢" },
-      { a: "Up (ऊपर)", eA: "🎈", b: "Down (नीचे)", eB: "⚓" },
-      { a: "In (अंदर)", eA: "📥", b: "Out (बाहर)", eB: "📤" },
-      { a: "Open (खुला)", eA: "📖", b: "Closed (बंद)", eB: "📕" },
-      { a: "Clean (साफ़)", eA: "✨", b: "Dirty (गंदा)", eB: "🧦" },
-      { a: "Heavy (भारी)", eA: "🪨", b: "Light (हल्का)", eB: "🪶" },
-      { a: "Hard (कठोर)", eA: "🧱", b: "Soft (मुलायम)", eB: "🧸" },
-      { a: "Near (पास)", eA: "📍", b: "Far (दूर)", eB: "🔭" },
-      { a: "Wet (गीला)", eA: "🌧️", b: "Dry (सूखा)", eB: "🏜️" },
-      { a: "Strong (ताकतवर)", eA: "💪", b: "Weak (कमज़ोर)", eB: "🩹" },
-      { a: "Full (भरा)", eA: "🥛", b: "Empty (खाली)", eB: "🫙" },
-      { a: "Sweet (मीठा)", eA: "🍬", b: "Sour (खट्टा)", eB: "🍋" }
+      { a: "Hot", eA: "☕", b: "Cold", eB: "🍦" },
+      { a: "Day", eA: "☀️", b: "Night", eB: "🌙" },
+      { a: "Happy", eA: "😊", b: "Sad", eB: "😢" },
+      { a: "Big", eA: "🐘", b: "Small", eB: "🐜" },
+      { a: "Fast", eA: "🏎️", b: "Slow", eB: "🐢" },
+      { a: "Up", eA: "🎈", b: "Down", eB: "⚓" },
+      { a: "In", eA: "📥", b: "Out", eB: "📤" },
+      { a: "Open", eA: "📖", b: "Closed", eB: "📕" },
+      { a: "Clean", eA: "✨", b: "Dirty", eB: "🧦" },
+      { a: "Heavy", eA: "🪨", b: "Light", eB: "🪶" },
+      { a: "Hard", eA: "🧱", b: "Soft", eB: "🧸" },
+      { a: "Near", eA: "📍", b: "Far", eB: "🔭" },
+      { a: "Wet", eA: "🌧️", b: "Dry", eB: "🏜️" },
+      { a: "Strong", eA: "💪", b: "Weak", eB: "🩹" },
+      { a: "Full", eA: "🥛", b: "Empty", eB: "🫙" },
+      { a: "Sweet", eA: "🍬", b: "Sour", eB: "🍋" }
     ];
 
-    // Five Senses
-    var DATA_FIVE_SENSES = [
-      { sense: "Eyes (आँखें)", action: "Sight / देखना", emoji: "👀", sound: "Eyes are for seeing, आँखें देखने के लिए हैं", sample: "🌈 Beautiful Rainbow" },
-      { sense: "Ears (कान)", action: "Hearing / सुनना", emoji: "👂", sound: "Ears are for hearing, कान सुनने के लिए हैं", sample: "🔔 Ringing Bell" },
-      { sense: "Nose (नाक)", action: "Smell / सूंघना", emoji: "👃", sound: "Nose is for smelling, नाक सूंघने के लिए है", sample: "🌹 Sweet Rose" },
-      { sense: "Tongue (जीभ)", action: "Taste / स्वाद", emoji: "👅", sound: "Tongue is for tasting, जीभ स्वाद चखने के लिए है", sample: "🍦 Yummy Ice Cream" },
-      { sense: "Hands (हाथ)", action: "Touch / छूना", emoji: "✋", sound: "Hands are for touching, हाथ छूकर महसूस करने के लिए हैं", sample: "🧸 Soft Teddy" }
-    ];
+    /* ---------------------------------------------------------
+       DATA: LKG EVS (Environmental Studies: 5 Topics + 25+ Quizzes)
+       --------------------------------------------------------- */
+    var DATA_LKG_EVS = {
+      topics: {
+        body: {
+          title: "My Body & Senses",
+          cards: [
+            { name: "Eyes", emoji: "👀", sentence: "We have two eyes to see the beautiful world." },
+            { name: "Ears", emoji: "👂", sentence: "We have two ears to hear music and sounds." },
+            { name: "Nose", emoji: "👃", sentence: "We have one nose to smell sweet flowers." },
+            { name: "Tongue", emoji: "👅", sentence: "Our tongue helps us taste delicious food." },
+            { name: "Hands", emoji: "✋", sentence: "We use our hands to touch, hold, and write." },
+            { name: "Legs", emoji: "🦵", sentence: "We use our legs to walk, run, and jump." },
+            { name: "Head", emoji: "👦", sentence: "This is our head. It holds our thinking brain." }
+          ]
+        },
+        family: {
+          title: "My Family",
+          cards: [
+            { name: "Father", emoji: "👨", sentence: "Father protects and cares for our family." },
+            { name: "Mother", emoji: "👩", sentence: "Mother loves and nurtures us with warmth." },
+            { name: "Brother", emoji: "👦", sentence: "Brother plays and shares fun games with us." },
+            { name: "Sister", emoji: "👧", sentence: "Sister is a caring and sweet sibling." },
+            { name: "Grandfather", emoji: "👴", sentence: "Grandfather tells wonderful bedtime stories." },
+            { name: "Grandmother", emoji: "👵", sentence: "Grandmother gives warm hugs and sweet treats." },
+            { name: "Baby", emoji: "👶", sentence: "Baby is the youngest and cutest in our family." }
+          ]
+        },
+        animals: {
+          title: "Domestic vs Wild Animals",
+          cards: [
+            { name: "Cow", emoji: "🐮", sentence: "Cow is a domestic animal. It gives us healthy milk." },
+            { name: "Dog", emoji: "🐶", sentence: "Dog is a faithful domestic pet. It guards our house." },
+            { name: "Cat", emoji: "🐱", sentence: "Cat is a domestic pet that purrs and likes milk." },
+            { name: "Sheep", emoji: "🐑", sentence: "Sheep is a domestic animal. It gives us warm wool." },
+            { name: "Horse", emoji: "🐴", sentence: "Horse is a strong domestic animal that runs fast." },
+            { name: "Lion", emoji: "🦁", sentence: "Lion is a wild animal. It is the king of the jungle." },
+            { name: "Tiger", emoji: "🐯", sentence: "Tiger is a wild animal with bold black and orange stripes." },
+            { name: "Elephant", emoji: "🐘", sentence: "Elephant is a huge wild animal with big ears and a trunk." },
+            { name: "Giraffe", emoji: "🦒", sentence: "Giraffe is a wild animal with a very tall neck." },
+            { name: "Bear", emoji: "🐻", sentence: "Bear is a wild animal that loves honey and fish." }
+          ]
+        },
+        food: {
+          title: "Fruits & Vegetables",
+          cards: [
+            { name: "Apple", emoji: "🍎", sentence: "Apple is a sweet crunchy fruit. An apple a day keeps the doctor away." },
+            { name: "Banana", emoji: "🍌", sentence: "Banana is a yellow fruit that gives us instant energy." },
+            { name: "Mango", emoji: "🥭", sentence: "Mango is the sweet and juicy king of fruits." },
+            { name: "Carrot", emoji: "🥕", sentence: "Carrot is a healthy orange vegetable good for eyesight." },
+            { name: "Potato", emoji: "🥔", sentence: "Potato is a versatile vegetable that grows underground." },
+            { name: "Tomato", emoji: "🍅", sentence: "Tomato is a juicy red vegetable used in delicious salads." },
+            { name: "Peas", emoji: "🫛", sentence: "Green peas are sweet little vegetables inside a pod." }
+          ]
+        },
+        habits: {
+          title: "Good Habits",
+          cards: [
+            { name: "Brush Teeth", emoji: "🪥", sentence: "Brush your teeth twice a day: morning and night." },
+            { name: "Wash Hands", emoji: "🧼", sentence: "Always wash your hands with soap before eating." },
+            { name: "Take a Bath", emoji: "🚿", sentence: "Take a bath daily to stay fresh, clean, and healthy." },
+            { name: "Sleep Early", emoji: "🛌", sentence: "Sleep early at night and wake up early in the morning." },
+            { name: "Eat Healthy", emoji: "🥗", sentence: "Eat fresh fruits and vegetables to grow strong." },
+            { name: "Use Dustbin", emoji: "🗑️", sentence: "Always throw garbage in the dustbin to keep clean." }
+          ]
+        }
+      },
+      quiz: [
+        { q: "Which animal gives us sweet and healthy milk?", ans: "Cow", options: ["Cow", "Lion", "Tiger"] },
+        { q: "Who is known as the king of the jungle?", ans: "Lion", options: ["Lion", "Sheep", "Dog"] },
+        { q: "Which body part helps us see colors and pictures?", ans: "Eyes", options: ["Eyes", "Ears", "Nose"] },
+        { q: "Which body part helps us smell sweet flowers?", ans: "Nose", options: ["Nose", "Tongue", "Legs"] },
+        { q: "Which animal guards our house faithfully?", ans: "Dog", options: ["Dog", "Bear", "Giraffe"] },
+        { q: "Which animal has a very tall and long neck?", ans: "Giraffe", options: ["Giraffe", "Cat", "Horse"] },
+        { q: "How many times should we brush our teeth every day?", ans: "Twice daily", options: ["Twice daily", "Never", "Once a week"] },
+        { q: "Where should we always throw garbage and wrappers?", ans: "Dustbin", options: ["Dustbin", "Floor", "Street"] },
+        { q: "Which yellow fruit is loved by monkeys?", ans: "Banana", options: ["Banana", "Carrot", "Potato"] },
+        { q: "Which animal gives us warm wool for winter clothes?", ans: "Sheep", options: ["Sheep", "Lion", "Elephant"] },
+        { q: "Which sense organ helps us hear music and sounds?", ans: "Ears", options: ["Ears", "Eyes", "Nose"] },
+        { q: "What helps us taste delicious ice cream?", ans: "Tongue", options: ["Tongue", "Hands", "Legs"] },
+        { q: "Which fruit is known as the king of fruits?", ans: "Mango", options: ["Mango", "Tomato", "Peas"] },
+        { q: "What must we do with soap before eating food?", ans: "Wash hands", options: ["Wash hands", "Play games", "Sleep"] },
+        { q: "Which giant wild animal has big ears and a long trunk?", ans: "Elephant", options: ["Elephant", "Cat", "Dog"] },
+        { q: "Which healthy orange vegetable is good for eyesight?", ans: "Carrot", options: ["Carrot", "Apple", "Mango"] },
+        { q: "Who tells sweet bedtime stories in our family?", ans: "Grandfather", options: ["Grandfather", "Baby", "Dog"] },
+        { q: "Which body part do we use to run, jump, and walk?", ans: "Legs", options: ["Legs", "Ears", "Eyes"] },
+        { q: "Which domestic animal runs very fast with a carriage?", ans: "Horse", options: ["Horse", "Tiger", "Bear"] },
+        { q: "Which wild animal has bold black and orange stripes?", ans: "Tiger", options: ["Tiger", "Cow", "Sheep"] },
+        { q: "Which of these is a loving domestic pet?", ans: "Cat", options: ["Cat", "Lion", "Giraffe"] },
+        { q: "What should we do daily to stay clean and fresh?", ans: "Take a bath", options: ["Take a bath", "Skip bath", "Get dirty"] },
+        { q: "Which red and sweet fruit keeps the doctor away?", ans: "Apple", options: ["Apple", "Potato", "Onion"] },
+        { q: "Who is the cute little youngest member of the family?", ans: "Baby", options: ["Baby", "Teacher", "Pilot"] },
+        { q: "Which of these is a vegetable that grows underground?", ans: "Potato", options: ["Potato", "Apple", "Banana"] }
+      ]
+    };
+
+    /* ---------------------------------------------------------
+       DATA: UKG EVS (Environmental Studies: 5 Topics + 35+ Quizzes)
+       --------------------------------------------------------- */
+    var DATA_UKG_EVS = {
+      topics: {
+        seasons: {
+          title: "Seasons & Weather",
+          cards: [
+            { name: "Summer Season", emoji: "☀️", sentence: "Summer is hot and sunny. We enjoy cold ice-cream and wear light cotton clothes." },
+            { name: "Winter Season", emoji: "❄️", sentence: "Winter is cold and chilly. We wear warm jackets, woolen caps, and drink hot milk." },
+            { name: "Rainy Season", emoji: "🌧️", sentence: "Rainy monsoon brings dark clouds, puddles, and we use umbrellas and raincoats." },
+            { name: "Spring Season", emoji: "🌸", sentence: "Spring is pleasant and breezy. Colorful flowers bloom and butterflies fly." },
+            { name: "Autumn Season", emoji: "🍂", sentence: "Autumn is windy and cool. Dry golden leaves fall from trees." }
+          ]
+        },
+        helpers: {
+          title: "Community Helpers",
+          cards: [
+            { name: "Doctor", emoji: "👨‍⚕️", sentence: "A Doctor cures sick people and prescribes medicines in the hospital." },
+            { name: "Teacher", emoji: "👩‍🏫", sentence: "A Teacher educates children and helps them learn new things at school." },
+            { name: "Policeman", emoji: "👮", sentence: "A Policeman protects our neighborhood, catches thieves, and keeps us safe." },
+            { name: "Firefighter", emoji: "👨‍🚒", sentence: "A Firefighter bravely puts out dangerous fires and rescues people." },
+            { name: "Farmer", emoji: "🧑‍🌾", sentence: "A Farmer grows food grains, fruits, and vegetables in the fields." },
+            { name: "Postman", emoji: "📬", sentence: "A Postman delivers letters, cards, and parcels to our doorstep." },
+            { name: "Nurse", emoji: "👩‍⚕️", sentence: "A Nurse takes gentle care of patients in the clinic and hospital." },
+            { name: "Pilot", emoji: "👨‍✈️", sentence: "A Pilot flies aeroplanes high up in the clouds." }
+          ]
+        },
+        transport: {
+          title: "Means of Transport",
+          cards: [
+            { name: "Land Transport", emoji: "🚗", sentence: "Land vehicles move on roads and tracks: Car, Bus, Train, Bicycle." },
+            { name: "Water Transport", emoji: "🚢", sentence: "Water transport sails across seas and rivers: Ship, Boat, Submarine." },
+            { name: "Air Transport", emoji: "✈️", sentence: "Air transport flies high in the sky: Aeroplane, Helicopter, Jet." },
+            { name: "Space Transport", emoji: "🚀", sentence: "Rockets carry astronauts and satellites into outer space to explore planets." },
+            { name: "Train", emoji: "🚂", sentence: "Train runs on railway tracks and carries hundreds of passengers." },
+            { name: "Bicycle", emoji: "🚲", sentence: "Bicycle is an eco-friendly two-wheeled vehicle powered by pedals." }
+          ]
+        },
+        plant: {
+          title: "Parts of a Plant",
+          cards: [
+            { name: "Root", emoji: "🪵", sentence: "The Root grows under the ground and absorbs water from the soil." },
+            { name: "Stem", emoji: "🌿", sentence: "The Stem stands tall and carries water and nutrients to the plant." },
+            { name: "Leaf", emoji: "🍃", sentence: "The Leaf uses sunlight to prepare food for the green plant." },
+            { name: "Flower", emoji: "🌺", sentence: "The Flower is the colorful and fragrant bloom that attracts honeybees." },
+            { name: "Fruit", emoji: "🍎", sentence: "The Fruit develops from flowers and safely encloses seeds inside." }
+          ]
+        },
+        food: {
+          title: "Healthy vs Junk Food",
+          cards: [
+            { name: "Fresh Milk", emoji: "🥛", sentence: "Milk is rich in calcium and makes our bones and teeth super strong." },
+            { name: "Fresh Fruits", emoji: "🍎", sentence: "Fruits are packed with vitamins that protect our body from sickness." },
+            { name: "Green Salad", emoji: "🥗", sentence: "Fresh leafy salads keep our digestion smooth and body fit." },
+            { name: "Almonds & Nuts", emoji: "🥜", sentence: "Nuts are healthy brain foods that boost memory and power." },
+            { name: "Burger & Pizza", emoji: "🍔", sentence: "Burgers and pizzas are oily junk food. Eating too much makes us unhealthy." },
+            { name: "Soda & Cola", emoji: "🥤", sentence: "Sugary soda drinks harm our teeth. We should drink pure water instead." }
+          ]
+        }
+      },
+      quiz: [
+        { q: "Who treats sick and injured people in a hospital?", ans: "Doctor", options: ["Doctor", "Teacher", "Pilot"] },
+        { q: "Who teaches and guides students in school?", ans: "Teacher", options: ["Teacher", "Policeman", "Farmer"] },
+        { q: "Who puts out dangerous fires with water hoses?", ans: "Firefighter", options: ["Firefighter", "Postman", "Doctor"] },
+        { q: "Who grows crops, wheat, and vegetables in fields?", ans: "Farmer", options: ["Farmer", "Pilot", "Nurse"] },
+        { q: "Who protects our town and catches lawbreakers?", ans: "Policeman", options: ["Policeman", "Farmer", "Teacher"] },
+        { q: "Who delivers letters and packages to our house?", ans: "Postman", options: ["Postman", "Doctor", "Firefighter"] },
+        { q: "Who flies huge aeroplanes in the sky?", ans: "Pilot", options: ["Pilot", "Nurse", "Farmer"] },
+        { q: "In which season do we carry an umbrella and wear raincoats?", ans: "Rainy Season", options: ["Rainy Season", "Summer Season", "Winter Season"] },
+        { q: "In which season do we wear cozy woolen sweaters and jackets?", ans: "Winter Season", options: ["Winter Season", "Summer Season", "Rainy Season"] },
+        { q: "In which season is the weather hot and we eat ice-creams?", ans: "Summer Season", options: ["Summer Season", "Winter Season", "Autumn Season"] },
+        { q: "In which pleasant season do colorful flowers bloom everywhere?", ans: "Spring Season", options: ["Spring Season", "Winter Season", "Rainy Season"] },
+        { q: "In which season do dry golden leaves fall from trees?", ans: "Autumn Season", options: ["Autumn Season", "Summer Season", "Spring Season"] },
+        { q: "Which vital part of a plant grows under the soil?", ans: "Root", options: ["Root", "Flower", "Leaf"] },
+        { q: "Which part of a plant uses sunlight to make food?", ans: "Leaf", options: ["Leaf", "Root", "Stem"] },
+        { q: "Which colorful part of a plant attracts sweet honeybees?", ans: "Flower", options: ["Flower", "Root", "Stem"] },
+        { q: "Which part carries water up to all leaves and branches?", ans: "Stem", options: ["Stem", "Fruit", "Root"] },
+        { q: "What part of a plant develops from flowers and holds seeds?", ans: "Fruit", options: ["Fruit", "Leaf", "Root"] },
+        { q: "Which of these is a vehicle of Water Transport?", ans: "Ship", options: ["Ship", "Car", "Aeroplane"] },
+        { q: "Which is the fastest means of air transport?", ans: "Aeroplane", options: ["Aeroplane", "Bicycle", "Boat"] },
+        { q: "Which vehicle runs swiftly on long railway tracks?", ans: "Train", options: ["Train", "Ship", "Helicopter"] },
+        { q: "Which vehicle blasts into space to explore the moon?", ans: "Rocket", options: ["Rocket", "Car", "Bus"] },
+        { q: "Which healthy drink gives calcium for strong bones?", ans: "Milk", options: ["Milk", "Cola", "Coffee"] },
+        { q: "Which of these is a vitamin-rich healthy food?", ans: "Fresh Fruits", options: ["Fresh Fruits", "Burger", "Potato Chips"] },
+        { q: "Which of these is an oily junk food we should avoid?", ans: "Burger", options: ["Burger", "Milk", "Salad"] },
+        { q: "What healthy liquid should we drink plenty of every single day?", ans: "Pure Water", options: ["Pure Water", "Soda Drink", "Sugar Syrup"] },
+        { q: "Which healthy dry fruit is great for boosting memory?", ans: "Almonds", options: ["Almonds", "Candy", "Donut"] },
+        { q: "Which non-polluting vehicle has pedals and two wheels?", ans: "Bicycle", options: ["Bicycle", "Rocket", "Truck"] },
+        { q: "Who helps the doctor take caring look at hospital patients?", ans: "Nurse", options: ["Nurse", "Postman", "Pilot"] },
+        { q: "Which air vehicle has big spinning overhead blades?", ans: "Helicopter", options: ["Helicopter", "Train", "Boat"] },
+        { q: "Why is junk food bad for our growing body?", ans: "Makes us unhealthy", options: ["Makes us unhealthy", "Gives strong bones", "Helps us grow"] },
+        { q: "Where does a farmer grow crops?", ans: "In the farm", options: ["In the farm", "In hospital", "In airport"] },
+        { q: "What carries many people on road as public transport?", ans: "Bus", options: ["Bus", "Submarine", "Helicopter"] },
+        { q: "What special clothes do we wear during winter?", ans: "Woolen clothes", options: ["Woolen clothes", "Cotton clothes", "Raincoat"] },
+        { q: "What vehicle floats under the surface of the ocean?", ans: "Submarine", options: ["Submarine", "Rocket", "Bus"] },
+        { q: "What do bees collect from flowers?", ans: "Nectar", options: ["Nectar", "Water", "Soil"] }
+      ]
+    };
 
     /* ---------------------------------------------------------
        DATA: UKG PHONICS (5 Separate Vowel Tabs: 10 words each) + Rhyming
@@ -1308,7 +1497,6 @@
       ]
     };
 
-    // 16 Pairs of Rhyming Words
     var DATA_RHYMING = [
       { w1: "Cat", e1: "🐱", w2: "Bat", e2: "🦇" },
       { w1: "Bed", e1: "🛏️", w2: "Red", e2: "🔴" },
@@ -1329,7 +1517,7 @@
     ];
 
     /* ---------------------------------------------------------
-       DATA: UKG HINDI MATRAS (45+ Words with Separate Filter Tabs)
+       DATA: UKG HINDI MATRAS (Hindi Subject Tab ONLY: 45+ Words)
        --------------------------------------------------------- */
     var DATA_MATRA_TABS = {
       "aa": {
@@ -1425,7 +1613,7 @@
     };
 
     /* ---------------------------------------------------------
-       DATA: BEFORE, AFTER, BETWEEN (Unlimited 50+ procedural engine)
+       DATA: BEFORE, AFTER, BETWEEN (50+ Procedural Generator)
        --------------------------------------------------------- */
     function generateBeforeAfterList() {
       var list = [];
@@ -1433,7 +1621,7 @@
       for (var n = 2; n <= 48; n += 2) {
         // After
         list.push({
-          q: "What comes AFTER " + n + "?",
+          q: "What comes AFTER " + (n+1) + "?",
           prompt: n + ", " + (n+1) + ", <span class=\"dash-blank\">___</span>",
           ans: String(n + 2),
           options: [String(n + 2), String(n + 3), String(n - 1)],
@@ -1460,7 +1648,7 @@
         });
       }
 
-      // 2. Alphabets A-Z
+      // 2. Alphabets A-Z (English)
       var azPairs = [
         { seq: ["A", "B", "___"], ans: "C", q: "What comes after B?", sp: "A, B, blank. What comes after B?" },
         { seq: ["___", "E", "F"], ans: "D", q: "What comes before E?", sp: "Blank, E, F. What comes before E?" },
@@ -1483,129 +1671,107 @@
         });
       });
 
-      // 3. Hindi Swar & Vyanjan
-      var hiPairs = [
-        { seq: ["अ", "आ", "___"], ans: "इ", q: "अ, आ के बाद क्या आता है?", sp: "अ, आ, खाली जगह. बाद में क्या आता है?" },
-        { seq: ["इ", "___", "उ"], ans: "ई", q: "इ और उ के बीच क्या आता है?", sp: "इ, खाली जगह, उ. बीच में क्या आता है?" },
-        { seq: ["___", "ऊ", "ऋ"], ans: "उ", q: "ऊ से पहले क्या आता है?", sp: "खाली जगह, ऊ, ऋ. पहले क्या आता है?" },
-        { seq: ["क", "ख", "___"], ans: "ग", q: "क, ख के बाद क्या आता है?", sp: "क, ख, खाली जगह. बाद में क्या आता है?" },
-        { seq: ["च", "___", "ज"], ans: "छ", q: "च और ज के बीच क्या आता है?", sp: "च, खाली जगह, ज. बीच में क्या आता है?" },
-        { seq: ["ट", "ठ", "___"], ans: "ड", q: "ट, ठ के बाद क्या आता है?", sp: "ट, ठ, खाली जगह. बाद में क्या आता है?" },
-        { seq: ["त", "___", "द"], ans: "थ", q: "त और द के बीच क्या आता है?", sp: "त, खाली जगह, द. बीच में क्या आता है?" },
-        { seq: ["प", "फ", "___"], ans: "ब", q: "प, फ के बाद क्या आता है?", sp: "प, फ, खाली जगह. बाद में क्या आता है?" }
-      ];
-      hiPairs.forEach(function(item) {
-        list.push({
-          q: item.q,
-          prompt: item.seq[0] + ", " + item.seq[1] + ", " + item.seq[2],
-          ans: item.ans,
-          options: [item.ans, "म", "स"].sort(function(){ return Math.random()-0.5; }),
-          lang: "hi-IN",
-          speak: item.sp
-        });
-      });
-
       return list;
     }
 
     var DATA_BEFORE_AFTER = generateBeforeAfterList();
 
     /* ---------------------------------------------------------
-       DATA: PICTURE WORLD (6 Categories, Learn & Quiz)
+       DATA: PICTURE WORLD (100% English Medium)
        --------------------------------------------------------- */
     var DATA_PICTURE_WORLD = {
       Animals: [
-        { en: "Lion", hi: "शेर", emoji: "🦁" },
-        { en: "Tiger", hi: "बाघ", emoji: "🐯" },
-        { en: "Elephant", hi: "हाथी", emoji: "🐘" },
-        { en: "Monkey", hi: "बंदर", emoji: "🐒" },
-        { en: "Giraffe", hi: "जिराफ़", emoji: "🦒" },
-        { en: "Zebra", hi: "ज़ेब्रा", emoji: "🦓" },
-        { en: "Cow", hi: "गाय", emoji: "🐮" },
-        { en: "Dog", hi: "कुत्ता", emoji: "🐶" },
-        { en: "Cat", hi: "बिल्ली", emoji: "🐱" },
-        { en: "Bear", hi: "भालू", emoji: "🐻" },
-        { en: "Horse", hi: "घोड़ा", emoji: "🐴" },
-        { en: "Rabbit", hi: "खरगोश", emoji: "🐰" }
+        { en: "Lion", emoji: "🦁" },
+        { en: "Tiger", emoji: "🐯" },
+        { en: "Elephant", emoji: "🐘" },
+        { en: "Monkey", emoji: "🐒" },
+        { en: "Giraffe", emoji: "🦒" },
+        { en: "Zebra", emoji: "🦓" },
+        { en: "Cow", emoji: "🐮" },
+        { en: "Dog", emoji: "🐶" },
+        { en: "Cat", emoji: "🐱" },
+        { en: "Bear", emoji: "🐻" },
+        { en: "Horse", emoji: "🐴" },
+        { en: "Rabbit", emoji: "🐰" }
       ],
       Birds: [
-        { en: "Peacock", hi: "मोर", emoji: "🦚" },
-        { en: "Parrot", hi: "तोता", emoji: "🦜" },
-        { en: "Owl", hi: "उल्लू", emoji: "🦉" },
-        { en: "Pigeon", hi: "कबूतर", emoji: "🕊️" },
-        { en: "Duck", hi: "बत्तख", emoji: "🦆" },
-        { en: "Eagle", hi: "बाज़", emoji: "🦅" },
-        { en: "Sparrow", hi: "गौरैया", emoji: "🐦" },
-        { en: "Flamingo", hi: "राजहंस", emoji: "🦩" },
-        { en: "Penguin", hi: "पेंगुइन", emoji: "🐧" },
-        { en: "Swan", hi: "हंस", emoji: "🦢" }
+        { en: "Peacock", emoji: "🦚" },
+        { en: "Parrot", emoji: "🦜" },
+        { en: "Owl", emoji: "🦉" },
+        { en: "Pigeon", emoji: "🕊️" },
+        { en: "Duck", emoji: "🦆" },
+        { en: "Eagle", emoji: "🦅" },
+        { en: "Sparrow", emoji: "🐦" },
+        { en: "Flamingo", emoji: "🦩" },
+        { en: "Penguin", emoji: "🐧" },
+        { en: "Swan", emoji: "🦢" }
       ],
       Fruits: [
-        { en: "Apple", hi: "सेब", emoji: "🍎" },
-        { en: "Mango", hi: "आम", emoji: "🥭" },
-        { en: "Banana", hi: "केला", emoji: "🍌" },
-        { en: "Grapes", hi: "अंगूर", emoji: "🍇" },
-        { en: "Orange", hi: "संतरा", emoji: "🍊" },
-        { en: "Watermelon", hi: "तरबूज", emoji: "🍉" },
-        { en: "Strawberry", hi: "स्ट्रॉबेरी", emoji: "🍓" },
-        { en: "Pineapple", hi: "अनानास", emoji: "🍍" },
-        { en: "Papaya", hi: "पपीता", emoji: "🍈" },
-        { en: "Guava", hi: "अमरूद", emoji: "🍐" }
+        { en: "Apple", emoji: "🍎" },
+        { en: "Mango", emoji: "🥭" },
+        { en: "Banana", emoji: "🍌" },
+        { en: "Grapes", emoji: "🍇" },
+        { en: "Orange", emoji: "🍊" },
+        { en: "Watermelon", emoji: "🍉" },
+        { en: "Strawberry", emoji: "🍓" },
+        { en: "Pineapple", emoji: "🍍" },
+        { en: "Papaya", emoji: "🍈" },
+        { en: "Guava", emoji: "🍐" }
       ],
       Vegetables: [
-        { en: "Potato", hi: "आलू", emoji: "🥔" },
-        { en: "Tomato", hi: "टमाटर", emoji: "🍅" },
-        { en: "Carrot", hi: "गाजर", emoji: "🥕" },
-        { en: "Onion", hi: "प्याज़", emoji: "🧅" },
-        { en: "Brinjal", hi: "बैंगन", emoji: "🍆" },
-        { en: "Peas", hi: "मटर", emoji: "🫛" },
-        { en: "Corn", hi: "मक्का", emoji: "🌽" },
-        { en: "Broccoli", hi: "ब्रोकली", emoji: "🥦" },
-        { en: "Cauliflower", hi: "फूलगोभी", emoji: "🥬" },
-        { en: "Capsicum", hi: "शिमला मिर्च", emoji: "🫑" }
+        { en: "Potato", emoji: "🥔" },
+        { en: "Tomato", emoji: "🍅" },
+        { en: "Carrot", emoji: "🥕" },
+        { en: "Onion", emoji: "🧅" },
+        { en: "Brinjal", emoji: "🍆" },
+        { en: "Peas", emoji: "🫛" },
+        { en: "Corn", emoji: "🌽" },
+        { en: "Broccoli", emoji: "🥦" },
+        { en: "Cauliflower", emoji: "🥬" },
+        { en: "Capsicum", emoji: "🫑" }
       ],
       Vehicles: [
-        { en: "Car", hi: "कार", emoji: "🚗" },
-        { en: "Bus", hi: "बस", emoji: "🚌" },
-        { en: "Train", hi: "रेलगाड़ी", emoji: "🚂" },
-        { en: "Aeroplane", hi: "हवाई जहाज़", emoji: "✈️" },
-        { en: "Bicycle", hi: "साइकिल", emoji: "🚲" },
-        { en: "Ship", hi: "पानी का जहाज़", emoji: "🚢" },
-        { en: "Helicopter", hi: "हेलीकॉप्टर", emoji: "🚁" },
-        { en: "Auto Rickshaw", hi: "ऑटो", emoji: "🛺" },
-        { en: "Police Car", hi: "पुलिस कार", emoji: "🚓" },
-        { en: "Fire Truck", hi: "दमकल गाड़ी", emoji: "🚒" }
+        { en: "Car", emoji: "🚗" },
+        { en: "Bus", emoji: "🚌" },
+        { en: "Train", emoji: "🚂" },
+        { en: "Aeroplane", emoji: "✈️" },
+        { en: "Bicycle", emoji: "🚲" },
+        { en: "Ship", emoji: "🚢" },
+        { en: "Helicopter", emoji: "🚁" },
+        { en: "Auto Rickshaw", emoji: "🛺" },
+        { en: "Police Car", emoji: "🚓" },
+        { en: "Fire Truck", emoji: "🚒" }
       ],
       BodyParts: [
-        { en: "Eyes", hi: "आँखें", emoji: "👀" },
-        { en: "Nose", hi: "नाक", emoji: "👃" },
-        { en: "Ears", hi: "कान", emoji: "👂" },
-        { en: "Lips", hi: "होंठ", emoji: "👄" },
-        { en: "Hands", hi: "हाथ", emoji: "✋" },
-        { en: "Legs", hi: "टांगें", emoji: "🦵" },
-        { en: "Teeth", hi: "दांत", emoji: "🦷" },
-        { en: "Feet", hi: "पैर", emoji: "🦶" },
-        { en: "Tongue", hi: "जीभ", emoji: "👅" },
-        { en: "Brain", hi: "दिमाग", emoji: "🧠" }
+        { en: "Eyes", emoji: "👀" },
+        { en: "Nose", emoji: "👃" },
+        { en: "Ears", emoji: "👂" },
+        { en: "Lips", emoji: "👄" },
+        { en: "Hands", emoji: "✋" },
+        { en: "Legs", emoji: "🦵" },
+        { en: "Teeth", emoji: "🦷" },
+        { en: "Feet", emoji: "🦶" },
+        { en: "Tongue", emoji: "👅" },
+        { en: "Brain", emoji: "🧠" }
       ]
     };
 
     /* ---------------------------------------------------------
-       DATA: BRAIN BOOSTER (Shadow, Odd One Out, Memory)
+       DATA: BRAIN BOOSTER (100% English Medium)
        --------------------------------------------------------- */
     var DATA_SHADOWS = [
-      { name: "Elephant", emoji: "🐘", sound: "हाथी, Elephant. सही शैडो चुनो", options: ["🐘", "🦁", "🦒"], correct: "🐘" },
-      { name: "Apple", emoji: "🍎", sound: "सेब, Apple. सही शैडो चुनो", options: ["🍌", "🍎", "🍇"], correct: "🍎" },
-      { name: "Car", emoji: "🚗", sound: "कार, Car. सही शैडो चुनो", options: ["🚌", "🚲", "🚗"], correct: "🚗" },
-      { name: "Peacock", emoji: "🦚", sound: "मोर, Peacock. सही शैडो चुनो", options: ["🦚", "🦉", "🦆"], correct: "🦚" },
-      { name: "Aeroplane", emoji: "✈️", sound: "हवाई जहाज, Aeroplane. सही शैडो चुनो", options: ["🚀", "✈️", "🚁"], correct: "✈️" },
-      { name: "Cat", emoji: "🐱", sound: "बिल्ली, Cat. सही शैडो चुनो", options: ["🐶", "🐱", "🐰"], correct: "🐱" }
+      { name: "Elephant", emoji: "🐘", sound: "Elephant. Find the matching shadow", options: ["🐘", "🦁", "🦒"], correct: "🐘" },
+      { name: "Apple", emoji: "🍎", sound: "Apple. Find the matching shadow", options: ["🍌", "🍎", "🍇"], correct: "🍎" },
+      { name: "Car", emoji: "🚗", sound: "Car. Find the matching shadow", options: ["🚌", "🚲", "🚗"], correct: "🚗" },
+      { name: "Peacock", emoji: "🦚", sound: "Peacock. Find the matching shadow", options: ["🦚", "🦉", "🦆"], correct: "🦚" },
+      { name: "Aeroplane", emoji: "✈️", sound: "Aeroplane. Find the matching shadow", options: ["🚀", "✈️", "🚁"], correct: "✈️" },
+      { name: "Cat", emoji: "🐱", sound: "Cat. Find the matching shadow", options: ["🐶", "🐱", "🐰"], correct: "🐱" }
     ];
 
     var DATA_ODD_OUT = [
       {
-        question: "Find the odd one out (अलग चित्र चुनो)",
-        speakQ: "Find the odd one out. इनमें से अलग चित्र चुनो",
+        question: "Find the odd one out",
+        speakQ: "Find the odd one out. Which one does not belong?",
         items: [
           { emoji: "🍎", name: "Apple", isOdd: false },
           { emoji: "🍌", name: "Banana", isOdd: false },
@@ -1614,8 +1780,8 @@
         ]
       },
       {
-        question: "Find the odd one out (अलग चित्र चुनो)",
-        speakQ: "Find the odd one out. इनमें से अलग चित्र चुनो",
+        question: "Find the odd one out",
+        speakQ: "Find the odd one out. Which one does not belong?",
         items: [
           { emoji: "🦁", name: "Lion", isOdd: false },
           { emoji: "🐯", name: "Tiger", isOdd: false },
@@ -1624,18 +1790,18 @@
         ]
       },
       {
-        question: "Find the odd one out (अलग अक्षर चुनो)",
-        speakQ: "Find the odd one out. इनमें से अलग अक्षर चुनो",
+        question: "Find the odd one out",
+        speakQ: "Find the odd one out. Which one does not belong?",
         items: [
-          { emoji: "अ", name: "स्वर अ", isOdd: false },
-          { emoji: "आ", name: "स्वर आ", isOdd: false },
-          { emoji: "इ", name: "स्वर इ", isOdd: false },
-          { emoji: "क", name: "व्यंजन क", isOdd: true, reason: "क is a consonant (व्यंजन), others are vowels (स्वर)!" }
+          { emoji: "🐶", name: "Dog", isOdd: false },
+          { emoji: "🐱", name: "Cat", isOdd: false },
+          { emoji: "🐮", name: "Cow", isOdd: false },
+          { emoji: "✈️", name: "Aeroplane", isOdd: true, reason: "Aeroplane is an aircraft, others are animals!" }
         ]
       },
       {
-        question: "Find the odd one out (अलग संख्या चुनो)",
-        speakQ: "Find the odd one out. इनमें से अलग क्या है?",
+        question: "Find the odd one out",
+        speakQ: "Find the odd one out. Which one does not belong?",
         items: [
           { emoji: "2", name: "Number Two", isOdd: false },
           { emoji: "4", name: "Number Four", isOdd: false },
@@ -1644,8 +1810,8 @@
         ]
       },
       {
-        question: "Find the odd one out (अलग वस्तु चुनो)",
-        speakQ: "Find the odd one out. इनमें से अलग चित्र चुनो",
+        question: "Find the odd one out",
+        speakQ: "Find the odd one out. Which one does not belong?",
         items: [
           { emoji: "🥔", name: "Potato", isOdd: false },
           { emoji: "🍅", name: "Tomato", isOdd: false },
@@ -1665,7 +1831,7 @@
       document.getElementById("subtabs-bar").style.display = "none";
       document.getElementById("filter-pills-bar").style.display = "none";
       renderHome();
-      speak("Abacus Kids. The Abacus Academy Jodhpur में आपका स्वागत है!", "hi-IN");
+      speak("Welcome to Abacus Kids! The Abacus Academy Jodhpur", "en-IN");
     }
 
     function openSection(secName, tabIdx) {
@@ -1713,8 +1879,20 @@
       renderCurrentView();
     }
 
+    function setLkgEvsTopic(t) {
+      appState.lkgEvsTopic = t;
+      appState.quizIndex = 0;
+      renderCurrentView();
+    }
+
+    function setUkgEvsTopic(t) {
+      appState.ukgEvsTopic = t;
+      appState.quizIndex = 0;
+      renderCurrentView();
+    }
+
     /* =========================================================
-       RENDER SUBTABS & FILTER BARS
+       RENDER SUBTABS
        ========================================================= */
     function renderSubtabs() {
       var tabsContainer = document.getElementById("subtabs-bar");
@@ -1728,10 +1906,10 @@
         tabs = ["🔤 A-Z English", "🕉️ अ-अः Swar", "🔢 1-50 Counting", "🔷 Shapes", "🔄 Before/After (50+)"];
         activeColor = "#0288D1";
       } else if (appState.section === "lkg") {
-        tabs = ["🪔 क-ज्ञ व्यंजन", "🔠 1-100 Names", "📐 Pre-Math & Senses", "↔️ Opposites (16)", "🧩 शब्द निर्माण"];
+        tabs = ["🪔 क-ज्ञ व्यंजन", "🔠 1-100 Names", "🌍 EVS Studies", "📐 Pre-Math & Opposites", "🧩 शब्द निर्माण"];
         activeColor = "#689F38";
       } else if (appState.section === "ukg") {
-        tabs = ["🔤 Short Vowels Phonics", "🎶 Rhyming Words (16)", "✍️ सभी मात्राएं (45+)", "➕➖ Math (+ / -)"];
+        tabs = ["🔤 Short Vowels Phonics", "🎶 Rhyming Words (16)", "🌍 EVS Studies", "✍️ हिंदी मात्राएं (45+)", "➕➖ Math (+ / -)"];
         activeColor = "#F57C00";
       } else if (appState.section === "picture_world") {
         tabs = ["🦁 Animals", "🦜 Birds", "🍎 Fruits", "🥕 Vegetables", "🚗 Vehicles", "👀 Body Parts"];
@@ -1752,18 +1930,18 @@
     }
 
     /* =========================================================
-       RENDER HOME
+       RENDER HOME (100% English Medium)
        ========================================================= */
     function renderHome() {
       var view = document.getElementById("main-view");
       var html = '';
 
-      html += '<div class="hero-banner" onclick="safeAction(function(){ speak(\'Abacus Kids. The Abacus Academy Jodhpur. अपनी क्लास चुनें\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'Abacus Kids. The Abacus Academy Jodhpur. अपनी क्लास चुनें\', \'hi-IN\'); }, event)">';
+      html += '<div class="hero-banner" onclick="safeAction(function(){ speak(\'Welcome to Abacus Kids! Choose your class to begin learning.\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Welcome to Abacus Kids! Choose your class to begin learning.\', \'en-IN\'); }, event)">';
       html += '  <div class="safe-emoji" style="font-size: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">🎓</div>';
       html += '  <div>';
-      html += '    <div class="academy-badge">Smart Kids Learning</div>';
-      html += '    <div style="font-size: 20px; font-weight: 900; color: #BF360C;">बच्चों की पसंदीदा ऐप</div>';
-      html += '    <div style="font-size: 12px; color: #795548; font-weight: 600;">अपनी क्लास या एक्टिविटी चुनें:</div>';
+      html += '    <div class="academy-badge">Smart English Medium Learning</div>';
+      html += '    <div style="font-size: 20px; font-weight: 900; color: #BF360C;">Welcome to Abacus Kids</div>';
+      html += '    <div style="font-size: 12px; color: #795548; font-weight: 600;">Tap any class or activity to start:</div>';
       html += '  </div>';
       html += '</div>';
 
@@ -1774,7 +1952,7 @@
       html += '  <div>';
       html += '    <span class="section-badge" style="background:#0288D1;">Age 3-4 Years</span>';
       html += '    <div class="section-name">Nursery Class</div>';
-      html += '    <div class="section-desc">Full A-Z • अ से अः • 1-50 Counting • Shapes • Before/After</div>';
+      html += '    <div class="section-desc">Full A-Z • Hindi Swar • 1-50 Counting • Shapes • Before/After</div>';
       html += '  </div>';
       html += '  <div class="safe-emoji" style="font-size: 44px;">🧸</div>';
       html += '</div>';
@@ -1784,7 +1962,7 @@
       html += '  <div>';
       html += '    <span class="section-badge" style="background:#689F38;">Age 4-5 Years</span>';
       html += '    <div class="section-name">LKG Class</div>';
-      html += '    <div class="section-desc">क-ज्ञ व्यंजन • 1-100 Names • Pre-Math &amp; Opposites • शब्द निर्माण</div>';
+      html += '    <div class="section-desc">Hindi Vyanjan • 1-100 Names • EVS Studies • Pre-Math • Word Formation</div>';
       html += '  </div>';
       html += '  <div class="safe-emoji" style="font-size: 44px;">🚂</div>';
       html += '</div>';
@@ -1794,7 +1972,7 @@
       html += '  <div>';
       html += '    <span class="section-badge" style="background:#F57C00;">Age 5-6 Years</span>';
       html += '    <div class="section-name">UKG Class</div>';
-      html += '    <div class="section-desc">5 Short Vowels • Rhyming • 45+ हिंदी मात्राएं • Math (+/-)</div>';
+      html += '    <div class="section-desc">5 Short Vowels • Rhyming • EVS Studies • Hindi Matras • Math (+/-)</div>';
       html += '  </div>';
       html += '  <div class="safe-emoji" style="font-size: 44px;">🚀</div>';
       html += '</div>';
@@ -1820,18 +1998,25 @@
     }
 
     /* =========================================================
-       SECTION 1: NURSERY VIEW (Picture -> Letter AND Letter -> Picture)
+       SECTION 1: NURSERY VIEW (Strict English Medium except Swar)
        ========================================================= */
     function renderNurseryView() {
       var view = document.getElementById("main-view");
       var html = "";
 
-      // Mode Switcher for A-Z & Swar: 3 modes!
-      if (appState.tabIndex === 0 || appState.tabIndex === 1) {
+      // Mode Switcher for A-Z & Swar
+      if (appState.tabIndex === 0) {
         html += '<div class="mode-switch">';
         html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn Cards</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz_pic_to_let" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_pic_to_let\'); })" ontouchend="safeAction(function(){ setMode(\'quiz_pic_to_let\'); }, event)">🎯 चित्र → अक्षर</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz_let_to_pic" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_let_to_pic\'); })" ontouchend="safeAction(function(){ setMode(\'quiz_let_to_pic\'); }, event)">🖼️ अक्षर → चित्र</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz_pic_to_let" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_pic_to_let\'); })" ontouchend="safeAction(function(){ setMode(\'quiz_pic_to_let\'); }, event)">🎯 Picture → Letter</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz_let_to_pic" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_let_to_pic\'); })" ontouchend="safeAction(function(){ setMode(\'quiz_let_to_pic\'); }, event)">🖼️ Letter → Picture</button>';
+        html += '</div>';
+      } else if (appState.tabIndex === 1) {
+        // Hindi Subject Tab
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn स्वर</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz_pic_to_let" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_pic_to_let\'); })" ontouchend="safeAction(function(){ setMode(\'quiz_pic_to_let\'); }, event)">🎯 चित्र → स्वर</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz_let_to_pic" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_let_to_pic\'); })" ontouchend="safeAction(function(){ setMode(\'quiz_let_to_pic\'); }, event)">🖼️ स्वर → चित्र</button>';
         html += '</div>';
       } else if (appState.tabIndex === 2 || appState.tabIndex === 3) {
         html += '<div class="mode-switch">';
@@ -1840,7 +2025,7 @@
         html += '</div>';
       }
 
-      // TAB 0: A-Z English
+      // TAB 0: A-Z English (100% English)
       if (appState.tabIndex === 0) {
         if (appState.mode === "learn") {
           autoSpeak("nursery_az_learn", "English Alphabets. A to Z. Tap any card or picture to hear sound!", "en-IN");
@@ -1856,7 +2041,6 @@
           }
           html += '</div>';
         } else if (appState.mode === "quiz_pic_to_let") {
-          // Quiz 1: Picture -> Letter
           var qItem = DATA_AZ[appState.quizIndex % DATA_AZ.length];
           autoSpeak("nursery_az_q1_" + appState.quizIndex, "Look at the picture. Which letter does " + qItem.word + " start with?", "en-IN");
 
@@ -1881,7 +2065,6 @@
           }
           html += '</div>';
         } else {
-          // Quiz 2: Letter -> Picture
           var qItem2 = DATA_AZ[appState.quizIndex % DATA_AZ.length];
           autoSpeak("nursery_az_q2_" + appState.quizIndex, "Letter " + qItem2.letter + ". Which picture starts with " + qItem2.letter + "?", "en-IN");
 
@@ -1909,7 +2092,7 @@
         }
       }
 
-      // TAB 1: Swar (अ से अः)
+      // TAB 1: Hindi Swar (Hindi Subject Tab ONLY)
       else if (appState.tabIndex === 1) {
         if (appState.mode === "learn") {
           autoSpeak("nursery_swar_learn", "हिंदी स्वर. अ से अः. किसी भी कार्ड या चित्र पर टैप करें!", "hi-IN");
@@ -1949,7 +2132,6 @@
           }
           html += '</div>';
         } else {
-          // Swar -> Picture
           var sqItem2 = DATA_SWAR[appState.quizIndex % DATA_SWAR.length];
           autoSpeak("nursery_swar_q2_" + appState.quizIndex, sqItem2.letter + " से क्या होता है?", "hi-IN");
 
@@ -1968,7 +2150,7 @@
           html += '<div class="options-grid-4">';
           for (var spo = 0; spo < sPicOpts.length; spo++) {
             var isSwOk = (sPicOpts[spo].letter === sqItem2.letter);
-            html += '<button class="opt-btn" style="border-color:#F48FB1;" onclick="safeAction(function(){ handleNurseryPicAns(' + isSwOk + ', \'' + sPicOpts[spo].word + '\', \'' + sqItem2.phonics + '\'); })" ontouchend="safeAction(function(){ handleNurseryPicAns(' + isSwOk + ', \'' + sPicOpts[spo].word + '\', \'' + sqItem2.phonics + '\'); }, event)">';
+            html += '<button class="opt-btn" style="border-color:#F48FB1;" onclick="safeAction(function(){ handleNurseryPicAns(' + isSwOk + ', \'' + sPicOpts[spo].word + '\', \'' + sqItem2.phonics + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ handleNurseryPicAns(' + isSwOk + ', \'' + sPicOpts[spo].word + '\', \'' + sqItem2.phonics + '\', \'hi-IN\'); }, event)">';
             html += '  <span class="safe-emoji" style="font-size: 48px;">' + sPicOpts[spo].emoji + '</span>';
             html += '  <span style="font-size: 13px; font-weight: 700; color: #880E4F; margin-top: 4px;">' + sPicOpts[spo].word + '</span>';
             html += '</button>';
@@ -1977,7 +2159,7 @@
         }
       }
 
-      // TAB 2: Counting 1-50
+      // TAB 2: Counting 1-50 (100% English)
       else if (appState.tabIndex === 2) {
         if (appState.mode === "learn") {
           var num = appState.countTargetNumber;
@@ -2008,7 +2190,7 @@
           var countOpts = [quizNum, quizNum + 1, Math.max(1, quizNum - 1)].sort(function() { return Math.random() - 0.5; });
 
           html += '<div style="text-align:center;margin: 10px 0;">';
-          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Count the items. गिनती करो\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'Count the items. गिनती करो\', \'hi-IN\'); }, event)" style="font-size: 16px; font-weight: 800; color: #455A64;">Count the items (गिनती करो): 🔊</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Count the objects and tap the right number\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Count the objects and tap the right number\', \'en-IN\'); }, event)" style="font-size: 16px; font-weight: 800; color: #455A64;">Count the items: 🔊</div>';
           html += '  <div class="math-counters-row" style="margin: 14px auto; max-width: 320px;" onclick="safeAction(function(){ speak(\'Count all ' + quizNum + ' stars!\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Count all ' + quizNum + ' stars!\', \'en-IN\'); }, event)">';
           for (var qi = 0; qi < quizNum; qi++) {
             html += '<span class="touch-speak-item safe-emoji" style="font-size: 32px;">⭐</span>';
@@ -2025,17 +2207,17 @@
         }
       }
 
-      // TAB 3: Shapes
+      // TAB 3: Shapes (100% English)
       else if (appState.tabIndex === 3) {
         if (appState.mode === "learn") {
           autoSpeak("shapes_learn", "Shapes. Circle, Square, Triangle, and more. Tap to listen!", "en-IN");
           html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px;">';
           for (var sh = 0; sh < DATA_SHAPES.length; sh++) {
             var sItemObj = DATA_SHAPES[sh];
-            html += '<div class="interactive-card" style="padding: 16px; text-align: center;" onclick="safeAction(function(){ speak(\'' + sItemObj.name + ', ' + sItemObj.hindi + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + sItemObj.name + ', ' + sItemObj.hindi + '\', \'en-IN\'); }, event)">';
+            html += '<div class="interactive-card" style="padding: 16px; text-align: center;" onclick="safeAction(function(){ speak(\'' + sItemObj.name + '. ' + sItemObj.desc + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + sItemObj.name + '. ' + sItemObj.desc + '\', \'en-IN\'); }, event)">';
             html += '  <div class="safe-emoji" style="font-size: 48px; margin-bottom: 6px;">' + sItemObj.emoji + '</div>';
             html += '  <div style="font-size: 18px; font-weight: 900; color: #2C3E50;">' + sItemObj.name + '</div>';
-            html += '  <div style="font-size: 13px; font-weight: 700; color: #78909C;">' + sItemObj.hindi + '</div>';
+            html += '  <div style="font-size: 12px; font-weight: 700; color: #78909C; margin-top: 2px;">' + sItemObj.desc + '</div>';
             html += '</div>';
           }
           html += '</div>';
@@ -2049,10 +2231,9 @@
           }
           shapeOpts.sort(function() { return Math.random() - 0.5; });
 
-          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Find the ' + shapeTarget.name + ', ' + shapeTarget.hindi + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Find the ' + shapeTarget.name + ', ' + shapeTarget.hindi + '\', \'en-IN\'); }, event)" style="text-align: center; margin: 18px 0; width: 100%;">';
+          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Find the ' + shapeTarget.name + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Find the ' + shapeTarget.name + '\', \'en-IN\'); }, event)" style="text-align: center; margin: 18px 0; width: 100%;">';
           html += '  <div style="font-size: 15px; font-weight: bold; color: #546E7A;">Tap on: 🔊</div>';
-          html += '  <div style="font-size: 28px; font-weight: 900; color: #D84315;">' + shapeTarget.name + '</div>';
-          html += '  <div style="font-size: 16px; font-weight: 700; color: #FF7043;">(' + shapeTarget.hindi + ')</div>';
+          html += '  <div style="font-size: 32px; font-weight: 900; color: #D84315;">' + shapeTarget.name + '</div>';
           html += '</div>';
 
           html += '<div class="options-grid-3">';
@@ -2066,7 +2247,7 @@
         }
       }
 
-      // TAB 4: Before / After (50+ procedural engine)
+      // TAB 4: Before / After (100% English 50+ procedural engine)
       else if (appState.tabIndex === 4) {
         var baItem = DATA_BEFORE_AFTER[appState.quizIndex % DATA_BEFORE_AFTER.length];
         autoSpeak("ba_q_" + appState.quizIndex, baItem.speak, baItem.lang);
@@ -2089,74 +2270,76 @@
 
     function handleNurseryLetterAns(isCorrect, speech, lang) {
       if (isCorrect) {
-        addStar("बहुत खूब! (Superb!)", speech, lang);
+        addStar("Superb! " + speech, speech + "! Great job!", lang || "en-IN");
         setTimeout(function() {
           appState.quizIndex++;
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("गलत जवाब, फिर कोशिश करो");
+        markWrong(lang === "hi-IN" ? "गलत जवाब, फिर कोशिश करो" : "Try again!", lang);
       }
     }
 
-    function handleNurseryPicAns(isCorrect, word, phonics) {
+    function handleNurseryPicAns(isCorrect, word, phonics, lang) {
       if (isCorrect) {
-        addStar("शानदार! " + word, phonics + "! " + word, "en-IN");
+        addStar("Awesome! " + word, phonics + "! " + word, lang || "en-IN");
         setTimeout(function() {
           appState.quizIndex++;
           renderCurrentView();
         }, 1200);
       } else {
-        speak(word, "en-IN");
-        markWrong("यह " + word + " है, सही चित्र पहचानें");
+        speak(word, lang || "en-IN");
+        markWrong(lang === "hi-IN" ? "यह नहीं है, सही चित्र पहचानें" : "Try again!", lang);
       }
     }
 
     function handleNurseryCountAns(isCorrect, count) {
       if (isCorrect) {
-        addStar("सही जवाब! (Correct Count)", count + "! Great counting!", "en-IN");
+        addStar("Correct Count: " + count, count + "! Great counting!", "en-IN");
         setTimeout(function() {
           appState.quizIndex++;
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("गलत गिनती, फिर से गिनो");
+        markWrong("Wrong count, count again!");
       }
     }
 
     function handleNurseryShapeAns(isCorrect, shapeName) {
       if (isCorrect) {
-        addStar("बढ़िया! " + shapeName, "Yes! That is " + shapeName, "en-IN");
+        addStar("Awesome! " + shapeName, "Yes! That is " + shapeName, "en-IN");
         setTimeout(function() {
           appState.quizIndex++;
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("यह सही आकार नहीं है");
+        markWrong("Not this shape, try again!");
       }
     }
 
     function handleBeforeAfterAns(isCorrect, ans, lang) {
       if (isCorrect) {
-        addStar("शाबाश! सही उत्तर: " + ans, "Great! Answer is " + ans, lang);
+        addStar("Correct Answer: " + ans, "Great! Answer is " + ans, lang || "en-IN");
         setTimeout(function() {
           appState.quizIndex++;
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("फिर से सोचो");
+        markWrong("Think again!", lang);
       }
     }
 
     /* =========================================================
-       SECTION 2: LKG VIEW (Vyanjan Double Quiz, Pre-Math, Opposites)
+       SECTION 2: LKG VIEW (Hindi Vyanjan, 1-100 Names, EVS, Pre-Math, Hindi Word Formation)
        ========================================================= */
     function renderLkgView() {
       var view = document.getElementById("main-view");
+      var filterBar = document.getElementById("filter-pills-bar");
       var html = "";
 
-      // TAB 0: क-ज्ञ व्यंजन (Double Quiz)
+      // TAB 0: क-ज्ञ व्यंजन (Hindi Subject Tab ONLY)
       if (appState.tabIndex === 0) {
+        filterBar.style.display = "none";
         html += '<div class="mode-switch">';
         html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn व्यंजन</button>';
         html += '  <button class="mode-btn ' + (appState.mode === "quiz_pic_to_let" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz_pic_to_let\'); })" ontouchend="safeAction(function(){ setMode(\'quiz_pic_to_let\'); }, event)">🎯 चित्र → व्यंजन</button>';
@@ -2200,7 +2383,6 @@
           }
           html += '</div>';
         } else {
-          // Vyanjan -> Picture
           var vTarget2 = DATA_VYANJAN[appState.quizIndex % DATA_VYANJAN.length];
           autoSpeak("lkg_vyanjan_q2_" + appState.quizIndex, vTarget2.letter + " से क्या होता है?", "hi-IN");
 
@@ -2219,7 +2401,7 @@
           html += '<div class="options-grid-4">';
           for (var vpo = 0; vpo < vPicOpts.length; vpo++) {
             var isVpOk = (vPicOpts[vpo].letter === vTarget2.letter);
-            html += '<button class="opt-btn" style="border-color:#A5D6A7;" onclick="safeAction(function(){ handleNurseryPicAns(' + isVpOk + ', \'' + vPicOpts[vpo].word + '\', \'' + vTarget2.sound + '\'); })" ontouchend="safeAction(function(){ handleNurseryPicAns(' + isVpOk + ', \'' + vPicOpts[vpo].word + '\', \'' + vTarget2.sound + '\'); }, event)">';
+            html += '<button class="opt-btn" style="border-color:#A5D6A7;" onclick="safeAction(function(){ handleNurseryPicAns(' + isVpOk + ', \'' + vPicOpts[vpo].word + '\', \'' + vTarget2.sound + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ handleNurseryPicAns(' + isVpOk + ', \'' + vPicOpts[vpo].word + '\', \'' + vTarget2.sound + '\', \'hi-IN\'); }, event)">';
             html += '  <span class="safe-emoji" style="font-size: 48px;">' + vPicOpts[vpo].emoji + '</span>';
             html += '  <span style="font-size: 13px; font-weight: 700; color: #1B5E20; margin-top: 4px;">' + vPicOpts[vpo].word + '</span>';
             html += '</button>';
@@ -2228,8 +2410,9 @@
         }
       }
 
-      // TAB 1: 1-100 Number Names
+      // TAB 1: 1-100 Number Names (100% English)
       else if (appState.tabIndex === 1) {
+        filterBar.style.display = "none";
         html += '<div class="mode-switch">';
         html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Explore 1 to 100</button>';
         html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 Spelling Quiz</button>';
@@ -2278,68 +2461,122 @@
         }
       }
 
-      // TAB 2: Pre-Math & Five Senses
+      // TAB 2: LKG EVS STUDIES (100% English: 5 Topics + 25+ Quizzes)
       else if (appState.tabIndex === 2) {
-        var pm = DATA_PRE_MATH[appState.preMathIndex % DATA_PRE_MATH.length];
-        autoSpeak("premath_" + appState.preMathIndex, pm.speak, "en-IN");
+        filterBar.style.display = "flex";
+        var evsKeys = ["body", "family", "animals", "food", "habits"];
+        var evsLabels = {
+          body: "My Body & Senses",
+          family: "My Family",
+          animals: "Domestic vs Wild",
+          food: "Fruits & Veggies",
+          habits: "Good Habits"
+        };
+        var fHtml = "";
+        for (var ek = 0; ek < evsKeys.length; ek++) {
+          var k = evsKeys[ek];
+          var fCls = "filter-pill" + (appState.lkgEvsTopic === k ? " active" : "");
+          fHtml += '<button class="' + fCls + '" onclick="safeAction(function(){ setLkgEvsTopic(\'' + k + '\'); })" ontouchend="safeAction(function(){ setLkgEvsTopic(\'' + k + '\'); }, event)">' + evsLabels[k] + '</button>';
+        }
+        filterBar.innerHTML = fHtml;
 
-        html += '<div style="text-align: center; margin: 10px 0 16px;">';
-        html += '  <span class="section-badge" style="background:#689F38;">' + pm.concept + '</span>';
-        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + pm.speak + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + pm.speak + '\', \'en-IN\'); }, event)" style="font-size: 22px; font-weight: 900; color: #33691E; margin-top: 4px;">' + pm.prompt + ' 🔊</div>';
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn Cards</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 EVS Quiz (25+ Qs)</button>';
         html += '</div>';
 
-        html += '<div class="dual-grid" style="align-items: stretch;">';
-        // Opt A
-        html += '<div class="interactive-card" style="padding: 20px; text-align: center; border-color: #81C784;" onclick="safeAction(function(){ handlePreMathAns(' + pm.optA.correct + ', \'' + pm.optA.name + '\'); })" ontouchend="safeAction(function(){ handlePreMathAns(' + pm.optA.correct + ', \'' + pm.optA.name + '\'); }, event)">';
-        html += '  <div class="safe-emoji" style="font-size: 60px;">' + pm.optA.emoji + '</div>';
-        html += '  <div style="font-size: 16px; font-weight: 800; color: #2E7D32; margin-top: 8px;">' + pm.optA.name + '</div>';
-        html += '</div>';
-        // Opt B
-        html += '<div class="interactive-card" style="padding: 20px; text-align: center; border-color: #81C784;" onclick="safeAction(function(){ handlePreMathAns(' + pm.optB.correct + ', \'' + pm.optB.name + '\'); })" ontouchend="safeAction(function(){ handlePreMathAns(' + pm.optB.correct + ', \'' + pm.optB.name + '\'); }, event)">';
-        html += '  <div class="safe-emoji" style="font-size: 60px;">' + pm.optB.emoji + '</div>';
-        html += '  <div style="font-size: 16px; font-weight: 800; color: #2E7D32; margin-top: 8px;">' + pm.optB.name + '</div>';
-        html += '</div>';
-        html += '</div>';
+        if (appState.mode === "learn") {
+          var currTopic = DATA_LKG_EVS.topics[appState.lkgEvsTopic] || DATA_LKG_EVS.topics.body;
+          autoSpeak("lkg_evs_learn_" + appState.lkgEvsTopic, currTopic.title + ". Tap any card to hear sentence!", "en-IN");
 
-        // Five Senses Quick Section
-        html += '<div style="margin-top: 24px; border-top: 2px dashed #DCEDC8; padding-top: 14px;">';
-        html += '  <div style="font-size: 15px; font-weight: 900; color: #33691E; text-align: center; margin-bottom: 8px;">Five Senses (हमारी 5 इंद्रियां) 🔊</div>';
-        html += '  <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;">';
-        for (var fs = 0; fs < DATA_FIVE_SENSES.length; fs++) {
-          var fSense = DATA_FIVE_SENSES[fs];
-          html += '<div class="interactive-card" style="padding: 8px 2px; text-align: center;" onclick="safeAction(function(){ speak(\'' + fSense.sound + ', ' + fSense.sample + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + fSense.sound + ', ' + fSense.sample + '\', \'hi-IN\'); }, event)">';
-          html += '  <div class="safe-emoji" style="font-size: 30px;">' + fSense.emoji + '</div>';
-          html += '  <div style="font-size: 10px; font-weight: 800; color: #33691E;">' + fSense.action.split('/')[0] + '</div>';
+          html += '<div style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center;">Tap any card to hear sentence and sound 🔊</div>';
+          html += '<div style="max-height: calc(100vh - 250px); overflow-y: auto;">';
+          for (var c = 0; c < currTopic.cards.length; c++) {
+            var cItem = currTopic.cards[c];
+            html += '<div class="interactive-card" style="padding: 14px 16px; margin-bottom: 8px; border-color: #81C784;" onclick="safeAction(function(){ speak(\'' + cItem.name + '. ' + cItem.sentence + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cItem.name + '. ' + cItem.sentence + '\', \'en-IN\'); }, event)">';
+            html += '  <div style="display: flex; align-items: center; gap: 14px;">';
+            html += '    <div class="safe-emoji" style="font-size: 44px;">' + cItem.emoji + '</div>';
+            html += '    <div>';
+            html += '      <div style="font-size: 18px; font-weight: 900; color: #2E7D32;">' + cItem.name + '</div>';
+            html += '      <div style="font-size: 13px; font-weight: 600; color: #558B2F; margin-top: 2px;">' + cItem.sentence + '</div>';
+            html += '    </div>';
+            html += '  </div>';
+            html += '</div>';
+          }
+          html += '</div>';
+        } else {
+          // LKG EVS Quiz (25+ questions)
+          var qList = DATA_LKG_EVS.quiz;
+          var qObj = qList[appState.quizIndex % qList.length];
+          autoSpeak("lkg_evs_q_" + appState.quizIndex, qObj.q, "en-IN");
+
+          html += '<div style="text-align: center; margin: 12px 0 16px;">';
+          html += '  <span class="section-badge" style="background:#2E7D32;">LKG EVS Quiz #' + ((appState.quizIndex % qList.length) + 1) + ' / ' + qList.length + '</span>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + qObj.q + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + qObj.q + '\', \'en-IN\'); }, event)" style="font-size: 20px; font-weight: 900; color: #1B5E20; margin-top: 8px;">' + qObj.q + ' 🔊</div>';
+          html += '</div>';
+
+          html += '<div style="display: flex; flex-direction: column; gap: 10px; max-width: 360px; margin: 0 auto;">';
+          for (var qo = 0; qo < qObj.options.length; qo++) {
+            var isEvsOk = (qObj.options[qo] === qObj.ans);
+            html += '<button class="opt-btn" style="padding: 14px 10px; font-size: 20px; color: #2E7D32; border-color: #81C784;" onclick="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\'); })" ontouchend="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\'); }, event)">' + qObj.options[qo] + '</button>';
+          }
           html += '</div>';
         }
-        html += '  </div>';
-        html += '</div>';
       }
 
-      // TAB 3: 16 Opposites
+      // TAB 3: Pre-Math & Opposites (100% English)
       else if (appState.tabIndex === 3) {
-        autoSpeak("opp_learn", "Opposites. 16 pairs of opposites. Tap any card to hear pronunciation!", "en-IN");
-        html += '<div style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center;">Tap any opposite pair to hear voice 🔊</div>';
-        html += '<div style="max-height: calc(100vh - 210px); overflow-y: auto;">';
-        for (var op = 0; op < DATA_OPPOSITES.length; op++) {
-          var oPair = DATA_OPPOSITES[op];
-          html += '<div class="interactive-card" style="padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-around; border-color: #C5E1A5;" onclick="safeAction(function(){ speak(\'' + oPair.a + ' opposite is ' + oPair.b + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + oPair.a + ' opposite is ' + oPair.b + '\', \'en-IN\'); }, event)">';
-          html += '  <div style="text-align: center;">';
-          html += '    <div class="safe-emoji" style="font-size: 36px;">' + oPair.eA + '</div>';
-          html += '    <div style="font-size: 13px; font-weight: 800; color: #33691E;">' + oPair.a + '</div>';
-          html += '  </div>';
-          html += '  <div style="font-size: 20px; font-weight: 900; color: #E65100;">⚡</div>';
-          html += '  <div style="text-align: center;">';
-          html += '    <div class="safe-emoji" style="font-size: 36px;">' + oPair.eB + '</div>';
-          html += '    <div style="font-size: 13px; font-weight: 800; color: #33691E;">' + oPair.b + '</div>';
-          html += '  </div>';
+        filterBar.style.display = "none";
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📐 Pre-Math Concepts</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">↔️ 16 Opposites</button>';
+        html += '</div>';
+
+        if (appState.mode === "learn") {
+          var pm = DATA_PRE_MATH[appState.preMathIndex % DATA_PRE_MATH.length];
+          autoSpeak("premath_" + appState.preMathIndex, pm.speak, "en-IN");
+
+          html += '<div style="text-align: center; margin: 10px 0 16px;">';
+          html += '  <span class="section-badge" style="background:#689F38;">' + pm.concept + '</span>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + pm.speak + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + pm.speak + '\', \'en-IN\'); }, event)" style="font-size: 22px; font-weight: 900; color: #33691E; margin-top: 4px;">' + pm.prompt + ' 🔊</div>';
+          html += '</div>';
+
+          html += '<div class="dual-grid" style="align-items: stretch;">';
+          html += '<div class="interactive-card" style="padding: 20px; text-align: center; border-color: #81C784;" onclick="safeAction(function(){ handlePreMathAns(' + pm.optA.correct + ', \'' + pm.optA.name + '\'); })" ontouchend="safeAction(function(){ handlePreMathAns(' + pm.optA.correct + ', \'' + pm.optA.name + '\'); }, event)">';
+          html += '  <div class="safe-emoji" style="font-size: 60px;">' + pm.optA.emoji + '</div>';
+          html += '  <div style="font-size: 16px; font-weight: 800; color: #2E7D32; margin-top: 8px;">' + pm.optA.name + '</div>';
+          html += '</div>';
+          html += '<div class="interactive-card" style="padding: 20px; text-align: center; border-color: #81C784;" onclick="safeAction(function(){ handlePreMathAns(' + pm.optB.correct + ', \'' + pm.optB.name + '\'); })" ontouchend="safeAction(function(){ handlePreMathAns(' + pm.optB.correct + ', \'' + pm.optB.name + '\'); }, event)">';
+          html += '  <div class="safe-emoji" style="font-size: 60px;">' + pm.optB.emoji + '</div>';
+          html += '  <div style="font-size: 16px; font-weight: 800; color: #2E7D32; margin-top: 8px;">' + pm.optB.name + '</div>';
+          html += '</div>';
+          html += '</div>';
+        } else {
+          // 16 Opposites
+          autoSpeak("opp_learn", "Opposites. 16 pairs. Tap any card to hear pronunciation!", "en-IN");
+          html += '<div style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center;">Tap any opposite pair to hear voice 🔊</div>';
+          html += '<div style="max-height: calc(100vh - 210px); overflow-y: auto;">';
+          for (var op = 0; op < DATA_OPPOSITES.length; op++) {
+            var oPair = DATA_OPPOSITES[op];
+            html += '<div class="interactive-card" style="padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-around; border-color: #C5E1A5;" onclick="safeAction(function(){ speak(\'' + oPair.a + ' opposite is ' + oPair.b + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + oPair.a + ' opposite is ' + oPair.b + '\', \'en-IN\'); }, event)">';
+            html += '  <div style="text-align: center;">';
+            html += '    <div class="safe-emoji" style="font-size: 36px;">' + oPair.eA + '</div>';
+            html += '    <div style="font-size: 14px; font-weight: 800; color: #33691E;">' + oPair.a + '</div>';
+            html += '  </div>';
+            html += '  <div style="font-size: 20px; font-weight: 900; color: #E65100;">⚡</div>';
+            html += '  <div style="text-align: center;">';
+            html += '    <div class="safe-emoji" style="font-size: 36px;">' + oPair.eB + '</div>';
+            html += '    <div style="font-size: 14px; font-weight: 800; color: #33691E;">' + oPair.b + '</div>';
+            html += '  </div>';
+            html += '</div>';
+          }
           html += '</div>';
         }
-        html += '</div>';
       }
 
-      // TAB 4: शब्द निर्माण (Word Building)
+      // TAB 4: शब्द निर्माण (Hindi Subject Tab ONLY)
       else if (appState.tabIndex === 4) {
+        filterBar.style.display = "none";
         var wordObj = DATA_SHABDA[appState.wordCurrentIndex % DATA_SHABDA.length];
         autoSpeak("shabda_" + appState.wordCurrentIndex, wordObj.sound + ". चित्र देखकर अक्षर जोड़ें", "hi-IN");
 
@@ -2396,7 +2633,7 @@
               renderCurrentView();
             }, 1300);
           } else {
-            markWrong("गलत शब्द बना, दोबारा जोड़ें");
+            markWrong("गलत शब्द बना, दोबारा जोड़ें", "hi-IN");
             setTimeout(function() {
               appState.wordSlots = [];
               renderCurrentView();
@@ -2408,25 +2645,25 @@
 
     function handleVyanjanAns(isCorrect, sound) {
       if (isCorrect) {
-        addStar("सही उत्तर! (Correct Vyanjan)", sound, "hi-IN");
+        addStar("सही उत्तर! " + sound, sound, "hi-IN");
         setTimeout(function() {
           appState.quizIndex++;
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("गलत व्यंजन, फिर से कोशिश करें");
+        markWrong("गलत व्यंजन, फिर से कोशिश करें", "hi-IN");
       }
     }
 
     function handleNumNameAns(isCorrect, spelling) {
       if (isCorrect) {
-        addStar("शानदार! " + spelling, "Correct! " + spelling, "en-IN");
+        addStar("Awesome! " + spelling, "Correct! " + spelling, "en-IN");
         setTimeout(function() {
           appState.quizIndex++;
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("गलत स्पेलिंग, दोबारा चुनें");
+        markWrong("Incorrect spelling, try again!");
       }
     }
 
@@ -2438,21 +2675,32 @@
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("गलत जवाब, ध्यान से देखो");
+        markWrong("Try again!");
+      }
+    }
+
+    function handleEvsQuizAns(isCorrect, ans) {
+      if (isCorrect) {
+        addStar("Great Job! " + ans, "Correct! The answer is " + ans, "en-IN");
+        setTimeout(function() {
+          appState.quizIndex++;
+          renderCurrentView();
+        }, 1200);
+      } else {
+        markWrong("Think carefully and try again!");
       }
     }
 
     /* =========================================================
-       SECTION 3: UKG VIEW (5 Short Vowels, Rhyming, 45+ Matras, Math)
+       SECTION 3: UKG VIEW (5 Short Vowels, Rhyming, UKG EVS, 45+ Matras, Math)
        ========================================================= */
     function renderUkgView() {
       var view = document.getElementById("main-view");
       var filterBar = document.getElementById("filter-pills-bar");
       var html = "";
 
-      // TAB 0: Short Vowels Phonics (5 Vowels: a, e, i, o, u)
+      // TAB 0: Short Vowels Phonics (5 Vowels: a, e, i, o, u) (100% English)
       if (appState.tabIndex === 0) {
-        // Show Vowel Filter Bar
         filterBar.style.display = "flex";
         var vowels = ["a", "e", "i", "o", "u"];
         var vHtml = "";
@@ -2483,7 +2731,6 @@
           }
           html += '</div>';
         } else {
-          // Missing Vowel Quiz
           var cvcQ = wordList[appState.quizIndex % wordList.length];
           autoSpeak("cvc_q_" + appState.quizIndex, cvcQ.word + ". What vowel is missing in " + cvcQ.word + "?", "en-IN");
 
@@ -2504,7 +2751,7 @@
         }
       }
 
-      // TAB 1: 16 Pairs of Rhyming Words
+      // TAB 1: 16 Pairs of Rhyming Words (100% English)
       else if (appState.tabIndex === 1) {
         filterBar.style.display = "none";
         autoSpeak("rhyme_learn", "Rhyming Words. 16 pairs. Tap any pair to hear them rhyme!", "en-IN");
@@ -2527,8 +2774,71 @@
         html += '</div>';
       }
 
-      // TAB 2: सभी मात्राएं (45+ Words with Separate Filter Tabs)
+      // TAB 2: UKG EVS STUDIES (100% English: 5 Topics + 35+ Quizzes)
       else if (appState.tabIndex === 2) {
+        filterBar.style.display = "flex";
+        var ukgEvsKeys = ["seasons", "helpers", "transport", "plant", "food"];
+        var ukgEvsLabels = {
+          seasons: "Seasons & Weather",
+          helpers: "Community Helpers",
+          transport: "Means of Transport",
+          plant: "Parts of a Plant",
+          food: "Healthy vs Junk Food"
+        };
+        var fHtml = "";
+        for (var uek = 0; uek < ukgEvsKeys.length; uek++) {
+          var uk = ukgEvsKeys[uek];
+          var fCls = "filter-pill" + (appState.ukgEvsTopic === uk ? " active" : "");
+          fHtml += '<button class="' + fCls + '" onclick="safeAction(function(){ setUkgEvsTopic(\'' + uk + '\'); })" ontouchend="safeAction(function(){ setUkgEvsTopic(\'' + uk + '\'); }, event)">' + ukgEvsLabels[uk] + '</button>';
+        }
+        filterBar.innerHTML = fHtml;
+
+        html += '<div class="mode-switch">';
+        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Learn Cards</button>';
+        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 EVS Quiz (35+ Qs)</button>';
+        html += '</div>';
+
+        if (appState.mode === "learn") {
+          var currTopic = DATA_UKG_EVS.topics[appState.ukgEvsTopic] || DATA_UKG_EVS.topics.seasons;
+          autoSpeak("ukg_evs_learn_" + appState.ukgEvsTopic, currTopic.title + ". Tap any card to hear sentence!", "en-IN");
+
+          html += '<div style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center;">Tap any card to hear sentence and voice 🔊</div>';
+          html += '<div style="max-height: calc(100vh - 250px); overflow-y: auto;">';
+          for (var c = 0; c < currTopic.cards.length; c++) {
+            var cItem = currTopic.cards[c];
+            html += '<div class="interactive-card" style="padding: 14px 16px; margin-bottom: 8px; border-color: #FFB74D;" onclick="safeAction(function(){ speak(\'' + cItem.name + '. ' + cItem.sentence + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + cItem.name + '. ' + cItem.sentence + '\', \'en-IN\'); }, event)">';
+            html += '  <div style="display: flex; align-items: center; gap: 14px;">';
+            html += '    <div class="safe-emoji" style="font-size: 44px;">' + cItem.emoji + '</div>';
+            html += '    <div>';
+            html += '      <div style="font-size: 18px; font-weight: 900; color: #E65100;">' + cItem.name + '</div>';
+            html += '      <div style="font-size: 13px; font-weight: 600; color: #795548; margin-top: 2px;">' + cItem.sentence + '</div>';
+            html += '    </div>';
+            html += '  </div>';
+            html += '</div>';
+          }
+          html += '</div>';
+        } else {
+          // UKG EVS Quiz (35+ questions)
+          var qList = DATA_UKG_EVS.quiz;
+          var qObj = qList[appState.quizIndex % qList.length];
+          autoSpeak("ukg_evs_q_" + appState.quizIndex, qObj.q, "en-IN");
+
+          html += '<div style="text-align: center; margin: 12px 0 16px;">';
+          html += '  <span class="section-badge" style="background:#E65100;">UKG EVS Quiz #' + ((appState.quizIndex % qList.length) + 1) + ' / ' + qList.length + '</span>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + qObj.q + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + qObj.q + '\', \'en-IN\'); }, event)" style="font-size: 20px; font-weight: 900; color: #BF360C; margin-top: 8px;">' + qObj.q + ' 🔊</div>';
+          html += '</div>';
+
+          html += '<div style="display: flex; flex-direction: column; gap: 10px; max-width: 360px; margin: 0 auto;">';
+          for (var qo = 0; qo < qObj.options.length; qo++) {
+            var isEvsOk = (qObj.options[qo] === qObj.ans);
+            html += '<button class="opt-btn" style="padding: 14px 10px; font-size: 20px; color: #E65100; border-color: #FFB74D;" onclick="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\'); })" ontouchend="safeAction(function(){ handleEvsQuizAns(' + isEvsOk + ', \'' + qObj.ans + '\'); }, event)">' + qObj.options[qo] + '</button>';
+          }
+          html += '</div>';
+        }
+      }
+
+      // TAB 3: सभी मात्राएं (Hindi Subject Tab ONLY: 45+ Words with Separate Filter Tabs)
+      else if (appState.tabIndex === 3) {
         filterBar.style.display = "flex";
         var mKeys = ["all", "aa", "i", "ee", "u", "oo", "e", "ai", "o", "au"];
         var mLabels = { "all": "सभी (45+)", "aa": "आ (ा)", "i": "इ (ि)", "ee": "ई (ी)", "u": "उ (ु)", "oo": "ऊ (ू)", "e": "ए (े)", "ai": "ऐ (ै)", "o": "ओ (ो)", "au": "औ (ौ)" };
@@ -2545,7 +2855,6 @@
         html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 मात्रा Quiz</button>';
         html += '</div>';
 
-        // Gather words based on filter
         var mWordList = [];
         if (appState.matraFilter === "all") {
           for (var mk in DATA_MATRA_TABS) {
@@ -2596,8 +2905,8 @@
         }
       }
 
-      // TAB 3: Addition & Subtraction
-      else if (appState.tabIndex === 3) {
+      // TAB 4: Addition & Subtraction (100% English)
+      else if (appState.tabIndex === 4) {
         filterBar.style.display = "none";
         var op = (appState.quizIndex % 2 === 0) ? "+" : "-";
         var a = Math.floor(Math.random() * 4) + 3;
@@ -2647,7 +2956,7 @@
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("Wrong vowel, try again");
+        markWrong("Wrong vowel, try again!");
       }
     }
 
@@ -2659,7 +2968,7 @@
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("गलत मात्रा, फिर से देखो");
+        markWrong("गलत मात्रा, फिर से देखो", "hi-IN");
       }
     }
 
@@ -2671,12 +2980,12 @@
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("गिनती गलत है, फिर से जोड़ें");
+        markWrong("Incorrect count, try again!");
       }
     }
 
     /* =========================================================
-       SECTION 4: PICTURE WORLD VIEW (Learn & Quiz)
+       SECTION 4: PICTURE WORLD VIEW (100% English Medium)
        ========================================================= */
     function renderPictureWorldView() {
       var view = document.getElementById("main-view");
@@ -2689,7 +2998,7 @@
 
       var html = "";
       html += '<div class="mode-switch">';
-      html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Picture Cards (सीखें)</button>';
+      html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })" ontouchend="safeAction(function(){ setMode(\'learn\'); }, event)">📖 Picture Cards</button>';
       html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })" ontouchend="safeAction(function(){ setMode(\'quiz\'); }, event)">🎯 Picture Quiz</button>';
       html += '</div>';
 
@@ -2698,16 +3007,15 @@
         html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 210px); overflow-y: auto; padding: 4px;">';
         for (var p = 0; p < items.length; p++) {
           var pItem = items[p];
-          html += '<div class="interactive-card" style="padding: 14px; text-align: center; border-color: #CE93D8;" onclick="safeAction(function(){ speak(\'' + pItem.en + ', ' + pItem.hi + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + pItem.en + ', ' + pItem.hi + '\', \'en-IN\'); }, event)">';
+          html += '<div class="interactive-card" style="padding: 14px; text-align: center; border-color: #CE93D8;" onclick="safeAction(function(){ speak(\'' + pItem.en + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + pItem.en + '\', \'en-IN\'); }, event)">';
           html += '  <div class="safe-emoji" style="font-size: 52px; margin-bottom: 6px;">' + pItem.emoji + '</div>';
-          html += '  <div style="font-size: 18px; font-weight: 900; color: #4A148C;">' + pItem.en + '</div>';
-          html += '  <div style="font-size: 13px; font-weight: 700; color: #7B1FA2;">' + pItem.hi + '</div>';
+          html += '  <div style="font-size: 19px; font-weight: 900; color: #4A148C;">' + pItem.en + '</div>';
           html += '</div>';
         }
         html += '</div>';
       } else {
         var targetPic = items[appState.quizIndex % items.length];
-        autoSpeak("pw_q_" + appState.quizIndex, "Where is the " + targetPic.en + "? " + targetPic.hi + " कहाँ है?", "hi-IN");
+        autoSpeak("pw_q_" + appState.quizIndex, "Where is the " + targetPic.en + "?", "en-IN");
 
         var pOpts = [targetPic];
         while (pOpts.length < 4) {
@@ -2716,17 +3024,16 @@
         }
         pOpts.sort(function() { return Math.random() - 0.5; });
 
-        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Where is the ' + targetPic.en + '? ' + targetPic.hi + ' कहाँ है?\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'Where is the ' + targetPic.en + '? ' + targetPic.hi + ' कहाँ है?\', \'hi-IN\'); }, event)" style="text-align: center; margin: 12px 0 16px; width: 100%;">';
-        html += '  <div style="font-size: 14px; font-weight: bold; color: #546E7A;">Find this picture (पहचानो): 🔊</div>';
-        html += '  <div style="font-size: 30px; font-weight: 900; color: #6A1B9A;">' + targetPic.en + '</div>';
-        html += '  <div style="font-size: 18px; font-weight: 700; color: #8E24AA;">(' + targetPic.hi + ')</div>';
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Where is the ' + targetPic.en + '?\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Where is the ' + targetPic.en + '?\', \'en-IN\'); }, event)" style="text-align: center; margin: 12px 0 16px; width: 100%;">';
+        html += '  <div style="font-size: 14px; font-weight: bold; color: #546E7A;">Find this picture: 🔊</div>';
+        html += '  <div style="font-size: 32px; font-weight: 900; color: #6A1B9A;">' + targetPic.en + '</div>';
         html += '</div>';
 
         html += '<div class="options-grid-4">';
         for (var po = 0; po < pOpts.length; po++) {
           var optItem = pOpts[po];
           var isPicOk = (optItem.en === targetPic.en);
-          html += '<button class="opt-btn" style="border-color:#BA68C8;box-shadow:0 5px 0 #8E24AA;padding:18px 8px;" onclick="safeAction(function(){ handlePicWorldAns(' + isPicOk + ', \'' + optItem.en + '\', \'' + optItem.hi + '\'); })" ontouchend="safeAction(function(){ handlePicWorldAns(' + isPicOk + ', \'' + optItem.en + '\', \'' + optItem.hi + '\'); }, event)">';
+          html += '<button class="opt-btn" style="border-color:#BA68C8;box-shadow:0 5px 0 #8E24AA;padding:18px 8px;" onclick="safeAction(function(){ handlePicWorldAns(' + isPicOk + ', \'' + optItem.en + '\'); })" ontouchend="safeAction(function(){ handlePicWorldAns(' + isPicOk + ', \'' + optItem.en + '\'); }, event)">';
           html += '  <span class="safe-emoji" style="font-size: 52px;">' + optItem.emoji + '</span>';
           html += '</button>';
         }
@@ -2736,21 +3043,21 @@
       view.innerHTML = html;
     }
 
-    function handlePicWorldAns(isCorrect, en, hi) {
+    function handlePicWorldAns(isCorrect, en) {
       if (isCorrect) {
-        addStar("शानदार! " + en, "Very good! That is " + en + ", " + hi, "en-IN");
+        addStar("Awesome! " + en, "Very good! That is " + en, "en-IN");
         setTimeout(function() {
           appState.quizIndex++;
           renderCurrentView();
         }, 1200);
       } else {
-        speak(en + ", " + hi, "en-IN");
-        markWrong("यह " + hi + " है, सही चित्र पहचानें");
+        speak(en, "en-IN");
+        markWrong("That is " + en + ". Try again!");
       }
     }
 
     /* =========================================================
-       SECTION 5: BRAIN BOOSTER VIEW
+       SECTION 5: BRAIN BOOSTER VIEW (100% English Medium)
        ========================================================= */
     function renderBrainBoosterView() {
       var view = document.getElementById("main-view");
@@ -2761,10 +3068,10 @@
       // TAB 0: Shadow Match
       if (appState.tabIndex === 0) {
         var sTarget = DATA_SHADOWS[appState.brainIndex % DATA_SHADOWS.length];
-        autoSpeak("shadow_q_" + appState.brainIndex, sTarget.sound, "hi-IN");
+        autoSpeak("shadow_q_" + appState.brainIndex, sTarget.sound, "en-IN");
 
         html += '<div style="text-align: center; margin: 10px 0;">';
-        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'इस चित्र की सही परछाई चुनो\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'इस चित्र की सही परछाई चुनो\', \'hi-IN\'); }, event)" style="font-size: 14px; font-weight: bold; color: #546E7A;">इस चित्र की सही परछाई (Shadow) चुनो: 🔊</div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Find the matching shadow for ' + sTarget.name + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Find the matching shadow for ' + sTarget.name + '\', \'en-IN\'); }, event)" style="font-size: 14px; font-weight: bold; color: #546E7A;">Find the matching shadow: 🔊</div>';
         html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + sTarget.name + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + sTarget.name + '\', \'en-IN\'); }, event)" style="font-size: 74px; margin: 10px 0; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));"><span class="safe-emoji">' + sTarget.emoji + '</span></div>';
         html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + sTarget.name + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + sTarget.name + '\', \'en-IN\'); }, event)" style="font-size: 20px; font-weight: 900; color: #880E4F;">' + sTarget.name + '</div>';
         html += '</div>';
@@ -2782,11 +3089,11 @@
       // TAB 1: Odd One Out
       else if (appState.tabIndex === 1) {
         var oddObj = DATA_ODD_OUT[appState.brainIndex % DATA_ODD_OUT.length];
-        autoSpeak("odd_q_" + appState.brainIndex, oddObj.speakQ, "hi-IN");
+        autoSpeak("odd_q_" + appState.brainIndex, oddObj.speakQ, "en-IN");
 
-        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + oddObj.speakQ + '\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + oddObj.speakQ + '\', \'hi-IN\'); }, event)" style="text-align: center; margin: 12px 0 16px; width: 100%;">';
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + oddObj.speakQ + '\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'' + oddObj.speakQ + '\', \'en-IN\'); }, event)" style="text-align: center; margin: 12px 0 16px; width: 100%;">';
         html += '  <div style="font-size: 18px; font-weight: 900; color: #880E4F;">' + oddObj.question + ' 🔊</div>';
-        html += '  <div style="font-size: 12px; font-weight: bold; color: #546E7A;">जो सबसे अलग है, उस पर टैप करें:</div>';
+        html += '  <div style="font-size: 12px; font-weight: bold; color: #546E7A;">Tap the item that does not belong:</div>';
         html += '</div>';
 
         html += '<div class="options-grid-4">';
@@ -2805,8 +3112,8 @@
           initMemoryGame();
         }
 
-        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Memory Flip Game. जोड़ी मिलाओ\', \'hi-IN\'); })" ontouchend="safeAction(function(){ speak(\'Memory Flip Game. जोड़ी मिलाओ\', \'hi-IN\'); }, event)" style="text-align: center; margin-bottom: 8px; width: 100%;">';
-        html += '  <div style="font-size: 18px; font-weight: 900; color: #880E4F;">Memory Flip Game (जोड़ी मिलाओ) 🔊</div>';
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Memory Flip Game. Tap cards to find matching pairs!\', \'en-IN\'); })" ontouchend="safeAction(function(){ speak(\'Memory Flip Game. Tap cards to find matching pairs!\', \'en-IN\'); }, event)" style="text-align: center; margin-bottom: 8px; width: 100%;">';
+        html += '  <div style="font-size: 18px; font-weight: 900; color: #880E4F;">Memory Flip Game 🔊</div>';
         html += '  <div style="font-size: 12px; font-weight: bold; color: #546E7A;">Matched: ' + appState.memMatched.length + ' / ' + (appState.memCards.length / 2) + ' pairs</div>';
         html += '</div>';
 
@@ -2825,7 +3132,7 @@
         html += '</div>';
 
         html += '<div style="text-align: center; margin-top: 10px;">';
-        html += '  <button class="nav-icon-btn" style="margin: 0 auto;" onclick="safeAction(initMemoryGame)" ontouchend="safeAction(initMemoryGame, event)">🔄 New Game (नया खेल)</button>';
+        html += '  <button class="nav-icon-btn" style="margin: 0 auto;" onclick="safeAction(initMemoryGame)" ontouchend="safeAction(initMemoryGame, event)">🔄 New Game</button>';
         html += '</div>';
       }
 
@@ -2869,7 +3176,7 @@
 
         if (icon1 === icon2) {
           appState.memMatched.push(icon1);
-          addStar("जोड़ी मिल गई! (Pair Matched!)", "Match found! " + (MEM_NAMES[icon1] || "") + "! Super!", "en-IN");
+          addStar("Pair Matched: " + (MEM_NAMES[icon1] || ""), "Match found! " + (MEM_NAMES[icon1] || "") + "! Super!", "en-IN");
           appState.memFlipped = [];
 
           if (appState.memMatched.length === appState.memCards.length / 2) {
@@ -2891,26 +3198,26 @@
 
     function handleShadowAns(isCorrect, name) {
       if (isCorrect) {
-        addStar("सही Shadow! (Great Match)", "Perfect shadow of " + name, "en-IN");
+        addStar("Great Match! " + name, "Perfect shadow of " + name, "en-IN");
         setTimeout(function() {
           appState.brainIndex++;
           renderCurrentView();
         }, 1200);
       } else {
-        markWrong("यह सही परछाई नहीं है");
+        markWrong("Not the right shadow, try again!");
       }
     }
 
     function handleOddAns(isOdd, reason, name) {
       if (name) speak(name, "en-IN");
       if (isOdd) {
-        addStar("बिल्कुल सही! (Odd One Out)", reason, "en-IN");
+        addStar("Awesome! Odd One Out", reason, "en-IN");
         setTimeout(function() {
           appState.brainIndex++;
           renderCurrentView();
         }, 1300);
       } else {
-        markWrong("यह अलग नहीं है, ध्यान से देखो");
+        markWrong("This belongs to the group, look closely!");
       }
     }
 
