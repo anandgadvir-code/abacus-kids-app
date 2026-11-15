@@ -1196,12 +1196,12 @@
       100% { transform: scale(1); opacity: 1; }
     }
     /* =========================================================
-       NURSERY ABC WORKBOOK & MATCHING BOARD STYLES
+       NURSERY ABC WORKBOOK & MATCHING BOARD STYLES (KIDS OPTIMIZED)
        ========================================================= */
     .matching-board-container {
       position: relative;
       width: 100%;
-      max-width: 380px;
+      max-width: 420px;
       margin: 10px auto;
       padding: 10px 4px;
       touch-action: none;
@@ -1215,7 +1215,7 @@
       align-items: stretch;
       position: relative;
       z-index: 5;
-      gap: 30px;
+      gap: 32px;
     }
     .matching-col {
       display: flex;
@@ -1228,40 +1228,40 @@
       position: relative;
       display: flex;
       align-items: center;
-      padding: 10px 12px;
-      border-radius: 14px;
+      padding: 8px 12px;
+      border-radius: 16px;
       cursor: pointer;
       touch-action: none;
       transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
       user-select: none;
       -webkit-user-select: none;
       box-sizing: border-box;
-      min-height: 58px;
+      min-height: 76px;
     }
     .matching-card:active {
       transform: scale(0.96);
     }
     .matching-card.matching-left {
       background: #E3F2FD;
-      border: 2px solid #90CAF9;
+      border: 2.5px solid #90CAF9;
       justify-content: space-between;
     }
     .matching-card.matching-right {
       background: #FFF3E0;
-      border: 2px solid #FFCC80;
+      border: 2.5px solid #FFCC80;
       justify-content: flex-start;
       gap: 8px;
     }
     .matching-card.selected-matching-card {
       border-color: #FF9800 !important;
-      box-shadow: 0 0 0 3px rgba(255,152,0,0.35), 0 4px 12px rgba(0,0,0,0.12) !important;
+      box-shadow: 0 0 0 3.5px rgba(255,152,0,0.4), 0 4px 14px rgba(0,0,0,0.12) !important;
       transform: scale(1.03);
     }
     .matching-card.matched-matching-card {
       border-color: #4CAF50 !important;
       background: #E8F5E9 !important;
-      box-shadow: 0 2px 6px rgba(76,175,80,0.2) !important;
+      box-shadow: 0 2px 8px rgba(76,175,80,0.25) !important;
     }
     .matching-card.shake-wrong {
       animation: shakeCard 0.4s ease-in-out;
@@ -1274,11 +1274,11 @@
       40%, 80% { transform: translateX(6px); }
     }
     .matching-dot {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
-      border: 3px solid #FFFFFF;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      border: 3.5px solid #FFFFFF;
+      box-shadow: 0 2px 7px rgba(0,0,0,0.28);
       flex-shrink: 0;
       transition: background-color 0.2s ease, transform 0.2s ease;
     }
@@ -1294,19 +1294,35 @@
       background: #4CAF50 !important;
       transform: scale(1.15);
     }
-    .matching-label {
-      font-size: 26px;
+    .matching-left .matching-label {
+      font-size: 2.1rem;
       font-weight: 900;
       color: #0D47A1;
       line-height: 1;
     }
     .matching-right .matching-label {
-      font-size: 16px;
-      font-weight: 800;
+      font-size: 2.1rem;
+      font-weight: 900;
       color: #E65100;
+      line-height: 1;
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+    .matching-right .matching-pic-big {
+      font-size: 2.8rem;
+      line-height: 1;
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+    .matching-right .matching-pic-caption {
+      font-size: 11px;
+      font-weight: 800;
+      color: #795548;
+      margin-top: 2px;
+      opacity: 0.85;
+      text-transform: capitalize;
+      letter-spacing: 0.3px;
     }
     .matching-svg-layer {
       position: absolute;
@@ -1324,16 +1340,16 @@
       justify-content: center;
       gap: 8px;
       margin: 14px auto;
-      max-width: 360px;
+      max-width: 420px;
     }
     .seq-box {
-      width: 44px;
-      height: 52px;
+      width: 46px;
+      height: 54px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 12px;
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 900;
       box-shadow: 0 2px 5px rgba(0,0,0,0.06);
       transition: all 0.2s ease;
@@ -1345,7 +1361,7 @@
     }
     .seq-box.blank {
       background: #FFF;
-      border: 2px dashed #FF9800;
+      border: 2.5px dashed #FF9800;
       color: #FF9800;
       animation: pulseBorder 1.5s infinite;
     }
@@ -1359,24 +1375,25 @@
       0%, 100% { border-color: #FF9800; }
       50% { border-color: #F57C00; box-shadow: 0 0 8px rgba(255,152,0,0.4); }
     }
-    /* Write A-Z Order Boxes */
+    /* Write A-Z Order Boxes (Optimized for Kids) */
     .order-box-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 6px;
       margin: 12px auto;
-      max-width: 360px;
+      max-width: 420px;
+      width: 100%;
     }
     .order-slot {
-      height: 44px;
+      min-height: 48px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 800;
-      border: 1.5px solid #CFD8DC;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 900;
+      border: 2px solid #CFD8DC;
       background: #ECEFF1;
       color: #78909C;
       transition: all 0.2s ease;
@@ -1386,7 +1403,7 @@
       background: #FFF8E1;
       color: #E65100;
       font-weight: 900;
-      box-shadow: 0 0 8px rgba(255,152,0,0.5);
+      box-shadow: 0 0 10px rgba(255,152,0,0.55);
       animation: pulseBorder 1.2s infinite;
     }
     .order-slot.placed {
@@ -1394,28 +1411,29 @@
       background: #E8F5E9;
       color: #2E7D32;
       font-weight: 900;
-      font-size: 18px;
+      font-size: 20px;
     }
     .order-tiles-grid {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 6px;
-      margin: 14px auto;
-      max-width: 360px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 420px;
+      margin: 14px auto 0;
     }
     .order-tile-btn {
-      height: 48px;
-      border-radius: 10px;
+      min-height: 54px;
+      border-radius: 14px;
       background: #E1F5FE;
       border: 2px solid #81D4FA;
       color: #0277BD;
-      font-size: 22px;
+      font-size: 1.55rem;
       font-weight: 900;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.08);
       touch-action: manipulation;
       transition: transform 0.1s ease, background 0.15s ease;
     }
@@ -1423,11 +1441,11 @@
       transform: scale(0.92);
     }
     .order-tile-btn.placed {
-      opacity: 0.2;
+      opacity: 0.18;
       pointer-events: none;
       background: #ECEFF1;
       border-color: #CFD8DC;
-      color: #9E9E9E;
+      color: #B0BEC5;
     }
   </style>
 </head>
@@ -7163,7 +7181,7 @@ function setNurseryNumSubTab(st) {
             var lItem = leftItems[li];
             var lId = "L_" + li + "_" + lItem.letter;
             html += '<div class="matching-card matching-left" data-side="left" data-id="' + lId + '" data-val="' + lItem.letter + '" data-word="' + lItem.word + '" onpointerdown="handleMatchPointerDown(event, \'left\', \'' + lId + '\', \'' + lItem.letter + '\', \'' + lItem.word + '\')" onpointermove="handleMatchPointerMove(event)" onpointerup="handleMatchPointerUp(event)">';
-            html += '  <span class="matching-label">' + lItem.letter + '</span>';
+            html += '  <span class="matching-label" style="font-size: 2.1rem; padding-left: 4px;">' + lItem.letter + '</span>';
             html += '  <span class="matching-dot" data-side="left" data-id="' + lId + '"></span>';
             html += '</div>';
           }
@@ -7177,11 +7195,20 @@ function setNurseryNumSubTab(st) {
             html += '<div class="matching-card matching-right" data-side="right" data-id="' + rId + '" data-val="' + rItem.letter + '" data-word="' + rItem.word + '" onpointerdown="handleMatchPointerDown(event, \'right\', \'' + rId + '\', \'' + rItem.letter + '\', \'' + rItem.word + '\')" onpointermove="handleMatchPointerMove(event)" onpointerup="handleMatchPointerUp(event)">';
             html += '  <span class="matching-dot" data-side="right" data-id="' + rId + '"></span>';
             if (appState.nurseryAbcSubTab === "match_picture") {
-              html += '  <span class="matching-label" style="font-size:15px;"><span class="safe-emoji" style="font-size:22px;">' + rItem.emoji + '</span> ' + rItem.word + '</span>';
+              var isThisMatched = false;
+              if (lineDrawingState.matchedPairs) {
+                for (var mpi = 0; mpi < lineDrawingState.matchedPairs.length; mpi++) {
+                  if (lineDrawingState.matchedPairs[mpi].rightId === rId) { isThisMatched = true; break; }
+                }
+              }
+              html += '  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:2px 0;">';
+              html += '    <span class="safe-emoji matching-pic-big">' + rItem.emoji + '</span>';
+              html += '    <span class="matching-pic-caption">' + (isThisMatched ? ('<b>' + rItem.word + '</b>') : rItem.word) + '</span>';
+              html += '  </div>';
             } else if (appState.nurseryAbcSubTab === "match_same") {
-              html += '  <span class="matching-label">' + rItem.letter + '</span>';
+              html += '  <span class="matching-label" style="font-size:2.1rem;color:#E65100;padding-left:6px;">' + rItem.letter + '</span>';
             } else {
-              html += '  <span class="matching-label" style="color:#C2185B;">' + rItem.letter.toLowerCase() + '</span>';
+              html += '  <span class="matching-label" style="font-size:2.1rem;color:#C2185B;padding-left:6px;">' + rItem.letter.toLowerCase() + '</span>';
             }
             html += '</div>';
           }
