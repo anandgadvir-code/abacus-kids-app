@@ -2780,12 +2780,16 @@
         { key: "gk", label: "🌍 GK (150 Qs)" }
       ],
       picture_world: [
-        { key: "animals", label: "🦁 Animals" },
-        { key: "birds", label: "🦜 Birds" },
-        { key: "fruits", label: "🍎 Fruits" },
-        { key: "vegetables", label: "🥕 Vegetables" },
-        { key: "vehicles", label: "🚗 Vehicles" },
-        { key: "body_parts", label: "👀 Body Parts" }
+        { key: "fruits", label: "🍎 Fruits (15)" },
+        { key: "vegetables", label: "🥕 Vegetables (15)" },
+        { key: "domestic_animals", label: "🐮 Domestic Animals (15)" },
+        { key: "wild_animals", label: "🦁 Wild Animals (15)" },
+        { key: "birds", label: "🦜 Birds (15)" },
+        { key: "vehicles", label: "🚗 Vehicles (15)" },
+        { key: "body_parts", label: "👀 Body Parts (15)" },
+        { key: "community_helpers", label: "👨‍⚕️ Community Helpers (15)" },
+        { key: "colors_shapes", label: "🎨 Colors & Shapes (15)" },
+        { key: "flowers_nature", label: "🌸 Flowers & Nature (15)" }
       ],
       brain_booster: [
         { key: "shadow", label: "👥 Shadow Match" },
@@ -25167,81 +25171,668 @@ var DATA_UKG_MATH_ADDITION = [
        DATA: PICTURE WORLD (100% English Medium)
        --------------------------------------------------------- */
     var DATA_PICTURE_WORLD = {
-      Animals: [
-        { en: "Lion", emoji: "🦁" },
-        { en: "Tiger", emoji: "🐯" },
-        { en: "Elephant", emoji: "🐘" },
-        { en: "Monkey", emoji: "🐒" },
-        { en: "Giraffe", emoji: "🦒" },
-        { en: "Zebra", emoji: "🦓" },
-        { en: "Cow", emoji: "🐮" },
-        { en: "Dog", emoji: "🐶" },
-        { en: "Cat", emoji: "🐱" },
-        { en: "Bear", emoji: "🐻" },
-        { en: "Horse", emoji: "🐴" },
-        { en: "Rabbit", emoji: "🐰" }
-      ],
-      Birds: [
-        { en: "Peacock", emoji: "🦚" },
-        { en: "Parrot", emoji: "🦜" },
-        { en: "Owl", emoji: "🦉" },
-        { en: "Pigeon", emoji: "🕊️" },
-        { en: "Duck", emoji: "🦆" },
-        { en: "Eagle", emoji: "🦅" },
-        { en: "Sparrow", emoji: "🐦" },
-        { en: "Flamingo", emoji: "🦩" },
-        { en: "Penguin", emoji: "🐧" },
-        { en: "Swan", emoji: "🦢" }
-      ],
-      Fruits: [
-        { en: "Apple", emoji: "🍎" },
-        { en: "Mango", emoji: "🥭" },
-        { en: "Banana", emoji: "🍌" },
-        { en: "Grapes", emoji: "🍇" },
-        { en: "Orange", emoji: "🍊" },
-        { en: "Watermelon", emoji: "🍉" },
-        { en: "Strawberry", emoji: "🍓" },
-        { en: "Pineapple", emoji: "🍍" },
-        { en: "Papaya", emoji: "🍈" },
-        { en: "Guava", emoji: "🍐" }
-      ],
-      Vegetables: [
-        { en: "Potato", emoji: "🥔" },
-        { en: "Tomato", emoji: "🍅" },
-        { en: "Carrot", emoji: "🥕" },
-        { en: "Onion", emoji: "🧅" },
-        { en: "Brinjal", emoji: "🍆" },
-        { en: "Peas", emoji: "🫛" },
-        { en: "Corn", emoji: "🌽" },
-        { en: "Broccoli", emoji: "🥦" },
-        { en: "Cauliflower", emoji: "🥬" },
-        { en: "Capsicum", emoji: "🫑" }
-      ],
-      Vehicles: [
-        { en: "Car", emoji: "🚗" },
-        { en: "Bus", emoji: "🚌" },
-        { en: "Train", emoji: "🚂" },
-        { en: "Aeroplane", emoji: "✈️" },
-        { en: "Bicycle", emoji: "🚲" },
-        { en: "Ship", emoji: "🚢" },
-        { en: "Helicopter", emoji: "🚁" },
-        { en: "Auto Rickshaw", emoji: "🛺" },
-        { en: "Police Car", emoji: "🚓" },
-        { en: "Fire Truck", emoji: "🚒" }
-      ],
-      BodyParts: [
-        { en: "Eyes", emoji: "👀" },
-        { en: "Nose", emoji: "👃" },
-        { en: "Ears", emoji: "👂" },
-        { en: "Lips", emoji: "👄" },
-        { en: "Hands", emoji: "✋" },
-        { en: "Legs", emoji: "🦵" },
-        { en: "Teeth", emoji: "🦷" },
-        { en: "Feet", emoji: "🦶" },
-        { en: "Tongue", emoji: "👅" },
-        { en: "Brain", emoji: "🧠" }
-      ]
-    };
+  "fruits": {
+    "title": "Fruits",
+    "label": "🍎 Fruits",
+    "items": [
+      {
+        "en": "Apple",
+        "emoji": "🍎"
+      },
+      {
+        "en": "Mango",
+        "emoji": "🥭"
+      },
+      {
+        "en": "Banana",
+        "emoji": "🍌"
+      },
+      {
+        "en": "Grapes",
+        "emoji": "🍇"
+      },
+      {
+        "en": "Orange",
+        "emoji": "🍊"
+      },
+      {
+        "en": "Watermelon",
+        "emoji": "🍉"
+      },
+      {
+        "en": "Strawberry",
+        "emoji": "🍓"
+      },
+      {
+        "en": "Pineapple",
+        "emoji": "🍍"
+      },
+      {
+        "en": "Papaya",
+        "emoji": "🍈"
+      },
+      {
+        "en": "Guava",
+        "emoji": "🍐"
+      },
+      {
+        "en": "Cherry",
+        "emoji": "🍒"
+      },
+      {
+        "en": "Pomegranate",
+        "emoji": "🍎"
+      },
+      {
+        "en": "Kiwi",
+        "emoji": "🥝"
+      },
+      {
+        "en": "Peach",
+        "emoji": "🍑"
+      },
+      {
+        "en": "Coconut",
+        "emoji": "🥥"
+      }
+    ]
+  },
+  "vegetables": {
+    "title": "Vegetables",
+    "label": "🥕 Vegetables",
+    "items": [
+      {
+        "en": "Potato",
+        "emoji": "🥔"
+      },
+      {
+        "en": "Tomato",
+        "emoji": "🍅"
+      },
+      {
+        "en": "Carrot",
+        "emoji": "🥕"
+      },
+      {
+        "en": "Onion",
+        "emoji": "🧅"
+      },
+      {
+        "en": "Brinjal",
+        "emoji": "🍆"
+      },
+      {
+        "en": "Peas",
+        "emoji": "🫛"
+      },
+      {
+        "en": "Corn",
+        "emoji": "🌽"
+      },
+      {
+        "en": "Broccoli",
+        "emoji": "🥦"
+      },
+      {
+        "en": "Cauliflower",
+        "emoji": "🥬"
+      },
+      {
+        "en": "Capsicum",
+        "emoji": "🫑"
+      },
+      {
+        "en": "Cucumber",
+        "emoji": "🥒"
+      },
+      {
+        "en": "Pumpkin",
+        "emoji": "🎃"
+      },
+      {
+        "en": "Garlic",
+        "emoji": "🧄"
+      },
+      {
+        "en": "Ginger",
+        "emoji": "🫚"
+      },
+      {
+        "en": "Mushroom",
+        "emoji": "🍄"
+      }
+    ]
+  },
+  "domestic_animals": {
+    "title": "Domestic Animals",
+    "label": "🐮 Domestic Animals",
+    "items": [
+      {
+        "en": "Cow",
+        "emoji": "🐮"
+      },
+      {
+        "en": "Dog",
+        "emoji": "🐶"
+      },
+      {
+        "en": "Cat",
+        "emoji": "🐱"
+      },
+      {
+        "en": "Horse",
+        "emoji": "🐴"
+      },
+      {
+        "en": "Sheep",
+        "emoji": "🐑"
+      },
+      {
+        "en": "Goat",
+        "emoji": "🐐"
+      },
+      {
+        "en": "Rabbit",
+        "emoji": "🐰"
+      },
+      {
+        "en": "Donkey",
+        "emoji": "🫏"
+      },
+      {
+        "en": "Camel",
+        "emoji": "🐫"
+      },
+      {
+        "en": "Pig",
+        "emoji": "🐷"
+      },
+      {
+        "en": "Buffalo",
+        "emoji": "🐃"
+      },
+      {
+        "en": "Duck",
+        "emoji": "🦆"
+      },
+      {
+        "en": "Hen",
+        "emoji": "🐔"
+      },
+      {
+        "en": "Ox",
+        "emoji": "🐂"
+      },
+      {
+        "en": "Yak",
+        "emoji": "🦬"
+      }
+    ]
+  },
+  "wild_animals": {
+    "title": "Wild Animals",
+    "label": "🦁 Wild Animals",
+    "items": [
+      {
+        "en": "Lion",
+        "emoji": "🦁"
+      },
+      {
+        "en": "Tiger",
+        "emoji": "🐯"
+      },
+      {
+        "en": "Elephant",
+        "emoji": "🐘"
+      },
+      {
+        "en": "Monkey",
+        "emoji": "🐒"
+      },
+      {
+        "en": "Giraffe",
+        "emoji": "🦒"
+      },
+      {
+        "en": "Zebra",
+        "emoji": "🦓"
+      },
+      {
+        "en": "Bear",
+        "emoji": "🐻"
+      },
+      {
+        "en": "Deer",
+        "emoji": "🦌"
+      },
+      {
+        "en": "Fox",
+        "emoji": "🦊"
+      },
+      {
+        "en": "Wolf",
+        "emoji": "🐺"
+      },
+      {
+        "en": "Kangaroo",
+        "emoji": "🦘"
+      },
+      {
+        "en": "Hippopotamus",
+        "emoji": "🦛"
+      },
+      {
+        "en": "Rhinoceros",
+        "emoji": "🦏"
+      },
+      {
+        "en": "Crocodile",
+        "emoji": "🐊"
+      },
+      {
+        "en": "Gorilla",
+        "emoji": "🦍"
+      }
+    ]
+  },
+  "birds": {
+    "title": "Birds",
+    "label": "🦜 Birds",
+    "items": [
+      {
+        "en": "Peacock",
+        "emoji": "🦚"
+      },
+      {
+        "en": "Parrot",
+        "emoji": "🦜"
+      },
+      {
+        "en": "Owl",
+        "emoji": "🦉"
+      },
+      {
+        "en": "Pigeon",
+        "emoji": "🕊️"
+      },
+      {
+        "en": "Duck",
+        "emoji": "🦆"
+      },
+      {
+        "en": "Eagle",
+        "emoji": "🦅"
+      },
+      {
+        "en": "Sparrow",
+        "emoji": "🐦"
+      },
+      {
+        "en": "Flamingo",
+        "emoji": "🦩"
+      },
+      {
+        "en": "Penguin",
+        "emoji": "🐧"
+      },
+      {
+        "en": "Swan",
+        "emoji": "🦢"
+      },
+      {
+        "en": "Crow",
+        "emoji": "🐦‍⬛"
+      },
+      {
+        "en": "Rooster",
+        "emoji": "🐓"
+      },
+      {
+        "en": "Woodpecker",
+        "emoji": "🪵"
+      },
+      {
+        "en": "Kingfisher",
+        "emoji": "🐟"
+      },
+      {
+        "en": "Ostrich",
+        "emoji": "🦤"
+      }
+    ]
+  },
+  "vehicles": {
+    "title": "Vehicles & Transport",
+    "label": "🚗 Vehicles / Transport",
+    "items": [
+      {
+        "en": "Car",
+        "emoji": "🚗"
+      },
+      {
+        "en": "Bus",
+        "emoji": "🚌"
+      },
+      {
+        "en": "Train",
+        "emoji": "🚂"
+      },
+      {
+        "en": "Aeroplane",
+        "emoji": "✈️"
+      },
+      {
+        "en": "Bicycle",
+        "emoji": "🚲"
+      },
+      {
+        "en": "Ship",
+        "emoji": "🚢"
+      },
+      {
+        "en": "Helicopter",
+        "emoji": "🚁"
+      },
+      {
+        "en": "Auto Rickshaw",
+        "emoji": "🛺"
+      },
+      {
+        "en": "Motorcycle",
+        "emoji": "🏍️"
+      },
+      {
+        "en": "Truck",
+        "emoji": "🚚"
+      },
+      {
+        "en": "Ambulance",
+        "emoji": "🚑"
+      },
+      {
+        "en": "Fire Truck",
+        "emoji": "🚒"
+      },
+      {
+        "en": "Police Car",
+        "emoji": "🚓"
+      },
+      {
+        "en": "Tractor",
+        "emoji": "🚜"
+      },
+      {
+        "en": "Boat",
+        "emoji": "⛵"
+      }
+    ]
+  },
+  "body_parts": {
+    "title": "Body Parts",
+    "label": "👀 Body Parts",
+    "items": [
+      {
+        "en": "Eyes",
+        "emoji": "👀"
+      },
+      {
+        "en": "Nose",
+        "emoji": "👃"
+      },
+      {
+        "en": "Ears",
+        "emoji": "👂"
+      },
+      {
+        "en": "Lips",
+        "emoji": "👄"
+      },
+      {
+        "en": "Hands",
+        "emoji": "✋"
+      },
+      {
+        "en": "Legs",
+        "emoji": "🦵"
+      },
+      {
+        "en": "Teeth",
+        "emoji": "🦷"
+      },
+      {
+        "en": "Feet",
+        "emoji": "🦶"
+      },
+      {
+        "en": "Tongue",
+        "emoji": "👅"
+      },
+      {
+        "en": "Brain",
+        "emoji": "🧠"
+      },
+      {
+        "en": "Heart",
+        "emoji": "🫀"
+      },
+      {
+        "en": "Lungs",
+        "emoji": "🫁"
+      },
+      {
+        "en": "Fingers",
+        "emoji": "🖐️"
+      },
+      {
+        "en": "Arm",
+        "emoji": "💪"
+      },
+      {
+        "en": "Head",
+        "emoji": "🧑"
+      }
+    ]
+  },
+  "community_helpers": {
+    "title": "Community Helpers",
+    "label": "👨‍⚕️ Community Helpers",
+    "items": [
+      {
+        "en": "Doctor",
+        "emoji": "👨‍⚕️"
+      },
+      {
+        "en": "Teacher",
+        "emoji": "👩‍🏫"
+      },
+      {
+        "en": "Police Officer",
+        "emoji": "👮"
+      },
+      {
+        "en": "Firefighter",
+        "emoji": "👨‍🚒"
+      },
+      {
+        "en": "Farmer",
+        "emoji": "👨‍🌾"
+      },
+      {
+        "en": "Pilot",
+        "emoji": "👨‍✈️"
+      },
+      {
+        "en": "Chef",
+        "emoji": "👨‍🍳"
+      },
+      {
+        "en": "Dentist",
+        "emoji": "🦷"
+      },
+      {
+        "en": "Nurse",
+        "emoji": "👩‍⚕️"
+      },
+      {
+        "en": "Soldier",
+        "emoji": "🪖"
+      },
+      {
+        "en": "Postman",
+        "emoji": "📮"
+      },
+      {
+        "en": "Astronaut",
+        "emoji": "👨‍🚀"
+      },
+      {
+        "en": "Mechanic",
+        "emoji": "🔧"
+      },
+      {
+        "en": "Tailor",
+        "emoji": "🧵"
+      },
+      {
+        "en": "Driver",
+        "emoji": "🚌"
+      }
+    ]
+  },
+  "colors_shapes": {
+    "title": "Colors & Shapes",
+    "label": "🎨 Colors & Shapes",
+    "items": [
+      {
+        "en": "Red Color",
+        "emoji": "🔴"
+      },
+      {
+        "en": "Blue Color",
+        "emoji": "🔵"
+      },
+      {
+        "en": "Green Color",
+        "emoji": "🟢"
+      },
+      {
+        "en": "Yellow Color",
+        "emoji": "🟡"
+      },
+      {
+        "en": "Orange Color",
+        "emoji": "🟠"
+      },
+      {
+        "en": "Purple Color",
+        "emoji": "🟣"
+      },
+      {
+        "en": "White Color",
+        "emoji": "⚪"
+      },
+      {
+        "en": "Black Color",
+        "emoji": "⚫"
+      },
+      {
+        "en": "Circle",
+        "emoji": "⭕"
+      },
+      {
+        "en": "Square",
+        "emoji": "⏹️"
+      },
+      {
+        "en": "Triangle",
+        "emoji": "🔺"
+      },
+      {
+        "en": "Star",
+        "emoji": "⭐"
+      },
+      {
+        "en": "Heart",
+        "emoji": "❤️"
+      },
+      {
+        "en": "Diamond",
+        "emoji": "🔶"
+      },
+      {
+        "en": "Rectangle",
+        "emoji": "🧱"
+      }
+    ]
+  },
+  "flowers_nature": {
+    "title": "Flowers & Nature",
+    "label": "🌸 Flowers & Nature",
+    "items": [
+      {
+        "en": "Rose",
+        "emoji": "🌹"
+      },
+      {
+        "en": "Lotus",
+        "emoji": "🪷"
+      },
+      {
+        "en": "Sunflower",
+        "emoji": "🌻"
+      },
+      {
+        "en": "Tulip",
+        "emoji": "🌷"
+      },
+      {
+        "en": "Hibiscus",
+        "emoji": "🌺"
+      },
+      {
+        "en": "Sun",
+        "emoji": "☀️"
+      },
+      {
+        "en": "Moon",
+        "emoji": "🌙"
+      },
+      {
+        "en": "Stars",
+        "emoji": "✨"
+      },
+      {
+        "en": "Cloud & Rain",
+        "emoji": "🌧️"
+      },
+      {
+        "en": "Rainbow",
+        "emoji": "🌈"
+      },
+      {
+        "en": "Tree",
+        "emoji": "🌳"
+      },
+      {
+        "en": "Mountain",
+        "emoji": "⛰️"
+      },
+      {
+        "en": "River / Ocean",
+        "emoji": "🌊"
+      },
+      {
+        "en": "Leaf",
+        "emoji": "🍃"
+      },
+      {
+        "en": "Fire",
+        "emoji": "🔥"
+      }
+    ]
+  }
+};
+
 
     /* ---------------------------------------------------------
        DATA: BRAIN BOOSTER (100% English Medium)
@@ -26849,7 +27440,7 @@ function setNurseryNumSubTab(st) {
       html += '  <div class="btn-picworld" onclick="safeAction(function(){ openSection(\'picture_world\', 0); })">';
       html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🦁</div>';
       html += '    <div class="section-name">Picture World</div>';
-      html += '    <div class="section-desc">Animals, Birds, Fruits, Veggies, Vehicles, Body</div>';
+      html += '    <div class="section-desc">Fruits, Veggies, Animals, Birds, Vehicles, Helpers (150+ Pics)</div>';
       html += '  </div>';
 
       html += '  <div class="btn-brain" onclick="safeAction(function(){ handleGameLaunch(\'brain_booster\'); })">';
@@ -31268,48 +31859,69 @@ function setNurseryNumSubTab(st) {
     function renderPictureWorldView() {
       var view = document.getElementById("main-view");
       var filterBar = document.getElementById("filter-pills-bar");
-      filterBar.style.display = "none";
+      if (filterBar) filterBar.style.display = "none";
       var tabKey = getActiveTabKey();
       var html = "";
 
       // Ensure picCategory reflects tabKey
       if (tabKey) appState.picCategory = tabKey;
 
+      var catMap = {
+        fruits: "fruits",
+        vegetables: "vegetables",
+        domestic_animals: "domestic_animals",
+        wild_animals: "wild_animals",
+        birds: "birds",
+        vehicles: "vehicles",
+        body_parts: "body_parts",
+        community_helpers: "community_helpers",
+        colors_shapes: "colors_shapes",
+        flowers_nature: "flowers_nature",
+        // backward compatibility aliases
+        animals: "wild_animals",
+        bodyparts: "body_parts",
+        Animals: "wild_animals",
+        Birds: "birds",
+        Fruits: "fruits",
+        Vegetables: "vegetables",
+        Vehicles: "vehicles",
+        BodyParts: "body_parts"
+      };
+      var catKey = catMap[tabKey] || catMap[appState.picCategory] || "fruits";
+      var catData = DATA_PICTURE_WORLD[catKey] || DATA_PICTURE_WORLD.fruits;
+      var pList = catData.items || [];
+      var catTitle = catData.title || "Picture World";
+
+      // Mode Switch: 📖 Learn Pictures (15) and 🎯 Picture Quiz (15 Questions)
       html += '<div class="mode-switch">';
-      html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Cards</button>';
-      html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Picture Quiz</button>';
+      html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Pictures (' + pList.length + ')</button>';
+      html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Picture Quiz (' + pList.length + ' Qs)</button>';
       html += '</div>';
 
-      var catMap = {
-        animals: "Animals",
-        birds: "Birds",
-        fruits: "Fruits",
-        vegetables: "Vegetables",
-        vehicles: "Vehicles",
-        body_parts: "BodyParts",
-        bodyparts: "BodyParts"
-      };
-      var catKey = catMap[tabKey] || tabKey || "Animals";
-      var pList = DATA_PICTURE_WORLD[catKey] || DATA_PICTURE_WORLD.Animals || [];
-
+      // LEARN MODE
       if (appState.mode === "learn") {
-        autoSpeak("pw_learn_" + catKey, "Picture World: " + catKey + ". Tap any card to hear pronunciation!", "en-IN");
-        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Picture World. Tap card or picture to hear sound!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap card or picture to hear pronunciation 🔊</div>';
-        html += '<div class="grid-items-container">';
+        autoSpeak("pw_learn_" + catKey, "Picture World: " + catTitle + ". " + pList.length + " pictures. Tap any card to hear pronunciation!", "en-IN");
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Picture World: ' + catTitle.replace(/'/g, "\\'") + '. Tap any card to hear sound!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 10px; text-align: center; width: 100%;">Tap card or picture to hear pronunciation 🔊</div>';
+        
+        // 2-column large cards (min-height: 130px)
+        html += '<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; max-width: 600px; margin: 0 auto 20px;">';
         for (var pi = 0; pi < pList.length; pi++) {
           var pItem = pList[pi];
-          html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + pItem.en + '\', \'en-IN\'); })">';
-          html += '  <div class="chip-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + pItem.en + '\', \'en-IN\'); })">' + pItem.emoji + '</div>';
-          html += '  <div class="chip-word" style="font-size: 16px; font-weight: 800; color: #E91E63;">' + pItem.en + '</div>';
+          html += '<div class="item-chip-card" style="min-height: 130px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 14px 10px; border-radius: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); cursor: pointer; transition: transform 0.15s ease;" onclick="safeAction(function(){ speak(\'' + pItem.en.replace(/'/g, "\\'") + '\', \'en-IN\'); })">';
+          html += '  <div class="chip-emoji safe-emoji" style="font-size: 4rem; line-height: 1.1; margin-bottom: 6px;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + pItem.en.replace(/'/g, "\\'") + '\', \'en-IN\'); })">' + pItem.emoji + '</div>';
+          html += '  <div class="chip-word" style="font-size: 1.25rem; font-weight: 900; color: #1565C0; line-height: 1.2; text-align: center;">' + pItem.en + '</div>';
           html += '</div>';
         }
         html += '</div>';
-      } else {
-        var pwTarget = pList[appState.quizIndex % pList.length];
-        var pwCacheKey = "picworld_" + catKey + "_" + appState.quizIndex;
+      }
+      // QUIZ MODE (15 Questions)
+      else {
+        var curQIdx = (appState.quizIndex % pList.length);
+        var pwTarget = pList[curQIdx];
+        var pwCacheKey = "picworld_" + catKey + "_" + curQIdx;
         var pwOpts = getShuffledOptions(pwCacheKey, function() {
           var po = [pwTarget.en];
-          while (po.length < 4) {
+          while (po.length < 4 && po.length < pList.length) {
             var rpw = pList[Math.floor(Math.random() * pList.length)].en;
             if (po.indexOf(rpw) === -1) po.push(rpw);
           }
@@ -31317,24 +31929,31 @@ function setNurseryNumSubTab(st) {
         });
         var isPwAnswered = (quizState.isAnswered && quizState.activeKey === pwCacheKey);
 
-        autoSpeak(pwCacheKey, "What is this? " + pwTarget.en, "en-IN");
+        autoSpeak(pwCacheKey, "What is this picture? " + pwTarget.en, "en-IN");
 
-        html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + pwTarget.en + '\', \'en-IN\'); })">';
-        html += '  <div class="flashcard-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + pwTarget.en + '\', \'en-IN\'); })">' + pwTarget.emoji + '</div>';
-        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + pwTarget.en + '\', \'en-IN\'); })" style="font-size: 24px; font-weight: 800; color: #E91E63;">' + (isPwAnswered ? pwTarget.en : "___") + '</div>';
-        html += '  <div class="audio-hint">🔊 What is this?</div>';
+        // Flashcard with question badge, extra large picture (5rem)
+        html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'What is this picture? Tap option below!\', \'en-IN\'); })">';
+        html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">';
+        html += '    <span style="background: #E8F5E9; color: #2E7D32; font-size: 12px; font-weight: 900; padding: 4px 10px; border-radius: 8px;">Question ' + (curQIdx + 1) + ' / ' + pList.length + '</span>';
+        html += '    <span style="background: #F3E5F5; color: #7B1FA2; font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 8px;">' + catTitle + '</span>';
+        html += '  </div>';
+        html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 5rem !important; line-height: 1.1; margin: 8px auto;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'Identify this picture!\', \'en-IN\'); })">' + pwTarget.emoji + '</div>';
+        html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Identify this picture!\', \'en-IN\'); })" style="font-size: 1.35rem; font-weight: 900; color: #1B5E20; line-height: 1.3; margin: 6px 0;">' + (isPwAnswered ? pwTarget.en : '<span class="dash-blank">___</span>') + '</div>';
+        html += '  <div class="audio-hint">🔊 Identify this picture!</div>';
         html += '</div>';
 
-        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the matching word below\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the matching word: 🔊</div>';
+        html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 10px;">Choose the correct name: 🔊</div>';
 
-        html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
+        // 2x2 Wide Option Buttons (min-height: 62px; font-size: 1.25rem; font-weight: 900;)
+        html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 440px; margin: 14px auto 0;">';
         for (var pwi = 0; pwi < pwOpts.length; pwi++) {
-          var isPwOk = (pwOpts[pwi] === pwTarget.en);
+          var optVal = pwOpts[pwi];
+          var isPwOk = (optVal === pwTarget.en);
           var pwBtnCls = "opt-btn has-text";
           if (isPwAnswered) {
             pwBtnCls += isPwOk ? " correct-choice" : " disabled-choice";
           }
-          html += '<button class="' + pwBtnCls + '" onclick="safeAction(function(){ handlePicWorldAns(' + isPwOk + ', \'' + pwOpts[pwi] + '\', \'' + pwTarget.emoji + '\'); })">' + pwOpts[pwi] + '</button>';
+          html += '<button class="' + pwBtnCls + '" style="min-height: 62px; font-size: 1.25rem; font-weight: 900; border-radius: 14px; padding: 8px 10px; line-height: 1.2;" onclick="safeAction(function(){ handlePicWorldAns(' + isPwOk + ', \'' + optVal.replace(/'/g, "\\'") + '\', \'' + pwTarget.emoji + '\'); })">' + optVal + '</button>';
         }
         html += '</div>';
         html += renderCompletedPreviewCard();
