@@ -6449,6 +6449,27 @@
                         "hint": "Always speak politely and treat everyone with love!"
                   }
             ]
+      },
+      "rhymes": {
+            "title": "Rhyming Words",
+            "items": [
+                  { "name": "Cat & Bat", "emoji": "🐱🦇", "hint": "Cat rhymes with Bat!" },
+                  { "name": "Bed & Red", "emoji": "🛏️🔴", "hint": "Bed rhymes with Red!" },
+                  { "name": "Dog & Log", "emoji": "🐶🪵", "hint": "Dog rhymes with Log!" },
+                  { "name": "Sun & Run", "emoji": "☀️🏃", "hint": "Sun rhymes with Run!" },
+                  { "name": "Pen & Hen", "emoji": "🖊️🐔", "hint": "Pen rhymes with Hen!" },
+                  { "name": "Pin & Bin", "emoji": "📌🗑️", "hint": "Pin rhymes with Bin!" },
+                  { "name": "Fox & Box", "emoji": "🦊📦", "hint": "Fox rhymes with Box!" },
+                  { "name": "Hot & Pot", "emoji": "☕🍲", "hint": "Hot rhymes with Pot!" },
+                  { "name": "Car & Star", "emoji": "🚗⭐", "hint": "Car rhymes with Star!" },
+                  { "name": "Cake & Lake", "emoji": "🎂🌊", "hint": "Cake rhymes with Lake!" },
+                  { "name": "Tree & Bee", "emoji": "🌳🐝", "hint": "Tree rhymes with Bee!" },
+                  { "name": "Boat & Coat", "emoji": "⛵🧥", "hint": "Boat rhymes with Coat!" },
+                  { "name": "Duck & Truck", "emoji": "🦆🚚", "hint": "Duck rhymes with Truck!" },
+                  { "name": "House & Mouse", "emoji": "🏠🐭", "hint": "House rhymes with Mouse!" },
+                  { "name": "Book & Hook", "emoji": "📖🪝", "hint": "Book rhymes with Hook!" },
+                  { "name": "Ring & King", "emoji": "💍👑", "hint": "Ring rhymes with King!" }
+            ]
       }
 };
 
@@ -6905,23 +6926,307 @@
       ]
     };
 
-    var DATA_RHYMING = [
-      { w1: "Cat", e1: "🐱", w2: "Bat", e2: "🦇" },
-      { w1: "Bed", e1: "🛏️", w2: "Red", e2: "🔴" },
-      { w1: "Dog", e1: "🐶", w2: "Log", e2: "🪵" },
-      { w1: "Sun", e1: "☀️", w2: "Run", e2: "🏃" },
-      { w1: "Pen", e1: "🖊️", w2: "Hen", e2: "🐔" },
-      { w1: "Pin", e1: "📌", w2: "Bin", e2: "🗑️" },
-      { w1: "Fox", e1: "🦊", w2: "Box", e2: "📦" },
-      { w1: "Hot", e1: "☕", w2: "Pot", e2: "🍯" },
-      { w1: "Mug", e1: "🍺", w2: "Bug", e2: "🪲" },
-      { w1: "Van", e1: "🚐", w2: "Fan", e2: "🪭" },
-      { w1: "Net", e1: "🕸️", w2: "Jet", e2: "✈️" },
-      { w1: "Lip", e1: "👄", w2: "Zip", e2: "🤐" },
-      { w1: "Pig", e1: "🐷", w2: "Wig", e2: "💇" },
-      { w1: "Hat", e1: "👒", w2: "Mat", e2: "🧘" },
-      { w1: "Tub", e1: "🛁", w2: "Rub", e2: "🧼" },
-      { w1: "Top", e1: "🪀", w2: "Mop", e2: "🧹" }
+    /* ---------------------------------------------------------
+       DATA: UKG MATH (13 Sub-tabs Data & Helper Functions)
+       --------------------------------------------------------- */
+    var DATA_UKG_MATH_ADDITION = [
+      { a: 2, b: 1, emoji: "🍎", ans: 3, level: "1d" },
+      { a: 3, b: 2, emoji: "⭐", ans: 5, level: "1d" },
+      { a: 4, b: 1, emoji: "🎈", ans: 5, level: "1d" },
+      { a: 3, b: 3, emoji: "🚗", ans: 6, level: "1d" },
+      { a: 5, b: 2, emoji: "🌸", ans: 7, level: "1d" },
+      { a: 4, b: 3, emoji: "🐥", ans: 7, level: "1d" },
+      { a: 6, b: 2, emoji: "🍓", ans: 8, level: "1d" },
+      { a: 5, b: 3, emoji: "⚽", ans: 8, level: "1d" },
+      { a: 7, b: 1, emoji: "🍭", ans: 8, level: "1d" },
+      { a: 6, b: 3, emoji: "🐠", ans: 9, level: "1d" },
+      { a: 5, b: 4, emoji: "🍇", ans: 9, level: "1d" },
+      { a: 7, b: 2, emoji: "🍦", ans: 9, level: "1d" },
+      { a: 8, b: 1, emoji: "🥕", ans: 9, level: "1d" },
+      { a: 5, b: 5, emoji: "🦋", ans: 10, level: "1d" },
+      { a: 6, b: 4, emoji: "🐶", ans: 10, level: "1d" },
+      { a: 7, b: 3, emoji: "🧁", ans: 10, level: "1d" },
+      { a: 8, b: 2, emoji: "🐸", ans: 10, level: "1d" },
+      { a: 9, b: 1, emoji: "🍌", ans: 10, level: "1d" },
+      { a: 4, b: 4, emoji: "🍊", ans: 8, level: "1d" },
+      { a: 7, b: 6, emoji: "🍒", ans: 13, level: "1d" },
+      { a: 11, b: 4, ans: 15, level: "2d" },
+      { a: 12, b: 5, ans: 17, level: "2d" },
+      { a: 13, b: 3, ans: 16, level: "2d" },
+      { a: 14, b: 4, ans: 18, level: "2d" },
+      { a: 15, b: 2, ans: 17, level: "2d" },
+      { a: 10, b: 8, ans: 18, level: "2d" },
+      { a: 16, b: 3, ans: 19, level: "2d" },
+      { a: 21, b: 5, ans: 26, level: "2d" },
+      { a: 23, b: 4, ans: 27, level: "2d" },
+      { a: 25, b: 3, ans: 28, level: "2d" },
+      { a: 32, b: 6, ans: 38, level: "2d" },
+      { a: 34, b: 5, ans: 39, level: "2d" },
+      { a: 41, b: 7, ans: 48, level: "2d" },
+      { a: 43, b: 4, ans: 47, level: "2d" },
+      { a: 52, b: 5, ans: 57, level: "2d" }
+    ];
+
+    var DATA_UKG_MATH_SUBTRACTION = [
+      { a: 4, b: 1, emoji: "🍎", ans: 3, level: "visual" },
+      { a: 5, b: 2, emoji: "⭐", ans: 3, level: "visual" },
+      { a: 6, b: 2, emoji: "🎈", ans: 4, level: "visual" },
+      { a: 6, b: 3, emoji: "🚗", ans: 3, level: "visual" },
+      { a: 7, b: 2, emoji: "🌸", ans: 5, level: "visual" },
+      { a: 7, b: 4, emoji: "🐥", ans: 3, level: "visual" },
+      { a: 8, b: 3, emoji: "🍓", ans: 5, level: "visual" },
+      { a: 8, b: 5, emoji: "⚽", ans: 3, level: "visual" },
+      { a: 9, b: 2, emoji: "🍭", ans: 7, level: "visual" },
+      { a: 9, b: 4, emoji: "🐠", ans: 5, level: "visual" },
+      { a: 9, b: 6, emoji: "🍇", ans: 3, level: "visual" },
+      { a: 10, b: 3, emoji: "🍦", ans: 7, level: "visual" },
+      { a: 10, b: 5, emoji: "🥕", ans: 5, level: "visual" },
+      { a: 10, b: 7, emoji: "🦋", ans: 3, level: "visual" },
+      { a: 8, b: 4, emoji: "🐶", ans: 4, level: "visual" },
+      { a: 7, b: 3, emoji: "🧁", ans: 4, level: "visual" },
+      { a: 6, b: 1, emoji: "🐸", ans: 5, level: "visual" },
+      { a: 9, b: 5, emoji: "🍌", ans: 4, level: "visual" },
+      { a: 10, b: 2, emoji: "🍊", ans: 8, level: "visual" },
+      { a: 10, b: 4, emoji: "🍒", ans: 6, level: "visual" },
+      { a: 12, b: 2, ans: 10, level: "2d" },
+      { a: 15, b: 3, ans: 12, level: "2d" },
+      { a: 16, b: 4, ans: 12, level: "2d" },
+      { a: 17, b: 5, ans: 12, level: "2d" },
+      { a: 18, b: 6, ans: 12, level: "2d" },
+      { a: 19, b: 4, ans: 15, level: "2d" },
+      { a: 25, b: 3, ans: 22, level: "2d" },
+      { a: 28, b: 6, ans: 22, level: "2d" },
+      { a: 37, b: 5, ans: 32, level: "2d" },
+      { a: 39, b: 4, ans: 35, level: "2d" },
+      { a: 46, b: 3, ans: 43, level: "2d" },
+      { a: 48, b: 5, ans: 43, level: "2d" },
+      { a: 55, b: 4, ans: 51, level: "2d" },
+      { a: 67, b: 5, ans: 62, level: "2d" },
+      { a: 89, b: 7, ans: 82, level: "2d" }
+    ];
+
+    var DATA_UKG_MATH_AFTER = [
+      { num: 5, ans: 6 }, { num: 9, ans: 10 }, { num: 14, ans: 15 }, { num: 19, ans: 20 },
+      { num: 24, ans: 25 }, { num: 29, ans: 30 }, { num: 33, ans: 34 }, { num: 39, ans: 40 },
+      { num: 44, ans: 45 }, { num: 49, ans: 50 }, { num: 53, ans: 54 }, { num: 58, ans: 59 },
+      { num: 62, ans: 63 }, { num: 67, ans: 68 }, { num: 71, ans: 72 }, { num: 74, ans: 75 },
+      { num: 79, ans: 80 }, { num: 83, ans: 84 }, { num: 88, ans: 89 }, { num: 92, ans: 93 },
+      { num: 95, ans: 96 }, { num: 98, ans: 99 }, { num: 99, ans: 100 }, { num: 12, ans: 13 },
+      { num: 27, ans: 28 }, { num: 36, ans: 37 }, { num: 41, ans: 42 }, { num: 55, ans: 56 },
+      { num: 64, ans: 65 }, { num: 77, ans: 78 }, { num: 81, ans: 82 }, { num: 86, ans: 87 },
+      { num: 90, ans: 91 }, { num: 47, ans: 48 }, { num: 69, ans: 70 }
+    ];
+
+    var DATA_UKG_MATH_BEFORE = [
+      { num: 7, ans: 6 }, { num: 10, ans: 9 }, { num: 15, ans: 14 }, { num: 20, ans: 19 },
+      { num: 25, ans: 24 }, { num: 30, ans: 29 }, { num: 35, ans: 34 }, { num: 40, ans: 39 },
+      { num: 45, ans: 44 }, { num: 50, ans: 49 }, { num: 55, ans: 54 }, { num: 60, ans: 59 },
+      { num: 65, ans: 64 }, { num: 70, ans: 69 }, { num: 75, ans: 74 }, { num: 80, ans: 79 },
+      { num: 85, ans: 84 }, { num: 90, ans: 89 }, { num: 95, ans: 94 }, { num: 100, ans: 99 },
+      { num: 13, ans: 12 }, { num: 18, ans: 17 }, { num: 28, ans: 27 }, { num: 33, ans: 32 },
+      { num: 42, ans: 41 }, { num: 52, ans: 51 }, { num: 63, ans: 62 }, { num: 68, ans: 67 },
+      { num: 73, ans: 72 }, { num: 78, ans: 77 }, { num: 82, ans: 81 }, { num: 88, ans: 87 },
+      { num: 92, ans: 91 }, { num: 97, ans: 96 }, { num: 99, ans: 98 }
+    ];
+
+    var DATA_UKG_MATH_BETWEEN = [
+      { a: 4, b: 6, ans: 5 }, { a: 8, b: 10, ans: 9 }, { a: 13, b: 15, ans: 14 },
+      { a: 18, b: 20, ans: 19 }, { a: 22, b: 24, ans: 23 }, { a: 28, b: 30, ans: 29 },
+      { a: 34, b: 36, ans: 35 }, { a: 39, b: 41, ans: 40 }, { a: 45, b: 47, ans: 46 },
+      { a: 49, b: 51, ans: 50 }, { a: 54, b: 56, ans: 55 }, { a: 59, b: 61, ans: 60 },
+      { a: 64, b: 66, ans: 65 }, { a: 68, b: 70, ans: 69 }, { a: 73, b: 75, ans: 74 },
+      { a: 78, b: 80, ans: 79 }, { a: 82, b: 84, ans: 83 }, { a: 87, b: 89, ans: 88 },
+      { a: 91, b: 93, ans: 92 }, { a: 95, b: 97, ans: 96 }, { a: 98, b: 100, ans: 99 },
+      { a: 11, b: 13, ans: 12 }, { a: 15, b: 17, ans: 16 }, { a: 25, b: 27, ans: 26 },
+      { a: 31, b: 33, ans: 32 }, { a: 37, b: 39, ans: 38 }, { a: 42, b: 44, ans: 43 },
+      { a: 51, b: 53, ans: 52 }, { a: 57, b: 59, ans: 58 }, { a: 62, b: 64, ans: 63 },
+      { a: 70, b: 72, ans: 71 }, { a: 76, b: 78, ans: 77 }, { a: 84, b: 86, ans: 85 },
+      { a: 89, b: 91, ans: 90 }, { a: 93, b: 95, ans: 94 }
+    ];
+
+    var DATA_UKG_MATH_GREATEST_SMALLEST = [
+      { nums: [12, 45, 23, 67], type: "greatest", ans: 67 },
+      { nums: [18, 5, 32, 27], type: "smallest", ans: 5 },
+      { nums: [24, 89, 15, 62], type: "greatest", ans: 89 },
+      { nums: [56, 14, 78, 42], type: "smallest", ans: 14 },
+      { nums: [33, 71, 95, 48], type: "greatest", ans: 95 },
+      { nums: [63, 21, 54, 88], type: "smallest", ans: 21 },
+      { nums: [40, 19, 82, 65], type: "greatest", ans: 82 },
+      { nums: [77, 36, 11, 59], type: "smallest", ans: 11 },
+      { nums: [50, 92, 38, 74], type: "greatest", ans: 92 },
+      { nums: [85, 43, 66, 16], type: "smallest", ans: 16 },
+      { nums: [29, 61, 98, 44], type: "greatest", ans: 98 },
+      { nums: [91, 53, 25, 70], type: "smallest", ans: 25 },
+      { nums: [37, 84, 13, 69], type: "greatest", ans: 84 },
+      { nums: [49, 17, 72, 31], type: "smallest", ans: 17 },
+      { nums: [68, 22, 94, 57], type: "greatest", ans: 94 },
+      { nums: [81, 39, 10, 60], type: "smallest", ans: 10 },
+      { nums: [46, 75, 99, 28], type: "greatest", ans: 99 },
+      { nums: [93, 58, 26, 80], type: "smallest", ans: 26 },
+      { nums: [35, 87, 52, 18], type: "greatest", ans: 87 },
+      { nums: [64, 30, 8, 76], type: "smallest", ans: 8 },
+      { nums: [79, 41, 96, 20], type: "greatest", ans: 96 },
+      { nums: [83, 47, 19, 65], type: "smallest", ans: 19 },
+      { nums: [55, 90, 34, 73], type: "greatest", ans: 90 },
+      { nums: [74, 27, 86, 12], type: "smallest", ans: 12 },
+      { nums: [60, 97, 42, 81], type: "greatest", ans: 97 },
+      { nums: [88, 51, 23, 69], type: "smallest", ans: 23 },
+      { nums: [32, 78, 91, 45], type: "greatest", ans: 91 },
+      { nums: [67, 34, 9, 82], type: "smallest", ans: 9 },
+      { nums: [43, 86, 100, 58], type: "greatest", ans: 100 },
+      { nums: [95, 62, 29, 77], type: "smallest", ans: 29 }
+    ];
+
+    var DATA_UKG_MATH_ODD_EVEN = [
+      { num: 2, ans: "EVEN" }, { num: 7, ans: "ODD" }, { num: 12, ans: "EVEN" },
+      { num: 15, ans: "ODD" }, { num: 18, ans: "EVEN" }, { num: 21, ans: "ODD" },
+      { num: 24, ans: "EVEN" }, { num: 29, ans: "ODD" }, { num: 30, ans: "EVEN" },
+      { num: 33, ans: "ODD" }, { num: 36, ans: "EVEN" }, { num: 41, ans: "ODD" },
+      { num: 44, ans: "EVEN" }, { num: 47, ans: "ODD" }, { num: 50, ans: "EVEN" },
+      { num: 53, ans: "ODD" }, { num: 58, ans: "EVEN" }, { num: 61, ans: "ODD" },
+      { num: 66, ans: "EVEN" }, { num: 69, ans: "ODD" }, { num: 72, ans: "EVEN" },
+      { num: 75, ans: "ODD" }, { num: 80, ans: "EVEN" }, { num: 83, ans: "ODD" },
+      { num: 86, ans: "EVEN" }, { num: 89, ans: "ODD" }, { num: 92, ans: "EVEN" },
+      { num: 95, ans: "ODD" }, { num: 98, ans: "EVEN" }, { num: 99, ans: "ODD" }
+    ];
+
+    var DATA_UKG_MATH_SIZES = [
+      { q: "Which animal is the BIGGEST?", type: "biggest", items: [{ name: "Elephant", emoji: "🐘", scale: 62 }, { name: "Dog", emoji: "🐕", scale: 40 }, { name: "Mouse", emoji: "🐁", scale: 26 }], ans: "Elephant" },
+      { q: "Which animal is the SMALLEST?", type: "smallest", items: [{ name: "Hippo", emoji: "🦛", scale: 58 }, { name: "Rabbit", emoji: "🐇", scale: 38 }, { name: "Ant", emoji: "🐜", scale: 22 }], ans: "Ant" },
+      { q: "Which one is the TALLEST?", type: "tallest", items: [{ name: "Giraffe", emoji: "🦒", scale: 64 }, { name: "Lion", emoji: "🦁", scale: 42 }, { name: "Monkey", emoji: "🐒", scale: 32 }], ans: "Giraffe" },
+      { q: "Which vehicle is the BIGGEST?", type: "biggest", items: [{ name: "Bus", emoji: "🚌", scale: 60 }, { name: "Car", emoji: "🚗", scale: 42 }, { name: "Bicycle", emoji: "🚲", scale: 28 }], ans: "Bus" },
+      { q: "Which fruit is the SMALLEST?", type: "smallest", items: [{ name: "Watermelon", emoji: "🍉", scale: 60 }, { name: "Apple", emoji: "🍎", scale: 42 }, { name: "Cherry", emoji: "🍒", scale: 24 }], ans: "Cherry" },
+      { q: "Which building is the TALLEST?", type: "tallest", items: [{ name: "Tower", emoji: "🗼", scale: 64 }, { name: "House", emoji: "🏠", scale: 42 }, { name: "Tent", emoji: "⛺", scale: 28 }], ans: "Tower" },
+      { q: "Which bird is the BIGGEST?", type: "biggest", items: [{ name: "Ostrich", emoji: "🦤", scale: 60 }, { name: "Pigeon", emoji: "🐦", scale: 38 }, { name: "Sparrow", emoji: "🐤", scale: 24 }], ans: "Ostrich" },
+      { q: "Which tree is the TALLEST?", type: "tallest", items: [{ name: "Pine Tree", emoji: "🌲", scale: 64 }, { name: "Bonsai", emoji: "🪴", scale: 26 }, { name: "Cactus", emoji: "🌵", scale: 38 }], ans: "Pine Tree" },
+      { q: "Which sea creature is the BIGGEST?", type: "biggest", items: [{ name: "Whale", emoji: "🐋", scale: 64 }, { name: "Fish", emoji: "🐟", scale: 36 }, { name: "Crab", emoji: "🦀", scale: 26 }], ans: "Whale" },
+      { q: "Which object is the SMALLEST?", type: "smallest", items: [{ name: "Football", emoji: "⚽", scale: 56 }, { name: "Tennis Ball", emoji: "🎾", scale: 40 }, { name: "Marble", emoji: "🔮", scale: 24 }], ans: "Marble" },
+      { q: "Which structure is the TALLEST?", type: "tallest", items: [{ name: "Skyscraper", emoji: "🏙️", scale: 64 }, { name: "Hut", emoji: "🛖", scale: 32 }, { name: "Bench", emoji: "🪑", scale: 24 }], ans: "Skyscraper" },
+      { q: "Which flower is the BIGGEST?", type: "biggest", items: [{ name: "Sunflower", emoji: "🌻", scale: 60 }, { name: "Rose", emoji: "🌹", scale: 40 }, { name: "Daisy", emoji: "🌼", scale: 26 }], ans: "Sunflower" },
+      { q: "Which animal is the TALLEST?", type: "tallest", items: [{ name: "Camel", emoji: "🐪", scale: 62 }, { name: "Deer", emoji: "🦌", scale: 44 }, { name: "Fox", emoji: "🦊", scale: 30 }], ans: "Camel" },
+      { q: "Which vehicle is the SMALLEST?", type: "smallest", items: [{ name: "Train", emoji: "🚆", scale: 64 }, { name: "Motorcycle", emoji: "🏍️", scale: 40 }, { name: "Skateboard", emoji: "🛹", scale: 24 }], ans: "Skateboard" },
+      { q: "Which bird is the SMALLEST?", type: "smallest", items: [{ name: "Eagle", emoji: "🦅", scale: 58 }, { name: "Duck", emoji: "🦆", scale: 42 }, { name: "Hummingbird", emoji: "🐦‍⬛", scale: 22 }], ans: "Hummingbird" },
+      { q: "Which animal is the BIGGEST?", type: "biggest", items: [{ name: "Bear", emoji: "🐻", scale: 60 }, { name: "Cat", emoji: "🐱", scale: 36 }, { name: "Frog", emoji: "🐸", scale: 24 }], ans: "Bear" },
+      { q: "Which animal is the SMALLEST?", type: "smallest", items: [{ name: "Tiger", emoji: "🐯", scale: 58 }, { name: "Squirrel", emoji: "🐿️", scale: 32 }, { name: "Ladybug", emoji: "🐞", scale: 20 }], ans: "Ladybug" },
+      { q: "Which one is the TALLEST?", type: "tallest", items: [{ name: "Lighthouse", emoji: "🚨", scale: 64 }, { name: "Traffic Light", emoji: "🚦", scale: 42 }, { name: "Fire Hydrant", emoji: "🧯", scale: 26 }], ans: "Lighthouse" },
+      { q: "Which food is the BIGGEST?", type: "biggest", items: [{ name: "Pumpkin", emoji: "🎃", scale: 60 }, { name: "Orange", emoji: "🍊", scale: 40 }, { name: "Pea", emoji: "🫛", scale: 22 }], ans: "Pumpkin" },
+      { q: "Which one is the SMALLEST?", type: "smallest", items: [{ name: "Book", emoji: "📖", scale: 54 }, { name: "Pencil", emoji: "✏️", scale: 38 }, { name: "Paperclip", emoji: "📎", scale: 22 }], ans: "Paperclip" }
+    ];
+
+    var DATA_UKG_MATH_CURRENCY = [
+      {
+        id: "coin_1", val: 1, type: "Coin", name: "1 Rupee Coin", title: "₹1 Coin", color: "#9E9E9E",
+        desc: "Silver colored small round coin of One Rupee",
+        svg: '<svg viewBox="0 0 100 100" width="84" height="84"><circle cx="50" cy="50" r="46" fill="#CFD8DC" stroke="#78909C" stroke-width="4"/><circle cx="50" cy="50" r="38" fill="none" stroke="#B0BEC5" stroke-dasharray="3,3" stroke-width="2"/><text x="50" y="44" font-size="28" font-weight="900" fill="#37474F" text-anchor="middle" font-family="sans-serif">₹1</text><text x="50" y="66" font-size="12" font-weight="800" fill="#546E7A" text-anchor="middle" font-family="sans-serif">RUPEE</text></svg>'
+      },
+      {
+        id: "coin_2", val: 2, type: "Coin", name: "2 Rupees Coin", title: "₹2 Coin", color: "#90A4AE",
+        desc: "Circular coin with value of Two Rupees",
+        svg: '<svg viewBox="0 0 100 100" width="88" height="88"><circle cx="50" cy="50" r="46" fill="#B0BEC5" stroke="#607D8B" stroke-width="4"/><circle cx="50" cy="50" r="39" fill="none" stroke="#90A4AE" stroke-width="2"/><text x="50" y="44" font-size="30" font-weight="900" fill="#263238" text-anchor="middle" font-family="sans-serif">₹2</text><text x="50" y="66" font-size="12" font-weight="800" fill="#455A64" text-anchor="middle" font-family="sans-serif">RUPEES</text></svg>'
+      },
+      {
+        id: "coin_5", val: 5, type: "Coin", name: "5 Rupees Coin", title: "₹5 Coin", color: "#D7CCC8",
+        desc: "Thick golden brass coin of Five Rupees",
+        svg: '<svg viewBox="0 0 100 100" width="92" height="92"><circle cx="50" cy="50" r="46" fill="#FFE082" stroke="#FFA000" stroke-width="5"/><circle cx="50" cy="50" r="38" fill="#FFF8E1" stroke="#FFB300" stroke-width="2"/><text x="50" y="45" font-size="32" font-weight="900" fill="#E65100" text-anchor="middle" font-family="sans-serif">₹5</text><text x="50" y="67" font-size="12" font-weight="800" fill="#B71C1C" text-anchor="middle" font-family="sans-serif">RUPEES</text></svg>'
+      },
+      {
+        id: "coin_10", val: 10, type: "Coin", name: "10 Rupees Coin", title: "₹10 Coin", color: "#FFE082",
+        desc: "Bi-metallic dual ring coin of Ten Rupees",
+        svg: '<svg viewBox="0 0 100 100" width="96" height="96"><circle cx="50" cy="50" r="46" fill="#FFE082" stroke="#FF8F00" stroke-width="4"/><circle cx="50" cy="50" r="32" fill="#ECEFF1" stroke="#78909C" stroke-width="3"/><text x="50" y="46" font-size="30" font-weight="900" fill="#263238" text-anchor="middle" font-family="sans-serif">₹10</text><text x="50" y="64" font-size="10" font-weight="800" fill="#455A64" text-anchor="middle" font-family="sans-serif">INDIA</text></svg>'
+      },
+      {
+        id: "note_10", val: 10, type: "Note", name: "10 Rupees Note", title: "₹10 Note", color: "#8D6E63",
+        desc: "Chocolate brown banknote of Ten Rupees",
+        svg: '<svg viewBox="0 0 150 80" width="130" height="70"><rect x="4" y="4" width="142" height="72" rx="6" fill="#A1887F" stroke="#4E342E" stroke-width="3"/><rect x="10" y="10" width="130" height="60" rx="4" fill="#D7CCC8" opacity="0.6"/><text x="24" y="32" font-size="16" font-weight="900" fill="#3E2723" font-family="sans-serif">₹10</text><text x="75" y="46" font-size="22" font-weight="900" fill="#4E342E" text-anchor="middle" font-family="sans-serif">₹10</text><text x="75" y="64" font-size="10" font-weight="800" fill="#3E2723" text-anchor="middle" font-family="sans-serif">TEN RUPEES</text></svg>'
+      },
+      {
+        id: "note_20", val: 20, type: "Note", name: "20 Rupees Note", title: "₹20 Note", color: "#C0CA33",
+        desc: "Greenish yellow banknote of Twenty Rupees",
+        svg: '<svg viewBox="0 0 150 80" width="130" height="70"><rect x="4" y="4" width="142" height="72" rx="6" fill="#DCE775" stroke="#9E9D24" stroke-width="3"/><rect x="10" y="10" width="130" height="60" rx="4" fill="#F0F4C3" opacity="0.6"/><text x="24" y="32" font-size="16" font-weight="900" fill="#558B2F" font-family="sans-serif">₹20</text><text x="75" y="46" font-size="22" font-weight="900" fill="#689F38" text-anchor="middle" font-family="sans-serif">₹20</text><text x="75" y="64" font-size="10" font-weight="800" fill="#33691E" text-anchor="middle" font-family="sans-serif">TWENTY RUPEES</text></svg>'
+      },
+      {
+        id: "note_50", val: 50, type: "Note", name: "50 Rupees Note", title: "₹50 Note", color: "#00BCD4",
+        desc: "Fluorescent blue banknote of Fifty Rupees",
+        svg: '<svg viewBox="0 0 150 80" width="130" height="70"><rect x="4" y="4" width="142" height="72" rx="6" fill="#4DD0E1" stroke="#00838F" stroke-width="3"/><rect x="10" y="10" width="130" height="60" rx="4" fill="#E0F7FA" opacity="0.6"/><text x="24" y="32" font-size="16" font-weight="900" fill="#006064" font-family="sans-serif">₹50</text><text x="75" y="46" font-size="22" font-weight="900" fill="#00838F" text-anchor="middle" font-family="sans-serif">₹50</text><text x="75" y="64" font-size="10" font-weight="800" fill="#006064" text-anchor="middle" font-family="sans-serif">FIFTY RUPEES</text></svg>'
+      },
+      {
+        id: "note_100", val: 100, type: "Note", name: "100 Rupees Note", title: "₹100 Note", color: "#9575CD",
+        desc: "Lavender purple banknote of One Hundred Rupees",
+        svg: '<svg viewBox="0 0 150 80" width="130" height="70"><rect x="4" y="4" width="142" height="72" rx="6" fill="#B39DDB" stroke="#5E35B1" stroke-width="3"/><rect x="10" y="10" width="130" height="60" rx="4" fill="#EDE7F6" opacity="0.6"/><text x="28" y="32" font-size="15" font-weight="900" fill="#311B92" font-family="sans-serif">₹100</text><text x="75" y="46" font-size="22" font-weight="900" fill="#4527A0" text-anchor="middle" font-family="sans-serif">₹100</text><text x="75" y="64" font-size="9" font-weight="800" fill="#311B92" text-anchor="middle" font-family="sans-serif">ONE HUNDRED RUPEES</text></svg>'
+      },
+      {
+        id: "note_200", val: 200, type: "Note", name: "200 Rupees Note", title: "₹200 Note", color: "#FFB74D",
+        desc: "Bright orange banknote of Two Hundred Rupees",
+        svg: '<svg viewBox="0 0 150 80" width="130" height="70"><rect x="4" y="4" width="142" height="72" rx="6" fill="#FFB74D" stroke="#E65100" stroke-width="3"/><rect x="10" y="10" width="130" height="60" rx="4" fill="#FFF3E0" opacity="0.6"/><text x="28" y="32" font-size="15" font-weight="900" fill="#BF360C" font-family="sans-serif">₹200</text><text x="75" y="46" font-size="22" font-weight="900" fill="#E65100" text-anchor="middle" font-family="sans-serif">₹200</text><text x="75" y="64" font-size="9" font-weight="800" fill="#BF360C" text-anchor="middle" font-family="sans-serif">TWO HUNDRED RUPEES</text></svg>'
+      },
+      {
+        id: "note_500", val: 500, type: "Note", name: "500 Rupees Note", title: "₹500 Note", color: "#B0BEC5",
+        desc: "Stone grey banknote of Five Hundred Rupees",
+        svg: '<svg viewBox="0 0 150 80" width="130" height="70"><rect x="4" y="4" width="142" height="72" rx="6" fill="#CFD8DC" stroke="#37474F" stroke-width="3"/><rect x="10" y="10" width="130" height="60" rx="4" fill="#ECEFF1" opacity="0.6"/><text x="28" y="32" font-size="15" font-weight="900" fill="#263238" font-family="sans-serif">₹500</text><text x="75" y="46" font-size="22" font-weight="900" fill="#37474F" text-anchor="middle" font-family="sans-serif">₹500</text><text x="75" y="64" font-size="9" font-weight="800" fill="#263238" text-anchor="middle" font-family="sans-serif">FIVE HUNDRED RUPEES</text></svg>'
+      }
+    ];
+
+    var DATA_UKG_MATH_SHAPES = [
+      {
+        name: "Circle", example: "Coin, Clock, Wheel",
+        desc: "Round shape with no corners and continuous curved boundary",
+        svg: '<svg viewBox="0 0 100 100" width="76" height="76"><circle cx="50" cy="50" r="44" fill="#FF5252" stroke="#D32F2F" stroke-width="4"/></svg>'
+      },
+      {
+        name: "Square", example: "Chessboard, Dice, Carrom",
+        desc: "Four equal straight sides and four equal corners (90 degrees)",
+        svg: '<svg viewBox="0 0 100 100" width="76" height="76"><rect x="8" y="8" width="84" height="84" rx="4" fill="#448AFF" stroke="#1976D2" stroke-width="4"/></svg>'
+      },
+      {
+        name: "Triangle", example: "Pizza Slice, Mountain, Hanger",
+        desc: "Three straight sides and three sharp corners",
+        svg: '<svg viewBox="0 0 100 100" width="76" height="76"><polygon points="50,8 92,88 8,88" fill="#FFD740" stroke="#FFA000" stroke-width="4"/></svg>'
+      },
+      {
+        name: "Rectangle", example: "Door, Notebook, Mobile Phone",
+        desc: "Four sides where opposite sides are equal and parallel",
+        svg: '<svg viewBox="0 0 100 100" width="76" height="76"><rect x="6" y="20" width="88" height="60" rx="4" fill="#69F0AE" stroke="#388E3C" stroke-width="4"/></svg>'
+      },
+      {
+        name: "Star", example: "Night Star, Starfish, Gold Medal",
+        desc: "Five-pointed shining star with ten straight line edges",
+        svg: '<svg viewBox="0 0 100 100" width="76" height="76"><polygon points="50,6 63,35 95,35 69,54 79,85 50,67 21,85 31,54 5,35 37,35" fill="#FFAB00" stroke="#FF6F00" stroke-width="3"/></svg>'
+      },
+      {
+        name: "Heart", example: "Love Symbol, Playing Card, Valentine",
+        desc: "Curved symmetrical shape symbol of affection and love",
+        svg: '<svg viewBox="0 0 100 100" width="76" height="76"><path d="M50,82 C20,54 8,36 8,24 A18,18 0 0,1 44,16 L50,22 L56,16 A18,18 0 0,1 92,24 C92,36 80,54 50,82 Z" fill="#FF4081" stroke="#C2185B" stroke-width="3"/></svg>'
+      },
+      {
+        name: "Oval", example: "Egg, Watermelon, Rugby Ball",
+        desc: "Elongated egg-like rounded continuous curve",
+        svg: '<svg viewBox="0 0 100 100" width="76" height="76"><ellipse cx="50" cy="50" rx="46" ry="32" fill="#E040FB" stroke="#7B1FA2" stroke-width="4"/></svg>'
+      },
+      {
+        name: "Pyramid", example: "Egypt Pyramid, Tent Roof",
+        desc: "3D triangle solid with polygonal base and triangular sloping faces",
+        svg: '<svg viewBox="0 0 100 100" width="76" height="76"><polygon points="50,10 90,82 50,90 10,82" fill="#FFB74D" stroke="#E65100" stroke-width="3"/><polygon points="50,10 90,82 50,90" fill="#FFA726" stroke="#E65100" stroke-width="2"/></svg>'
+      },
+      {
+        name: "Arrow", example: "Direction Sign, Road Pointer",
+        desc: "Directional pointer pointing towards a specific direction",
+        svg: '<svg viewBox="0 0 100 100" width="76" height="76"><polygon points="12,38 56,38 56,20 90,50 56,80 56,62 12,62" fill="#00E676" stroke="#00C853" stroke-width="3"/></svg>'
+      }
+    ];
+
+    var DATA_UKG_MATH_COMPARE = [
+      { a: 8, b: 5, ans: ">" }, { a: 12, b: 19, ans: "<" }, { a: 25, b: 25, ans: "=" },
+      { a: 34, b: 21, ans: ">" }, { a: 17, b: 40, ans: "<" }, { a: 50, b: 50, ans: "=" },
+      { a: 62, b: 48, ans: ">" }, { a: 39, b: 72, ans: "<" }, { a: 88, b: 88, ans: "=" },
+      { a: 95, b: 59, ans: ">" }, { a: 23, b: 32, ans: "<" }, { a: 77, b: 77, ans: "=" },
+      { a: 84, b: 48, ans: ">" }, { a: 15, b: 51, ans: "<" }, { a: 99, b: 99, ans: "=" },
+      { a: 45, b: 35, ans: ">" }, { a: 28, b: 82, ans: "<" }, { a: 60, b: 60, ans: "=" },
+      { a: 73, b: 37, ans: ">" }, { a: 11, b: 91, ans: "<" }, { a: 44, b: 44, ans: "=" },
+      { a: 90, b: 89, ans: ">" }, { a: 65, b: 68, ans: "<" }, { a: 33, b: 33, ans: "=" },
+      { a: 58, b: 52, ans: ">" }, { a: 42, b: 54, ans: "<" }, { a: 10, b: 10, ans: "=" },
+      { a: 80, b: 70, ans: ">" }, { a: 29, b: 39, ans: "<" }, { a: 100, b: 100, ans: "=" },
+      { a: 66, b: 46, ans: ">" }, { a: 14, b: 41, ans: "<" }, { a: 55, b: 55, ans: "=" },
+      { a: 87, b: 78, ans: ">" }, { a: 31, b: 63, ans: "<" }
     ];
 
     /* ---------------------------------------------------------
@@ -25308,32 +25613,341 @@ function setNurseryNumSubTab(st) {
 
       // TAB 5: 🔢 Numbers & Math (1-100 Names, More/Less, Before/After/Between)
       else if (tabKey === "math") {
-        if (filterBar) {
-          filterBar.style.display = "flex";
-          var lMathPills = [
-            { key: "names", label: "🔢 1-100 Number Names" },
-            { key: "more_less", label: "⚖️ More vs Less" },
-            { key: "before_after_between", label: "↔️ Before/After/Between" }
-          ];
-          var lmHtml = "";
-          for (var lmi = 0; lmi < lMathPills.length; lmi++) {
-            var lmp = lMathPills[lmi];
-            var lmpCls = "filter-pill" + (appState.lkgMathSubTab === lmp.key ? " active" : "");
-            lmHtml += '<button class="' + lmpCls + '" onclick="event.stopPropagation(); setLkgMathSubTab(\'' + lmp.key + '\');">' + lmp.label + '</button>';
-          }
-          filterBar.innerHTML = lmHtml;
+        if (!appState.ukgMathSubTab || appState.ukgMathSubTab === "rhymes") {
+          appState.ukgMathSubTab = "addition";
         }
 
-        // Sub 1: 1-100 Number Names
-        if (appState.lkgMathSubTab === "names") {
+        if (filterBar) {
+          filterBar.style.display = "flex";
+          var uMathPills = [
+            { key: "addition", label: "➕ Addition" },
+            { key: "subtraction", label: "➖ Subtraction" },
+            { key: "after", label: "➡️ After Numbers" },
+            { key: "before", label: "⬅️ Before Numbers" },
+            { key: "between", label: "↔️ Between Numbers" },
+            { key: "greatest_smallest", label: "🏆 Greatest & Smallest" },
+            { key: "odd_even", label: "⚖️ Odd & Even" },
+            { key: "names", label: "📝 Number Names (1-100)" },
+            { key: "tables", label: "✖️ Tables 0, 1 & 2" },
+            { key: "sizes", label: "🐘 Biggest, Smallest & Tallest" },
+            { key: "currency", label: "💰 Currency (Notes & Coins)" },
+            { key: "shapes", label: "🔷 Shapes (9)" },
+            { key: "compare", label: "🔢 Compare (>, <, =)" }
+          ];
+          var umHtml = "";
+          for (var umi = 0; umi < uMathPills.length; umi++) {
+            var ump = uMathPills[umi];
+            var umpCls = "filter-pill" + (appState.ukgMathSubTab === ump.key ? " active" : "");
+            umHtml += '<button class="' + umpCls + '" onclick="event.stopPropagation(); setUkgMathSubTab(\'' + ump.key + '\');">' + ump.label + '</button>';
+          }
+          filterBar.innerHTML = umHtml;
+        }
+
+        // SUB-TAB 1: ➕ Addition
+        if (appState.ukgMathSubTab === "addition") {
+          var addIndex = appState.quizIndex % DATA_UKG_MATH_ADDITION.length;
+          var addItem = DATA_UKG_MATH_ADDITION[addIndex];
+          var addCacheKey = "ukg_add_" + addIndex;
+          var addOpts = getShuffledOptions(addCacheKey, function() {
+            var ans = addItem.ans;
+            var opts = [ans, ans + 1, Math.max(1, ans - 1), ans + 2];
+            return fisherYatesShuffle(opts);
+          });
+          var isAddAnswered = (quizState.isAnswered && quizState.activeKey === addCacheKey);
+
+          var addSpoken = addItem.a + " plus " + addItem.b + " equals what?";
+          autoSpeak(addCacheKey, addSpoken, "en-IN");
+
+          var equationBlank = isAddAnswered
+            ? '<span class="dash-blank filled-blank">' + addItem.ans + '</span>'
+            : '<span class="dash-blank">___</span>';
+
+          html += '<div style="text-align:center; margin: 12px 0;">';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + addSpoken + '\', \'en-IN\'); })" style="font-size: 38px; font-weight: 900; color: #E65100;">' + addItem.a + ' + ' + addItem.b + ' = ' + equationBlank + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Count the objects and find the sum\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #795548;">Count and add: 🔊</div>';
+          html += '</div>';
+
+          if (addItem.level === "1d" && addItem.emoji) {
+            html += '<div class="math-counters-row" style="max-width: 380px; margin: 10px auto; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px;" onclick="safeAction(function(){ speak(\'' + addSpoken + '\', \'en-IN\'); })">';
+            for (var c1 = 0; c1 < addItem.a; c1++) {
+              html += '<span class="touch-speak-item safe-emoji" style="font-size: 30px;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + (c1 + 1) + '\', \'en-IN\'); })">' + addItem.emoji + '</span>';
+            }
+            html += '<span class="math-symbol" style="font-size: 26px; font-weight: 900; margin: 0 6px; color: #E65100;">+</span>';
+            for (var c2 = 0; c2 < addItem.b; c2++) {
+              html += '<span class="touch-speak-item safe-emoji" style="font-size: 30px;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + (c2 + 1) + '\', \'en-IN\'); })">' + addItem.emoji + '</span>';
+            }
+            html += '</div>';
+          } else {
+            html += '<div style="text-align: center; margin: 8px auto; padding: 10px 16px; background: #FFF3E0; border-radius: 12px; max-width: 320px; font-size: 15px; font-weight: bold; color: #E65100;">';
+            html += '  <span>2-Digit Addition without carry</span>';
+            html += '</div>';
+          }
+
+          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 16px auto 0;">';
+          for (var aoi = 0; aoi < addOpts.length; aoi++) {
+            var isAddOk = (addOpts[aoi] === addItem.ans);
+            var aBtnCls = "opt-btn";
+            if (isAddAnswered) {
+              aBtnCls += isAddOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + aBtnCls + '" style="min-height: 56px; font-size: 1.65rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleMathAns(' + isAddOk + ', ' + addItem.ans + ', ' + addItem.a + ', \'+\', ' + addItem.b + '); })">' + addOpts[aoi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // SUB-TAB 2: ➖ Subtraction
+        else if (appState.ukgMathSubTab === "subtraction") {
+          var subIndex = appState.quizIndex % DATA_UKG_MATH_SUBTRACTION.length;
+          var subItem = DATA_UKG_MATH_SUBTRACTION[subIndex];
+          var subCacheKey = "ukg_sub_" + subIndex;
+          var subOpts = getShuffledOptions(subCacheKey, function() {
+            var ans = subItem.ans;
+            var opts = [ans, ans + 1, Math.max(0, ans - 1), ans + 2];
+            return fisherYatesShuffle(opts);
+          });
+          var isSubAnswered = (quizState.isAnswered && quizState.activeKey === subCacheKey);
+
+          var subSpoken = subItem.a + " minus " + subItem.b + " equals what?";
+          autoSpeak(subCacheKey, subSpoken, "en-IN");
+
+          var equationBlank = isSubAnswered
+            ? '<span class="dash-blank filled-blank">' + subItem.ans + '</span>'
+            : '<span class="dash-blank">___</span>';
+
+          html += '<div style="text-align:center; margin: 12px 0;">';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + subSpoken + '\', \'en-IN\'); })" style="font-size: 38px; font-weight: 900; color: #E65100;">' + subItem.a + ' - ' + subItem.b + ' = ' + equationBlank + '</div>';
+          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Take away the crossed items and find the difference\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #795548;">Count and subtract: 🔊</div>';
+          html += '</div>';
+
+          if (subItem.level === "visual" && subItem.emoji) {
+            html += '<div class="math-counters-row" style="max-width: 380px; margin: 10px auto; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px;" onclick="safeAction(function(){ speak(\'' + subSpoken + '\', \'en-IN\'); })">';
+            for (var sa = 0; sa < subItem.a; sa++) {
+              var isCrossed = (sa >= (subItem.a - subItem.b));
+              var crossStyle = isCrossed ? ' style="filter: grayscale(1); opacity: 0.35; position: relative; text-decoration: line-through;"' : '';
+              html += '<span class="touch-speak-item safe-emoji" style="font-size: 30px;"' + crossStyle + ' onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + (sa + 1) + '\', \'en-IN\'); })">' + subItem.emoji + '</span>';
+            }
+            html += '</div>';
+          } else {
+            html += '<div style="text-align: center; margin: 8px auto; padding: 10px 16px; background: #FFF3E0; border-radius: 12px; max-width: 320px; font-size: 15px; font-weight: bold; color: #E65100;">';
+            html += '  <span>2-Digit Subtraction without borrow</span>';
+            html += '</div>';
+          }
+
+          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 16px auto 0;">';
+          for (var soi = 0; soi < subOpts.length; soi++) {
+            var isSubOk = (subOpts[soi] === subItem.ans);
+            var sBtnCls = "opt-btn";
+            if (isSubAnswered) {
+              sBtnCls += isSubOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + sBtnCls + '" style="min-height: 56px; font-size: 1.65rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleMathAns(' + isSubOk + ', ' + subItem.ans + ', ' + subItem.a + ', \'-\', ' + subItem.b + '); })">' + subOpts[soi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // SUB-TAB 3: ➡️ After Numbers (1-100)
+        else if (appState.ukgMathSubTab === "after") {
+          var aftItem = DATA_UKG_MATH_AFTER[appState.quizIndex % DATA_UKG_MATH_AFTER.length];
+          var aftCacheKey = "ukg_aft_" + appState.quizIndex;
+          var aftOpts = getShuffledOptions(aftCacheKey, function() {
+            var ans = aftItem.ans;
+            var opts = [ans, ans + 1, Math.max(1, ans - 1), ans + 2];
+            return fisherYatesShuffle(opts);
+          });
+          var isAftAnswered = (quizState.isAnswered && quizState.activeKey === aftCacheKey);
+
+          var aftSpoken = "What comes after " + aftItem.num + "?";
+          autoSpeak(aftCacheKey, aftSpoken, "en-IN");
+
+          var aftBlank = isAftAnswered
+            ? '<span class="dash-blank filled-blank">' + aftItem.ans + '</span>'
+            : '<span class="dash-blank">___</span>';
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + aftSpoken + '\', \'en-IN\'); })">';
+          html += '  <div style="font-size: 14px; font-weight: 800; color: #1976D2; margin-bottom: 6px;">AFTER NUMBER (1–100)</div>';
+          html += '  <div style="display:flex; justify-content:center; align-items:center; gap:16px; font-size:42px; font-weight:900; color:#0D47A1;">';
+          html += '    <span>' + aftItem.num + '</span> <span style="font-size:32px; color:#1976D2;">➔</span> ' + aftBlank;
+          html += '  </div>';
+          html += '  <div class="audio-hint">🔊 What comes after ' + aftItem.num + '?</div>';
+          html += '</div>';
+
+          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 16px auto 0;">';
+          for (var aoi = 0; aoi < aftOpts.length; aoi++) {
+            var isAftOk = (aftOpts[aoi] === aftItem.ans);
+            var aftBtnCls = "opt-btn";
+            if (isAftAnswered) {
+              aftBtnCls += isAftOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + aftBtnCls + '" style="min-height: 56px; font-size: 1.65rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isAftOk + ', { key: \'' + aftCacheKey + '\', display: \'' + aftItem.num + ' ➔ ' + aftItem.ans + '\', spoken: \'' + aftItem.ans + ' comes after ' + aftItem.num + '! Correct!\', lang: \'en-IN\', ansVal: ' + aftItem.ans + ', wrongMsg: \'Try again!\' }); })">' + aftOpts[aoi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // SUB-TAB 4: ⬅️ Before Numbers (1-100)
+        else if (appState.ukgMathSubTab === "before") {
+          var befItem = DATA_UKG_MATH_BEFORE[appState.quizIndex % DATA_UKG_MATH_BEFORE.length];
+          var befCacheKey = "ukg_bef_" + appState.quizIndex;
+          var befOpts = getShuffledOptions(befCacheKey, function() {
+            var ans = befItem.ans;
+            var opts = [ans, ans + 1, Math.max(1, ans - 1), ans + 2];
+            return fisherYatesShuffle(opts);
+          });
+          var isBefAnswered = (quizState.isAnswered && quizState.activeKey === befCacheKey);
+
+          var befSpoken = "What comes before " + befItem.num + "?";
+          autoSpeak(befCacheKey, befSpoken, "en-IN");
+
+          var befBlank = isBefAnswered
+            ? '<span class="dash-blank filled-blank">' + befItem.ans + '</span>'
+            : '<span class="dash-blank">___</span>';
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + befSpoken + '\', \'en-IN\'); })">';
+          html += '  <div style="font-size: 14px; font-weight: 800; color: #D81B60; margin-bottom: 6px;">BEFORE NUMBER (1–100)</div>';
+          html += '  <div style="display:flex; justify-content:center; align-items:center; gap:16px; font-size:42px; font-weight:900; color:#880E4F;">';
+          html += '    ' + befBlank + ' <span style="font-size:32px; color:#D81B60;">➔</span> <span>' + befItem.num + '</span>';
+          html += '  </div>';
+          html += '  <div class="audio-hint">🔊 What comes before ' + befItem.num + '?</div>';
+          html += '</div>';
+
+          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 16px auto 0;">';
+          for (var boi = 0; boi < befOpts.length; boi++) {
+            var isBefOk = (befOpts[boi] === befItem.ans);
+            var befBtnCls = "opt-btn";
+            if (isBefAnswered) {
+              befBtnCls += isBefOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + befBtnCls + '" style="min-height: 56px; font-size: 1.65rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isBefOk + ', { key: \'' + befCacheKey + '\', display: \'' + befItem.ans + ' ➔ ' + befItem.num + '\', spoken: \'' + befItem.ans + ' comes before ' + befItem.num + '! Correct!\', lang: \'en-IN\', ansVal: ' + befItem.ans + ', wrongMsg: \'Try again!\' }); })">' + befOpts[boi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // SUB-TAB 5: ↔️ Between Numbers (1-100)
+        else if (appState.ukgMathSubTab === "between") {
+          var btwItem = DATA_UKG_MATH_BETWEEN[appState.quizIndex % DATA_UKG_MATH_BETWEEN.length];
+          var btwCacheKey = "ukg_btw_" + appState.quizIndex;
+          var btwOpts = getShuffledOptions(btwCacheKey, function() {
+            var ans = btwItem.ans;
+            var opts = [ans, ans + 1, Math.max(1, ans - 1), ans + 2];
+            return fisherYatesShuffle(opts);
+          });
+          var isBtwAnswered = (quizState.isAnswered && quizState.activeKey === btwCacheKey);
+
+          var btwSpoken = "What comes between " + btwItem.a + " and " + btwItem.b + "?";
+          autoSpeak(btwCacheKey, btwSpoken, "en-IN");
+
+          var btwBlank = isBtwAnswered
+            ? '<span class="dash-blank filled-blank">' + btwItem.ans + '</span>'
+            : '<span class="dash-blank">___</span>';
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + btwSpoken + '\', \'en-IN\'); })">';
+          html += '  <div style="font-size: 14px; font-weight: 800; color: #2E7D32; margin-bottom: 6px;">BETWEEN NUMBER (1–100)</div>';
+          html += '  <div style="display:flex; justify-content:center; align-items:center; gap:12px; font-size:38px; font-weight:900; color:#1B5E20;">';
+          html += '    <span>' + btwItem.a + '</span>, ' + btwBlank + ', <span>' + btwItem.b + '</span>';
+          html += '  </div>';
+          html += '  <div class="audio-hint">🔊 What comes between ' + btwItem.a + ' and ' + btwItem.b + '?</div>';
+          html += '</div>';
+
+          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 16px auto 0;">';
+          for (var bwi = 0; bwi < btwOpts.length; bwi++) {
+            var isBtwOk = (btwOpts[bwi] === btwItem.ans);
+            var btwBtnCls = "opt-btn";
+            if (isBtwAnswered) {
+              btwBtnCls += isBtwOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + btwBtnCls + '" style="min-height: 56px; font-size: 1.65rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isBtwOk + ', { key: \'' + btwCacheKey + '\', display: \'' + btwItem.a + ', ' + btwItem.ans + ', ' + btwItem.b + '\', spoken: \'' + btwItem.ans + ' is between ' + btwItem.a + ' and ' + btwItem.b + '! Correct!\', lang: \'en-IN\', ansVal: ' + btwItem.ans + ', wrongMsg: \'Try again!\' }); })">' + btwOpts[bwi] + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // SUB-TAB 6: 🏆 Greatest & Smallest Number
+        else if (appState.ukgMathSubTab === "greatest_smallest") {
+          var gsItem = DATA_UKG_MATH_GREATEST_SMALLEST[appState.quizIndex % DATA_UKG_MATH_GREATEST_SMALLEST.length];
+          var gsCacheKey = "ukg_gs_" + appState.quizIndex;
+          var isGsAnswered = (quizState.isAnswered && quizState.activeKey === gsCacheKey);
+
+          var gsTitle = (gsItem.type === "greatest") ? "Greatest (Largest) Number" : "Smallest (Least) Number";
+          var gsSpoken = "Find the " + gsItem.type + " number among " + gsItem.nums.join(", ") + ".";
+          autoSpeak(gsCacheKey, gsSpoken, "en-IN");
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + gsSpoken + '\', \'en-IN\'); })">';
+          html += '  <div style="font-size: 14px; font-weight: 800; color: #E65100; margin-bottom: 6px;">' + gsTitle.toUpperCase() + '</div>';
+          html += '  <div style="font-size: 20px; font-weight: 900; color: #37474F; margin: 4px 0;">Find the ' + (gsItem.type === "greatest" ? "🏆 GREATEST" : "🔍 SMALLEST") + ' number:</div>';
+          html += '  <div style="display:flex; justify-content:center; align-items:center; gap:12px; font-size:28px; font-weight:900; color:#0288D1; margin-top: 6px;">';
+          for (var gsn = 0; gsn < gsItem.nums.length; gsn++) {
+            html += '<span style="background: #E1F5FE; padding: 4px 10px; border-radius: 8px;">' + gsItem.nums[gsn] + '</span>';
+          }
+          html += '  </div>';
+          html += '  <div class="audio-hint">🔊 Tap to listen to the question</div>';
+          html += '</div>';
+
+          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 16px auto 0;">';
+          for (var gsi = 0; gsi < gsItem.nums.length; gsi++) {
+            var nVal = gsItem.nums[gsi];
+            var isGsOk = (nVal === gsItem.ans);
+            var gsBtnCls = "opt-btn";
+            if (isGsAnswered) {
+              gsBtnCls += isGsOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + gsBtnCls + '" style="min-height: 56px; font-size: 1.65rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isGsOk + ', { key: \'' + gsCacheKey + '\', display: \'' + nVal + ' is the ' + gsItem.type + '\', spoken: \'' + nVal + ' is the ' + gsItem.type + ' number! Correct!\', lang: \'en-IN\', ansVal: ' + nVal + ', wrongMsg: \'Try again!\' }); })">' + nVal + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // SUB-TAB 7: ⚖️ Odd & Even Numbers (1-100)
+        else if (appState.ukgMathSubTab === "odd_even") {
+          var oeItem = DATA_UKG_MATH_ODD_EVEN[appState.quizIndex % DATA_UKG_MATH_ODD_EVEN.length];
+          var oeCacheKey = "ukg_oe_" + appState.quizIndex;
+          var isOeAnswered = (quizState.isAnswered && quizState.activeKey === oeCacheKey);
+
+          var oeSpoken = "Is number " + oeItem.num + " Odd or Even?";
+          autoSpeak(oeCacheKey, oeSpoken, "en-IN");
+
+          html += '<div style="margin: 0 auto 12px; max-width: 420px; background: #FFFDE7; border: 2px dashed #FBC02D; border-radius: 12px; padding: 10px 14px; text-align: center;">';
+          html += '  <div style="font-size: 14px; font-weight: 900; color: #F57F17;">💡 Odd & Even Golden Rule (Check Ones / Last Digit):</div>';
+          html += '  <div style="font-size: 13px; font-weight: 700; color: #37474F; margin-top: 4px;">';
+          html += '    <span style="color: #2E7D32;">🔵 EVEN ends in: 0, 2, 4, 6, 8</span><br>';
+          html += '    <span style="color: #C2185B;">🔴 ODD ends in: 1, 3, 5, 7, 9</span>';
+          html += '  </div>';
+          html += '</div>';
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + oeSpoken + '\', \'en-IN\'); })">';
+          html += '  <div style="font-size: 14px; font-weight: 800; color: #6A1B9A; margin-bottom: 6px;">ODD OR EVEN?</div>';
+          html += '  <div style="font-size: 54px; font-weight: 900; color: #4A148C;">' + oeItem.num + '</div>';
+          html += '  <div class="audio-hint">🔊 ' + oeSpoken + '</div>';
+          html += '</div>';
+
+          html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 420px; margin: 16px auto 0;">';
+          var oeChoices = ["EVEN", "ODD"];
+          for (var oec = 0; oec < oeChoices.length; oec++) {
+            var cVal = oeChoices[oec];
+            var isOeOk = (cVal === oeItem.ans);
+            var oeBtnCls = "opt-btn";
+            if (isOeAnswered) {
+              oeBtnCls += isOeOk ? " correct-choice" : " disabled-choice";
+            }
+            var btnBg = (cVal === "EVEN") ? "background: #E8F5E9; border-color: #4CAF50; color: #1B5E20;" : "background: #FCE4EC; border-color: #E91E63; color: #880E4F;";
+            html += '<button class="' + oeBtnCls + '" style="min-height: 58px; font-size: 1.55rem; font-weight: 900; border-radius: 14px; ' + btnBg + '" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isOeOk + ', { key: \'' + oeCacheKey + '\', display: \'' + oeItem.num + ' is ' + oeItem.ans + '\', spoken: \'' + oeItem.num + ' is an ' + oeItem.ans + ' number! Correct!\', lang: \'en-IN\', ansVal: \'' + cVal + '\', wrongMsg: \'Try again!\' }); })">' + (cVal === "EVEN" ? "🔵 EVEN" : "🔴 ODD") + '</button>';
+          }
+          html += '</div>';
+          html += renderCompletedPreviewCard();
+        }
+
+        // SUB-TAB 8: 📝 Number Names (Up to 100)
+        else if (appState.ukgMathSubTab === "names") {
           html += '<div class="mode-switch">';
           html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn 1-100 Names</button>';
           html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Spelling Quiz</button>';
           html += '</div>';
 
           if (appState.mode === "learn") {
-            autoSpeak("lkg_names_learn", "Number Names 1 to 100. Tap any number to hear spelling!", "en-IN");
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Number Names 1 to 100. Tap any number to hear spelling!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap card to hear spelling 🔊</div>';
+            autoSpeak("ukg_names_learn", "Number Names 1 to 100. Tap any number to hear its spelling!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Number Names 1 to 100. Tap any card to hear spelling!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap card to hear spelling 🔊</div>';
             html += '<div class="grid-items-container" style="max-height: calc(100vh - 250px); overflow-y: auto;">';
             for (var ni = 1; ni <= 100; ni++) {
               html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + ni + '! ' + getNumberWord(ni) + '\', \'en-IN\'); })">';
@@ -25343,13 +25957,13 @@ function setNurseryNumSubTab(st) {
             }
             html += '</div>';
           } else {
-            var numTarget = (appState.quizIndex % 50) + 1;
-            var numCacheKey = "lkg_numname_" + appState.quizIndex;
+            var numTarget = (appState.quizIndex % 100) + 1;
+            var numCacheKey = "ukg_numname_" + appState.quizIndex;
             var numAns = getNumberWord(numTarget);
             var numOpts = getShuffledOptions(numCacheKey, function() {
               var no = [numAns];
               while (no.length < 4) {
-                var rn = getNumberWord(Math.floor(Math.random() * 50) + 1);
+                var rn = getNumberWord(Math.floor(Math.random() * 100) + 1);
                 if (no.indexOf(rn) === -1) no.push(rn);
               }
               return fisherYatesShuffle(no);
@@ -25359,103 +25973,277 @@ function setNurseryNumSubTab(st) {
             autoSpeak(numCacheKey, "What is the spelling of number " + numTarget + "?", "en-IN");
 
             html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + numTarget + '! ' + numAns + '\', \'en-IN\'); })">';
-            html += '  <div class="flashcard-emoji" style="font-size: 64px; font-weight: 900; color: #0288D1;">' + numTarget + '</div>';
-            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + numAns + '\', \'en-IN\'); })" style="font-size: 24px; font-weight: 800; color: #01579B;">' + (isNumAnswered ? numAns : "___") + '</div>';
+            html += '  <div class="flashcard-emoji" style="font-size: 58px; font-weight: 900; color: #0288D1;">' + numTarget + '</div>';
             html += '  <div class="audio-hint">🔊 What is the spelling of ' + numTarget + '?</div>';
             html += '</div>';
 
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the correct spelling of ' + numTarget + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the correct spelling: 🔊</div>';
-
-            html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
-            for (var noi = 0; noi < numOpts.length; noi++) {
-              var isNumOk = (numOpts[noi] === numAns);
-              var nBtnCls = "opt-btn";
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 16px auto 0;">';
+            for (var nwi = 0; nwi < numOpts.length; nwi++) {
+              var isNumOk = (numOpts[nwi] === numAns);
+              var numBtnCls = "opt-btn";
               if (isNumAnswered) {
-                nBtnCls += isNumOk ? " correct-choice" : " disabled-choice";
+                numBtnCls += isNumOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + nBtnCls + '" onclick="safeAction(function(){ handleNumNameAns(' + isNumOk + ', \'' + numOpts[noi] + '\', ' + numTarget + '); })">' + numOpts[noi] + '</button>';
+              html += '<button class="' + numBtnCls + '" style="min-height: 56px; font-size: 1.25rem; font-weight: 800; border-radius: 14px; padding: 8px 10px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isNumOk + ', { key: \'' + numCacheKey + '\', display: \'' + numTarget + ' = ' + numAns + '\', spoken: \'Correct! ' + numTarget + ' is ' + numAns + '\', lang: \'en-IN\', ansVal: \'' + numAns + '\', wrongMsg: \'Try again!\' }); })">' + numOpts[nwi] + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
           }
         }
-        // Sub 2: More vs Less
-        else if (appState.lkgMathSubTab === "more_less") {
-          var pmItem = DATA_PRE_MATH[appState.preMathIndex % DATA_PRE_MATH.length];
-          var pmKey = "lkg_premath_" + appState.preMathIndex;
-          autoSpeak(pmKey, pmItem.speak, "en-IN");
 
-          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + pmItem.speak + '\', \'en-IN\'); })">';
-          html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + pmItem.speak + '\', \'en-IN\'); })" style="font-size: 20px; font-weight: 800; color: #E65100; padding: 0 10px;">' + pmItem.prompt + '</div>';
-          html += '  <div class="audio-hint">🔊 ' + pmItem.concept + '</div>';
+        // SUB-TAB 9: ✖️ Tables of 0, 1 and 2
+        else if (appState.ukgMathSubTab === "tables") {
+          html += '<div class="mode-switch">';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Tables (0, 1, 2)</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Tables Quiz</button>';
           html += '</div>';
 
-          var pmOpts = getShuffledOptions(pmKey, function() {
-            return fisherYatesShuffle([pmItem.optA, pmItem.optB]);
-          });
+          if (appState.mode === "learn") {
+            autoSpeak("ukg_tables_learn", "Multiplication Tables of 0, 1 and 2. Tap any row to hear it spoken!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Multiplication Tables of 0, 1, and 2. Tap to listen!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any line to speak 🔊</div>';
+            html += '<div style="max-height: calc(100vh - 250px); overflow-y: auto; padding: 4px;">';
 
-          html += '<div style="display: flex; justify-content: center; gap: 16px; margin-top: 16px;">';
-          for (var pmi = 0; pmi < pmOpts.length; pmi++) {
-            var pmOpt = pmOpts[pmi];
-            html += '<div class="interactive-card" style="padding: 16px; text-align: center; border-color: #FFA726; min-width: 130px; cursor: pointer;" onclick="safeAction(function(){ handlePreMathAns(' + pmOpt.correct + ', \'' + pmOpt.name + '\', \'' + pmOpt.emoji + '\'); })">';
-            html += '  <div class="safe-emoji" style="font-size: 48px;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + pmOpt.name + '\', \'en-IN\'); })">' + pmOpt.emoji + '</div>';
-            html += '  <div style="font-size: 16px; font-weight: 800; color: #BF360C; margin-top: 4px;">' + pmOpt.name + '</div>';
+            var tablesList = [0, 1, 2];
+            for (var tIdx = 0; tIdx < tablesList.length; tIdx++) {
+              var tblNum = tablesList[tIdx];
+              var tblBg = tblNum === 0 ? "#ECEFF1" : (tblNum === 1 ? "#E8F5E9" : "#FFF3E0");
+              var tblColor = tblNum === 0 ? "#37474F" : (tblNum === 1 ? "#2E7D32" : "#E65100");
+              html += '<div style="background: ' + tblBg + '; border-radius: 12px; padding: 12px; margin-bottom: 12px; border: 2px solid ' + tblColor + ';">';
+              html += '  <div style="font-size: 17px; font-weight: 900; color: ' + tblColor + '; text-align: center; margin-bottom: 8px;">✖️ Table of ' + tblNum + '</div>';
+              html += '  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">';
+              for (var row = 1; row <= 10; row++) {
+                var rowAns = tblNum * row;
+                var rowSpoken = tblNum + " times " + row + " is " + rowAns;
+                html += '<div class="item-chip-card" style="padding: 8px 10px; text-align: center; cursor: pointer;" onclick="safeAction(function(){ speak(\'' + rowSpoken + '\', \'en-IN\'); })">';
+                html += '  <div style="font-size: 16px; font-weight: 900; color: ' + tblColor + ';">' + tblNum + ' × ' + row + ' = ' + rowAns + '</div>';
+                html += '</div>';
+              }
+              html += '  </div>';
+              html += '</div>';
+            }
+            html += '</div>';
+          } else {
+            var tQuizList = [
+              { a: 0, b: 1, ans: 0 }, { a: 0, b: 5, ans: 0 }, { a: 0, b: 8, ans: 0 }, { a: 0, b: 10, ans: 0 },
+              { a: 1, b: 2, ans: 2 }, { a: 1, b: 4, ans: 4 }, { a: 1, b: 7, ans: 7 }, { a: 1, b: 9, ans: 9 },
+              { a: 2, b: 2, ans: 4 }, { a: 2, b: 3, ans: 6 }, { a: 2, b: 4, ans: 8 }, { a: 2, b: 5, ans: 10 },
+              { a: 2, b: 6, ans: 12 }, { a: 2, b: 7, ans: 14 }, { a: 2, b: 8, ans: 16 }, { a: 2, b: 9, ans: 18 }, { a: 2, b: 10, ans: 20 },
+              { a: 1, b: 6, ans: 6 }, { a: 1, b: 8, ans: 8 }, { a: 0, b: 4, ans: 0 }
+            ];
+            var tqItem = tQuizList[appState.quizIndex % tQuizList.length];
+            var tqCacheKey = "ukg_tableq_" + appState.quizIndex;
+            var tqOpts = getShuffledOptions(tqCacheKey, function() {
+              var ans = tqItem.ans;
+              var opts = [ans, ans + 2, Math.max(0, ans - 2), ans + (tqItem.a === 0 ? 3 : 1)];
+              if (new Set(opts).size < 4) opts = [ans, ans + 1, ans + 2, ans + 3];
+              return fisherYatesShuffle(opts);
+            });
+            var isTqAnswered = (quizState.isAnswered && quizState.activeKey === tqCacheKey);
+
+            var tqSpoken = tqItem.a + " multiplied by " + tqItem.b + " equals what?";
+            autoSpeak(tqCacheKey, tqSpoken, "en-IN");
+
+            var tqBlank = isTqAnswered
+              ? '<span class="dash-blank filled-blank">' + tqItem.ans + '</span>'
+              : '<span class="dash-blank">___</span>';
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + tqSpoken + '\', \'en-IN\'); })">';
+            html += '  <div style="font-size: 14px; font-weight: 800; color: #E65100; margin-bottom: 6px;">MULTIPLICATION QUIZ</div>';
+            html += '  <div style="font-size: 42px; font-weight: 900; color: #BF360C;">' + tqItem.a + ' × ' + tqItem.b + ' = ' + tqBlank + '</div>';
+            html += '  <div class="audio-hint">🔊 ' + tqSpoken + '</div>';
+            html += '</div>';
+
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 16px auto 0;">';
+            for (var toi = 0; toi < tqOpts.length; toi++) {
+              var isTqOk = (tqOpts[toi] === tqItem.ans);
+              var tqBtnCls = "opt-btn";
+              if (isTqAnswered) {
+                tqBtnCls += isTqOk ? " correct-choice" : " disabled-choice";
+              }
+              html += '<button class="' + tqBtnCls + '" style="min-height: 56px; font-size: 1.65rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isTqOk + ', { key: \'' + tqCacheKey + '\', display: \'' + tqItem.a + ' × ' + tqItem.b + ' = ' + tqItem.ans + '\', spoken: \'' + tqItem.a + ' times ' + tqItem.b + ' equals ' + tqItem.ans + '! Correct!\', lang: \'en-IN\', ansVal: ' + tqItem.ans + ', wrongMsg: \'Try again!\' }); })">' + tqOpts[toi] + '</button>';
+            }
+            html += '</div>';
+            html += renderCompletedPreviewCard();
+          }
+        }
+
+        // SUB-TAB 10: 🐘 Biggest, Smallest & Tallest
+        else if (appState.ukgMathSubTab === "sizes") {
+          var szItem = DATA_UKG_MATH_SIZES[appState.quizIndex % DATA_UKG_MATH_SIZES.length];
+          var szCacheKey = "ukg_size_" + appState.quizIndex;
+          var isSzAnswered = (quizState.isAnswered && quizState.activeKey === szCacheKey);
+
+          autoSpeak(szCacheKey, szItem.q, "en-IN");
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + szItem.q + '\', \'en-IN\'); })">';
+          html += '  <div style="font-size: 14px; font-weight: 800; color: #4A148C; margin-bottom: 6px;">' + szItem.type.toUpperCase() + ' COMPARISON</div>';
+          html += '  <div style="font-size: 20px; font-weight: 900; color: #1A237E;">' + szItem.q + '</div>';
+          html += '  <div class="audio-hint">🔊 Tap to hear question</div>';
+          html += '</div>';
+
+          html += '<div style="display: flex; justify-content: center; align-items: flex-end; gap: 14px; max-width: 440px; margin: 16px auto;">';
+          for (var szi = 0; szi < szItem.items.length; szi++) {
+            var sCandidate = szItem.items[szi];
+            var isSzOk = (sCandidate.name === szItem.ans);
+            var szCardBorder = isSzAnswered ? (isSzOk ? "#4CAF50" : "#E0E0E0") : "#90CAF9";
+            var szCardBg = isSzAnswered ? (isSzOk ? "#E8F5E9" : "#FAFAFA") : "#FFFFFF";
+
+            html += '<div onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isSzOk + ', { key: \'' + szCacheKey + '\', display: \'' + sCandidate.name + ' is ' + szItem.type + '\', spoken: \'' + sCandidate.name + ' is the ' + szItem.type + '! Correct!\', lang: \'en-IN\', ansVal: \'' + sCandidate.name + '\', wrongMsg: \'Try again!\' }); })" style="flex: 1; text-align: center; padding: 12px 6px; border: 3px solid ' + szCardBorder + '; background: ' + szCardBg + '; border-radius: 14px; cursor: pointer; transition: transform 0.15s ease;">';
+            html += '  <div class="safe-emoji" style="font-size: ' + sCandidate.scale + 'px; line-height: 1.1;">' + sCandidate.emoji + '</div>';
+            html += '  <div style="font-size: 14px; font-weight: 900; color: #37474F; margin-top: 6px;">' + sCandidate.name + '</div>';
             html += '</div>';
           }
           html += '</div>';
+
+          html += '<div style="text-align: center; font-size: 13px; font-weight: bold; color: #546E7A; margin-top: 6px;">Tap the correct picture above 👆</div>';
           html += renderCompletedPreviewCard();
         }
-        // Sub 3: Before / After / Between
-        else {
-          var babNum = (appState.quizIndex % 20) + 5;
-          var babType = (appState.quizIndex % 3 === 0) ? "between" : ((appState.quizIndex % 3 === 1) ? "after" : "before");
-          var babAns, babPrompt, babDisplay;
-          if (babType === "between") {
-            babAns = babNum;
-            babPrompt = "What comes between " + (babNum - 1) + " and " + (babNum + 1) + "?";
-            babDisplay = (babNum - 1) + ' , <span class="dash-blank">___</span> , ' + (babNum + 1);
-          } else if (babType === "after") {
-            babAns = babNum + 1;
-            babPrompt = "What comes after " + babNum + "?";
-            babDisplay = babNum + ' ➔ <span class="dash-blank">___</span>';
-          } else {
-            babAns = babNum - 1;
-            babPrompt = "What comes before " + babNum + "?";
-            babDisplay = '<span class="dash-blank">___</span> ➔ ' + babNum;
-          }
 
-          var babKey = "bab_" + appState.quizIndex;
-          var babOpts = getShuffledOptions(babKey, function() {
-            var bo = [babAns];
-            while (bo.length < 4) {
-              var rb = babAns + Math.floor(Math.random() * 5) - 2;
-              if (rb > 0 && bo.indexOf(rb) === -1) bo.push(rb);
-            }
-            return fisherYatesShuffle(bo);
-          });
-          var isBabAnswered = (quizState.isAnswered && quizState.activeKey === babKey);
-
-          autoSpeak(babKey, babPrompt, "en-IN");
-
-          var filledBab = isBabAnswered
-            ? babDisplay.replace('<span class="dash-blank">___</span>', '<span class="dash-blank filled-blank">' + babAns + '</span>')
-            : babDisplay;
-
-          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + babPrompt + '\', \'en-IN\'); })">';
-          html += '  <div style="font-size: 34px; font-weight: 900; color: #00897B; padding: 12px 0;">' + filledBab + '</div>';
-          html += '  <div class="audio-hint">🔊 ' + babPrompt + '</div>';
+        // SUB-TAB 11: 💰 Currency (Notes & Coins)
+        else if (appState.ukgMathSubTab === "currency") {
+          html += '<div class="mode-switch">';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Indian Money</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Currency Quiz</button>';
           html += '</div>';
 
-          html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + babPrompt + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">' + babPrompt + ' 🔊</div>';
-
-          html += '<div class="options-grid-2" style="max-width: 360px; margin: 14px auto 0;">';
-          for (var babi = 0; babi < babOpts.length; babi++) {
-            var isBabOk = (babOpts[babi] === babAns);
-            var babBtnCls = "opt-btn";
-            if (isBabAnswered) {
-              babBtnCls += isBabOk ? " correct-choice" : " disabled-choice";
+          if (appState.mode === "learn") {
+            autoSpeak("ukg_currency_learn", "Indian Currency Notes and Coins. Tap any card to hear its denomination!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Indian Currency Notes and Coins. Tap any card to listen!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap card to hear currency name 🔊</div>';
+            html += '<div class="grid-items-container" style="max-height: calc(100vh - 250px); overflow-y: auto;">';
+            for (var ci = 0; ci < DATA_UKG_MATH_CURRENCY.length; ci++) {
+              var cItem = DATA_UKG_MATH_CURRENCY[ci];
+              html += '<div class="item-chip-card" style="padding: 12px; text-align: center;" onclick="safeAction(function(){ speak(\'' + cItem.name + '! ' + cItem.desc + '\', \'en-IN\'); })">';
+              html += '  <div style="margin: 0 auto; display: flex; justify-content: center; align-items: center; min-height: 90px;">' + cItem.svg + '</div>';
+              html += '  <div class="chip-word" style="font-size: 16px; font-weight: 900; color: #2E7D32; margin-top: 4px;">' + cItem.title + '</div>';
+              html += '  <div style="font-size: 11px; font-weight: 600; color: #546E7A;">' + cItem.name + '</div>';
+              html += '</div>';
             }
-            html += '<button class="' + babBtnCls + '" onclick="safeAction(function(){ handleBeforeAfterAns(' + isBabOk + ', ' + babAns + ', \'en-IN\'); })">' + babOpts[babi] + '</button>';
+            html += '</div>';
+          } else {
+            var curTarget = DATA_UKG_MATH_CURRENCY[appState.quizIndex % DATA_UKG_MATH_CURRENCY.length];
+            var curCacheKey = "ukg_cur_" + appState.quizIndex;
+            var curOpts = getShuffledOptions(curCacheKey, function() {
+              var co = [curTarget.title];
+              while (co.length < 4) {
+                var rc = DATA_UKG_MATH_CURRENCY[Math.floor(Math.random() * DATA_UKG_MATH_CURRENCY.length)].title;
+                if (co.indexOf(rc) === -1) co.push(rc);
+              }
+              return fisherYatesShuffle(co);
+            });
+            var isCurAnswered = (quizState.isAnswered && quizState.activeKey === curCacheKey);
+
+            autoSpeak(curCacheKey, "Identify this Indian currency. What is its value?", "en-IN");
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'This is ' + curTarget.name + '\', \'en-IN\'); })">';
+            html += '  <div style="margin: 6px auto; display: flex; justify-content: center; align-items: center; min-height: 96px;">' + curTarget.svg + '</div>';
+            html += '  <div style="font-size: 18px; font-weight: 900; color: #2E7D32; margin-top: 4px;">' + (isCurAnswered ? curTarget.title : "???") + '</div>';
+            html += '  <div class="audio-hint">🔊 Identify this currency</div>';
+            html += '</div>';
+
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 16px auto 0;">';
+            for (var coi = 0; coi < curOpts.length; coi++) {
+              var isCurOk = (curOpts[coi] === curTarget.title);
+              var curBtnCls = "opt-btn";
+              if (isCurAnswered) {
+                curBtnCls += isCurOk ? " correct-choice" : " disabled-choice";
+              }
+              html += '<button class="' + curBtnCls + '" style="min-height: 56px; font-size: 1.45rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isCurOk + ', { key: \'' + curCacheKey + '\', display: \'' + curTarget.title + ' (' + curTarget.name + ')\', spoken: \'Correct! That is ' + curTarget.name + '!\', lang: \'en-IN\', ansVal: \'' + curTarget.title + '\', wrongMsg: \'Try again!\' }); })">' + curOpts[coi] + '</button>';
+            }
+            html += '</div>';
+            html += renderCompletedPreviewCard();
+          }
+        }
+
+        // SUB-TAB 12: 🔷 Shapes (9 Shapes)
+        else if (appState.ukgMathSubTab === "shapes") {
+          html += '<div class="mode-switch">';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn 9 Shapes</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Shapes Quiz</button>';
+          html += '</div>';
+
+          if (appState.mode === "learn") {
+            autoSpeak("ukg_shapes_learn", "Nine geometric shapes. Circle, Rectangle, Triangle, Star, Square, Heart, Oval, Pyramid, and Arrow. Tap any shape to learn!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Nine geometric shapes. Tap any shape to learn real life examples!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap card to hear shape and examples 🔊</div>';
+            html += '<div class="grid-items-container" style="max-height: calc(100vh - 250px); overflow-y: auto;">';
+            for (var si = 0; si < DATA_UKG_MATH_SHAPES.length; si++) {
+              var sItem = DATA_UKG_MATH_SHAPES[si];
+              html += '<div class="item-chip-card" style="padding: 12px; text-align: center;" onclick="safeAction(function(){ speak(\'' + sItem.name + '! ' + sItem.desc + '. Examples: ' + sItem.example + '\', \'en-IN\'); })">';
+              html += '  <div style="margin: 0 auto; display: flex; justify-content: center; align-items: center; min-height: 80px;">' + sItem.svg + '</div>';
+              html += '  <div class="chip-word" style="font-size: 16px; font-weight: 900; color: #1565C0; margin-top: 4px;">' + sItem.name + '</div>';
+              html += '  <div style="font-size: 11px; font-weight: 600; color: #546E7A;">e.g. ' + sItem.example + '</div>';
+              html += '</div>';
+            }
+            html += '</div>';
+          } else {
+            var shpTarget = DATA_UKG_MATH_SHAPES[appState.quizIndex % DATA_UKG_MATH_SHAPES.length];
+            var shpCacheKey = "ukg_shp_" + appState.quizIndex;
+            var shpOpts = getShuffledOptions(shpCacheKey, function() {
+              var so = [shpTarget.name];
+              while (so.length < 4) {
+                var rs = DATA_UKG_MATH_SHAPES[Math.floor(Math.random() * DATA_UKG_MATH_SHAPES.length)].name;
+                if (so.indexOf(rs) === -1) so.push(rs);
+              }
+              return fisherYatesShuffle(so);
+            });
+            var isShpAnswered = (quizState.isAnswered && quizState.activeKey === shpCacheKey);
+
+            autoSpeak(shpCacheKey, "What shape is this? " + shpTarget.desc, "en-IN");
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'What shape is this? Examples include ' + shpTarget.example + '\', \'en-IN\'); })">';
+            html += '  <div style="margin: 6px auto; display: flex; justify-content: center; align-items: center; min-height: 86px;">' + shpTarget.svg + '</div>';
+            html += '  <div style="font-size: 18px; font-weight: 900; color: #1565C0; margin-top: 4px;">' + (isShpAnswered ? shpTarget.name : "???") + '</div>';
+            html += '  <div class="audio-hint">🔊 What shape is this?</div>';
+            html += '</div>';
+
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 16px auto 0;">';
+            for (var soi = 0; soi < shpOpts.length; soi++) {
+              var isShpOk = (shpOpts[soi] === shpTarget.name);
+              var shpBtnCls = "opt-btn";
+              if (isShpAnswered) {
+                shpBtnCls += isShpOk ? " correct-choice" : " disabled-choice";
+              }
+              html += '<button class="' + shpBtnCls + '" style="min-height: 56px; font-size: 1.35rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isShpOk + ', { key: \'' + shpCacheKey + '\', display: \'' + shpTarget.name + ' (e.g. ' + shpTarget.example + ')\', spoken: \'Correct! That is a ' + shpTarget.name + '!\', lang: \'en-IN\', ansVal: \'' + shpTarget.name + '\', wrongMsg: \'Try again!\' }); })">' + shpOpts[soi] + '</button>';
+            }
+            html += '</div>';
+            html += renderCompletedPreviewCard();
+          }
+        }
+
+        // SUB-TAB 13: 🔢 Compare (>, <, =)
+        else {
+          var cmpItem = DATA_UKG_MATH_COMPARE[appState.quizIndex % DATA_UKG_MATH_COMPARE.length];
+          var cmpCacheKey = "ukg_cmp_" + appState.quizIndex;
+          var isCmpAnswered = (quizState.isAnswered && quizState.activeKey === cmpCacheKey);
+
+          var cmpSpoken = "Compare " + cmpItem.a + " and " + cmpItem.b + ". Choose greater than, less than, or equal to.";
+          autoSpeak(cmpCacheKey, cmpSpoken, "en-IN");
+
+          var cmpBlank = isCmpAnswered
+            ? '<span class="dash-blank filled-blank" style="font-size: 44px; color: #2E7D32;">' + cmpItem.ans + '</span>'
+            : '<span class="dash-blank" style="font-size: 44px;">___</span>';
+
+          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'Compare ' + cmpItem.a + ' and ' + cmpItem.b + '\', \'en-IN\'); })">';
+          html += '  <div style="font-size: 14px; font-weight: 800; color: #E65100; margin-bottom: 6px;">COMPARE NUMBERS (&gt;, &lt;, =)</div>';
+          html += '  <div style="display:flex; justify-content:center; align-items:center; gap:20px; font-size:48px; font-weight:900; color:#37474F;">';
+          html += '    <span>' + cmpItem.a + '</span> ' + cmpBlank + ' <span>' + cmpItem.b + '</span>';
+          html += '  </div>';
+          html += '  <div class="audio-hint">🔊 Compare the two numbers</div>';
+          html += '</div>';
+
+          html += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 420px; margin: 18px auto 0;">';
+          var cmpBtns = [
+            { sym: ">", label: ">", spoken: cmpItem.a + " is greater than " + cmpItem.b },
+            { sym: "<", label: "<", spoken: cmpItem.a + " is less than " + cmpItem.b },
+            { sym: "=", label: "=", spoken: cmpItem.a + " is equal to " + cmpItem.b }
+          ];
+          for (var cbi = 0; cbi < cmpBtns.length; cbi++) {
+            var bObj = cmpBtns[cbi];
+            var isCmpOk = (bObj.sym === cmpItem.ans);
+            var cmpBtnCls = "opt-btn";
+            if (isCmpAnswered) {
+              cmpBtnCls += isCmpOk ? " correct-choice" : " disabled-choice";
+            }
+            html += '<button class="' + cmpBtnCls + '" style="min-height: 60px; font-size: 2.2rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isCmpOk + ', { key: \'' + cmpCacheKey + '\', display: \'' + cmpItem.a + ' ' + cmpItem.ans + ' ' + cmpItem.b + '\', spoken: \'' + bObj.spoken + '! Correct!\', lang: \'en-IN\', ansVal: \'' + bObj.sym + '\', wrongMsg: \'Try again!\' }); })">' + bObj.label + '</button>';
           }
           html += '</div>';
           html += renderCompletedPreviewCard();
@@ -25495,7 +26283,8 @@ function setNurseryNumSubTab(st) {
             { key: "things_in_school", label: "🏫 Things in School (10)" },
             { key: "clothes", label: "👕 Clothes (10)" },
             { key: "action_words", label: "🏃 Action Words (12)" },
-            { key: "good_manners", label: "🌟 Good Manners (8)" }
+            { key: "good_manners", label: "🌟 Good Manners (8)" },
+            { key: "rhymes", label: "🎵 Rhyming Words (16)" }
           ];
           var ewFilterHtml = "";
           for (var ewi = 0; ewi < ewCats.length; ewi++) {
