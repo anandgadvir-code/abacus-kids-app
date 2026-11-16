@@ -1399,6 +1399,23 @@
       20%, 60% { transform: translateX(-6px); }
       40%, 80% { transform: translateX(6px); }
     }
+    .letter-key-shake {
+      animation: shakeLetterKey 0.45s ease-in-out !important;
+      background: #FFCDD2 !important;
+      border-color: #E53935 !important;
+      color: #B71C1C !important;
+      box-shadow: 0 0 10px rgba(229, 57, 53, 0.4) !important;
+    }
+    @keyframes shakeLetterKey {
+      0%, 100% { transform: translateX(0); }
+      15%, 45%, 75% { transform: translateX(-7px); }
+      30%, 60%, 90% { transform: translateX(7px); }
+    }
+    @keyframes popSlot {
+      0% { transform: scale(0.85); opacity: 0.7; }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); opacity: 1; }
+    }
     .matching-dot {
       width: 20px;
       height: 20px;
@@ -2445,6 +2462,7 @@
     function getCurriculumModulesForClass(className) {
       if (className === "UKG") {
         return [
+          { key: "ukg_vowels_practice", title: "UKG Phonics: Vowels, Consonants & Semi-Vowels", section: "ukg", tab: "phonics", vowel: "vowels", mode: "learn" },
           { key: "ukg_eng_world_days", title: "UKG English World: Days of the Week", section: "ukg", tab: "english_world", cat: "days", mode: "quiz" },
           { key: "ukg_eng_world_colors", title: "UKG English World: Colors Around Us", section: "ukg", tab: "english_world", cat: "colors", mode: "quiz" },
           { key: "ukg_phonics_4let_a", title: "UKG Phonics: 4-Letter 'A' Words (STAR, CART, HAND)", section: "ukg", tab: "phonics", vowel: "a", mode: "quiz" },
@@ -2456,6 +2474,7 @@
         ];
       } else if (className === "LKG") {
         return [
+          { key: "lkg_vowels_practice", title: "LKG Phonics: Vowels, Consonants & Semi-Vowels", section: "lkg", tab: "phonics", vowel: "vowels", mode: "learn" },
           { key: "lkg_phonics_2letter", title: "LKG Phonics: 2-Letter Words (AT, IN, ON, GO)", section: "lkg", tab: "phonics", vowel: "two", mode: "quiz" },
           { key: "lkg_phonics_cvc_a", title: "LKG Phonics: 3-Letter CVC Short 'a' (CAT, BAT, MAT)", section: "lkg", tab: "phonics", vowel: "a", mode: "quiz" },
           { key: "lkg_evs_animals", title: "LKG EVS: Domestic vs Wild Animals Quiz", section: "lkg", tab: "evs", topic: "animals", mode: "quiz" },
@@ -2466,6 +2485,7 @@
         ];
       } else {
         return [
+          { key: "nursery_vowels_practice", title: "Nursery English: Vowels, Consonants & Semi-Vowels", section: "nursery", tab: "abc", mode: "learn" },
           { key: "nursery_phonics_sounds", title: "Nursery Phonics: Initial Sound Match Quiz", section: "nursery", tab: "phonics", mode: "quiz" },
           { key: "nursery_letters_quiz", title: "Nursery English: Letters A-Z Picture Quiz", section: "nursery", tab: "abc", mode: "quiz_pic_to_let" },
           { key: "nursery_math_counting", title: "Nursery Math: Counting 1-20 Quiz", section: "nursery", tab: "numbers", mode: "quiz" },
@@ -2790,7 +2810,8 @@
       nurseryHindiOrderCurrentIdx: 0,
       nurseryHindiOrderPlaced: [],
       nurseryHindiOrderRound: 0,
-      nurseryAbcSubTab: "match_picture", // match_picture, match_same, match_small, missing_letters, choose_letter, order_az
+      letterPracticeFilled: {},
+      nurseryAbcSubTab: "match_picture", // vowels, consonants, semi_vowels, match_picture, match_same, match_small, missing_letters, choose_letter, order_az
       nurseryAbcMatchSetIndex: 0,
       nurseryAbcMissingRound: 0,
       nurseryAbcMissingFilled: [],
@@ -7704,6 +7725,197 @@ function setNurseryNumSubTab(st) {
     }
 
     /* =========================================================
+       🔤 VOWELS, CONSONANTS & SEMI-VOWELS PRACTICE ENGINE
+       ========================================================= */
+    var DATA_VOWELS = ['A', 'E', 'I', 'O', 'U'];
+    var DATA_SEMI_VOWELS = ['W', 'Y'];
+    var DATA_CONSONANTS = ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'X', 'Z'];
+    var DATA_ALL_AZ_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+    function getLetterCategoryName(letter) {
+      if (DATA_VOWELS.indexOf(letter) !== -1) return "Vowel";
+      if (DATA_SEMI_VOWELS.indexOf(letter) !== -1) return "Semi-Vowel";
+      return "Consonant";
+    }
+
+    function getLetterPracticeStorageKey(category) {
+      return (appState.section || "class") + "_" + category;
+    }
+
+    function getLetterPracticeFilled(category) {
+      if (!appState.letterPracticeFilled) appState.letterPracticeFilled = {};
+      var key = getLetterPracticeStorageKey(category);
+      if (!appState.letterPracticeFilled[key]) appState.letterPracticeFilled[key] = [];
+      return appState.letterPracticeFilled[key];
+    }
+
+    function resetLetterPractice(category) {
+      var key = getLetterPracticeStorageKey(category);
+      if (!appState.letterPracticeFilled) appState.letterPracticeFilled = {};
+      appState.letterPracticeFilled[key] = [];
+      playTone("pop");
+      var catTitle = category === "vowels" ? "Vowels" : (category === "semi_vowels" ? "Semi-Vowels" : "Consonants");
+      speak("Let's practice again! Find the " + catTitle + "!", "en-IN");
+      renderCurrentView();
+    }
+
+    function handleLetterPracticeTap(letter, category) {
+      var targetList = category === "vowels" ? DATA_VOWELS : (category === "semi_vowels" ? DATA_SEMI_VOWELS : DATA_CONSONANTS);
+      var catTitle = category === "vowels" ? "Vowel" : (category === "semi_vowels" ? "Semi-Vowel" : "Consonant");
+      var filled = getLetterPracticeFilled(category);
+
+      // Prevent tapping already placed letter
+      if (filled.indexOf(letter) !== -1) return;
+
+      var isCorrect = (targetList.indexOf(letter) !== -1);
+
+      if (isCorrect) {
+        // Place in next available empty slot (___)
+        filled.push(letter);
+        playTone("pop");
+        speak(letter + " is a " + catTitle + "!", "en-IN");
+
+        var isComplete = (filled.length === targetList.length);
+        if (isComplete) {
+          setTimeout(function() {
+            addStar("🎉 Outstanding! All " + targetList.length + " " + catTitle + "s Found!", "Outstanding! You found all " + targetList.length + " " + catTitle + "s!", "en-IN");
+            playTone("fanfare");
+            triggerConfetti();
+          }, 350);
+        }
+        renderCurrentView();
+      } else {
+        // Incorrect letter: shake red and speak English correction
+        playTone("wrong");
+        var actualCat = getLetterCategoryName(letter);
+        var feedbackMsg = letter + " is a " + actualCat + ", find a " + catTitle + "!";
+        speak(feedbackMsg, "en-IN");
+        showToast(feedbackMsg, "error");
+
+        var btn = document.getElementById("az-key-" + letter);
+        if (btn) {
+          btn.classList.remove("letter-key-shake");
+          void btn.offsetWidth; // Force CSS reflow
+          btn.classList.add("letter-key-shake");
+          setTimeout(function() {
+            if (btn) btn.classList.remove("letter-key-shake");
+          }, 450);
+        }
+      }
+    }
+
+    function renderLetterPracticeView(category) {
+      var targetList = category === "vowels" ? DATA_VOWELS : (category === "semi_vowels" ? DATA_SEMI_VOWELS : DATA_CONSONANTS);
+      var catTitle = category === "vowels" ? "Vowel" : (category === "semi_vowels" ? "Semi-Vowel" : "Consonant");
+      var targetCount = targetList.length;
+      var filled = getLetterPracticeFilled(category);
+      var isComplete = (filled.length === targetCount);
+
+      var themeBg = "#FFEBEE";
+      var themeBorder = "#FFCDD2";
+      var themeColor = "#C62828";
+      var title = "🔴 Find the 5 Vowels";
+      var subTitle = "Tap all 5 Vowels (A, E, I, O, U) from A–Z below";
+      var speechIntro = "Find the 5 Vowels! Tap each Vowel from the A to Z letters below.";
+
+      if (category === "consonants") {
+        themeBg = "#E3F2FD";
+        themeBorder = "#BBDEFB";
+        themeColor = "#1565C0";
+        title = "🔵 Find the 19 Consonants";
+        subTitle = "Tap all 19 Consonants from A–Z below";
+        speechIntro = "Find the 19 Consonants! Tap each Consonant from the A to Z letters below.";
+      } else if (category === "semi_vowels") {
+        themeBg = "#FFFDE7";
+        themeBorder = "#FFF59D";
+        themeColor = "#F57F17";
+        title = "🟡 Find the 2 Semi-Vowels";
+        subTitle = "Tap the 2 Semi-Vowels (W and Y) from A–Z below";
+        speechIntro = "Find the 2 Semi-Vowels! Tap W and Y from the A to Z letters below.";
+      }
+
+      autoSpeak((appState.section || "class") + "_" + category + "_intro", speechIntro, "en-IN");
+
+      var h = "";
+
+      // Top Interactive Guidance Banner
+      h += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + speechIntro + '\', \'en-IN\'); })" style="background: ' + themeBg + '; border: 2.5px solid ' + themeBorder + '; border-radius: 16px; padding: 12px 16px; margin: 0 auto 14px; max-width: 440px; text-align: center; box-shadow: 0 3px 8px rgba(0,0,0,0.04); cursor: pointer;">';
+      h += '  <div style="font-size: 19px; font-weight: 900; color: ' + themeColor + ';">' + title + '</div>';
+      h += '  <div style="font-size: 13px; font-weight: 700; color: #455A64; margin-top: 3px;">' + subTitle + ' 🔊</div>';
+      h += '</div>';
+
+      // Top Empty Slots Section (Dash ___ when empty, bold green letter when filled)
+      if (category === "vowels") {
+        // 5 slots
+        h += '<div class="letter-slots-vowels" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-width: 440px; margin: 0 auto 16px; width: 100%;">';
+        for (var vi = 0; vi < 5; vi++) {
+          var isSlotFilled = (vi < filled.length);
+          var slotChar = isSlotFilled ? filled[vi] : "___";
+          if (isSlotFilled) {
+            h += '<div style="min-height: 54px; font-size: 1.75rem; font-weight: 900; background: #E8F5E9; border: 2.5px solid #2E7D32; color: #1B5E20; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(46,125,50,0.2); animation: popSlot 0.25s ease-out;">' + slotChar + '</div>';
+          } else {
+            h += '<div style="min-height: 54px; font-size: 1.75rem; font-weight: 900; background: #FFFFFF; border: 2.5px dashed #90A4AE; color: #78909C; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);">' + slotChar + '</div>';
+          }
+        }
+        h += '</div>';
+      } else if (category === "consonants") {
+        // 19 slots in a 5-column grid
+        h += '<div class="letter-slots-consonants" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; max-width: 440px; margin: 0 auto 16px; width: 100%;">';
+        for (var ci = 0; ci < 19; ci++) {
+          var isSlotFilled = (ci < filled.length);
+          var slotChar = isSlotFilled ? filled[ci] : "___";
+          if (isSlotFilled) {
+            h += '<div style="min-height: 54px; font-size: 1.75rem; font-weight: 900; background: #E8F5E9; border: 2.5px solid #2E7D32; color: #1B5E20; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(46,125,50,0.2); animation: popSlot 0.25s ease-out;">' + slotChar + '</div>';
+          } else {
+            h += '<div style="min-height: 54px; font-size: 1.75rem; font-weight: 900; background: #FFFFFF; border: 2.5px dashed #90A4AE; color: #78909C; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);">' + slotChar + '</div>';
+          }
+        }
+        h += '</div>';
+      } else if (category === "semi_vowels") {
+        // 2 slots
+        h += '<div class="letter-slots-semivowels" style="display: flex; justify-content: center; gap: 14px; max-width: 240px; margin: 0 auto 16px; width: 100%;">';
+        for (var svi = 0; svi < 2; svi++) {
+          var isSlotFilled = (svi < filled.length);
+          var slotChar = isSlotFilled ? filled[svi] : "___";
+          if (isSlotFilled) {
+            h += '<div style="min-height: 54px; width: 95px; font-size: 1.75rem; font-weight: 900; background: #E8F5E9; border: 2.5px solid #2E7D32; color: #1B5E20; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(46,125,50,0.2); animation: popSlot 0.25s ease-out;">' + slotChar + '</div>';
+          } else {
+            h += '<div style="min-height: 54px; width: 95px; font-size: 1.75rem; font-weight: 900; background: #FFFFFF; border: 2.5px dashed #90A4AE; color: #78909C; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);">' + slotChar + '</div>';
+          }
+        }
+        h += '</div>';
+      }
+
+      // Completion Banner with Stars & Play Again 🔄 Button
+      if (isComplete) {
+        h += '<div class="completion-banner" style="background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%); border: 2.5px solid #4CAF50; border-radius: 18px; padding: 16px 20px; margin: 12px auto 16px; max-width: 440px; text-align: center; box-shadow: 0 6px 18px rgba(76,175,80,0.25); animation: popSlot 0.3s ease-out;">';
+        h += '  <div style="font-size: 34px; margin-bottom: 4px;">🎉 ⭐ 🌟 ⭐ 🎉</div>';
+        h += '  <div style="font-size: 20px; font-weight: 900; color: #1B5E20; margin-bottom: 4px;">Outstanding! All ' + targetCount + ' ' + catTitle + 's Found!</div>';
+        h += '  <div style="font-size: 14px; font-weight: 700; color: #2E7D32; margin-bottom: 12px;">You earned a Star ⭐! Keep shining!</div>';
+        h += '  <button class="nav-btn" onclick="safeAction(function(){ resetLetterPractice(\'' + category + '\'); })" style="background: linear-gradient(135deg, #1E88E5, #1565C0); color: #FFFFFF; font-size: 17px; font-weight: 900; padding: 12px 28px; border-radius: 25px; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(21,101,192,0.35); display: inline-flex; align-items: center; gap: 8px;">Play Again 🔄</button>';
+        h += '</div>';
+      }
+
+      // Bottom A–Z Grid (26 Capital Letters in 5-column grid)
+      h += '<div style="font-size: 13px; font-weight: 800; color: #546E7A; text-align: center; margin: 8px auto 6px; max-width: 440px;">Tap letters below (A to Z):</div>';
+      h += '<div class="bottom-az-keyboard" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; min-height: 54px; font-size: 1.65rem; font-weight: 900; max-width: 440px; margin: 0 auto 24px; width: 100%;">';
+      for (var zi = 0; zi < DATA_ALL_AZ_LETTERS.length; zi++) {
+        var letChar = DATA_ALL_AZ_LETTERS[zi];
+        var isPlaced = (filled.indexOf(letChar) !== -1);
+        var extraStyle = (letChar === "Z") ? " grid-column: 3;" : "";
+
+        if (isPlaced) {
+          h += '<button class="az-grid-key placed" disabled style="min-height: 54px; font-size: 1.65rem; font-weight: 900; background: #C8E6C9; color: #1B5E20; border: 2.5px solid #4CAF50; border-radius: 12px; cursor: default; opacity: 0.9; pointer-events: none; display: flex; align-items: center; justify-content: center;' + extraStyle + '">' + letChar + '</button>';
+        } else {
+          h += '<button id="az-key-' + letChar + '" class="az-grid-key" onclick="safeAction(function(){ handleLetterPracticeTap(\'' + letChar + '\', \'' + category + '\'); })" style="min-height: 54px; font-size: 1.65rem; font-weight: 900; background: #FFFFFF; color: #1565C0; border: 2.5px solid #90CAF9; border-radius: 12px; cursor: pointer; box-shadow: 0 3px 6px rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: center; transition: transform 0.1s ease, background 0.15s ease;' + extraStyle + '">' + letChar + '</button>';
+        }
+      }
+      h += '</div>';
+
+      return h;
+    }
+
+    /* =========================================================
        RENDER SUBTABS
        ========================================================= */
     function renderSubtabs() {
@@ -7937,6 +8149,9 @@ function setNurseryNumSubTab(st) {
         if (filterBar) {
           filterBar.style.display = "flex";
           var nAbcPills = [
+            { key: "vowels", label: "🔴 Vowels (5)" },
+            { key: "consonants", label: "🔵 Consonants (19)" },
+            { key: "semi_vowels", label: "🟡 Semi-Vowels (2)" },
             { key: "match_picture", label: "✏️ Match with Picture" },
             { key: "match_same", label: "🔗 Match Same Letter" },
             { key: "match_small", label: "🔠 Capital to Small" },
@@ -7953,10 +8168,14 @@ function setNurseryNumSubTab(st) {
           filterBar.innerHTML = nahHtml;
         }
 
+        if (appState.nurseryAbcSubTab === "vowels" || appState.nurseryAbcSubTab === "consonants" || appState.nurseryAbcSubTab === "semi_vowels") {
+          html += renderLetterPracticeView(appState.nurseryAbcSubTab);
+        }
+
         // =========================================================================
         // SUB-TAB 1, 2, 3: LINE DRAWING MATCHING BOARDS
         // =========================================================================
-        if (appState.nurseryAbcSubTab === "match_picture" || appState.nurseryAbcSubTab === "match_same" || appState.nurseryAbcSubTab === "match_small") {
+        else if (appState.nurseryAbcSubTab === "match_picture" || appState.nurseryAbcSubTab === "match_same" || appState.nurseryAbcSubTab === "match_small") {
           var setOffset = (appState.nurseryAbcMatchSetIndex * 4) % DATA_AZ.length;
           var leftItems = [
             DATA_AZ[setOffset % DATA_AZ.length],
@@ -9421,6 +9640,9 @@ function setNurseryNumSubTab(st) {
         if (filterBar) {
           filterBar.style.display = "flex";
           var lkgPills = [
+            { key: "vowels", label: "🔴 Vowels (5)" },
+            { key: "consonants", label: "🔵 Consonants (19)" },
+            { key: "semi_vowels", label: "🟡 Semi-Vowels (2)" },
             { key: "two", label: "✌️ 2-Letter (25)" },
             { key: "a", label: "Short 'a' (16)" },
             { key: "e", label: "Short 'e' (14)" },
@@ -9437,13 +9659,16 @@ function setNurseryNumSubTab(st) {
           filterBar.innerHTML = lpFilterHtml;
         }
 
-        html += '<div class="mode-switch">';
-        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Words</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Missing Letter Quiz</button>';
-        html += '</div>';
+        if (appState.lkgPhonicsVowel === "vowels" || appState.lkgPhonicsVowel === "consonants" || appState.lkgPhonicsVowel === "semi_vowels") {
+          html += renderLetterPracticeView(appState.lkgPhonicsVowel);
+        } else {
+          html += '<div class="mode-switch">';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Words</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Missing Letter Quiz</button>';
+          html += '</div>';
 
-        // 2-Letter Words
-        if (appState.lkgPhonicsVowel === "two") {
+          // 2-Letter Words
+          if (appState.lkgPhonicsVowel === "two") {
           if (appState.mode === "learn") {
             autoSpeak("lkg_2let_learn", "2-Letter Sight Words. 25 foundational words. Tap any card to hear sound!", "en-IN");
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'2-Letter Sight Words. Tap any card to hear sound!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any card to hear pronunciation 🔊</div>';
@@ -9568,6 +9793,7 @@ function setNurseryNumSubTab(st) {
             html += '</div>';
             html += renderCompletedPreviewCard();
           }
+        }
         }
       }
 
@@ -10081,12 +10307,15 @@ function setNurseryNumSubTab(st) {
 
       // TAB 1: 📚 English World (14 Categories)
       if (tabKey === "english_world") {
-        if (!appState.ukgEnglishWorldCat || !DATA_UKG_ENGLISH_WORLD[appState.ukgEnglishWorldCat]) {
+        if (!appState.ukgEnglishWorldCat || (!DATA_UKG_ENGLISH_WORLD[appState.ukgEnglishWorldCat] && appState.ukgEnglishWorldCat !== "vowels" && appState.ukgEnglishWorldCat !== "consonants" && appState.ukgEnglishWorldCat !== "semi_vowels")) {
           appState.ukgEnglishWorldCat = "days";
         }
         if (filterBar) {
           filterBar.style.display = "flex";
           var ewCats = [
+            { key: "vowels", label: "🔴 Vowels (5)" },
+            { key: "consonants", label: "🔵 Consonants (19)" },
+            { key: "semi_vowels", label: "🟡 Semi-Vowels (2)" },
             { key: "days", label: "📅 Days of Week (7)" },
             { key: "months", label: "🗓️ Months (12)" },
             { key: "colors", label: "🎨 Colors (10)" },
@@ -10111,12 +10340,15 @@ function setNurseryNumSubTab(st) {
           filterBar.innerHTML = ewFilterHtml;
         }
 
-        html += '<div class="mode-switch">';
-        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Cards</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 English Quiz</button>';
-        html += '</div>';
+        if (appState.ukgEnglishWorldCat === "vowels" || appState.ukgEnglishWorldCat === "consonants" || appState.ukgEnglishWorldCat === "semi_vowels") {
+          html += renderLetterPracticeView(appState.ukgEnglishWorldCat);
+        } else {
+          html += '<div class="mode-switch">';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Cards</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 English Quiz</button>';
+          html += '</div>';
 
-        var ewCatObj = DATA_UKG_ENGLISH_WORLD[appState.ukgEnglishWorldCat] || DATA_UKG_ENGLISH_WORLD.days;
+          var ewCatObj = DATA_UKG_ENGLISH_WORLD[appState.ukgEnglishWorldCat] || DATA_UKG_ENGLISH_WORLD.days;
         var ewList = ewCatObj.items || [];
 
         if (appState.mode === "learn") {
@@ -10167,6 +10399,7 @@ function setNurseryNumSubTab(st) {
           html += '</div>';
           html += renderCompletedPreviewCard();
         }
+        }
       }
 
       // TAB 2: 🔤 Phonics & 4-Letter Words
@@ -10174,6 +10407,9 @@ function setNurseryNumSubTab(st) {
         if (filterBar) {
           filterBar.style.display = "flex";
           var uPills = [
+            { key: "vowels", label: "🔴 Vowels (5)" },
+            { key: "consonants", label: "🔵 Consonants (19)" },
+            { key: "semi_vowels", label: "🟡 Semi-Vowels (2)" },
             { key: "two", label: "✌️ 2-Letter (25)" },
             { key: "three", label: "🔺 3-Letter (72)" },
             { key: "a", label: "Short 'a' 4-Let" },
@@ -10191,13 +10427,16 @@ function setNurseryNumSubTab(st) {
           filterBar.innerHTML = uFilterHtml;
         }
 
-        html += '<div class="mode-switch">';
-        html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Words</button>';
-        html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Missing Letter Quiz</button>';
-        html += '</div>';
+        if (appState.ukgPhonicsVowel === "vowels" || appState.ukgPhonicsVowel === "consonants" || appState.ukgPhonicsVowel === "semi_vowels") {
+          html += renderLetterPracticeView(appState.ukgPhonicsVowel);
+        } else {
+          html += '<div class="mode-switch">';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Words</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Missing Letter Quiz</button>';
+          html += '</div>';
 
-        // 2-Letter Words in UKG
-        if (appState.ukgPhonicsVowel === "two") {
+          // 2-Letter Words in UKG
+          if (appState.ukgPhonicsVowel === "two") {
           if (appState.mode === "learn") {
             autoSpeak("ukg_2let_learn", "2-Letter Sight Words. 25 foundational words. Tap any card!", "en-IN");
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'2-Letter Sight Words. Tap any card!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap card to hear sound 🔊</div>';
@@ -10389,6 +10628,7 @@ function setNurseryNumSubTab(st) {
             html += '</div>';
             html += renderCompletedPreviewCard();
           }
+        }
         }
       }
 
