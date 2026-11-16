@@ -130,6 +130,105 @@
       transform: scale(0.92);
     }
 
+    /* Teacher Portal & Leaderboard Styles */
+    .teacher-badge-btn {
+      background: #FFF3E0 !important;
+      border: 2px solid #FF9800 !important;
+      color: #E65100 !important;
+      padding: 5px 10px !important;
+      border-radius: 14px !important;
+      font-weight: 900 !important;
+      font-size: 13px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #F57C00 !important;
+    }
+    .teacher-badge-btn:active {
+      transform: translateY(2px) !important;
+      box-shadow: 0 1px 0 #F57C00 !important;
+    }
+    .teacher-nav-tabs {
+      display: flex;
+      gap: 6px;
+      background: #FFFFFF;
+      padding: 6px;
+      border-radius: 16px;
+      border: 2px solid #E0E0E0;
+      margin-bottom: 12px;
+    }
+    .teacher-tab-btn {
+      flex: 1;
+      padding: 10px 4px;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 800;
+      color: #546E7A;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+    }
+    .teacher-tab-btn.active {
+      background: #1976D2;
+      color: #FFFFFF;
+      box-shadow: 0 3px 8px rgba(25, 118, 210, 0.3);
+    }
+    .leaderboard-card {
+      background: #FFFFFF;
+      border: 2.5px solid #FFD54F;
+      border-radius: 20px;
+      padding: 16px;
+      margin-top: 14px;
+      box-shadow: 0 4px 14px rgba(255, 179, 0, 0.12);
+    }
+    .top5-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: #F8F9FA;
+      border: 1px solid #ECEFF1;
+    }
+    .top5-item.my-rank-highlight {
+      background: #E3F2FD;
+      border: 2px solid #2196F3;
+    }
+    .my-live-rank-box {
+      margin-top: 12px;
+      background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+      border: 2px solid #2196F3;
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .no-homework-card {
+      background: #FFF8E1;
+      border: 2px dashed #FFB300;
+      border-radius: 20px;
+      padding: 24px 16px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .preview-mode-banner {
+      background: #E8F5E9;
+      border: 2px solid #4CAF50;
+      border-radius: 14px;
+      padding: 10px 14px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     /* High Performance Touch & Smooth Scroll Engine */
     button, .subtab-chip, .filter-pill, .mode-btn, .opt-btn, .letter-bubble,
     .interactive-card, .flashcard, .item-chip-card, .btn-next-question,
@@ -1756,6 +1855,9 @@
         </div>
       </div>
       <div class="header-actions">
+        <button id="btn-teacher-portal" class="nav-icon-btn teacher-badge-btn" onclick="safeAction(openTeacherLoginModal)" title="Teacher Portal">
+          <span class="safe-emoji">👩‍🏫</span> <span class="teacher-btn-label">Teacher</span>
+        </button>
         <div class="star-counter" id="star-badge" onclick="safeAction(function() { speak(appState.stars + ' Stars! Great job!', 'en-IN'); })" title="Earned Stars">
           <span class="safe-emoji">⭐</span> <span id="star-count">0</span>
         </div>
@@ -2070,23 +2172,115 @@
 
     // Default student database roster for instant offline verification & demo testing
     var DEFAULT_STUDENTS_ROSTER = [
-      { student_id: "STU-101", admission_no: "ADM-101", student_name: "Aarav Sharma", class_name: "Nursery", mobile: "9829011111", total_stars: 15, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] },
-      { student_id: "STU-102", admission_no: "ADM-102", student_name: "Priya Patel", class_name: "LKG", mobile: "9829022222", total_stars: 28, tasks_completed: 2, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
-      { student_id: "STU-103", admission_no: "ADM-103", student_name: "Aryan Verma", class_name: "UKG", mobile: "9829033333", total_stars: 48, tasks_completed: 4, badges: ["Welcome Explorer 🌟", "Super Star 🏅", "Math Champion 🏆"] },
-      { student_id: "STU-104", admission_no: "ADM-104", student_name: "Ananya Joshi", class_name: "UKG", mobile: "9829044444", total_stars: 36, tasks_completed: 3, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
-      { student_id: "STU-105", admission_no: "ADM-105", student_name: "Kabir Singh", class_name: "LKG", mobile: "9829055555", total_stars: 20, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] }
+      { student_id: "STU-101", admission_no: "ADM-101", student_name: "Aarav Sharma", class_name: "Nursery", mobile: "9829011111", total_points: 15.0, total_stars: 15, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] },
+      { student_id: "STU-102", admission_no: "ADM-102", student_name: "Priya Patel", class_name: "LKG", mobile: "9829022222", total_points: 28.5, total_stars: 28, tasks_completed: 2, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
+      { student_id: "STU-103", admission_no: "ADM-103", student_name: "Aryan Verma", class_name: "UKG", mobile: "9829033333", total_points: 48.0, total_stars: 48, tasks_completed: 4, badges: ["Welcome Explorer 🌟", "Super Star 🏅", "Math Champion 🏆"] },
+      { student_id: "STU-104", admission_no: "ADM-104", student_name: "Ananya Joshi", class_name: "UKG", mobile: "9829044444", total_points: 36.5, total_stars: 36, tasks_completed: 3, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
+      { student_id: "STU-105", admission_no: "ADM-105", student_name: "Kabir Singh", class_name: "LKG", mobile: "9829055555", total_points: 20.0, total_stars: 20, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] },
+      { student_id: "STU-106", admission_no: "ADM-106", student_name: "Rohan Gehlot", class_name: "UKG", mobile: "9829066666", total_points: 29.2, total_stars: 29, tasks_completed: 2, badges: ["Welcome Explorer 🌟"] },
+      { student_id: "STU-107", admission_no: "ADM-107", student_name: "Diya Rathore", class_name: "Nursery", mobile: "9829077777", total_points: 12.0, total_stars: 12, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] }
+    ];
+
+    // Default faculty database roster for offline verification & demo testing
+    var DEFAULT_TEACHERS_ROSTER = [
+      { teacher_id: "TCH-01", teacher_name: "Sunita Sharma", mobile: "9829011111", pin: "1234", class_name: "Nursery" },
+      { teacher_id: "TCH-02", teacher_name: "Pooja Mehta", mobile: "9829022222", pin: "1234", class_name: "LKG" },
+      { teacher_id: "TCH-03", teacher_name: "Kavita Dave", mobile: "9829033333", pin: "1234", class_name: "UKG" }
     ];
 
     // Current Session State
     var appSession = {
       type: null, // 'student', 'teacher', or null (welcome)
-      student: null, // { student_id, admission_no, student_name, class_name, total_stars, tasks_completed, badges, class_rank }
+      student: null, // { student_id, admission_no, student_name, class_name, total_points, total_stars, tasks_completed, badges, class_rank }
       teacherClass: "UKG",
+      teacherTab: "send", // "send", "report", "ranking"
+      isPreviewMode: false,
       activeHomeworkId: null,
-      homeworkAnsweredCount: 0
+      homeworkAnsweredCount: 0,
+      homeworkSession: null
+    };
+
+    // =========================================================================
+    // MOBILE NOTIFICATION BRIDGE (Capacitor LocalNotifications + Web Notification)
+    // =========================================================================
+    var NotificationBridge = {
+      hasPermission: false,
+      async init() {
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
+          try {
+            var perm = await window.Capacitor.Plugins.LocalNotifications.requestPermissions();
+            if (perm && (perm.display === "granted" || perm.receive === "granted")) {
+              this.hasPermission = true;
+            }
+          } catch (e) {
+            console.log("LocalNotifications permission check:", e);
+          }
+        } else if ("Notification" in window) {
+          if (Notification.permission === "granted") {
+            this.hasPermission = true;
+          } else if (Notification.permission !== "denied") {
+            try {
+              var p = await Notification.requestPermission();
+              if (p === "granted") this.hasPermission = true;
+            } catch (e) {}
+          }
+        }
+      },
+      async scheduleHomeworkReminder(studentName, subject, dueTimeStr) {
+        var sName = studentName || "Student";
+        var sSub = subject || "Today's Task";
+        var sDue = dueTimeStr || "6:00 PM";
+        var title = "📚 Homework Reminder: " + sSub;
+        var body = sName + ", your " + sSub + " homework is pending! Complete it on time to keep your Rank up! 🏆";
+
+        // 1. Capacitor Native Android Local Notification
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
+          try {
+            await window.Capacitor.Plugins.LocalNotifications.schedule({
+              notifications: [
+                {
+                  id: 101,
+                  title: title,
+                  body: body,
+                  schedule: { at: new Date(Date.now() + 4000) },
+                  sound: "beep.wav",
+                  smallIcon: "ic_launcher",
+                  iconColor: "#FF9800"
+                }
+              ]
+            });
+            console.log("Scheduled Capacitor Local Notification successfully");
+            return;
+          } catch (err) {
+            console.log("Capacitor notification fallback:", err);
+          }
+        }
+
+        // 2. Web Notification API fallback
+        if ("Notification" in window && Notification.permission === "granted") {
+          try {
+            new Notification(title, {
+              body: body,
+              icon: "logo.jpeg",
+              badge: "logo.jpeg"
+            });
+          } catch (err) {}
+        }
+      },
+      async clearHomeworkReminder() {
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
+          try {
+            await window.Capacitor.Plugins.LocalNotifications.cancel({
+              notifications: [{ id: 101 }]
+            });
+            console.log("Cleared Capacitor Local Notification");
+          } catch (err) {}
+        }
+      }
     };
 
     // 48-Hour Auto-Cleanup Runner (Runs automatically once daily in background)
+    // NOTE: NEVER deletes, resets, or reduces students.total_points or rank!
     async function runDaily48HourCleanup() {
       var lastCleanup = localStorage.getItem("taa_last_48h_cleanup");
       var now = Date.now();
@@ -2128,7 +2322,7 @@
         try {
           appSession.type = "student";
           appSession.student = JSON.parse(studentSession);
-          appState.stars = appSession.student.total_stars || 0;
+          appState.stars = Math.floor(appSession.student.total_points || appSession.student.total_stars || 0);
           document.getElementById("star-count").textContent = appState.stars;
           return "student";
         } catch (e) {
@@ -2142,19 +2336,19 @@
       return null;
     }
 
-    // Render Student Pass Top Banner
+    // Render Student Pass Top Banner with Personal Rank
     function renderHeaderStatus() {
       var banner = document.getElementById("student-pass-banner");
       if (!banner) return;
       if (appSession.type === "student" && appSession.student) {
         var s = appSession.student;
-        var rank = calculateStudentRank(s.student_id, s.class_name);
+        var rankInfo = getStudentRankAndTotal(s.student_id, s.class_name);
         banner.style.display = "flex";
-        banner.innerHTML = '<div><span class="pass-badge">Active Free Student Pass ✅</span> <strong>' + escapeHtml(s.student_name) + '</strong> (' + s.class_name + ') • 🏆 Rank #' + rank + '</div>' +
+        banner.innerHTML = '<div><span class="pass-badge">Student Pass ✅</span> <strong>' + escapeHtml(s.student_name) + '</strong> (' + s.class_name + ') • 🏆 <strong>Rank #' + rankInfo.rank + ' / ' + rankInfo.total + '</strong> (⭐ ' + (s.total_points || 0) + ' Pts)</div>' +
           '<button class="switch-btn" onclick="safeAction(showSwitchUserPrompt)">Switch 👤</button>';
       } else if (appSession.type === "teacher") {
         banner.style.display = "flex";
-        banner.innerHTML = '<div><span class="pass-badge" style="background:#FFE082; color:#E65100;">👩‍🏫 Class Teacher Panel</span> Managing: <strong>' + appSession.teacherClass + '</strong></div>' +
+        banner.innerHTML = '<div><span class="pass-badge" style="background:#FFE082; color:#E65100;">👩‍🏫 Faculty Panel</span> Active Class: <strong>' + appSession.teacherClass + '</strong></div>' +
           '<button class="switch-btn" onclick="safeAction(showSwitchUserPrompt)">Switch 👤</button>';
       } else {
         banner.style.display = "none";
@@ -2169,6 +2363,7 @@
         localStorage.removeItem("taa_kids_teacher_session");
         appSession.type = null;
         appSession.student = null;
+        appSession.isPreviewMode = false;
         appState.section = "welcome";
         renderHeaderStatus();
         renderWelcomeView();
@@ -2197,13 +2392,11 @@
       html += '  <img src="logo.jpeg" alt="Academy Logo" class="hero-logo" onerror="this.onerror=null; this.src=\'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23FF9800\'/><text x=\'50\' y=\'62\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-weight=\'bold\'>A</text></svg>\';" />';
       html += '  <div class="tagline">The Abacus Academy, Jodhpur</div>';
       html += '  <h1>Abacus Kids Academy</h1>';
-      html += '  <div style="font-size: 13px; color: #5D4037; font-weight: 700;">Smart English Medium Learning • Nursery, LKG & UKG</div>';
+      html += '  <div style="font-size: 13px; color: #5D4037; font-weight: 700;">Smart English Medium Learning • Nursery, LKG &amp; UKG</div>';
       html += '</div>';
 
       // Subscription Plan Value Cards (₹1,999 vs FREE)
       html += '<div class="sub-comparison-grid">';
-
-      // Card 1: FREE for School Students (Highlighted)
       html += '  <div class="sub-card sub-card-free" onclick="safeAction(function(){ speak(\'Free Student Pass for enrolled students of The Abacus Academy Jodhpur! Annual subscription 1999 rupees is 100 percent free!\', \'en-IN\'); })">';
       html += '    <div style="font-size: 11px; font-weight: 900; color: #2E7D32; text-transform: uppercase;">School Student Pass</div>';
       html += '    <div class="sub-price-row">';
@@ -2215,7 +2408,6 @@
       html += '    <div style="font-size: 11px; color: #388E3C; font-weight: 700; margin-top: 4px;">✅ 100% Free Access • Homework Tracking • Live Class Rank</div>';
       html += '  </div>';
 
-      // Card 2: External User Plan (Locked)
       html += '  <div class="sub-card sub-card-locked" onclick="safeAction(function(){ speak(\'External User Plan is 1999 rupees per year. Please contact School Admin for activation.\', \'en-IN\'); })">';
       html += '    <div style="display: flex; justify-content: space-between; align-items: center;">';
       html += '      <span style="font-size: 12px; font-weight: 900; color: #455A64;">🔒 External User Plan</span>';
@@ -2227,8 +2419,7 @@
       html += '    </div>';
       html += '    <div style="font-size: 11px; color: #546E7A; font-weight: 600;">Contact School Admin at Jodhpur for new admission and activation.</div>';
       html += '  </div>';
-
-      html += '</div>'; // End sub-comparison-grid
+      html += '</div>';
 
       // Student Verification & Login Box
       html += '<div class="login-box">';
@@ -2236,7 +2427,7 @@
       html += '  <div style="font-size: 12px; color: #607D8B; font-weight: 600;">Enter your Admission No. or Registered Mobile Number:</div>';
       html += '  <input type="text" id="student-login-input" class="input-field" placeholder="e.g. ADM-103 or 9829033333" autocomplete="off" />';
       html += '  <button class="btn-action-primary" onclick="safeAction(handleStudentLoginSubmit)">';
-      html += '    Verify Student & Unlock FREE Pass 🔓';
+      html += '    Verify Student &amp; Unlock FREE Pass 🔓';
       html += '  </button>';
       html += '  <div style="margin-top: 10px; font-size: 11px; color: #78909C; font-weight: 700;">Demo Pass Quick-Fill:</div>';
       html += '  <div class="quick-chips">';
@@ -2247,9 +2438,9 @@
       html += '</div>';
 
       // Teacher Access Toggle
-      html += '<div style="text-align: center; margin-top: 6px;">';
-      html += '  <button style="background: none; border: none; font-size: 12px; font-weight: 800; color: #FF5252; cursor: pointer; text-decoration: underline;" onclick="safeAction(openTeacherLoginPrompt)">';
-      html += '    👩‍🏫 Class Teacher Login (Homework & Live Tracking)';
+      html += '<div style="text-align: center; margin-top: 8px;">';
+      html += '  <button style="background: none; border: none; font-size: 13px; font-weight: 900; color: #E65100; cursor: pointer; text-decoration: underline;" onclick="safeAction(openTeacherLoginModal)">';
+      html += '    👩‍🏫 Class Teacher Portal Login (Send Tasks &amp; Rankings)';
       html += '  </button>';
       html += '</div>';
 
@@ -2302,12 +2493,12 @@
       });
 
       if (!found) {
-        // Create an active student record for new valid admission
         found = {
           student_id: "STU-" + Math.floor(100 + Math.random() * 900),
           admission_no: id.startsWith("ADM-") ? id : ("ADM-" + id),
           student_name: "School Student " + id,
           class_name: "UKG",
+          total_points: 10.0,
           total_stars: 10,
           tasks_completed: 1,
           badges: ["Welcome Explorer 🌟"]
@@ -2319,16 +2510,18 @@
 
     function activateStudentSession(student) {
       appSession.type = "student";
+      appSession.isPreviewMode = false;
       appSession.student = {
         student_id: student.student_id,
         admission_no: student.admission_no,
         student_name: student.student_name,
         class_name: student.class_name || "UKG",
-        total_stars: student.total_stars || 0,
+        total_points: parseFloat(student.total_points || student.total_stars || 10.0),
+        total_stars: Math.floor(student.total_points || student.total_stars || 10),
         tasks_completed: student.tasks_completed || 0,
         badges: student.badges || ["Welcome Explorer 🌟"]
       };
-      appState.stars = appSession.student.total_stars;
+      appState.stars = Math.floor(appSession.student.total_points);
       document.getElementById("star-count").textContent = appState.stars;
       localStorage.setItem("taa_kids_student_session", JSON.stringify(appSession.student));
 
@@ -2337,26 +2530,125 @@
       showToast("Active Free Student Pass ✅ Unlocked!", "success");
       speak("Welcome " + appSession.student.student_name + "! Your Active Student Pass is verified! Annual subscription fee is waived 100 percent free!", "en-IN");
 
+      // Check and schedule pending homework notification
+      checkAndScheduleHomeworkReminder();
+
       setTimeout(function() {
         goHome();
       }, 1000);
     }
 
-    // Teacher Login Prompt
-    function openTeacherLoginPrompt() {
-      var pin = prompt("Enter Class Teacher PIN (Default: 1234):", "");
-      if (pin === "1234" || pin === "TAA2026" || pin === "admin") {
-        appSession.type = "teacher";
-        appSession.teacherClass = "UKG";
-        localStorage.setItem("taa_kids_teacher_session", "UKG");
-        playTone("success");
-        showToast("Class Teacher Login Successful! 👩‍🏫", "success");
-        speak("Welcome Teacher! Opening Class Teacher Dashboard.", "en-IN");
-        openTeacherPanel();
-      } else if (pin !== null) {
-        showToast("Incorrect Teacher PIN. Use 1234.", "wrong");
-        speak("Incorrect Teacher PIN. Please try again.", "en-IN");
+    // =========================================================================
+    // TEACHER LOGIN MODAL & DASHBOARD (3 Dedicated Tabs)
+    // =========================================================================
+    function openTeacherLoginModal() {
+      playTone("pop");
+      var existing = document.getElementById("teacher-login-modal");
+      if (existing) existing.remove();
+
+      var modal = document.createElement("div");
+      modal.id = "teacher-login-modal";
+      modal.className = "modal-overlay";
+      modal.innerHTML = '<div class="modal-card" style="max-width: 380px;">' +
+        '  <div style="font-size: 44px; margin-bottom: 6px;">👩‍🏫</div>' +
+        '  <h2 style="font-size: 20px; font-weight: 900; color: #D84315; margin-bottom: 4px;">Faculty &amp; Teacher Portal</h2>' +
+        '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 14px;">The Abacus Academy, Jodhpur</div>' +
+        '  <div style="text-align: left; margin-bottom: 8px;">' +
+        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Teacher ID or Mobile No:</label>' +
+        '    <input type="text" id="teacher-id-input" class="input-field" placeholder="e.g. TCH-03 or 9829033333" style="margin-top: 4px;" />' +
+        '  </div>' +
+        '  <div style="text-align: left; margin-bottom: 12px;">' +
+        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">4-Digit Security PIN (Default: 1234):</label>' +
+        '    <input type="password" id="teacher-pin-input" class="input-field" placeholder="••••" maxlength="6" style="margin-top: 4px; font-size: 18px; letter-spacing: 4px; text-align: center;" />' +
+        '  </div>' +
+        '  <button class="btn-action-primary" onclick="safeAction(submitTeacherModalLogin)">' +
+        '    Login to Teacher Dashboard 🚀' +
+        '  </button>' +
+        '  <div style="margin-top: 10px; font-size: 11px; color: #78909C; font-weight: 700;">Demo Faculty Quick-Fill:</div>' +
+        '  <div class="quick-chips" style="margin-top: 4px;">' +
+        '    <span class="quick-chip" onclick="quickFillTeacher(\'TCH-03\', \'1234\')">TCH-03 (UKG)</span>' +
+        '    <span class="quick-chip" onclick="quickFillTeacher(\'TCH-02\', \'1234\')">TCH-02 (LKG)</span>' +
+        '    <span class="quick-chip" onclick="quickFillTeacher(\'TCH-01\', \'1234\')">TCH-01 (Nursery)</span>' +
+        '  </div>' +
+        '  <button style="margin-top: 14px; background: none; border: none; font-size: 12px; font-weight: 800; color: #78909C; cursor: pointer;" onclick="closeTeacherLoginModal()">' +
+        '    Cancel &amp; Close ✕' +
+        '  </button>' +
+        '</div>';
+      document.body.appendChild(modal);
+      speak("Enter your Teacher ID and 4-digit PIN to access the Teacher Portal.", "en-IN");
+    }
+
+    function closeTeacherLoginModal() {
+      var modal = document.getElementById("teacher-login-modal");
+      if (modal) modal.remove();
+    }
+
+    function quickFillTeacher(id, pin) {
+      var idInput = document.getElementById("teacher-id-input");
+      var pinInput = document.getElementById("teacher-pin-input");
+      if (idInput) idInput.value = id;
+      if (pinInput) pinInput.value = pin;
+      playTone("pop");
+    }
+
+    async function submitTeacherModalLogin() {
+      var idInput = document.getElementById("teacher-id-input");
+      var pinInput = document.getElementById("teacher-pin-input");
+      var tid = idInput ? idInput.value.trim() : "";
+      var pin = pinInput ? pinInput.value.trim() : "";
+
+      if (!pin) {
+        showToast("Please enter 4-digit Teacher PIN", "wrong");
+        speak("Please enter your PIN.", "en-IN");
+        return;
       }
+
+      showToast("Verifying Teacher Credentials...", "success");
+
+      // 1. Try Supabase RPC
+      try {
+        var res = await supabaseRest("/rpc/kids_verify_teacher", {
+          method: "POST",
+          body: { p_identifier: tid || "TCH-03", p_pin: pin }
+        });
+        if (res && res.success && res.teacher) {
+          activateTeacherSession(res.teacher);
+          closeTeacherLoginModal();
+          return;
+        }
+      } catch (err) {
+        console.log("Teacher Supabase RPC note:", err.message || err);
+      }
+
+      // 2. Offline / local fallback check
+      if (pin === "1234" || pin === "TAA2026" || pin === "admin") {
+        var cleanTid = tid.toUpperCase();
+        var foundTeacher = DEFAULT_TEACHERS_ROSTER.find(function(t) {
+          return t.teacher_id.toUpperCase() === cleanTid || t.mobile === tid;
+        });
+        var assignedClass = foundTeacher ? foundTeacher.class_name : (cleanTid.includes("NUR") ? "Nursery" : (cleanTid.includes("LKG") ? "LKG" : "UKG"));
+        activateTeacherSession({
+          teacher_id: tid || "TCH-03",
+          teacher_name: foundTeacher ? foundTeacher.teacher_name : "Class Teacher",
+          class_name: assignedClass
+        });
+        closeTeacherLoginModal();
+      } else {
+        showToast("Incorrect Teacher PIN! Use default 1234.", "wrong");
+        speak("Incorrect PIN. Please try again with 1234.", "en-IN");
+      }
+    }
+
+    function activateTeacherSession(teacher) {
+      appSession.type = "teacher";
+      appSession.teacherClass = teacher.class_name || "UKG";
+      appSession.teacherTab = "send";
+      appSession.isPreviewMode = false;
+      localStorage.setItem("taa_kids_teacher_session", appSession.teacherClass);
+      playTone("fanfare");
+      showToast("Teacher Login Successful! 👩‍🏫", "success");
+      speak("Welcome Teacher! Opening your dashboard for " + appSession.teacherClass + " class.", "en-IN");
+      openTeacherPanel();
     }
 
     function openTeacherPanel() {
@@ -2368,17 +2660,42 @@
       renderTeacherPanelView();
     }
 
+    function enterTeacherPreview() {
+      appSession.isPreviewMode = true;
+      playTone("pop");
+      showToast("Preview Mode: All Classes & Modules Unlocked 👁️", "success");
+      speak("Student Preview Mode. All classes and modules are unlocked for inspection.", "en-IN");
+      goHome();
+    }
+
+    function exitTeacherPreview() {
+      appSession.isPreviewMode = false;
+      playTone("pop");
+      openTeacherPanel();
+    }
+
+    function switchTeacherDashboardTab(tab) {
+      appSession.teacherTab = tab;
+      playTone("pop");
+      renderTeacherPanelView();
+    }
+
     /* =========================================================
-       CLASS TEACHER PANEL (Daily Homework & Live 2-Day Tracking)
+       CLASS TEACHER PANEL (3 Tabs: Send, Report, Ranking)
        ========================================================= */
     function renderTeacherPanelView() {
       var view = document.getElementById("main-view");
       var html = '<div class="teacher-panel-wrap">';
 
-      // Header row
-      html += '<div style="display: flex; justify-content: space-between; align-items: center;">';
-      html += '  <h2 style="font-size: 19px; font-weight: 900; color: #D84315;">👩‍🏫 Class Teacher Panel</h2>';
-      html += '  <button class="nav-icon-btn" onclick="safeAction(goHome)">Student View 🎒</button>';
+      // Header row with Class switch and Preview mode toggle
+      html += '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
+      html += '  <h2 style="font-size: 19px; font-weight: 900; color: #D84315; margin: 0;">👩‍🏫 Class Teacher Portal</h2>';
+      html += '  <div style="display: flex; gap: 8px;">';
+      html += '    <button class="nav-icon-btn" style="background: #2E7D32; color: #FFF; font-size: 11px; padding: 6px 10px; font-weight: 800; border-radius: 10px;" onclick="safeAction(enterTeacherPreview)">';
+      html += '      👁️ Preview All Classes';
+      html += '    </button>';
+      html += '    <button class="nav-icon-btn" style="font-size: 11px; padding: 6px 10px;" onclick="safeAction(goHome)">Home 🏠</button>';
+      html += '  </div>';
       html += '</div>';
 
       // Class Switcher (Nursery, LKG, UKG)
@@ -2389,70 +2706,30 @@
       });
       html += '</div>';
 
-      // 1. Assign Today's Homework Card
-      var currentHw = getTodayActiveHomework(appSession.teacherClass);
-      html += '<div class="teacher-card">';
-      html += '  <h3 style="font-size: 16px; font-weight: 900; color: #E65100; margin-bottom: 8px;">📤 Assign Today\'s Homework (Active 48 Hours)</h3>';
-      html += '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 10px;">Select curriculum quiz module to assign for ' + appSession.teacherClass + ':</div>';
+      // 3 Main Navigation Tabs
+      var curTab = appSession.teacherTab || "send";
+      html += '<div class="teacher-nav-tabs">';
+      html += '  <button class="teacher-tab-btn ' + (curTab === "send" ? "active" : "") + '" onclick="safeAction(function(){ switchTeacherDashboardTab(\'send\'); })">📤 Send Homework</button>';
+      html += '  <button class="teacher-tab-btn ' + (curTab === "report" ? "active" : "") + '" onclick="safeAction(function(){ switchTeacherDashboardTab(\'report\'); })">📊 Completion Report</button>';
+      html += '  <button class="teacher-tab-btn ' + (curTab === "ranking" ? "active" : "") + '" onclick="safeAction(function(){ switchTeacherDashboardTab(\'ranking\'); })">🏆 Class Ranking</button>';
+      html += '</div>';
 
-      html += '  <select id="teacher-hw-select" class="input-field" style="margin-top: 0;">';
-      var modules = getCurriculumModulesForClass(appSession.teacherClass);
-      modules.forEach(function(m) {
-        html += '<option value="' + m.key + '">' + escapeHtml(m.title) + '</option>';
-      });
-      html += '  </select>';
-
-      html += '  <div style="display: flex; gap: 10px; align-items: center; margin-top: 6px;">';
-      html += '    <div style="font-size: 12px; font-weight: 800; color: #37474F;">Target Questions:</div>';
-      html += '    <input type="number" id="teacher-hw-target" value="10" min="5" max="25" style="width: 70px; padding: 6px 10px; border: 2px solid #CFD8DC; border-radius: 10px; font-weight: 900; text-align: center;" />';
-      html += '  </div>';
-
-      html += '  <button class="btn-action-primary" style="margin-top: 12px;" onclick="safeAction(handleAssignHomeworkSubmit)">';
-      html += '    Assign to ' + appSession.teacherClass + ' Class (48h Live) 🚀';
-      html += '  </button>';
-
-      if (currentHw) {
-        html += '<div style="margin-top: 12px; padding: 10px; background: #FFF8E1; border: 1px solid #FFE082; border-radius: 12px; font-size: 12px; color: #E65100; font-weight: 700;">';
-        html += '  Currently Active: <strong>' + escapeHtml(currentHw.title) + '</strong> (' + currentHw.target_questions + ' Qs) • Assigned: ' + timeAgo(currentHw.created_at);
-        html += '</div>';
+      // TAB 1: 📤 SEND HOMEWORK
+      if (curTab === "send") {
+        html += renderTeacherSendHomeworkTab();
       }
-      html += '</div>';
+      // TAB 2: 📊 COMPLETION REPORT
+      else if (curTab === "report") {
+        html += renderTeacherCompletionReportTab();
+      }
+      // TAB 3: 🏆 CLASS RANKING
+      else if (curTab === "ranking") {
+        html += renderTeacherClassRankingTab();
+      }
 
-      // 2. Live 2-Day Student Tracking & Roster
-      var roster = getRosterForClass(appSession.teacherClass);
-      var completedCount = roster.filter(function(r) { return r.status === "completed"; }).length;
-      var pendingCount = roster.length - completedCount;
-
-      html += '<div class="teacher-card">';
-      html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">';
-      html += '    <h3 style="font-size: 16px; font-weight: 900; color: #2E7D32;">📋 Live 2-Day Student Tracking</h3>';
-      html += '    <div style="font-size: 11px; font-weight: 800;">';
-      html += '      <span style="color: #2E7D32;">Done: ' + completedCount + ' ✅</span> | ';
-      html += '      <span style="color: #E65100;">Pending: ' + pendingCount + ' ⏳</span>';
-      html += '    </div>';
-      html += '  </div>';
-
-      roster.forEach(function(stu) {
-        var isDone = stu.status === "completed";
-        var badgeHtml = isDone
-          ? '<span class="hw-status-badge hw-status-completed">Completed ✅</span>'
-          : '<span class="hw-status-badge hw-status-pending">Pending ⏳</span>';
-
-        html += '<div class="roster-item">';
-        html += '  <div>';
-        html += '    <div style="font-weight: 900; font-size: 13px; color: #263238;">' + escapeHtml(stu.student_name) + ' (' + stu.admission_no + ')</div>';
-        html += '    <div style="font-size: 11px; color: #78909C; font-weight: 700; margin-top: 2px;">⭐ ' + stu.total_stars + ' Permanent Stars • ' + stu.badges.join(', ') + '</div>';
-        html += '  </div>';
-        html += '  <div>' + badgeHtml + '</div>';
-        html += '</div>';
-      });
-      html += '</div>';
-
-      // 3. Storage Zero-Load & 48-Hour Cleanup Card
-      html += '<div class="cleanup-badge" style="justify-content: space-between;">';
-      html += '  <div>';
-      html += '    <strong>Zero-Load Storage:</strong> 48-hour auto-purge active for submissions & homework.';
-      html += '  </div>';
+      // Storage & 48-Hour Cleanup Status
+      html += '<div class="cleanup-badge" style="justify-content: space-between; margin-top: 12px;">';
+      html += '  <div><strong>Zero-Load Engine:</strong> 48h auto-purge clears logs without affecting permanent student points.</div>';
       html += '  <button class="nav-icon-btn" style="padding: 4px 8px; font-size: 11px;" onclick="safeAction(triggerManualCleanup)">Clean Now 🧹</button>';
       html += '</div>';
 
@@ -2471,68 +2748,369 @@
     function triggerManualCleanup() {
       runDaily48HourCleanup();
       showToast("48-Hour auto-cleanup executed! Storage clean.", "success");
-      speak("Storage cleanup complete. All data older than 48 hours cleared.", "en-IN");
+      speak("Storage cleanup complete. Transient logs cleared.", "en-IN");
       renderTeacherPanelView();
     }
 
-    function getCurriculumModulesForClass(className) {
-      if (className === "UKG") {
+    // ------------------------------------------------------------------------
+    // TEACHER TAB 1: 📤 SEND HOMEWORK VIEW
+    // ------------------------------------------------------------------------
+    function renderTeacherSendHomeworkTab() {
+      var cls = appSession.teacherClass;
+      var currentHw = getTodayActiveHomework(cls);
+      var html = '';
+
+      html += '<div class="teacher-card">';
+      html += '  <h3 style="font-size: 16px; font-weight: 900; color: #E65100; margin-bottom: 8px;">📤 Send Homework to ' + cls + ' Class</h3>';
+      html += '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 12px;">Select Subject &amp; Specific Sub-Topic to assign for today:</div>';
+
+      // 1. Subject Selector
+      html += '  <div style="margin-bottom: 10px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">1. Select Subject:</label>';
+      html += '    <select id="teacher-hw-subject" class="input-field" style="margin-top: 4px;" onchange="updateTeacherSubTopicsDropdown()">';
+      var subjects = getAvailableSubjectsForClass(cls);
+      subjects.forEach(function(sub) {
+        html += '<option value="' + sub.key + '">' + sub.label + '</option>';
+      });
+      html += '    </select>';
+      html += '  </div>';
+
+      // 2. Sub-Topic Selector
+      html += '  <div style="margin-bottom: 10px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">2. Select Specific Sub-Topic:</label>';
+      html += '    <select id="teacher-hw-topic" class="input-field" style="margin-top: 4px;">';
+      var topics = getAvailableTopicsForClassAndSubject(cls, subjects[0].key);
+      topics.forEach(function(t) {
+        html += '<option value="' + t.key + '">' + escapeHtml(t.title) + '</option>';
+      });
+      html += '    </select>';
+      html += '  </div>';
+
+      // 3. Target Questions & Due Time Row
+      html += '  <div style="display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;">';
+      html += '    <div style="flex: 1; min-width: 140px;">';
+      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">3. Question Target:</label>';
+      html += '      <select id="teacher-hw-target" class="input-field" style="margin-top: 4px;">';
+      html += '        <option value="5">5 Questions (Quick)</option>';
+      html += '        <option value="10" selected>10 Questions (Standard)</option>';
+      html += '        <option value="15">15 Questions (Mastery)</option>';
+      html += '        <option value="20">20 Questions (Challenge)</option>';
+      html += '      </select>';
+      html += '    </div>';
+
+      html += '    <div style="flex: 1; min-width: 140px;">';
+      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">4. Due Time Today:</label>';
+      html += '      <input type="time" id="teacher-hw-due" value="18:00" class="input-field" style="margin-top: 4px; font-weight: 800;" />';
+      html += '    </div>';
+      html += '  </div>';
+
+      html += '  <button class="btn-action-primary" style="margin-top: 4px;" onclick="safeAction(handleAssignHomeworkSubmit)">';
+      html += '    Send Homework to ' + cls + ' Class 🚀';
+      html += '  </button>';
+
+      if (currentHw && !currentHw.is_placeholder) {
+        html += '<div style="margin-top: 14px; padding: 12px; background: #FFF8E1; border: 1.5px solid #FFE082; border-radius: 14px;">';
+        html += '  <div style="font-size: 11px; font-weight: 900; color: #E65100; text-transform: uppercase;">Currently Active Homework:</div>';
+        html += '  <div style="font-size: 14px; font-weight: 900; color: #BF360C; margin-top: 2px;">' + escapeHtml(currentHw.title) + '</div>';
+        html += '  <div style="font-size: 11px; color: #6D4C41; font-weight: 700; margin-top: 3px;">';
+        html += '    Target: ' + currentHw.target_questions + ' Qs • Due: ' + (currentHw.due_time || '6:00 PM') + ' • Assigned ' + timeAgo(currentHw.created_at);
+        html += '  </div>';
+        html += '</div>';
+      }
+      html += '</div>';
+
+      return html;
+    }
+
+    function updateTeacherSubTopicsDropdown() {
+      var subSelect = document.getElementById("teacher-hw-subject");
+      var topicSelect = document.getElementById("teacher-hw-topic");
+      if (!subSelect || !topicSelect) return;
+      var selSub = subSelect.value;
+      var topics = getAvailableTopicsForClassAndSubject(appSession.teacherClass, selSub);
+      var html = "";
+      topics.forEach(function(t) {
+        html += '<option value="' + t.key + '">' + escapeHtml(t.title) + '</option>';
+      });
+      topicSelect.innerHTML = html;
+      playTone("pop");
+    }
+
+    function getAvailableSubjectsForClass(cls) {
+      if (cls === "UKG") {
         return [
-          { key: "ukg_grammar_is_am_are", title: "UKG English Grammar: Use of Is / Am / Are", section: "ukg", tab: "grammar", grammarSubTab: "is_am_are", mode: "quiz" },
-          { key: "ukg_vowels_practice", title: "UKG Phonics: Vowels, Consonants & Semi-Vowels", section: "ukg", tab: "phonics", vowel: "vowels", mode: "learn" },
-          { key: "ukg_eng_world_days", title: "UKG English World: Days of the Week", section: "ukg", tab: "english_world", cat: "days", mode: "quiz" },
-          { key: "ukg_eng_world_colors", title: "UKG English World: Colors Around Us", section: "ukg", tab: "english_world", cat: "colors", mode: "quiz" },
-          { key: "ukg_phonics_4let_a", title: "UKG Phonics: 4-Letter 'A' Words (STAR, CART, HAND)", section: "ukg", tab: "phonics", vowel: "a", mode: "quiz" },
-          { key: "ukg_phonics_4let_e", title: "UKG Phonics: 4-Letter 'E' Words (TREE, JEEP, BELL)", section: "ukg", tab: "phonics", vowel: "e", mode: "quiz" },
-          { key: "ukg_evs_helpers", title: "UKG EVS: Community Helpers (Doctor, Teacher, Police)", section: "ukg", tab: "evs", topic: "helpers", mode: "quiz" },
-          { key: "ukg_evs_transport", title: "UKG EVS: Means of Transport (Land, Water, Air)", section: "ukg", tab: "evs", topic: "transport", mode: "quiz" },
-          { key: "ukg_hindi_matra", title: "UKG Hindi: Matra Quiz (ा, ि, ी, ु, ू)", section: "ukg", tab: "matra", mode: "quiz" },
-          { key: "ukg_math_addition", title: "UKG Math: Addition Fun (1-10 Quiz)", section: "ukg", tab: "math", mode: "quiz" }
+          { key: "grammar", label: "📖 English Grammar (11 Sub-tabs)" },
+          { key: "english", label: "📚 English World & 4-Letter Phonics" },
+          { key: "math", label: "🔢 Mathematics (+ / - / Clock)" },
+          { key: "hindi", label: "✍️ Hindi Matra निर्माण" },
+          { key: "evs", label: "🌍 EVS Studies" },
+          { key: "gk", label: "💡 General Knowledge (150 Qs)" }
         ];
-      } else if (className === "LKG") {
+      } else if (cls === "LKG") {
         return [
-          { key: "lkg_vowels_practice", title: "LKG Phonics: Vowels, Consonants & Semi-Vowels", section: "lkg", tab: "phonics", vowel: "vowels", mode: "learn" },
-          { key: "lkg_phonics_2letter", title: "LKG Phonics: 2-Letter Words (AT, IN, ON, GO)", section: "lkg", tab: "phonics", vowel: "two", mode: "quiz" },
-          { key: "lkg_phonics_cvc_a", title: "LKG Phonics: 3-Letter CVC Short 'a' (CAT, BAT, MAT)", section: "lkg", tab: "phonics", vowel: "a", mode: "quiz" },
-          { key: "lkg_evs_animals", title: "LKG EVS: Domestic vs Wild Animals Quiz", section: "lkg", tab: "evs", topic: "animals", mode: "quiz" },
-          { key: "lkg_evs_body", title: "LKG EVS: My Body & Five Senses", section: "lkg", tab: "evs", topic: "body", mode: "quiz" },
-          { key: "lkg_hindi_vyanjan", title: "LKG Hindi: क-ज्ञ Vyanjan Picture Quiz", section: "lkg", tab: "vyanjan", mode: "quiz_pic_to_let" },
-          { key: "lkg_shabda_nirman", title: "LKG Hindi: 2 व 3 अक्षर शब्द निर्माण", section: "lkg", tab: "shabda", mode: "learn" },
-          { key: "lkg_math_numbers", title: "LKG Math: Numbers 1-100 & Before/After", section: "lkg", tab: "math", mode: "quiz" }
+          { key: "english", label: "🔤 Phonics & CVC Words" },
+          { key: "math", label: "🔢 Numbers 1-100 & Before/After" },
+          { key: "hindi", label: "🪔 Hindi Vyanjan & Shabda" },
+          { key: "evs", label: "🌍 EVS Body & Animals" },
+          { key: "gk", label: "💡 General Knowledge (100 Qs)" }
         ];
       } else {
         return [
-          { key: "nursery_vowels_practice", title: "Nursery English: Vowels, Consonants & Semi-Vowels", section: "nursery", tab: "abc", mode: "learn" },
-          { key: "nursery_phonics_sounds", title: "Nursery Phonics: Initial Sound Match Quiz", section: "nursery", tab: "phonics", mode: "quiz" },
-          { key: "nursery_letters_quiz", title: "Nursery English: Letters A-Z Picture Quiz", section: "nursery", tab: "abc", mode: "quiz_pic_to_let" },
-          { key: "nursery_math_counting", title: "Nursery Math: Counting 1-20 Quiz", section: "nursery", tab: "numbers", mode: "quiz" },
-          { key: "nursery_swar_quiz", title: "Nursery Hindi: Swar अ-अः Picture Quiz", section: "nursery", tab: "swar", mode: "quiz_pic_to_let" }
+          { key: "english", label: "🔤 ABC & Phonic Sounds" },
+          { key: "math", label: "🔢 Numbers & Counting 1-50" },
+          { key: "hindi", label: "🕉️ Hindi Swar (अ-अः)" },
+          { key: "gk", label: "💡 General Knowledge (50 Qs)" }
+        ];
+      }
+    }
+
+    function getAvailableTopicsForClassAndSubject(cls, subject) {
+      var all = getCurriculumModulesForClass(cls);
+      var filtered = all.filter(function(m) {
+        if (subject === "grammar") return m.tab === "grammar";
+        if (subject === "english") return m.tab === "phonics" || m.tab === "english_world" || m.tab === "abc";
+        if (subject === "math") return m.tab === "math" || m.tab === "numbers";
+        if (subject === "hindi") return m.tab === "matra" || m.tab === "vyanjan" || m.tab === "swar" || m.tab === "shabda";
+        if (subject === "evs") return m.tab === "evs";
+        if (subject === "gk") return m.tab === "gk";
+        return true;
+      });
+      return filtered.length > 0 ? filtered : all;
+    }
+
+    // ------------------------------------------------------------------------
+    // TEACHER TAB 2: 📊 COMPLETION REPORT VIEW
+    // ------------------------------------------------------------------------
+    function renderTeacherCompletionReportTab() {
+      var cls = appSession.teacherClass;
+      var hw = getTodayActiveHomework(cls);
+      var roster = getRosterForClass(cls);
+      var doneCount = roster.filter(function(r) { return r.status === "completed"; }).length;
+      var pendingCount = roster.length - doneCount;
+      var percent = roster.length > 0 ? Math.round((doneCount / roster.length) * 100) : 0;
+      var html = '';
+
+      html += '<div class="teacher-card">';
+      html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">';
+      html += '    <h3 style="font-size: 16px; font-weight: 900; color: #2E7D32; margin: 0;">📊 ' + cls + ' Homework Completion Report</h3>';
+      html += '    <span style="font-size: 12px; font-weight: 900; color: #1565C0;">' + percent + '% Done</span>';
+      html += '  </div>';
+
+      if (hw && !hw.is_placeholder) {
+        html += '<div style="font-size: 12px; color: #546E7A; font-weight: 700; margin-bottom: 12px;">';
+        html += '  Task: <strong>' + escapeHtml(hw.title) + '</strong> • Target: ' + hw.target_questions + ' Qs • Due: ' + (hw.due_time || '6:00 PM');
+        html += '</div>';
+      }
+
+      // Metric Cards
+      html += '<div style="display: flex; gap: 8px; margin-bottom: 14px;">';
+      html += '  <div style="flex: 1; background: #E8F5E9; border-radius: 12px; padding: 8px; text-align: center;">';
+      html += '    <div style="font-size: 18px; font-weight: 900; color: #2E7D32;">' + doneCount + ' ✅</div>';
+      html += '    <div style="font-size: 10px; font-weight: 800; color: #1B5E20; text-transform: uppercase;">Completed</div>';
+      html += '  </div>';
+      html += '  <div style="flex: 1; background: #FFF3E0; border-radius: 12px; padding: 8px; text-align: center;">';
+      html += '    <div style="font-size: 18px; font-weight: 900; color: #E65100;">' + pendingCount + ' ⏳</div>';
+      html += '    <div style="font-size: 10px; font-weight: 800; color: #BF360C; text-transform: uppercase;">Pending</div>';
+      html += '  </div>';
+      html += '  <div style="flex: 1; background: #E3F2FD; border-radius: 12px; padding: 8px; text-align: center;">';
+      html += '    <div style="font-size: 18px; font-weight: 900; color: #1565C0;">' + roster.length + ' 🎒</div>';
+      html += '    <div style="font-size: 10px; font-weight: 800; color: #0D47A1; text-transform: uppercase;">Total Class</div>';
+      html += '  </div>';
+      html += '</div>';
+
+      // Student Roster Listing
+      html += '<div style="display: flex; flex-direction: column; gap: 8px;">';
+      roster.forEach(function(stu) {
+        var isDone = stu.status === "completed";
+        html += '<div class="roster-item" style="border-left: 4px solid ' + (isDone ? '#4CAF50' : '#FF9800') + ';">';
+        html += '  <div>';
+        html += '    <div style="font-weight: 900; font-size: 13px; color: #263238;">' + escapeHtml(stu.student_name) + ' <span style="font-size: 11px; color: #78909C;">(' + stu.admission_no + ')</span></div>';
+        if (isDone) {
+          html += '    <div style="font-size: 11px; color: #2E7D32; font-weight: 800; margin-top: 2px;">Score: +' + (stu.score || '10.0') + ' Pts ' + (stu.zero_bonus ? '🌟 (+Bonus)' : '') + ' • Done ' + (stu.time_done || 'Today') + '</div>';
+        } else {
+          html += '    <div style="font-size: 11px; color: #E65100; font-weight: 700; margin-top: 2px;">Task pending • Due at ' + (hw ? (hw.due_time || '6:00 PM') : '6:00 PM') + '</div>';
+        }
+        html += '  </div>';
+        html += '  <div>';
+        html += isDone ? '<span class="hw-status-badge hw-status-completed">Completed ✅</span>' : '<span class="hw-status-badge hw-status-pending">Pending ⏳</span>';
+        html += '  </div>';
+        html += '</div>';
+      });
+      html += '</div>';
+      html += '</div>';
+
+      return html;
+    }
+
+    // ------------------------------------------------------------------------
+    // TEACHER TAB 3: 🏆 CLASS RANKING & MANUAL RESET
+    // ------------------------------------------------------------------------
+    function renderTeacherClassRankingTab() {
+      var cls = appSession.teacherClass;
+      var students = getRankedStudentsForClass(cls);
+      var html = '';
+
+      html += '<div class="teacher-card">';
+      html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">';
+      html += '    <h3 style="font-size: 16px; font-weight: 900; color: #1565C0; margin: 0;">🏆 ' + cls + ' Cumulative Live Ranking</h3>';
+      html += '    <button class="nav-icon-btn" style="background: #FFEBEE; color: #C62828; border: 1.5px solid #EF9A9A; font-size: 11px; padding: 4px 10px; font-weight: 800; border-radius: 10px;" onclick="safeAction(handleResetClassRankingPrompt)">';
+      html += '      🔄 Reset Term Points';
+      html += '    </button>';
+      html += '  </div>';
+      html += '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 12px;">Permanent score wallet accumulated from completed teacher homework:</div>';
+
+      html += '  <div style="display: flex; flex-direction: column; gap: 8px;">';
+      students.forEach(function(stu, idx) {
+        var rank = idx + 1;
+        var medal = (rank === 1) ? "🥇" : ((rank === 2) ? "🥈" : ((rank === 3) ? "🥉" : "#" + rank));
+        html += '<div class="roster-item" style="border-left: 4px solid ' + (rank <= 3 ? '#FFB300' : '#90CAF9') + ';">';
+        html += '  <div style="display: flex; align-items: center; gap: 10px;">';
+        html += '    <div style="font-size: 18px; font-weight: 900; width: 32px; text-align: center; color: #E65100;">' + medal + '</div>';
+        html += '    <div>';
+        html += '      <div style="font-weight: 900; font-size: 13px; color: #263238;">' + escapeHtml(stu.student_name) + ' (' + stu.admission_no + ')</div>';
+        html += '      <div style="font-size: 11px; color: #78909C; font-weight: 700;">' + (stu.tasks_completed || 0) + ' Tasks Done • ' + (stu.badges || []).join(', ') + '</div>';
+        html += '    </div>';
+        html += '  </div>';
+        html += '  <div style="text-align: right;">';
+        html += '    <div style="font-size: 15px; font-weight: 900; color: #1565C0;">⭐ ' + (stu.total_points || 0) + '</div>';
+        html += '    <div style="font-size: 10px; font-weight: 800; color: #78909C;">Points</div>';
+        html += '  </div>';
+        html += '</div>';
+      });
+      html += '  </div>';
+      html += '</div>';
+
+      return html;
+    }
+
+    async function handleResetClassRankingPrompt() {
+      var cls = appSession.teacherClass;
+      var confirmed = confirm("Are you sure you want to reset all permanent ranking points for " + cls + " Class for the new term? This will set all " + cls + " student scores to 0.0.");
+      if (!confirmed) return;
+
+      showToast("Resetting " + cls + " Class Term Points...", "success");
+
+      // 1. Try Supabase RPC
+      try {
+        await supabaseRest("/rpc/reset_class_rankings", {
+          method: "POST",
+          body: { p_class_name: cls }
+        });
+      } catch (err) {
+        console.log("Supabase reset RPC note:", err.message || err);
+      }
+
+      // 2. Reset local cache
+      DEFAULT_STUDENTS_ROSTER.forEach(function(s) {
+        if (s.class_name === cls) {
+          s.total_points = 0.0;
+          s.total_stars = 0;
+          s.tasks_completed = 0;
+        }
+      });
+      if (appSession.student && appSession.student.class_name === cls) {
+        appSession.student.total_points = 0.0;
+        appSession.student.total_stars = 0;
+        appSession.student.tasks_completed = 0;
+        localStorage.setItem("taa_kids_student_session", JSON.stringify(appSession.student));
+      }
+
+      playTone("fanfare");
+      showToast(cls + " Term points reset successfully!", "success");
+      speak("Class term points reset to zero for " + cls + " class.", "en-IN");
+      renderTeacherPanelView();
+    }
+
+    // ------------------------------------------------------------------------
+    // CURRICULUM MODULES & TOPICS FOR TEACHER ASSIGNMENT
+    // ------------------------------------------------------------------------
+    function getCurriculumModulesForClass(className) {
+      if (className === "UKG") {
+        return [
+          // English Grammar (11 Sub-tabs)
+          { key: "ukg_gram_is_am_are", title: "Grammar: ⚖️ Use of Is / Am / Are (Drill & Sentences)", section: "ukg", tab: "grammar", grammarSubTab: "is_am_are", mode: "quiz" },
+          { key: "ukg_gram_this_that", title: "Grammar: 👉 Use of This / That (Visual Arrow)", section: "ukg", tab: "grammar", grammarSubTab: "this_that", mode: "quiz" },
+          { key: "ukg_gram_these_those", title: "Grammar: 👉👉 Use of These / Those (Visual Arrow)", section: "ukg", tab: "grammar", grammarSubTab: "these_those", mode: "quiz" },
+          { key: "ukg_gram_has_have", title: "Grammar: 🤝 Use of Has / Have (Drill & Sentences)", section: "ukg", tab: "grammar", grammarSubTab: "has_have", mode: "quiz" },
+          { key: "ukg_gram_opposite_words", title: "Grammar: 🔄 28+ Opposite Words", section: "ukg", tab: "grammar", grammarSubTab: "opposite_words", mode: "quiz" },
+          { key: "ukg_gram_opposite_gender", title: "Grammar: 👫 22+ Opposite Gender Pairs", section: "ukg", tab: "grammar", grammarSubTab: "opposite_gender", mode: "quiz" },
+          { key: "ukg_gram_singular_plural", title: "Grammar: 1️⃣➕ Singular & Plural Nouns", section: "ukg", tab: "grammar", grammarSubTab: "singular_plural", mode: "quiz" },
+          { key: "ukg_gram_there_is_are", title: "Grammar: 🏠 There is / There are (Counting)", section: "ukg", tab: "grammar", grammarSubTab: "there_is_are", mode: "quiz" },
+          { key: "ukg_gram_was_were", title: "Grammar: ⏳ Use of Was / Were (Past Tense)", section: "ukg", tab: "grammar", grammarSubTab: "was_were", mode: "quiz" },
+          { key: "ukg_gram_prepositions", title: "Grammar: 📍 Simple Prepositions (In, On, Under, Near, Behind)", section: "ukg", tab: "grammar", grammarSubTab: "prepositions", mode: "quiz" },
+          { key: "ukg_gram_interjections", title: "Grammar: 🎉 First 6 Interjections (Hurray, Ouch, Wow...)", section: "ukg", tab: "grammar", grammarSubTab: "interjections", mode: "quiz" },
+          // English World & Phonics
+          { key: "ukg_vowels_practice", title: "English: Vowels, Consonants & Semi-Vowels", section: "ukg", tab: "phonics", vowel: "vowels", mode: "learn" },
+          { key: "ukg_phonics_4let_a", title: "English: 4-Letter 'A' Words (STAR, CART, HAND)", section: "ukg", tab: "phonics", vowel: "a", mode: "quiz" },
+          { key: "ukg_phonics_4let_e", title: "English: 4-Letter 'E' Words (TREE, JEEP, BELL)", section: "ukg", tab: "phonics", vowel: "e", mode: "quiz" },
+          { key: "ukg_eng_world_days", title: "English World: Days of the Week", section: "ukg", tab: "english_world", cat: "days", mode: "quiz" },
+          { key: "ukg_eng_world_colors", title: "English World: Colors Around Us", section: "ukg", tab: "english_world", cat: "colors", mode: "quiz" },
+          // Mathematics
+          { key: "ukg_math_addition", title: "Math: Addition Fun (1-10 Quiz)", section: "ukg", tab: "math", mathSubTab: "addition", mode: "quiz" },
+          { key: "ukg_math_subtraction", title: "Math: Subtraction Fun (1-10 Quiz)", section: "ukg", tab: "math", mathSubTab: "subtraction", mode: "quiz" },
+          // Hindi Matras
+          { key: "ukg_hindi_matra", title: "Hindi: Matra Quiz (ा, ि, ी, ु, ू)", section: "ukg", tab: "matra", mode: "quiz" },
+          // EVS & GK
+          { key: "ukg_evs_helpers", title: "EVS: Community Helpers (Doctor, Teacher, Police)", section: "ukg", tab: "evs", topic: "helpers", mode: "quiz" },
+          { key: "ukg_evs_transport", title: "EVS: Means of Transport (Land, Water, Air)", section: "ukg", tab: "evs", topic: "transport", mode: "quiz" },
+          { key: "ukg_gk_quiz", title: "GK: UKG General Knowledge Challenge (150 Qs)", section: "ukg", tab: "gk", mode: "quiz" }
+        ];
+      } else if (className === "LKG") {
+        return [
+          { key: "lkg_phonics_2letter", title: "English: 2-Letter Words (AT, IN, ON, GO)", section: "lkg", tab: "phonics", vowel: "two", mode: "quiz" },
+          { key: "lkg_phonics_cvc_a", title: "English: 3-Letter CVC Short 'a' (CAT, BAT, MAT)", section: "lkg", tab: "phonics", vowel: "a", mode: "quiz" },
+          { key: "lkg_vowels_practice", title: "English: Vowels, Consonants & Phonics", section: "lkg", tab: "phonics", vowel: "vowels", mode: "learn" },
+          { key: "lkg_math_numbers", title: "Math: Numbers 1-100 & Before/After", section: "lkg", tab: "math", mode: "quiz" },
+          { key: "lkg_math_names", title: "Math: Number Names (ONE to TWENTY)", section: "lkg", tab: "math", mathSubTab: "names", mode: "quiz" },
+          { key: "lkg_hindi_vyanjan", title: "Hindi: क-ज्ञ Vyanjan Picture Quiz", section: "lkg", tab: "vyanjan", mode: "quiz_pic_to_let" },
+          { key: "lkg_shabda_nirman", title: "Hindi: 2 व 3 अक्षर शब्द निर्माण", section: "lkg", tab: "shabda", mode: "learn" },
+          { key: "lkg_evs_animals", title: "EVS: Domestic vs Wild Animals Quiz", section: "lkg", tab: "evs", topic: "animals", mode: "quiz" },
+          { key: "lkg_evs_body", title: "EVS: My Body & Five Senses", section: "lkg", tab: "evs", topic: "body", mode: "quiz" },
+          { key: "lkg_gk_quiz", title: "GK: LKG General Knowledge Challenge (100 Qs)", section: "lkg", tab: "gk", mode: "quiz" }
+        ];
+      } else {
+        return [
+          { key: "nursery_phonics_sounds", title: "English: Initial Phonic Sound Match", section: "nursery", tab: "phonics", mode: "quiz" },
+          { key: "nursery_letters_quiz", title: "English: Letters A-Z Picture Quiz", section: "nursery", tab: "abc", mode: "quiz_pic_to_let" },
+          { key: "nursery_math_counting", title: "Math: Counting 1-20 Quiz", section: "nursery", tab: "numbers", mode: "quiz" },
+          { key: "nursery_math_count_50", title: "Math: Counting 1-50 Numbers", section: "nursery", tab: "numbers", numSubTab: "count_50", mode: "quiz" },
+          { key: "nursery_swar_quiz", title: "Hindi: Swar अ-अः Picture Quiz", section: "nursery", tab: "swar", mode: "quiz_pic_to_let" },
+          { key: "nursery_gk_quiz", title: "GK: Nursery General Knowledge (50 Qs)", section: "nursery", tab: "gk", mode: "quiz" }
         ];
       }
     }
 
     async function handleAssignHomeworkSubmit() {
-      var select = document.getElementById("teacher-hw-select");
+      var topicSelect = document.getElementById("teacher-hw-topic");
       var targetInput = document.getElementById("teacher-hw-target");
-      if (!select) return;
-      var key = select.value;
+      var dueInput = document.getElementById("teacher-hw-due");
+      var subSelect = document.getElementById("teacher-hw-subject");
+
+      if (!topicSelect) return;
+      var key = topicSelect.value;
       var targetQuestions = parseInt(targetInput ? targetInput.value : "10", 10) || 10;
+      var dueTime = dueInput ? dueInput.value : "18:00";
+      var subjectLabel = subSelect ? subSelect.options[subSelect.selectedIndex].text : "General";
+
       var modules = getCurriculumModulesForClass(appSession.teacherClass);
       var selectedMod = modules.find(function(m) { return m.key === key; }) || modules[0];
 
       var newHw = {
         id: "HW-" + Date.now(),
         class_name: appSession.teacherClass,
+        subject: subjectLabel,
+        sub_topic: selectedMod.title,
         title: selectedMod.title,
         module_key: selectedMod.key,
         target_questions: targetQuestions,
+        due_time: dueTime,
         assigned_by: "Class Teacher",
         created_at: (new Date()).toISOString()
       };
 
       // 1. Try Supabase insert
       try {
-        await supabaseRest("/kids_homework", {
+        await supabaseRest("/daily_homework", {
           method: "POST",
           body: newHw
         });
@@ -2546,8 +3124,11 @@
       localStorage.setItem("taa_kids_homework", JSON.stringify(hwList));
 
       playTone("fanfare");
-      showToast("Homework assigned to " + appSession.teacherClass + "! Active 48h.", "success");
-      speak("Homework assigned to " + appSession.teacherClass + " class. Live tracking active for 48 hours.", "en-IN");
+      showToast("Homework sent to " + appSession.teacherClass + " Class! 🚀", "success");
+      speak("Homework sent to " + appSession.teacherClass + " class. Target is " + targetQuestions + " questions, due at " + dueTime + ".", "en-IN");
+
+      // Switch to report tab to see live tracking
+      appSession.teacherTab = "report";
       renderTeacherPanelView();
     }
 
@@ -2561,62 +3142,128 @@
           return h;
         }
       }
-      // Default initial homework if none assigned yet
-      var defaultModules = getCurriculumModulesForClass(className);
-      return {
-        id: "HW-DEF-" + className,
-        class_name: className,
-        title: defaultModules[0].title,
-        module_key: defaultModules[0].key,
-        target_questions: 10,
-        assigned_by: "Class Teacher",
-        created_at: (new Date()).toISOString()
-      };
+      return null;
     }
 
     // Check if a student has completed a homework
     function isHomeworkCompletedByStudent(studentId, homeworkId) {
+      if (!homeworkId) return false;
       var subList = JSON.parse(localStorage.getItem("taa_kids_submissions") || "[]");
       return subList.some(function(s) {
         return s.student_id === studentId && s.homework_id === homeworkId && s.status === "completed";
       });
     }
 
-    // Get roster for teacher class with live 2-day submission status
+    // Get submission record for details
+    function getStudentHomeworkSubmission(studentId, homeworkId) {
+      if (!homeworkId) return null;
+      var subList = JSON.parse(localStorage.getItem("taa_kids_submissions") || "[]");
+      return subList.find(function(s) {
+        return s.student_id === studentId && s.homework_id === homeworkId;
+      });
+    }
+
+    // Get roster for teacher class with live submission status
     function getRosterForClass(className) {
       var hw = getTodayActiveHomework(className);
-      var students = DEFAULT_STUDENTS_ROSTER.filter(function(s) { return s.class_name === className; });
-      if (appSession.student && appSession.student.class_name === className) {
-        if (!students.some(function(s) { return s.student_id === appSession.student.student_id; })) {
-          students.push(appSession.student);
-        }
-      }
+      var students = getRankedStudentsForClass(className);
+
       return students.map(function(s) {
-        var completed = hw ? isHomeworkCompletedByStudent(s.student_id, hw.id) : false;
+        var sub = hw ? getStudentHomeworkSubmission(s.student_id, hw.id) : null;
+        var completed = !!sub;
         return {
           student_id: s.student_id,
           admission_no: s.admission_no,
           student_name: s.student_name,
-          total_stars: s.total_stars || 0,
+          total_points: s.total_points || 0.0,
           badges: s.badges || ["Welcome Explorer 🌟"],
-          status: completed ? "completed" : "pending"
+          status: completed ? "completed" : "pending",
+          score: sub ? sub.total_score : null,
+          zero_bonus: sub ? (sub.zero_mistake_bonus > 0) : false,
+          time_done: sub ? timeAgo(sub.completed_at) : null
         };
       });
     }
 
-    function calculateStudentRank(studentId, className) {
+    // Return students of a class sorted by cumulative permanent points
+    function getRankedStudentsForClass(className) {
       var students = DEFAULT_STUDENTS_ROSTER.filter(function(s) { return s.class_name === className; });
       if (appSession.student && appSession.student.class_name === className) {
-        if (!students.some(function(s) { return s.student_id === appSession.student.student_id; })) {
+        var existingIdx = students.findIndex(function(s) { return s.student_id === appSession.student.student_id; });
+        if (existingIdx !== -1) {
+          students[existingIdx] = appSession.student;
+        } else {
           students.push(appSession.student);
         }
       }
-      students.sort(function(a, b) { return (b.total_stars || 0) - (a.total_stars || 0); });
+      return students.sort(function(a, b) {
+        return (parseFloat(b.total_points) || 0) - (parseFloat(a.total_points) || 0);
+      });
+    }
+
+    // Calculate exact student rank and total in class
+    function getStudentRankAndTotal(studentId, className) {
+      var students = getRankedStudentsForClass(className);
       var idx = students.findIndex(function(s) { return s.student_id === studentId; });
-      return (idx >= 0 ? idx + 1 : 1);
+      return {
+        rank: (idx >= 0 ? idx + 1 : 1),
+        total: Math.max(students.length, 1)
+      };
+    }
+
+    // Render Student Leaderboard (Top 5 + Student's Own Live Rank)
+    function renderStudentClassLeaderboard(className) {
+      var students = getRankedStudentsForClass(className);
+      var myId = appSession.student ? appSession.student.student_id : "";
+      var myRankInfo = getStudentRankAndTotal(myId, className);
+      var myPoints = appSession.student ? (appSession.student.total_points || 0.0) : 0.0;
+
+      var html = '';
+      html += '<div class="leaderboard-card">';
+      html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">';
+      html += '    <h3 style="font-size: 16px; font-weight: 900; color: #E65100; margin: 0; display: flex; align-items: center; gap: 6px;">';
+      html += '      🏆 ' + className + ' Class Leaderboard';
+      html += '    </h3>';
+      html += '    <span style="font-size: 11px; font-weight: 800; background: #FFF8E1; color: #F57F17; padding: 3px 8px; border-radius: 8px;">Permanent Rank</span>';
+      html += '  </div>';
+
+      // Top 5 Students List
+      var top5 = students.slice(0, 5);
+      html += '  <div style="display: flex; flex-direction: column; gap: 6px;">';
+      top5.forEach(function(stu, idx) {
+        var r = idx + 1;
+        var medal = (r === 1) ? "🥇" : ((r === 2) ? "🥈" : ((r === 3) ? "🥉" : "#" + r));
+        var isMe = (stu.student_id === myId);
+        html += '<div class="top5-item ' + (isMe ? 'my-rank-highlight' : '') + '">';
+        html += '  <div style="display: flex; align-items: center; gap: 8px;">';
+        html += '    <span style="font-size: 16px; font-weight: 900; width: 26px; text-align: center; color: #E65100;">' + medal + '</span>';
+        html += '    <span style="font-size: 13px; font-weight: 900; color: #263238;">' + escapeHtml(stu.student_name) + (isMe ? ' <strong>(You)</strong>' : '') + '</span>';
+        html += '  </div>';
+        html += '  <span style="font-size: 13px; font-weight: 900; color: #1565C0;">⭐ ' + (stu.total_points || 0) + ' Pts</span>';
+        html += '</div>';
+      });
+      html += '  </div>';
+
+      // Highlighted Box for Logged-In Student's Own Live Rank
+      html += '  <div class="my-live-rank-box">';
+      html += '    <div>';
+      html += '      <div style="font-size: 10px; font-weight: 900; color: #0D47A1; text-transform: uppercase;">Your Live Rank:</div>';
+      html += '      <div style="font-size: 15px; font-weight: 900; color: #1565C0; margin-top: 2px;">';
+      html += '        🎯 Rank #' + myRankInfo.rank + ' of ' + myRankInfo.total + ' Students';
+      html += '      </div>';
+      html += '    </div>';
+      html += '    <div style="text-align: right;">';
+      html += '      <div style="font-size: 18px; font-weight: 900; color: #0D47A1;">⭐ ' + myPoints + '</div>';
+      html += '      <div style="font-size: 10px; font-weight: 800; color: #1976D2;">Total Wallet</div>';
+      html += '    </div>';
+      html += '  </div>';
+      html += '</div>';
+
+      return html;
     }
 
     function timeAgo(dateString) {
+      if (!dateString) return "just now";
       var sec = Math.floor((Date.now() - (new Date(dateString)).getTime()) / 1000);
       if (sec < 60) return "just now";
       var min = Math.floor(sec / 60);
@@ -2625,65 +3272,45 @@
       return hrs + "h ago";
     }
 
-    /* =========================================================
-       TASK LOCK & HOMEWORK GATEWAY
-       ========================================================= */
-    function isHomeworkPending() {
-      if (appSession.type !== "student" || !appSession.student) return false;
+    // Check and schedule pending homework reminder
+    function checkAndScheduleHomeworkReminder() {
+      if (appSession.type !== "student" || !appSession.student) return;
       var hw = getTodayActiveHomework(appSession.student.class_name);
-      if (!hw) return false;
-      return !isHomeworkCompletedByStudent(appSession.student.student_id, hw.id);
-    }
-
-    function handleGameLaunch(secName) {
-      if (isHomeworkPending()) {
-        showTaskLockModal();
-        return;
+      if (!hw || hw.is_placeholder) return;
+      var isDone = isHomeworkCompletedByStudent(appSession.student.student_id, hw.id);
+      if (!isDone) {
+        NotificationBridge.scheduleHomeworkReminder(
+          appSession.student.student_name,
+          hw.title,
+          hw.due_time || "6:00 PM"
+        );
+      } else {
+        NotificationBridge.clearHomeworkReminder();
       }
-      openSection(secName, 0);
     }
 
-    function showTaskLockModal() {
-      var hw = getTodayActiveHomework(appSession.student ? appSession.student.class_name : "UKG");
-      playTone("wrong");
-      speak("Complete Today's Homework first to unlock Extra Play!", "en-IN");
-
-      var existing = document.getElementById("task-lock-modal");
-      if (existing) existing.remove();
-
-      var modal = document.createElement("div");
-      modal.id = "task-lock-modal";
-      modal.className = "modal-overlay";
-      modal.innerHTML = '<div class="modal-card">' +
-        '  <div style="font-size: 48px; margin-bottom: 8px;">🔒🌟</div>' +
-        '  <h2 style="font-size: 19px; font-weight: 900; color: #E65100; margin-bottom: 6px;">Extra Play Locked!</h2>' +
-        '  <div style="font-size: 13px; color: #546E7A; font-weight: 700; line-height: 1.4; margin-bottom: 14px;">' +
-        '    Complete Today\'s Homework first to unlock Brain Booster & Extra Play games!' +
-        '  </div>' +
-        '  <div style="background: #FFF3E0; border: 2px solid #FFB74D; border-radius: 14px; padding: 10px; margin-bottom: 14px; text-align: left;">' +
-        '    <div style="font-size: 10px; font-weight: 900; color: #E65100; text-transform: uppercase;">Today\'s Assigned Task:</div>' +
-        '    <div style="font-size: 13px; font-weight: 900; color: #BF360C; margin-top: 2px;">' + escapeHtml(hw.title) + '</div>' +
-        '  </div>' +
-        '  <button class="hw-action-btn" style="margin-top:0;" onclick="safeAction(function(){ closeTaskLockModal(); startAssignedHomework(); })">' +
-        '    Start Today\'s Homework 🚀' +
-        '  </button>' +
-        '  <button style="margin-top: 10px; background: none; border: none; font-size: 12px; font-weight: 800; color: #78909C; cursor: pointer;" onclick="safeAction(closeTaskLockModal)">' +
-        '    Back to Studies' +
-        '  </button>' +
-        '</div>';
-      document.body.appendChild(modal);
-    }
-
-    function closeTaskLockModal() {
-      var modal = document.getElementById("task-lock-modal");
-      if (modal) modal.remove();
-    }
-
+    // Launch Homework with Fair Decimal Scoring Session
     function startAssignedHomework() {
       if (!appSession.student) return;
       var hw = getTodayActiveHomework(appSession.student.class_name);
+      if (!hw) {
+        showToast("No homework active!", "wrong");
+        return;
+      }
+      var isCompletedEarlier = isHomeworkCompletedByStudent(appSession.student.student_id, hw.id);
+
       appSession.activeHomeworkId = hw.id;
       appSession.homeworkAnsweredCount = 0;
+      appSession.homeworkSession = {
+        homeworkId: hw.id,
+        isPracticeMode: isCompletedEarlier, // Reopening completed homework awards 0 points!
+        targetQuestions: hw.target_questions || 10,
+        currentQuestionWrongTaps: 0,
+        totalWrongTapsAllQs: 0,
+        totalScore: 0.0,
+        zeroMistakeBonus: 0.0,
+        questionScores: []
+      };
 
       var modules = getCurriculumModulesForClass(appSession.student.class_name);
       var mod = modules.find(function(m) { return m.key === hw.module_key; }) || modules[0];
@@ -2702,78 +3329,140 @@
 
       openSection(mod.section, mod.tab);
       setMode(mod.mode || "quiz");
-      speak("Starting today's homework: " + hw.title, "en-IN");
+      var welcomeMsg = isCompletedEarlier
+        ? "Opening Practice Mode for: " + hw.title
+        : "Starting today's homework: " + hw.title + ". Target: " + hw.target_questions + " questions.";
+      speak(welcomeMsg, "en-IN");
     }
 
-    // Triggered upon reaching target questions in homework
+    // Complete Homework Record (Fair Decimal Scoring & Zero-Mistake Bonus)
     async function completeActiveHomeworkRecord(hwId) {
-      if (!appSession.student) return;
-      var stuId = appSession.student.student_id;
+      if (!appSession.student || !appSession.homeworkSession) return;
+      var stu = appSession.student;
+      var hs = appSession.homeworkSession;
+      var isPractice = hs.isPracticeMode;
 
-      // 1. Record submission
-      var subList = JSON.parse(localStorage.getItem("taa_kids_submissions") || "[]");
-      subList.push({
-        id: "SUB-" + Date.now(),
-        student_id: stuId,
-        homework_id: hwId,
-        stars_earned: 10,
-        status: "completed",
-        completed_at: (new Date()).toISOString()
-      });
-      localStorage.setItem("taa_kids_submissions", JSON.stringify(subList));
-
-      // 2. Permanent Stats update
-      appSession.student.total_stars = (appSession.student.total_stars || 0) + 10;
-      appSession.student.tasks_completed = (appSession.student.tasks_completed || 0) + 1;
-      if (!appSession.student.badges.includes("Super Star 🏅")) {
-        appSession.student.badges.push("Super Star 🏅");
-      }
-      appState.stars = appSession.student.total_stars;
-      document.getElementById("star-count").textContent = appState.stars;
-      localStorage.setItem("taa_kids_student_session", JSON.stringify(appSession.student));
-
-      // 3. Try Supabase RPC live update
-      try {
-        await supabaseRest("/rpc/kids_submit_homework_record", {
-          method: "POST",
-          body: {
-            p_student_id: stuId,
-            p_homework_id: hwId,
-            p_stars_earned: 10
-          }
-        });
-      } catch (err) {
-        console.log("Supabase RPC submit note:", err.message || err);
+      // 1. Calculate Zero-Mistake Bonus (if entire homework had 0 wrong taps)
+      var bonus = 0.0;
+      if (!isPractice && hs.totalWrongTapsAllQs === 0) {
+        var tq = hs.targetQuestions;
+        if (tq <= 5) {
+          bonus = 2.0;
+        } else if (tq <= 14) {
+          bonus = 3.0;
+        } else {
+          bonus = 5.0;
+        }
+        hs.zeroMistakeBonus = bonus;
+        hs.totalScore = Math.round((hs.totalScore + bonus) * 10) / 10;
       }
 
-      var rank = calculateStudentRank(stuId, appSession.student.class_name);
+      var earnedScore = hs.totalScore;
+
+      // 2. Record submission & update wallet (One-Time Points rule)
+      if (!isPractice) {
+        // Save submission locally
+        var subList = JSON.parse(localStorage.getItem("taa_kids_submissions") || "[]");
+        var subRecord = {
+          id: "SUB-" + Date.now(),
+          student_id: stu.student_id,
+          homework_id: hwId,
+          class_name: stu.class_name,
+          points_earned: Math.round((earnedScore - bonus) * 10) / 10,
+          zero_mistake_bonus: bonus,
+          total_score: earnedScore,
+          wrong_taps: hs.totalWrongTapsAllQs,
+          status: "completed",
+          completed_at: (new Date()).toISOString()
+        };
+        subList.unshift(subRecord);
+        localStorage.setItem("taa_kids_submissions", JSON.stringify(subList));
+
+        // Update permanent cumulative wallet
+        stu.total_points = Math.round(((stu.total_points || 0.0) + earnedScore) * 10) / 10;
+        stu.total_stars = Math.floor(stu.total_points);
+        stu.tasks_completed = (stu.tasks_completed || 0) + 1;
+        if (!stu.badges.includes("Super Star 🏅")) {
+          stu.badges.push("Super Star 🏅");
+        }
+        if (bonus > 0 && !stu.badges.includes("Accuracy King 🎯")) {
+          stu.badges.push("Accuracy King 🎯");
+        }
+        appState.stars = stu.total_stars;
+        document.getElementById("star-count").textContent = appState.stars;
+        localStorage.setItem("taa_kids_student_session", JSON.stringify(stu));
+
+        // Batch call to Supabase in a SINGLE API call
+        try {
+          await supabaseRest("/rpc/kids_submit_homework_batch", {
+            method: "POST",
+            body: {
+              p_student_id: stu.student_id,
+              p_homework_id: hwId,
+              p_class_name: stu.class_name,
+              p_points_earned: Math.round((earnedScore - bonus) * 10) / 10,
+              p_zero_mistake_bonus: bonus,
+              p_total_score: earnedScore,
+              p_wrong_taps: hs.totalWrongTapsAllQs
+            }
+          });
+        } catch (err) {
+          console.log("Supabase batch submission note:", err.message || err);
+        }
+
+        // Clear reminder notification since homework is done!
+        NotificationBridge.clearHomeworkReminder();
+      }
+
+      var rankInfo = getStudentRankAndTotal(stu.student_id, stu.class_name);
       renderHeaderStatus();
 
-      // Celebration modal
+      // Celebration Modal
       playTone("fanfare");
       triggerConfetti();
-      speak("Superb! You completed today's homework! Ten stars and a Super Star Badge added! Your class rank is number " + rank + "!", "en-IN");
+
+      var celebrationSpoken = isPractice
+        ? "Great practice session! You reviewed all questions successfully."
+        : "Superb! You earned " + earnedScore + " points with class rank number " + rankInfo.rank + "!";
+      speak(celebrationSpoken, "en-IN");
+
+      var existing = document.getElementById("hw-complete-modal");
+      if (existing) existing.remove();
 
       var modal = document.createElement("div");
+      modal.id = "hw-complete-modal";
       modal.className = "modal-overlay";
+
+      var bonusHtml = (bonus > 0)
+        ? '<div style="background: #FFF9C4; border: 2px solid #FBC02D; border-radius: 14px; padding: 10px; margin: 10px 0; font-weight: 900; color: #E65100;">🌟 Zero-Mistake Accuracy Bonus: +' + bonus + ' Pts!</div>'
+        : '';
+
       modal.innerHTML = '<div class="modal-card">' +
-        '  <div style="font-size: 52px; margin-bottom: 8px;">🏅🎉</div>' +
-        '  <h2 style="font-size: 21px; font-weight: 900; color: #2E7D32; margin-bottom: 4px;">Homework Completed!</h2>' +
-        '  <div style="font-size: 13px; color: #558B2F; font-weight: 800; margin-bottom: 12px;">+10 Stars Added • Super Star Badge 🏅 Unlocked!</div>' +
-        '  <div style="background: #E8F5E9; border: 2px solid #81C784; border-radius: 16px; padding: 12px; margin-bottom: 16px;">' +
-        '    <div style="font-size: 12px; color: #2E7D32; font-weight: 700;">Live Class Rank:</div>' +
-        '    <div style="font-size: 26px; font-weight: 900; color: #1B5E20; margin: 4px 0;">Rank #' + rank + ' 🏆</div>' +
-        '    <div style="font-size: 11px; color: #388E3C; font-weight: 700;">All Extra Play & Brain Booster games are now UNLOCKED!</div>' +
+        '  <div style="font-size: 52px; margin-bottom: 8px;">' + (isPractice ? '📖🌟' : '🏆🎉') + '</div>' +
+        '  <h2 style="font-size: 21px; font-weight: 900; color: #E65100; margin-bottom: 6px;">' + (isPractice ? 'Practice Complete! ✅' : 'Homework Completed! 🚀') + '</h2>' +
+        '  <div style="font-size: 13px; color: #546E7A; font-weight: 700; line-height: 1.4;">' +
+        (isPractice ? 'You reviewed today\'s homework in practice mode.' : 'Awesome effort! Your score is added to your permanent wallet.') +
         '  </div>' +
-        '  <button class="hw-action-btn hw-completed-btn" onclick="this.closest(\'.modal-overlay\').remove(); goHome();">' +
-        '    Awesome! Continue Free Play 🌟' +
+        bonusHtml +
+        '  <div style="background: #E8F5E9; border: 2px solid #81C784; border-radius: 16px; padding: 12px; margin: 12px 0;">' +
+        '    <div style="display: flex; justify-content: space-around; text-align: center;">' +
+        '      <div><div style="font-size: 20px; font-weight: 900; color: #2E7D32;">' + hs.targetQuestions + '</div><div style="font-size: 10px; font-weight: 800; color: #1B5E20;">QUESTIONS</div></div>' +
+        '      <div><div style="font-size: 20px; font-weight: 900; color: #E65100;">' + (isPractice ? '0.0' : '+' + earnedScore) + '</div><div style="font-size: 10px; font-weight: 800; color: #BF360C;">POINTS</div></div>' +
+        '      <div><div style="font-size: 20px; font-weight: 900; color: #1565C0;">#' + rankInfo.rank + '</div><div style="font-size: 10px; font-weight: 800; color: #0D47A1;">CLASS RANK</div></div>' +
+        '    </div>' +
+        '  </div>' +
+        '  <button class="hw-action-btn" onclick="safeAction(function(){ var m=document.getElementById(\'hw-complete-modal\'); if(m) m.remove(); goHome(); })">' +
+        '    Back to Dashboard 🏠' +
         '  </button>' +
         '</div>';
       document.body.appendChild(modal);
+
       appSession.activeHomeworkId = null;
+      appSession.homeworkSession = null;
     }
 
-    /* =========================================================
+
+        /* =========================================================
        CANONICAL STRING-KEY SECTION TABS ARCHITECTURE (Zero Mismatch)
        ========================================================= */
     var SECTION_TABS = {
@@ -2962,11 +3651,53 @@
         quizState.activeKey = config.key;
         quizState.correctItem = config;
 
+        // If in Homework Session (Fair Decimal Scoring: 1 / 0.5 / 0.2)
+        if (appSession.activeHomeworkId && appSession.homeworkSession) {
+          var hs = appSession.homeworkSession;
+          var wrongOnThisQ = hs.currentQuestionWrongTaps || 0;
+          var earned = 0.0;
+          if (hs.isPracticeMode) {
+            earned = 0.0;
+          } else {
+            if (wrongOnThisQ === 0) {
+              earned = 1.0;
+            } else if (wrongOnThisQ === 1) {
+              earned = 0.5;
+            } else {
+              earned = 0.2;
+            }
+            hs.totalScore = Math.round((hs.totalScore + earned) * 10) / 10;
+          }
+          hs.questionScores.push(earned);
+          hs.currentQuestionWrongTaps = 0; // reset for next Q
+          appSession.homeworkAnsweredCount = (appSession.homeworkAnsweredCount || 0) + 1;
+
+          playTone("success");
+          triggerConfetti();
+          var ptsMsg = hs.isPracticeMode ? "Practice Mode (0 Pts)" : ("+" + earned + " Pts! Total: " + hs.totalScore);
+          showToast("🎉 Correct! " + ptsMsg, "success");
+          speak(config.spoken || "Correct!", config.lang || "en-IN");
+
+          // Check if target questions completed
+          if (appSession.homeworkAnsweredCount >= hs.targetQuestions) {
+            setTimeout(function() {
+              completeActiveHomeworkRecord(appSession.activeHomeworkId);
+            }, 600);
+            return;
+          }
+          renderCurrentView();
+          return;
+        }
+
         playTone("success");
         triggerConfetti();
         addStar("🎉 Awesome! Correct answer!", config.spoken || "Awesome! Correct!", config.lang || "en-IN");
         renderCurrentView();
       } else {
+        if (appSession.activeHomeworkId && appSession.homeworkSession) {
+          appSession.homeworkSession.currentQuestionWrongTaps = (appSession.homeworkSession.currentQuestionWrongTaps || 0) + 1;
+          appSession.homeworkSession.totalWrongTapsAllQs = (appSession.homeworkSession.totalWrongTapsAllQs || 0) + 1;
+        }
         markWrong(config.wrongMsg || "Try again!", config.lang || "en-IN");
       }
     }
@@ -28081,46 +28812,89 @@ function setNurseryNumSubTab(st) {
       }
       renderHeaderStatus();
 
-      // Today's Teacher Homework Card for Students
-      if (appSession.type === "student" && appSession.student) {
-        var hw = getTodayActiveHomework(appSession.student.class_name);
-        var isDone = isHomeworkCompletedByStudent(appSession.student.student_id, hw.id);
-
-        html += '<div class="homework-hero-card">';
-        html += '  <div class="homework-header-row">';
-        html += '    <span style="font-size: 11px; font-weight: 900; color: #E65100; text-transform: uppercase;">📋 Today\'s Teacher Homework</span>';
-        html += '    <span class="hw-status-badge ' + (isDone ? 'hw-status-completed' : 'hw-status-pending') + '">' + (isDone ? 'Completed ✅' : 'Pending ⏳') + '</span>';
+      // TEACHER MODE BANNER / PREVIEW BANNER
+      if (appSession.type === "teacher") {
+        html += '<div class="preview-mode-banner">';
+        html += '  <div>';
+        html += '    <strong style="color: #2E7D32;">👩‍🏫 Teacher Portal Active:</strong> ' + appSession.teacherClass + ' Class';
+        html += '    <div style="font-size: 11px; color: #558B2F;">All Modules Unlocked for Preview &amp; Assignment</div>';
         html += '  </div>';
-        html += '  <div class="homework-title">' + escapeHtml(hw.title) + '</div>';
-        html += '  <div style="font-size: 12px; color: #795548; font-weight: 700; margin-top: 4px;">Assigned for ' + appSession.student.class_name + ' Class • Target: ' + hw.target_questions + ' Questions</div>';
-        if (!isDone) {
-          html += '  <button class="hw-action-btn" onclick="safeAction(startAssignedHomework)">';
-          html += '    Start Today\'s Homework 🚀';
-          html += '  </button>';
-        } else {
-          html += '  <button class="hw-action-btn hw-completed-btn" onclick="safeAction(startAssignedHomework)">';
-          html += '    Practice Again (Completed ✅) 🌟';
-          html += '  </button>';
-        }
+        html += '  <button class="nav-icon-btn" style="background: #2E7D32; color: #FFF; font-size: 12px; padding: 6px 12px; font-weight: 800; border-radius: 12px;" onclick="safeAction(openTeacherPanel)">Teacher Dashboard 📋</button>';
         html += '</div>';
-      } else if (appSession.type === "teacher") {
-        html += '<div style="background: #FFF9C4; border: 2px solid #FBC02D; border-radius: 16px; padding: 10px 14px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;">';
-        html += '  <div><span style="font-weight: 900; color: #D84315;">👩‍🏫 Teacher Mode Active</span><div style="font-size: 11px; color: #5D4037;">Viewing student perspective for ' + appSession.teacherClass + '</div></div>';
-        html += '  <button class="btn-action-primary" style="width: auto; padding: 6px 12px; font-size: 12px;" onclick="safeAction(openTeacherPanel)">Open Teacher Panel 📋</button>';
+      } else if (appSession.isPreviewMode) {
+        html += '<div class="preview-mode-banner">';
+        html += '  <div><strong style="color: #E65100;">👁️ Teacher Preview Mode:</strong> All classes unlocked</div>';
+        html += '  <button class="nav-icon-btn" style="background: #E65100; color: #FFF; font-size: 12px; padding: 6px 10px;" onclick="safeAction(exitTeacherPreview)">Exit Preview ✕</button>';
         html += '</div>';
       }
 
+      // =========================================================================
+      // STRICT STUDENT HOMEWORK-ONLY MODE (No Free-Play Point Farming)
+      // =========================================================================
+      if (appSession.type === "student" && appSession.student && !appSession.isPreviewMode) {
+        var sCls = appSession.student.class_name;
+        var hw = getTodayActiveHomework(sCls);
+        var isDone = hw ? isHomeworkCompletedByStudent(appSession.student.student_id, hw.id) : false;
+
+        // 1. Check if teacher assigned homework for this class
+        if (hw && !hw.is_placeholder) {
+          // Homework Card
+          html += '<div class="homework-hero-card">';
+          html += '  <div class="homework-header-row">';
+          html += '    <span style="font-size: 11px; font-weight: 900; color: #E65100; text-transform: uppercase;">📋 Today&#39;s Assigned Homework</span>';
+          html += '    <span class="hw-status-badge ' + (isDone ? 'hw-status-completed' : 'hw-status-pending') + '">' + (isDone ? 'Completed ✅' : 'Pending ⏳') + '</span>';
+          html += '  </div>';
+          html += '  <div class="homework-title">' + escapeHtml(hw.title) + '</div>';
+          html += '  <div style="font-size: 12px; color: #795548; font-weight: 700; margin-top: 4px;">';
+          html += '    Class ' + sCls + ' • Target: ' + hw.target_questions + ' Qs • Due: ' + (hw.due_time ? hw.due_time : '6:00 PM');
+          html += '  </div>';
+
+          if (!isDone) {
+            html += '  <button class="hw-action-btn" onclick="safeAction(startAssignedHomework)">';
+            html += '    Start Today&#39;s Homework 🚀';
+            html += '  </button>';
+            html += '  <div style="font-size: 11px; color: #E65100; font-weight: 800; margin-top: 6px; text-align: center;">';
+            html += '    🎯 Earn up to +' + (hw.target_questions + (hw.target_questions <= 5 ? 2 : (hw.target_questions <= 14 ? 3 : 5))) + ' Points! (0-Mistake Bonus Active)';
+            html += '  </div>';
+          } else {
+            html += '  <button class="hw-action-btn hw-completed-btn" onclick="safeAction(startAssignedHomework)">';
+            html += '    Practice Mode (0 Points • Completed ✅) 🌟';
+            html += '  </button>';
+            html += '  <div style="font-size: 11px; color: #2E7D32; font-weight: 800; margin-top: 6px; text-align: center;">';
+            html += '    ✅ Completed for Today! Rank Points already added to your wallet.';
+            html += '  </div>';
+          }
+          html += '</div>';
+        } else {
+          // No Homework Assigned Yet Card
+          html += '<div class="no-homework-card">';
+          html += '  <div style="font-size: 48px; margin-bottom: 8px;">📚⏳</div>';
+          html += '  <h3 style="font-size: 18px; font-weight: 900; color: #E65100; margin-bottom: 6px;">No Homework Assigned Yet!</h3>';
+          html += '  <div style="font-size: 13px; color: #6D4C41; font-weight: 700; line-height: 1.4;">';
+          html += '    Wait for your ' + sCls + ' class teacher to send today&#39;s task. Check your class rank below!';
+          html += '  </div>';
+          html += '</div>';
+        }
+
+        // 2. Class Leaderboard (Top 5 + Student's Own Live Rank)
+        html += renderStudentClassLeaderboard(sCls);
+        view.innerHTML = html;
+        return;
+      }
+
+      // =========================================================================
+      // TEACHER / PREVIEW OPEN HOME GRID (Full preview of all classes)
+      // =========================================================================
       html += '<div class="hero-banner" onclick="safeAction(function(){ speak(\'Welcome to Abacus Kids! Choose your class to begin learning.\', \'en-IN\'); })">';
       html += '  <div class="safe-emoji" style="font-size: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">🎓</div>';
       html += '  <div>';
       html += '    <div class="academy-badge">Smart English Medium Learning</div>';
       html += '    <div style="font-size: 20px; font-weight: 900; color: #BF360C;">Welcome to Abacus Kids</div>';
-      html += '    <div style="font-size: 12px; color: #795548; font-weight: 600;">Tap any class or activity to start:</div>';
+      html += '    <div style="font-size: 12px; color: #795548; font-weight: 600;">Tap any class or activity to preview:</div>';
       html += '  </div>';
       html += '</div>';
 
       html += '<div class="home-grid">';
-
       // Nursery
       html += '<div class="home-section-btn btn-nursery" onclick="safeAction(function(){ openSection(\'nursery\', 0); })">';
       html += '  <div>';
@@ -28136,7 +28910,7 @@ function setNurseryNumSubTab(st) {
       html += '  <div>';
       html += '    <span class="section-badge" style="background:#689F38;">Age 4-5 Years</span>';
       html += '    <div class="section-name">LKG Class</div>';
-      html += '    <div class="section-desc">2-Letter & CVC Words • Hindi Vyanjan • 1-100 Names • EVS • Pre-Math • Word Formation</div>';
+      html += '    <div class="section-desc">2-Letter &amp; CVC Words • Hindi Vyanjan • 1-100 Names • EVS • Pre-Math • Word Formation</div>';
       html += '  </div>';
       html += '  <div class="safe-emoji" style="font-size: 44px;">🚂</div>';
       html += '</div>';
@@ -28146,7 +28920,7 @@ function setNurseryNumSubTab(st) {
       html += '  <div>';
       html += '    <span class="section-badge" style="background:#F57C00;">Age 5-6 Years</span>';
       html += '    <div class="section-name">UKG Class</div>';
-      html += '    <div class="section-desc">4-Letter Phonics • English World (14) • Rhyming • EVS • Hindi Matras • Math (+/-)</div>';
+      html += '    <div class="section-desc">4-Letter Phonics • 📖 English Grammar (11 Topics) • English World • EVS • Hindi Matras • Math (+/-)</div>';
       html += '  </div>';
       html += '  <div class="safe-emoji" style="font-size: 44px;">🚀</div>';
       html += '</div>';
@@ -28159,15 +28933,14 @@ function setNurseryNumSubTab(st) {
       html += '    <div class="section-desc">Fruits, Veggies, Animals, Birds, Vehicles, Helpers (150+ Pics)</div>';
       html += '  </div>';
 
-      html += '  <div class="btn-brain" onclick="safeAction(function(){ handleGameLaunch(\'brain_booster\'); })">';
+      html += '  <div class="btn-brain" onclick="safeAction(function(){ openSection(\'brain_booster\', 0); })">';
       html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🧠</div>';
       html += '    <div class="section-name">Brain Booster</div>';
       html += '    <div class="section-desc">Shadow Match • Odd One Out • Memory Flip</div>';
       html += '  </div>';
       html += '</div>';
 
-      html += '</div>';
-
+      html += '</div>'; // End home-grid
       view.innerHTML = html;
     }
 

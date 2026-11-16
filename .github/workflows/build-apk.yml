@@ -21,6 +21,18 @@ jobs:
           npm install
           npm run build
           npx cap add android
+          node -e '
+            const fs = require("fs");
+            const p = "android/app/src/main/AndroidManifest.xml";
+            if (fs.existsSync(p)) {
+              let m = fs.readFileSync(p, "utf8");
+              if (!m.includes("POST_NOTIFICATIONS")) {
+                m = m.replace("<application", "    <uses-permission android:name=\"android.permission.POST_NOTIFICATIONS\" />\n    <uses-permission android:name=\"android.permission.SCHEDULE_EXACT_ALARM\" />\n    <application");
+                fs.writeFileSync(p, m);
+                console.log("Injected Android notification permissions successfully.");
+              }
+            }
+          '
           cp logo.jpeg android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png || true
           cp logo.jpg android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png || true
           npx cap sync android
