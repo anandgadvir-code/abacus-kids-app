@@ -2830,7 +2830,8 @@
       ukgMathSubTab: "addition", // addition, subtraction, rhymes, compare
       // Scientific Phonics Curriculum States
       nurseryPhonicsFilter: "all", // "all", "az", "extra"
-      lkgPhonicsVowel: "two", // "two", "a", "e", "i", "o", "u"
+      lkgPhonicsVowel: "az_sound",
+      lkgAzSoundLetter: "A", // "two", "a", "e", "i", "o", "u"
       ukgPhonicsVowel: "two", // "two", "cvc", "a", "e", "i", "o", "u"
       ukgEnglishWorldCat: "days", // 14 categories
       // UKG Phonics legacy
@@ -3365,7 +3366,715 @@
       }
 ];
 
-    var DATA_2LETTER_WORDS = [
+        /* ---------------------------------------------------------
+       DATA: LKG A-Z SOUND WORDS (5 Words Per Letter: 130 Words)
+       --------------------------------------------------------- */
+    var DATA_AZ_SOUND_WORDS = {
+    "A": [
+        {
+            "word": "Apple",
+            "emoji": "\ud83c\udf4e",
+            "sound": "A says aah... Apple!"
+        },
+        {
+            "word": "Ant",
+            "emoji": "\ud83d\udc1c",
+            "sound": "A says aah... Ant!"
+        },
+        {
+            "word": "Axe",
+            "emoji": "\ud83e\ude93",
+            "sound": "A says aah... Axe!"
+        },
+        {
+            "word": "Arrow",
+            "emoji": "\ud83c\udff9",
+            "sound": "A says aah... Arrow!"
+        },
+        {
+            "word": "Alligator",
+            "emoji": "\ud83d\udc0a",
+            "sound": "A says aah... Alligator!"
+        }
+    ],
+    "B": [
+        {
+            "word": "Ball",
+            "emoji": "\u26bd",
+            "sound": "B says buh... Ball!"
+        },
+        {
+            "word": "Bat",
+            "emoji": "\ud83e\udd87",
+            "sound": "B says buh... Bat!"
+        },
+        {
+            "word": "Bear",
+            "emoji": "\ud83d\udc3b",
+            "sound": "B says buh... Bear!"
+        },
+        {
+            "word": "Bus",
+            "emoji": "\ud83d\ude8c",
+            "sound": "B says buh... Bus!"
+        },
+        {
+            "word": "Boat",
+            "emoji": "\u26f5",
+            "sound": "B says buh... Boat!"
+        }
+    ],
+    "C": [
+        {
+            "word": "Cat",
+            "emoji": "\ud83d\udc31",
+            "sound": "C says kuh... Cat!"
+        },
+        {
+            "word": "Car",
+            "emoji": "\ud83d\ude97",
+            "sound": "C says kuh... Car!"
+        },
+        {
+            "word": "Cake",
+            "emoji": "\ud83c\udf82",
+            "sound": "C says kuh... Cake!"
+        },
+        {
+            "word": "Cow",
+            "emoji": "\ud83d\udc2e",
+            "sound": "C says kuh... Cow!"
+        },
+        {
+            "word": "Cap",
+            "emoji": "\ud83e\udde2",
+            "sound": "C says kuh... Cap!"
+        }
+    ],
+    "D": [
+        {
+            "word": "Dog",
+            "emoji": "\ud83d\udc36",
+            "sound": "D says duh... Dog!"
+        },
+        {
+            "word": "Duck",
+            "emoji": "\ud83e\udd86",
+            "sound": "D says duh... Duck!"
+        },
+        {
+            "word": "Doll",
+            "emoji": "\ud83e\ude86",
+            "sound": "D says duh... Doll!"
+        },
+        {
+            "word": "Drum",
+            "emoji": "\ud83e\udd41",
+            "sound": "D says duh... Drum!"
+        },
+        {
+            "word": "Door",
+            "emoji": "\ud83d\udeaa",
+            "sound": "D says duh... Door!"
+        }
+    ],
+    "E": [
+        {
+            "word": "Elephant",
+            "emoji": "\ud83d\udc18",
+            "sound": "E says eh... Elephant!"
+        },
+        {
+            "word": "Egg",
+            "emoji": "\ud83e\udd5a",
+            "sound": "E says eh... Egg!"
+        },
+        {
+            "word": "Eagle",
+            "emoji": "\ud83e\udd85",
+            "sound": "E says eh... Eagle!"
+        },
+        {
+            "word": "Engine",
+            "emoji": "\ud83d\ude82",
+            "sound": "E says eh... Engine!"
+        },
+        {
+            "word": "Eye",
+            "emoji": "\ud83d\udc41\ufe0f",
+            "sound": "E says eh... Eye!"
+        }
+    ],
+    "F": [
+        {
+            "word": "Fish",
+            "emoji": "\ud83d\udc1f",
+            "sound": "F says fuh... Fish!"
+        },
+        {
+            "word": "Frog",
+            "emoji": "\ud83d\udc38",
+            "sound": "F says fuh... Frog!"
+        },
+        {
+            "word": "Fan",
+            "emoji": "\ud83e\udead",
+            "sound": "F says fuh... Fan!"
+        },
+        {
+            "word": "Fox",
+            "emoji": "\ud83e\udd8a",
+            "sound": "F says fuh... Fox!"
+        },
+        {
+            "word": "Flag",
+            "emoji": "\ud83d\udea9",
+            "sound": "F says fuh... Flag!"
+        }
+    ],
+    "G": [
+        {
+            "word": "Grapes",
+            "emoji": "\ud83c\udf47",
+            "sound": "G says guh... Grapes!"
+        },
+        {
+            "word": "Giraffe",
+            "emoji": "\ud83e\udd92",
+            "sound": "G says guh... Giraffe!"
+        },
+        {
+            "word": "Goat",
+            "emoji": "\ud83d\udc10",
+            "sound": "G says guh... Goat!"
+        },
+        {
+            "word": "Guitar",
+            "emoji": "\ud83c\udfb8",
+            "sound": "G says guh... Guitar!"
+        },
+        {
+            "word": "Gift",
+            "emoji": "\ud83c\udf81",
+            "sound": "G says guh... Gift!"
+        }
+    ],
+    "H": [
+        {
+            "word": "Hat",
+            "emoji": "\ud83d\udc52",
+            "sound": "H says huh... Hat!"
+        },
+        {
+            "word": "Horse",
+            "emoji": "\ud83d\udc34",
+            "sound": "H says huh... Horse!"
+        },
+        {
+            "word": "House",
+            "emoji": "\ud83c\udfe0",
+            "sound": "H says huh... House!"
+        },
+        {
+            "word": "Hen",
+            "emoji": "\ud83d\udc14",
+            "sound": "H says huh... Hen!"
+        },
+        {
+            "word": "Hand",
+            "emoji": "\u270b",
+            "sound": "H says huh... Hand!"
+        }
+    ],
+    "I": [
+        {
+            "word": "Igloo",
+            "emoji": "\ud83d\uded6",
+            "sound": "I says ih... Igloo!"
+        },
+        {
+            "word": "Ice cream",
+            "emoji": "\ud83c\udf66",
+            "sound": "I says ih... Ice cream!"
+        },
+        {
+            "word": "Ink",
+            "emoji": "\ud83d\udd8b\ufe0f",
+            "sound": "I says ih... Ink!"
+        },
+        {
+            "word": "Island",
+            "emoji": "\ud83c\udfdd\ufe0f",
+            "sound": "I says ih... Island!"
+        },
+        {
+            "word": "Iron",
+            "emoji": "\ud83d\udc54",
+            "sound": "I says ih... Iron!"
+        }
+    ],
+    "J": [
+        {
+            "word": "Jug",
+            "emoji": "\ud83c\udffa",
+            "sound": "J says juh... Jug!"
+        },
+        {
+            "word": "Juice",
+            "emoji": "\ud83e\uddc3",
+            "sound": "J says juh... Juice!"
+        },
+        {
+            "word": "Jeep",
+            "emoji": "\ud83d\ude99",
+            "sound": "J says juh... Jeep!"
+        },
+        {
+            "word": "Jellyfish",
+            "emoji": "\ud83e\udebc",
+            "sound": "J says juh... Jellyfish!"
+        },
+        {
+            "word": "Jam",
+            "emoji": "\ud83c\udf53",
+            "sound": "J says juh... Jam!"
+        }
+    ],
+    "K": [
+        {
+            "word": "Kite",
+            "emoji": "\ud83e\ude81",
+            "sound": "K says kuh... Kite!"
+        },
+        {
+            "word": "Kangaroo",
+            "emoji": "\ud83e\udd98",
+            "sound": "K says kuh... Kangaroo!"
+        },
+        {
+            "word": "King",
+            "emoji": "\ud83d\udc51",
+            "sound": "K says kuh... King!"
+        },
+        {
+            "word": "Key",
+            "emoji": "\ud83d\udd11",
+            "sound": "K says kuh... Key!"
+        },
+        {
+            "word": "Koala",
+            "emoji": "\ud83d\udc28",
+            "sound": "K says kuh... Koala!"
+        }
+    ],
+    "L": [
+        {
+            "word": "Lion",
+            "emoji": "\ud83e\udd81",
+            "sound": "L says luh... Lion!"
+        },
+        {
+            "word": "Leaf",
+            "emoji": "\ud83c\udf43",
+            "sound": "L says luh... Leaf!"
+        },
+        {
+            "word": "Lamp",
+            "emoji": "\ud83e\ude94",
+            "sound": "L says luh... Lamp!"
+        },
+        {
+            "word": "Lemon",
+            "emoji": "\ud83c\udf4b",
+            "sound": "L says luh... Lemon!"
+        },
+        {
+            "word": "Lock",
+            "emoji": "\ud83d\udd12",
+            "sound": "L says luh... Lock!"
+        }
+    ],
+    "M": [
+        {
+            "word": "Monkey",
+            "emoji": "\ud83d\udc12",
+            "sound": "M says muh... Monkey!"
+        },
+        {
+            "word": "Mango",
+            "emoji": "\ud83e\udd6d",
+            "sound": "M says muh... Mango!"
+        },
+        {
+            "word": "Moon",
+            "emoji": "\ud83c\udf19",
+            "sound": "M says muh... Moon!"
+        },
+        {
+            "word": "Milk",
+            "emoji": "\ud83e\udd5b",
+            "sound": "M says muh... Milk!"
+        },
+        {
+            "word": "Mouse",
+            "emoji": "\ud83d\udc2d",
+            "sound": "M says muh... Mouse!"
+        }
+    ],
+    "N": [
+        {
+            "word": "Nest",
+            "emoji": "\ud83e\udeb9",
+            "sound": "N says nuh... Nest!"
+        },
+        {
+            "word": "Net",
+            "emoji": "\ud83d\udd78\ufe0f",
+            "sound": "N says nuh... Net!"
+        },
+        {
+            "word": "Nut",
+            "emoji": "\ud83e\udd5c",
+            "sound": "N says nuh... Nut!"
+        },
+        {
+            "word": "Nose",
+            "emoji": "\ud83d\udc43",
+            "sound": "N says nuh... Nose!"
+        },
+        {
+            "word": "Needle",
+            "emoji": "\ud83e\udea1",
+            "sound": "N says nuh... Needle!"
+        }
+    ],
+    "O": [
+        {
+            "word": "Owl",
+            "emoji": "\ud83e\udd89",
+            "sound": "O says aw... Owl!"
+        },
+        {
+            "word": "Orange",
+            "emoji": "\ud83c\udf4a",
+            "sound": "O says aw... Orange!"
+        },
+        {
+            "word": "Ostrich",
+            "emoji": "\ud83e\udda4",
+            "sound": "O says aw... Ostrich!"
+        },
+        {
+            "word": "Ox",
+            "emoji": "\ud83d\udc02",
+            "sound": "O says aw... Ox!"
+        },
+        {
+            "word": "Octopus",
+            "emoji": "\ud83d\udc19",
+            "sound": "O says aw... Octopus!"
+        }
+    ],
+    "P": [
+        {
+            "word": "Parrot",
+            "emoji": "\ud83e\udd9c",
+            "sound": "P says puh... Parrot!"
+        },
+        {
+            "word": "Pen",
+            "emoji": "\ud83d\udd8a\ufe0f",
+            "sound": "P says puh... Pen!"
+        },
+        {
+            "word": "Pencil",
+            "emoji": "\u270f\ufe0f",
+            "sound": "P says puh... Pencil!"
+        },
+        {
+            "word": "Peacock",
+            "emoji": "\ud83e\udd9a",
+            "sound": "P says puh... Peacock!"
+        },
+        {
+            "word": "Pumpkin",
+            "emoji": "\ud83c\udf83",
+            "sound": "P says puh... Pumpkin!"
+        }
+    ],
+    "Q": [
+        {
+            "word": "Queen",
+            "emoji": "\ud83d\udc78",
+            "sound": "Q says kwah... Queen!"
+        },
+        {
+            "word": "Quill",
+            "emoji": "\ud83e\udeb6",
+            "sound": "Q says kwah... Quill!"
+        },
+        {
+            "word": "Quilt",
+            "emoji": "\ud83d\udecf\ufe0f",
+            "sound": "Q says kwah... Quilt!"
+        },
+        {
+            "word": "Queue",
+            "emoji": "\ud83d\udeb6\u200d\u2642\ufe0f",
+            "sound": "Q says kwah... Queue!"
+        },
+        {
+            "word": "Quick",
+            "emoji": "\u26a1",
+            "sound": "Q says kwah... Quick!"
+        }
+    ],
+    "R": [
+        {
+            "word": "Rabbit",
+            "emoji": "\ud83d\udc07",
+            "sound": "R says ruh... Rabbit!"
+        },
+        {
+            "word": "Ring",
+            "emoji": "\ud83d\udc8d",
+            "sound": "R says ruh... Ring!"
+        },
+        {
+            "word": "Rose",
+            "emoji": "\ud83c\udf39",
+            "sound": "R says ruh... Rose!"
+        },
+        {
+            "word": "Rocket",
+            "emoji": "\ud83d\ude80",
+            "sound": "R says ruh... Rocket!"
+        },
+        {
+            "word": "Rainbow",
+            "emoji": "\ud83c\udf08",
+            "sound": "R says ruh... Rainbow!"
+        }
+    ],
+    "S": [
+        {
+            "word": "Sun",
+            "emoji": "\u2600\ufe0f",
+            "sound": "S says suh... Sun!"
+        },
+        {
+            "word": "Star",
+            "emoji": "\u2b50",
+            "sound": "S says suh... Star!"
+        },
+        {
+            "word": "Snake",
+            "emoji": "\ud83d\udc0d",
+            "sound": "S says suh... Snake!"
+        },
+        {
+            "word": "Ship",
+            "emoji": "\ud83d\udea2",
+            "sound": "S says suh... Ship!"
+        },
+        {
+            "word": "Sunflower",
+            "emoji": "\ud83c\udf3b",
+            "sound": "S says suh... Sunflower!"
+        }
+    ],
+    "T": [
+        {
+            "word": "Tiger",
+            "emoji": "\ud83d\udc2f",
+            "sound": "T says tuh... Tiger!"
+        },
+        {
+            "word": "Tree",
+            "emoji": "\ud83c\udf33",
+            "sound": "T says tuh... Tree!"
+        },
+        {
+            "word": "Train",
+            "emoji": "\ud83d\ude86",
+            "sound": "T says tuh... Train!"
+        },
+        {
+            "word": "Tomato",
+            "emoji": "\ud83c\udf45",
+            "sound": "T says tuh... Tomato!"
+        },
+        {
+            "word": "Turtle",
+            "emoji": "\ud83d\udc22",
+            "sound": "T says tuh... Turtle!"
+        }
+    ],
+    "U": [
+        {
+            "word": "Umbrella",
+            "emoji": "\u2602\ufe0f",
+            "sound": "U says uh... Umbrella!"
+        },
+        {
+            "word": "Urn",
+            "emoji": "\ud83c\udffa",
+            "sound": "U says uh... Urn!"
+        },
+        {
+            "word": "Unicorn",
+            "emoji": "\ud83e\udd84",
+            "sound": "U says uh... Unicorn!"
+        },
+        {
+            "word": "Uniform",
+            "emoji": "\ud83e\udd4b",
+            "sound": "U says uh... Uniform!"
+        },
+        {
+            "word": "Up",
+            "emoji": "\u2b06\ufe0f",
+            "sound": "U says uh... Up!"
+        }
+    ],
+    "V": [
+        {
+            "word": "Van",
+            "emoji": "\ud83d\ude90",
+            "sound": "V says vuh... Van!"
+        },
+        {
+            "word": "Vase",
+            "emoji": "\ud83c\udffa",
+            "sound": "V says vuh... Vase!"
+        },
+        {
+            "word": "Violin",
+            "emoji": "\ud83c\udfbb",
+            "sound": "V says vuh... Violin!"
+        },
+        {
+            "word": "Vegetables",
+            "emoji": "\ud83e\udd55",
+            "sound": "V says vuh... Vegetables!"
+        },
+        {
+            "word": "Vulture",
+            "emoji": "\ud83e\udd85",
+            "sound": "V says vuh... Vulture!"
+        }
+    ],
+    "W": [
+        {
+            "word": "Watch",
+            "emoji": "\u231a",
+            "sound": "W says wuh... Watch!"
+        },
+        {
+            "word": "Watermelon",
+            "emoji": "\ud83c\udf49",
+            "sound": "W says wuh... Watermelon!"
+        },
+        {
+            "word": "Whale",
+            "emoji": "\ud83d\udc0b",
+            "sound": "W says wuh... Whale!"
+        },
+        {
+            "word": "Wheel",
+            "emoji": "\ud83d\udede",
+            "sound": "W says wuh... Wheel!"
+        },
+        {
+            "word": "Windmill",
+            "emoji": "\ud83e\udeb5",
+            "sound": "W says wuh... Windmill!"
+        }
+    ],
+    "X": [
+        {
+            "word": "Xylophone",
+            "emoji": "\ud83c\udfb5",
+            "sound": "X says ks... Xylophone!"
+        },
+        {
+            "word": "X-ray",
+            "emoji": "\ud83e\ude7b",
+            "sound": "X says ks... X-ray!"
+        },
+        {
+            "word": "Xmas Tree",
+            "emoji": "\ud83c\udf84",
+            "sound": "X says ks... Xmas Tree!"
+        },
+        {
+            "word": "Box",
+            "emoji": "\ud83d\udce6",
+            "sound": "X ends with ks... Box!"
+        },
+        {
+            "word": "Fox",
+            "emoji": "\ud83e\udd8a",
+            "sound": "X ends with ks... Fox!"
+        }
+    ],
+    "Y": [
+        {
+            "word": "Yak",
+            "emoji": "\ud83d\udc02",
+            "sound": "Y says yuh... Yak!"
+        },
+        {
+            "word": "Yo-yo",
+            "emoji": "\ud83e\ude80",
+            "sound": "Y says yuh... Yo-yo!"
+        },
+        {
+            "word": "Yacht",
+            "emoji": "\u26f5",
+            "sound": "Y says yuh... Yacht!"
+        },
+        {
+            "word": "Yarn",
+            "emoji": "\ud83e\uddf6",
+            "sound": "Y says yuh... Yarn!"
+        },
+        {
+            "word": "Yellow",
+            "emoji": "\ud83d\udfe1",
+            "sound": "Y says yuh... Yellow!"
+        }
+    ],
+    "Z": [
+        {
+            "word": "Zebra",
+            "emoji": "\ud83e\udd93",
+            "sound": "Z says zuh... Zebra!"
+        },
+        {
+            "word": "Zoo",
+            "emoji": "\ud83e\udd81",
+            "sound": "Z says zuh... Zoo!"
+        },
+        {
+            "word": "Zip",
+            "emoji": "\ud83e\udd10",
+            "sound": "Z says zuh... Zip!"
+        },
+        {
+            "word": "Zero",
+            "emoji": "0\ufe0f\u20e3",
+            "sound": "Z says zuh... Zero!"
+        },
+        {
+            "word": "Zigzag",
+            "emoji": "\u26a1",
+            "sound": "Z says zuh... Zigzag!"
+        }
+    ]
+};
+
+var DATA_2LETTER_WORDS = [
       {
             "word": "am",
             "l1": "a",
@@ -23159,6 +23868,13 @@ function setNurseryNumSubTab(st) {
       scrollActiveFilterPill();
     }
 
+    function setLkgAzSoundLetter(l) {
+      appState.lkgAzSoundLetter = l;
+      appState.quizIndex = 0;
+      resetQuizQuestionState();
+      renderCurrentView();
+    }
+
     function setLkgPhonicsVowel(v) {
       appState.lkgPhonicsVowel = v;
       appState.quizIndex = 0;
@@ -25108,13 +25824,21 @@ function setNurseryNumSubTab(st) {
 
       // TAB 1: 🔤 Phonics & CVC Words
       if (tabKey === "phonics") {
+        if (!appState.lkgPhonicsVowel) {
+          appState.lkgPhonicsVowel = "az_sound";
+        }
+        if (!appState.lkgAzSoundLetter) {
+          appState.lkgAzSoundLetter = "A";
+        }
+
         if (filterBar) {
           filterBar.style.display = "flex";
           var lkgPills = [
             { key: "vowels", label: "🔴 Vowels (5)" },
             { key: "consonants", label: "🔵 Consonants (19)" },
             { key: "semi_vowels", label: "🟡 Semi-Vowels (2)" },
-            { key: "two", label: "✌️ 2-Letter (25)" },
+            { key: "az_sound", label: "🔊 A–Z Sound Words" },
+            { key: "two", label: "🔤 2-Letter Words (25)" },
             { key: "a", label: "Short 'a' (31)" },
             { key: "e", label: "Short 'e' (28)" },
             { key: "i", label: "Short 'i' (28)" },
@@ -25130,24 +25854,112 @@ function setNurseryNumSubTab(st) {
           filterBar.innerHTML = lpFilterHtml;
         }
 
+        // Sub 1, 2, 3: Vowels, Consonants, Semi-Vowels Practice
         if (appState.lkgPhonicsVowel === "vowels" || appState.lkgPhonicsVowel === "consonants" || appState.lkgPhonicsVowel === "semi_vowels") {
           html += renderLetterPracticeView(appState.lkgPhonicsVowel);
-        } else {
+        }
+
+        // Sub 4: 🔊 A–Z Sound Words (5 Words Per Letter, 130 Words)
+        else if (appState.lkgPhonicsVowel === "az_sound") {
+          html += '<div class="mode-switch">';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Sounds</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Sound Quiz</button>';
+          html += '</div>';
+
+          var curLet = appState.lkgAzSoundLetter || "A";
+          var azLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+          // Letter selector strip
+          html += '<div style="display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 6px 2px; margin-bottom: 12px; scrollbar-width: thin;">';
+          for (var ali = 0; ali < azLetters.length; ali++) {
+            var letChar = azLetters[ali];
+            var isSel = (letChar === curLet);
+            var letBtnBg = isSel ? "#E65100" : "#FFF3E0";
+            var letBtnColor = isSel ? "#FFFFFF" : "#E65100";
+            var letBtnBorder = isSel ? "#BF360C" : "#FFE0B2";
+            html += '<button onclick="safeAction(function(){ setLkgAzSoundLetter(\'' + letChar + '\'); speak(\'' + letChar + '\', \'en-IN\'); })" style="min-width: 42px; min-height: 44px; border-radius: 10px; border: 2px solid ' + letBtnBorder + '; background: ' + letBtnBg + '; color: ' + letBtnColor + '; font-size: 1.35rem; font-weight: 900; cursor: pointer; flex-shrink: 0; transition: transform 0.1s ease;">' + letChar + '</button>';
+          }
+          html += '</div>';
+
+          var wordList = DATA_AZ_SOUND_WORDS[curLet] || DATA_AZ_SOUND_WORDS["A"];
+
+          if (appState.mode === "learn") {
+            autoSpeak("lkg_az_learn_" + curLet, "Letter " + curLet + " sound words. Tap any card to hear pronunciation!", "en-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Letter ' + curLet + ' sound words. Tap any card to hear sound!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap card to hear sound & phonics 🔊</div>';
+            html += '<div class="grid-items-container" style="max-height: calc(100vh - 270px); overflow-y: auto;">';
+            for (var wli = 0; wli < wordList.length; wli++) {
+              var wObj = wordList[wli];
+              html += '<div class="item-chip-card" style="padding: 12px 10px; text-align: center;" onclick="safeAction(function(){ speak(\'' + wObj.sound + '\', \'en-IN\'); })">';
+              html += '  <div class="chip-emoji safe-emoji" style="font-size: 44px;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + wObj.word + '\', \'en-IN\'); })">' + wObj.emoji + '</div>';
+              html += '  <div class="chip-word" style="font-size: 18px; font-weight: 900; color: #E65100; margin-top: 4px;">' + wObj.word + '</div>';
+              html += '  <div style="font-size: 11px; font-weight: 700; color: #5D4037; margin-top: 2px;">' + wObj.sound + '</div>';
+              html += '</div>';
+            }
+            html += '</div>';
+          } else {
+            var targetWordObj = wordList[appState.quizIndex % wordList.length];
+            var azQuizCacheKey = "lkg_az_quiz_" + curLet + "_" + appState.quizIndex;
+            var azQuizOpts = getShuffledOptions(azQuizCacheKey, function() {
+              var opts = [targetWordObj.word];
+              var otherPool = [];
+              for (var lk in DATA_AZ_SOUND_WORDS) {
+                var wArr = DATA_AZ_SOUND_WORDS[lk];
+                for (var wi = 0; wi < wArr.length; wi++) {
+                  if (wArr[wi].word !== targetWordObj.word) {
+                    otherPool.push(wArr[wi].word);
+                  }
+                }
+              }
+              while (opts.length < 4) {
+                var rw = otherPool[Math.floor(Math.random() * otherPool.length)];
+                if (opts.indexOf(rw) === -1) opts.push(rw);
+              }
+              return fisherYatesShuffle(opts);
+            });
+            var isAzAnswered = (quizState.isAnswered && quizState.activeKey === azQuizCacheKey);
+
+            var azSpoken = "Which word starts with letter " + curLet + "?";
+            autoSpeak(azQuizCacheKey, azSpoken, "en-IN");
+
+            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + targetWordObj.sound + '\', \'en-IN\'); })">';
+            html += '  <div style="font-size: 14px; font-weight: 800; color: #E65100; margin-bottom: 4px;">LETTER ' + curLet + ' PHONICS QUIZ</div>';
+            html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 64px;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + targetWordObj.sound + '\', \'en-IN\'); })">' + targetWordObj.emoji + '</div>';
+            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + targetWordObj.word + '\', \'en-IN\'); })" style="font-size: 32px; font-weight: 900; color: #E65100;">' + (isAzAnswered ? targetWordObj.word : '<span class="dash-blank">___</span>') + '</div>';
+            html += '  <div class="audio-hint">🔊 ' + targetWordObj.sound + '</div>';
+            html += '</div>';
+
+            html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 8px;">Choose the matching word: 🔊</div>';
+
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 14px auto 0;">';
+            for (var aoi = 0; aoi < azQuizOpts.length; aoi++) {
+              var wCandidate = azQuizOpts[aoi];
+              var isAzOk = (wCandidate === targetWordObj.word);
+              var azBtnCls = "opt-btn";
+              if (isAzAnswered) {
+                azBtnCls += isAzOk ? " correct-choice" : " disabled-choice";
+              }
+              html += '<button class="' + azBtnCls + '" style="min-height: 56px; font-size: 1.35rem; font-weight: 900; border-radius: 14px; padding: 6px 10px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isAzOk + ', { key: \'' + azQuizCacheKey + '\', display: \'' + targetWordObj.word + ' ' + targetWordObj.emoji + '\', spoken: \'Correct! ' + targetWordObj.sound + '\', lang: \'en-IN\', ansVal: \'' + wCandidate + '\', wrongMsg: \'Try again!\' }); })">' + wCandidate + '</button>';
+            }
+            html += '</div>';
+            html += renderCompletedPreviewCard();
+          }
+        }
+
+        // Sub 5: 🔤 2-Letter Words
+        else if (appState.lkgPhonicsVowel === "two") {
           html += '<div class="mode-switch">';
           html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Words</button>';
           html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Missing Letter Quiz</button>';
           html += '</div>';
 
-          // 2-Letter Words
-          if (appState.lkgPhonicsVowel === "two") {
           if (appState.mode === "learn") {
             autoSpeak("lkg_2let_learn", "2-Letter Sight Words. 25 foundational words. Tap any card to hear sound!", "en-IN");
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'2-Letter Sight Words. Tap any card to hear sound!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap any card to hear pronunciation 🔊</div>';
-            html += '<div class="grid-items-container">';
+            html += '<div class="grid-items-container" style="max-height: calc(100vh - 250px); overflow-y: auto;">';
             for (var ti = 0; ti < DATA_2LETTER_WORDS.length; ti++) {
               var tWord = DATA_2LETTER_WORDS[ti];
               html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + tWord.word + '! ' + tWord.blend + '\', \'en-IN\'); })">';
-              html += '  <div class="chip-letter" style="color: #00897B; font-size: 24px;">' + tWord.word.toUpperCase() + '</div>';
+              html += '  <div class="chip-letter" style="color: #00897B; font-size: 26px; font-weight: 900;">' + tWord.word.toUpperCase() + '</div>';
               html += '  <div class="chip-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + tWord.word + '\', \'en-IN\'); })">' + tWord.emoji + '</div>';
               html += '  <div style="font-size: 11px; font-weight: bold; color: #004D40; margin-top: 2px;">' + tWord.blend + '</div>';
               html += '</div>';
@@ -25188,26 +26000,33 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing letter for ' + twoQ.word + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing letter: 🔊</div>';
 
-            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 14px auto 0;">';
             for (var toi = 0; toi < twoOpts.length; toi++) {
               var isTwoOk = (twoOpts[toi] === targetChar);
               var twoBtnCls = "opt-btn letter-bubble";
               if (isTwoAnswered) {
                 twoBtnCls += isTwoOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + twoBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleLkg2LetterAns(' + isTwoOk + ', \'' + twoOpts[toi] + '\', \'' + twoQ.word + '\', \'' + twoQ.emoji + '\', \'' + twoQ.blend + '\'); })">' + twoOpts[toi].toUpperCase() + '</button>';
+              html += '<button class="' + twoBtnCls + '" style="min-height: 56px; font-size: 1.65rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleLkgTwoAns(' + isTwoOk + ', \'' + twoOpts[toi] + '\', \'' + twoQ.word + '\', \'' + twoQ.emoji + '\', \'' + twoQ.blend + '\'); })">' + twoOpts[toi].toUpperCase() + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
           }
         }
-        // 3-Letter CVC Words (5 Vowels)
+
+        // Sub 6, 7, 8, 9, 10: 3-Letter CVC Words (a, e, i, o, u)
         else {
+          html += '<div class="mode-switch">';
+          html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 Learn Words</button>';
+          html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Missing Letter Quiz</button>';
+          html += '</div>';
+
           var vList = DATA_3LETTER_CVC[appState.lkgPhonicsVowel] || DATA_3LETTER_CVC.a;
+
           if (appState.mode === "learn") {
             autoSpeak("lkg_cvc_learn_" + appState.lkgPhonicsVowel, "CVC 3-letter words with short " + appState.lkgPhonicsVowel + ". Tap any word!", "en-IN");
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'CVC 3-letter words with short ' + appState.lkgPhonicsVowel + '. Tap any word!\', \'en-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">Tap card to hear sound 🔊</div>';
-            html += '<div class="grid-items-container">';
+            html += '<div class="grid-items-container" style="max-height: calc(100vh - 250px); overflow-y: auto;">';
             for (var vi = 0; vi < vList.length; vi++) {
               var vItem = vList[vi];
               html += '<div class="item-chip-card" onclick="safeAction(function(){ speak(\'' + vItem.word + '! ' + vItem.blend + '\', \'en-IN\'); })">';
@@ -25252,19 +26071,18 @@ function setNurseryNumSubTab(st) {
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'Choose the missing letter for ' + cvcQ.word + '\', \'en-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 6px; width: 100%;">Choose the missing letter: 🔊</div>';
 
-            html += '<div class="options-grid-2" style="display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; width: 100% !important; max-width: 360px !important; margin: 14px auto 0 !important;">';
+            html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 14px auto 0;">';
             for (var cvoi = 0; cvoi < cvcOpts.length; cvoi++) {
               var isCvcOk = (cvcOpts[cvoi] === targetCharCvc);
               var cvcBtnCls = "opt-btn letter-bubble";
               if (isCvcAnswered) {
                 cvcBtnCls += isCvcOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + cvcBtnCls + '" style="min-width: 74px !important; min-height: 66px !important; font-size: 1.75rem !important; font-weight: 900 !important; width: 100%;" onclick="safeAction(function(){ handleLkgCvcAns(' + isCvcOk + ', \'' + cvcOpts[cvoi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\', \'' + cvcQ.blend + '\'); })">' + cvcOpts[cvoi].toUpperCase() + '</button>';
+              html += '<button class="' + cvcBtnCls + '" style="min-height: 56px; font-size: 1.65rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleLkgCvcAns(' + isCvcOk + ', \'' + cvcOpts[cvoi] + '\', \'' + cvcQ.word + '\', \'' + cvcQ.emoji + '\', \'' + cvcQ.blend + '\'); })">' + cvcOpts[cvoi].toUpperCase() + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
           }
-        }
         }
       }
 
