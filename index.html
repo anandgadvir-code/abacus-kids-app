@@ -2862,6 +2862,7 @@
       ukgPhonicsVowel: "two", // "two", "cvc", "a", "e", "i", "o", "u"
       ukgEnglishWorldCat: "days", // 14 categories
       ukgGrammarSubTab: "is_am_are", // 11 dedicated sub-tabs
+      ukgGrammarStep: "subject", // Step 1: "subject" (default) or Step 2: "sentence"
       // UKG Phonics legacy
       phonicsVowel: "a", // a, e, i, o, u
       // UKG Matra Filter
@@ -8570,54 +8571,60 @@ var DATA_SHABDA = [
       is_am_are: {
         title: "Use of Is / Am / Are",
         pill: "⚖️ Is / Am / Are",
-        ruleSummary: "Rule: <b>I ➔ am</b> &bull; <b>He, She, It, Ajay (Singular) ➔ is</b> &bull; <b>You, We, They (Plural) ➔ are</b>",
-        spokenRule: "Rule. Use am with I. Use is with He, She, It, and singular names. Use are with You, We, and They.",
-        defaultOptions: ["is", "am", "are", "was"],
+        hasSteps: true,
+        ruleSummary: "Rule: <b>He, She, It, Ajay (Singular) ➔ is</b> &bull; <b>I ➔ am</b> &bull; <b>We, You, They (Plural) ➔ are</b>",
+        spokenRule: "Rule. Use is with singular He, She, It, and Ajay. Use am with I. Use are with plural We, You, and They.",
+        defaultOptions: ["is", "am", "are"],
         renderRulesHtml: function() {
           return '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 8px;">' +
-            '<div style="background: #FFF8E1; border: 1.5px solid #FFD54F; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'I is always used with am. For example, I am a student.\', \'en-IN\'); })">' +
-              '<div style="font-weight: 900; color: #F57F17; font-size: 13px;">🙋 I ➔ am</div>' +
-              '<div style="font-size: 11px; color: #5D4037; margin-top: 3px;">• I am a student. 🎒<br>• I am happy. 😊<br>• I am six years old. 🎂</div>' +
-            '</div>' +
-            '<div style="background: #E3F2FD; border: 1.5px solid #90CAF9; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'He, She, It, and singular names use is. For example, He is a boy, She is singing, Ajay is smart.\', \'en-IN\'); })">' +
+            '<div style="background: #E3F2FD; border: 1.5px solid #90CAF9; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'He, She, It, and singular names use is. For example, He is a boy, She is a girl, Ajay is smart.\', \'en-IN\'); })">' +
               '<div style="font-weight: 900; color: #1565C0; font-size: 13px;">👦 He / She / It ➔ is</div>' +
-              '<div style="font-size: 11px; color: #37474F; margin-top: 3px;">• He is a boy. 👦<br>• She is singing. 🎤<br>• It is a cat. 🐱<br>• Ajay is smart. 🧠</div>' +
+              '<div style="font-size: 11px; color: #37474F; margin-top: 3px;">• He is a boy. 👦<br>• She is a girl. 👧<br>• It is a cat. 🐱<br>• Ajay is smart. 🧠</div>' +
             '</div>' +
-            '<div style="background: #E8F5E9; border: 1.5px solid #A5D6A7; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'You, We, and They use are. For example, You are my friend, We are happy, They are playing.\', \'en-IN\'); })">' +
-              '<div style="font-weight: 900; color: #2E7D32; font-size: 13px;">👥 You / We / They ➔ are</div>' +
-              '<div style="font-size: 11px; color: #1B5E20; margin-top: 3px;">• You are my friend. 🤝<br>• We are happy. 🌟<br>• They are playing. ⚽</div>' +
+            '<div style="background: #FFF8E1; border: 1.5px solid #FFD54F; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'I is always used with am. For example, I am happy, I am a student.\', \'en-IN\'); })">' +
+              '<div style="font-weight: 900; color: #F57F17; font-size: 13px;">🙋 I ➔ am</div>' +
+              '<div style="font-size: 11px; color: #5D4037; margin-top: 3px;">• I am happy. 😊<br>• I am a student. 🎒<br>• I am six. 🎂</div>' +
+            '</div>' +
+            '<div style="background: #E8F5E9; border: 1.5px solid #A5D6A7; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'You, We, and They use are. For example, You are good, We are friends, They are students.\', \'en-IN\'); })">' +
+              '<div style="font-weight: 900; color: #2E7D32; font-size: 13px;">👥 We / You / They ➔ are</div>' +
+              '<div style="font-size: 11px; color: #1B5E20; margin-top: 3px;">• We are friends. 🤝<br>• You are good. 👍<br>• They are students. 🏫</div>' +
             '</div>' +
           '</div>';
         },
-        questions: [
-          { q: "He ___ a boy.", ans: "is", emoji: "👦", hint: "With 'He' we use 'is'", spoken: "He is a boy." },
-          { q: "I ___ a student.", ans: "am", emoji: "🎒", hint: "With 'I' we use 'am'", spoken: "I am a student." },
-          { q: "You ___ my friend.", ans: "are", emoji: "🤝", hint: "With 'You' we use 'are'", spoken: "You are my friend." },
-          { q: "We ___ happy.", ans: "are", emoji: "😊", hint: "With 'We' we use 'are'", spoken: "We are happy." },
-          { q: "They ___ playing.", ans: "are", emoji: "⚽", hint: "With 'They' we use 'are'", spoken: "They are playing." },
-          { q: "She ___ singing.", ans: "is", emoji: "🎤", hint: "With 'She' we use 'is'", spoken: "She is singing." },
-          { q: "It ___ a cat.", ans: "is", emoji: "🐱", hint: "With 'It' we use 'is'", spoken: "It is a cat." },
-          { q: "Ajay ___ smart.", ans: "is", emoji: "🧠", hint: "Singular name Ajay takes 'is'", spoken: "Ajay is smart." },
-          { q: "I ___ six years old.", ans: "am", emoji: "🎂", hint: "With 'I' we use 'am'", spoken: "I am six years old." },
-          { q: "He ___ my brother.", ans: "is", emoji: "👦", hint: "With 'He' we use 'is'", spoken: "He is my brother." },
-          { q: "She ___ a good doctor.", ans: "is", emoji: "👩‍⚕️", hint: "With 'She' we use 'is'", spoken: "She is a good doctor." },
-          { q: "They ___ flying kites.", ans: "are", emoji: "🪁", hint: "With 'They' we use 'are'", spoken: "They are flying kites." },
-          { q: "The sun ___ bright today.", ans: "is", emoji: "☀️", hint: "Singular sun takes 'is'", spoken: "The sun is bright today." },
-          { q: "We ___ eating apples.", ans: "are", emoji: "🍎", hint: "With 'We' we use 'are'", spoken: "We are eating apples." },
-          { q: "You ___ very helpful.", ans: "are", emoji: "⭐", hint: "With 'You' we use 'are'", spoken: "You are very helpful." },
-          { q: "The bird ___ on the branch.", ans: "is", emoji: "🐦", hint: "One bird takes 'is'", spoken: "The bird is on the branch." },
-          { q: "The stars ___ shining at night.", ans: "are", emoji: "✨", hint: "Plural stars take 'are'", spoken: "The stars are shining at night." },
-          { q: "I ___ drinking warm milk.", ans: "am", emoji: "🥛", hint: "With 'I' we use 'am'", spoken: "I am drinking warm milk." },
-          { q: "The mango ___ sweet and juicy.", ans: "is", emoji: "🥭", hint: "One mango takes 'is'", spoken: "The mango is sweet and juicy." },
-          { q: "Dogs ___ faithful animals.", ans: "are", emoji: "🐕", hint: "Plural dogs take 'are'", spoken: "Dogs are faithful animals." },
-          { q: "She ___ reading her book.", ans: "is", emoji: "📖", hint: "With 'She' we use 'is'", spoken: "She is reading her book." },
-          { q: "It ___ raining outside.", ans: "is", emoji: "🌧️", hint: "With 'It' we use 'is'", spoken: "It is raining outside." },
-          { q: "You ___ a superstar!", ans: "are", emoji: "🌟", hint: "With 'You' we use 'are'", spoken: "You are a superstar!" },
-          { q: "I ___ ready for school.", ans: "am", emoji: "🏫", hint: "With 'I' we use 'am'", spoken: "I am ready for school." },
-          { q: "They ___ my classmates.", ans: "are", emoji: "🎒", hint: "With 'They' we use 'are'", spoken: "They are my classmates." },
-          { q: "The baby ___ smiling sweetly.", ans: "is", emoji: "👶", hint: "One baby takes 'is'", spoken: "The baby is smiling sweetly." },
-          { q: "We ___ going to the zoo.", ans: "are", emoji: "🦁", hint: "With 'We' we use 'are'", spoken: "We are going to the zoo." },
-          { q: "Ajay and Rohan ___ best friends.", ans: "are", emoji: "👬", hint: "Two persons take 'are'", spoken: "Ajay and Rohan are best friends." }
+        subjectQuestions: [
+          { q: "He ___", ans: "is", emoji: "👦", cue: "Singular (1 Boy)", hint: "He ➔ is", spoken: "He is!" },
+          { q: "She ___", ans: "is", emoji: "👧", cue: "Singular (1 Girl)", hint: "She ➔ is", spoken: "She is!" },
+          { q: "It ___", ans: "is", emoji: "🐱", cue: "Singular (1 Animal / Thing)", hint: "It ➔ is", spoken: "It is!" },
+          { q: "Ajay ___", ans: "is", emoji: "👦", cue: "Singular (1 Person)", hint: "Ajay ➔ is", spoken: "Ajay is!" },
+          { q: "Riya ___", ans: "is", emoji: "👧", cue: "Singular (1 Person)", hint: "Riya ➔ is", spoken: "Riya is!" },
+          { q: "Boy ___", ans: "is", emoji: "👦", cue: "Singular (1 Boy)", hint: "Boy ➔ is", spoken: "Boy is!" },
+          { q: "Cat ___", ans: "is", emoji: "🐱", cue: "Singular (1 Cat)", hint: "Cat ➔ is", spoken: "Cat is!" },
+          { q: "I ___", ans: "am", emoji: "🙋", cue: "I takes am", hint: "I ➔ am", spoken: "I am!" },
+          { q: "We ___", ans: "are", emoji: "👥", cue: "Plural (We)", hint: "We ➔ are", spoken: "We are!" },
+          { q: "You ___", ans: "are", emoji: "🫵", cue: "You takes are", hint: "You ➔ are", spoken: "You are!" },
+          { q: "They ___", ans: "are", emoji: "🧑‍🤝‍🧑", cue: "Plural (They)", hint: "They ➔ are", spoken: "They are!" },
+          { q: "Boys ___", ans: "are", emoji: "👦👦", cue: "Plural (Many Boys)", hint: "Boys ➔ are", spoken: "Boys are!" },
+          { q: "Girls ___", ans: "are", emoji: "👧👧", cue: "Plural (Many Girls)", hint: "Girls ➔ are", spoken: "Girls are!" }
+        ],
+        sentenceQuestions: [
+          { q: "He ___ a boy.", ans: "is", emoji: "👦", hint: "He ➔ is", spoken: "He is a boy!" },
+          { q: "She ___ a girl.", ans: "is", emoji: "👧", hint: "She ➔ is", spoken: "She is a girl!" },
+          { q: "It ___ a cat.", ans: "is", emoji: "🐱", hint: "It ➔ is", spoken: "It is a cat!" },
+          { q: "Ajay ___ smart.", ans: "is", emoji: "🧠", hint: "Ajay ➔ is", spoken: "Ajay is smart!" },
+          { q: "Riya ___ kind.", ans: "is", emoji: "💖", hint: "Riya ➔ is", spoken: "Riya is kind!" },
+          { q: "The boy ___ tall.", ans: "is", emoji: "🦒", hint: "Boy ➔ is", spoken: "The boy is tall!" },
+          { q: "The cat ___ cute.", ans: "is", emoji: "🐱", hint: "Cat ➔ is", spoken: "The cat is cute!" },
+          { q: "I ___ happy.", ans: "am", emoji: "😊", hint: "I ➔ am", spoken: "I am happy!" },
+          { q: "I ___ six.", ans: "am", emoji: "🎂", hint: "I ➔ am", spoken: "I am six!" },
+          { q: "I ___ a student.", ans: "am", emoji: "🎒", hint: "I ➔ am", spoken: "I am a student!" },
+          { q: "We ___ friends.", ans: "are", emoji: "🤝", hint: "We ➔ are", spoken: "We are friends!" },
+          { q: "You ___ good.", ans: "are", emoji: "👍", hint: "You ➔ are", spoken: "You are good!" },
+          { q: "They ___ students.", ans: "are", emoji: "🏫", hint: "They ➔ are", spoken: "They are students!" },
+          { q: "Boys ___ strong.", ans: "are", emoji: "💪", hint: "Boys ➔ are", spoken: "Boys are strong!" },
+          { q: "Girls ___ smart.", ans: "are", emoji: "🌟", hint: "Girls ➔ are", spoken: "Girls are smart!" },
+          { q: "The sun ___ hot.", ans: "is", emoji: "☀️", hint: "Sun ➔ is", spoken: "The sun is hot!" },
+          { q: "The apple ___ red.", ans: "is", emoji: "🍎", hint: "Apple ➔ is", spoken: "The apple is red!" },
+          { q: "Stars ___ bright.", ans: "are", emoji: "✨", hint: "Stars ➔ are", spoken: "Stars are bright!" }
         ]
       },
       this_that: {
@@ -8705,44 +8712,50 @@ var DATA_SHABDA = [
       has_have: {
         title: "Use of Has / Have",
         pill: "🤝 Has / Have",
-        ruleSummary: "Rule: <b>He, She, It, Ajay (Singular) ➔ has</b> &bull; <b>I, You, We, They (Plural) ➔ have</b>",
-        spokenRule: "Rule. Use has with He, She, It, and one person or thing. Use have with I, You, We, and They.",
-        defaultOptions: ["has", "have", "had", "is"],
+        hasSteps: true,
+        ruleSummary: "Rule: <b>He, She, It, Ajay, Girl (Singular) ➔ has</b> &bull; <b>I, We, You, They, Boys (Plural) ➔ have</b>",
+        spokenRule: "Rule. Use has with singular He, She, It, Ajay, and Girl. Use have with I, We, You, and They.",
+        defaultOptions: ["has", "have"],
         renderRulesHtml: function() {
           return '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 8px;">' +
-            '<div style="background: #E1F5FE; border: 1.5px solid #4FC3F7; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'He, She, It, and singular names use has. For example, He has a bicycle, She has a doll, Ajay has a bag.\', \'en-IN\'); })">' +
+            '<div style="background: #E1F5FE; border: 1.5px solid #4FC3F7; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'He, She, It, Ajay, and Girl use has. For example, He has a pen, She has a doll, Ajay has a car.\', \'en-IN\'); })">' +
               '<div style="font-weight: 900; color: #0277BD; font-size: 13px;">👦 He / She / It ➔ has</div>' +
-              '<div style="font-size: 11px; color: #01579B; margin-top: 3px;">• He has a bicycle. 🚲<br>• She has a doll. 🪆<br>• Ajay has a bag. 🎒<br>• An elephant has a trunk. 🐘</div>' +
+              '<div style="font-size: 11px; color: #01579B; margin-top: 3px;">• He has a pen. 🖊️<br>• She has a doll. 🪆<br>• Ajay has a car. 🚗<br>• It has a tail. 🐱</div>' +
             '</div>' +
-            '<div style="background: #FFF3E0; border: 1.5px solid #FFB74D; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'I, You, We, and They use have. For example, I have a ball, You have crayons, We have books.\', \'en-IN\'); })">' +
-              '<div style="font-weight: 900; color: #E65100; font-size: 13px;">👥 I / You / We / They ➔ have</div>' +
-              '<div style="font-size: 11px; color: #BF360C; margin-top: 3px;">• I have a red ball. ⚽<br>• You have five crayons. 🖍️<br>• We have books. 📚<br>• They have two cats. 🐱</div>' +
+            '<div style="background: #FFF3E0; border: 1.5px solid #FFB74D; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'I, We, You, and They use have. For example, I have a book, We have toys, They have balls.\', \'en-IN\'); })">' +
+              '<div style="font-weight: 900; color: #E65100; font-size: 13px;">👥 I / We / You / They ➔ have</div>' +
+              '<div style="font-size: 11px; color: #BF360C; margin-top: 3px;">• I have a book. 📖<br>• We have toys. 🧸<br>• You have a bag. 🎒<br>• They have balls. ⚽</div>' +
             '</div>' +
           '</div>';
         },
-        questions: [
-          { q: "He ___ a blue bicycle.", ans: "has", emoji: "🚲", hint: "With 'He' we use 'has'", spoken: "He has a blue bicycle." },
-          { q: "I ___ a red ball.", ans: "have", emoji: "⚽", hint: "With 'I' we use 'have'", spoken: "I have a red ball." },
-          { q: "She ___ a pretty doll.", ans: "has", emoji: "🪆", hint: "With 'She' we use 'has'", spoken: "She has a pretty doll." },
-          { q: "You ___ five crayons.", ans: "have", emoji: "🖍️", hint: "With 'You' we use 'have'", spoken: "You have five crayons." },
-          { q: "We ___ homework today.", ans: "have", emoji: "📝", hint: "With 'We' we use 'have'", spoken: "We have homework today." },
-          { q: "They ___ two pet cats.", ans: "have", emoji: "🐱", hint: "With 'They' we use 'have'", spoken: "They have two pet cats." },
-          { q: "Ajay ___ a new bag.", ans: "has", emoji: "🎒", hint: "Singular name Ajay takes 'has'", spoken: "Ajay has a new bag." },
-          { q: "An elephant ___ a long trunk.", ans: "has", emoji: "🐘", hint: "One animal takes 'has'", spoken: "An elephant has a long trunk." },
-          { q: "I ___ two hands and ten fingers.", ans: "have", emoji: "👐", hint: "With 'I' we use 'have'", spoken: "I have two hands and ten fingers." },
-          { q: "She ___ shiny brown hair.", ans: "has", emoji: "👧", hint: "With 'She' we use 'has'", spoken: "She has shiny brown hair." },
-          { q: "Birds ___ two wings to fly.", ans: "have", emoji: "🦅", hint: "Plural birds take 'have'", spoken: "Birds have two wings to fly." },
-          { q: "He ___ an umbrella for rain.", ans: "has", emoji: "☂️", hint: "With 'He' we use 'has'", spoken: "He has an umbrella for rain." },
-          { q: "We ___ a big garden.", ans: "have", emoji: "🏡", hint: "With 'We' we use 'have'", spoken: "We have a big garden." },
-          { q: "A car ___ four round wheels.", ans: "has", emoji: "🚗", hint: "One car takes 'has'", spoken: "A car has four round wheels." },
-          { q: "You ___ a very kind heart.", ans: "have", emoji: "💖", hint: "With 'You' we use 'have'", spoken: "You have a very kind heart." },
-          { q: "A rabbit ___ long soft ears.", ans: "has", emoji: "🐰", hint: "One rabbit takes 'has'", spoken: "A rabbit has long soft ears." },
-          { q: "They ___ tickets for the circus.", ans: "have", emoji: "🎪", hint: "With 'They' we use 'have'", spoken: "They have tickets for the circus." },
-          { q: "Rohan ___ a green water bottle.", ans: "has", emoji: "🧴", hint: "One person takes 'has'", spoken: "Rohan has a green water bottle." },
-          { q: "I ___ an exciting puzzle.", ans: "have", emoji: "🧩", hint: "With 'I' we use 'have'", spoken: "I have an exciting puzzle." },
-          { q: "Monkeys ___ long curly tails.", ans: "have", emoji: "🐒", hint: "Plural monkeys take 'have'", spoken: "Monkeys have long curly tails." },
-          { q: "She ___ a sweet singing voice.", ans: "has", emoji: "🎶", hint: "With 'She' we use 'has'", spoken: "She has a sweet singing voice." },
-          { q: "We ___ many colorful storybooks.", ans: "have", emoji: "📚", hint: "With 'We' we use 'have'", spoken: "We have many colorful storybooks." }
+        subjectQuestions: [
+          { q: "He ___", ans: "has", emoji: "👦", cue: "Singular (1 Boy)", hint: "He ➔ has", spoken: "He has!" },
+          { q: "She ___", ans: "has", emoji: "👧", cue: "Singular (1 Girl)", hint: "She ➔ has", spoken: "She has!" },
+          { q: "It ___", ans: "has", emoji: "🐱", cue: "Singular (1 Animal / Thing)", hint: "It ➔ has", spoken: "It has!" },
+          { q: "Ajay ___", ans: "has", emoji: "👦", cue: "Singular (1 Person)", hint: "Ajay ➔ has", spoken: "Ajay has!" },
+          { q: "Girl ___", ans: "has", emoji: "👧", cue: "Singular (1 Girl)", hint: "Girl ➔ has", spoken: "Girl has!" },
+          { q: "I ___", ans: "have", emoji: "🙋", cue: "I takes have", hint: "I ➔ have", spoken: "I have!" },
+          { q: "We ___", ans: "have", emoji: "👥", cue: "Plural (We)", hint: "We ➔ have", spoken: "We have!" },
+          { q: "You ___", ans: "have", emoji: "🫵", cue: "You takes have", hint: "You ➔ have", spoken: "You have!" },
+          { q: "They ___", ans: "have", emoji: "🧑‍🤝‍🧑", cue: "Plural (They)", hint: "They ➔ have", spoken: "They have!" },
+          { q: "Boys ___", ans: "have", emoji: "👦👦", cue: "Plural (Many Boys)", hint: "Boys ➔ have", spoken: "Boys have!" },
+          { q: "Girls ___", ans: "have", emoji: "👧👧", cue: "Plural (Many Girls)", hint: "Girls ➔ have", spoken: "Girls have!" }
+        ],
+        sentenceQuestions: [
+          { q: "He ___ a pen.", ans: "has", emoji: "🖊️", hint: "He ➔ has", spoken: "He has a pen!" },
+          { q: "She ___ a doll.", ans: "has", emoji: "🪆", hint: "She ➔ has", spoken: "She has a doll!" },
+          { q: "It ___ a tail.", ans: "has", emoji: "🐱", hint: "It ➔ has", spoken: "It has a tail!" },
+          { q: "Ajay ___ a car.", ans: "has", emoji: "🚗", hint: "Ajay ➔ has", spoken: "Ajay has a car!" },
+          { q: "The girl ___ a cat.", ans: "has", emoji: "🐱", hint: "Girl ➔ has", spoken: "The girl has a cat!" },
+          { q: "I ___ a book.", ans: "have", emoji: "📖", hint: "I ➔ have", spoken: "I have a book!" },
+          { q: "I ___ a ball.", ans: "have", emoji: "⚽", hint: "I ➔ have", spoken: "I have a ball!" },
+          { q: "We ___ toys.", ans: "have", emoji: "🧸", hint: "We ➔ have", spoken: "We have toys!" },
+          { q: "You ___ a bag.", ans: "have", emoji: "🎒", hint: "You ➔ have", spoken: "You have a bag!" },
+          { q: "They ___ balls.", ans: "have", emoji: "⚽", hint: "They ➔ have", spoken: "They have balls!" },
+          { q: "Boys ___ kites.", ans: "have", emoji: "🪁", hint: "Boys ➔ have", spoken: "Boys have kites!" },
+          { q: "An elephant ___ a trunk.", ans: "has", emoji: "🐘", hint: "Elephant ➔ has", spoken: "An elephant has a trunk!" },
+          { q: "Birds ___ wings.", ans: "have", emoji: "🪶", hint: "Birds ➔ have", spoken: "Birds have wings!" },
+          { q: "I ___ two eyes.", ans: "have", emoji: "👁️", hint: "I ➔ have", spoken: "I have two eyes!" }
         ]
       },
       opposite_words: {
@@ -8924,44 +8937,50 @@ var DATA_SHABDA = [
       was_were: {
         title: "Use of Was / Were",
         pill: "⏳ Was / Were",
-        ruleSummary: "Rule: <b>I, He, She, It, Ajay (Past 1) ➔ was</b> &bull; <b>You, We, They, Children (Past Many) ➔ were</b>",
-        spokenRule: "Rule. Use was with I, He, She, It, and one person in the past. Use were with You, We, and They.",
-        defaultOptions: ["was", "were", "is", "are"],
+        hasSteps: true,
+        ruleSummary: "Rule: <b>I, He, She, It, Ajay (Past 1) ➔ was</b> &bull; <b>We, You, They, Boys (Past Many) ➔ were</b>",
+        spokenRule: "Rule. Use was with I, He, She, It, and Ajay. Use were with We, You, and They.",
+        defaultOptions: ["was", "were"],
         renderRulesHtml: function() {
           return '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 8px;">' +
-            '<div style="background: #FFF3E0; border: 1.5px solid #FFB74D; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'I, He, She, It, and singular names use was in the past. For example, I was happy, He was late, She was singing.\', \'en-IN\'); })">' +
+            '<div style="background: #FFF3E0; border: 1.5px solid #FFB74D; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'I, He, She, It, and Ajay use was in the past. For example, I was sad, He was ill, Ajay was absent.\', \'en-IN\'); })">' +
               '<div style="font-weight: 900; color: #E65100; font-size: 13px;">👦 I / He / She / It ➔ was</div>' +
-              '<div style="font-size: 11px; color: #BF360C; margin-top: 3px;">• I was happy yesterday. 😊<br>• He was late for school. ⏰<br>• She was singing. 🎤<br>• It was cold last night. ❄️</div>' +
+              '<div style="font-size: 11px; color: #BF360C; margin-top: 3px;">• I was sad. 😢<br>• He was ill. 🤒<br>• She was glad. 😊<br>• Ajay was absent. 📅</div>' +
             '</div>' +
-            '<div style="background: #E8EAF6; border: 1.5px solid #9FA8DA; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'You, We, and They use were in the past. For example, You were helpful, We were playing, They were excited.\', \'en-IN\'); })">' +
-              '<div style="font-weight: 900; color: #283593; font-size: 13px;">👥 You / We / They ➔ were</div>' +
-              '<div style="font-size: 11px; color: #1A237E; margin-top: 3px;">• You were helpful. ⭐<br>• We were playing in garden. ⚽<br>• They were excited. 🎉<br>• Birds were chirping. 🐦</div>' +
+            '<div style="background: #E8EAF6; border: 1.5px solid #9FA8DA; border-radius: 12px; padding: 8px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'We, You, and They use were in the past. For example, We were ready, You were kind, They were late.\', \'en-IN\'); })">' +
+              '<div style="font-weight: 900; color: #283593; font-size: 13px;">👥 We / You / They ➔ were</div>' +
+              '<div style="font-size: 11px; color: #1A237E; margin-top: 3px;">• We were ready. 👍<br>• You were kind. 💖<br>• They were late. ⏰<br>• Boys were happy. 🌟</div>' +
             '</div>' +
           '</div>';
         },
-        questions: [
-          { q: "I ___ very happy yesterday.", ans: "was", emoji: "😊", hint: "With 'I' past we use 'was'", spoken: "I was very happy yesterday." },
-          { q: "He ___ late for school.", ans: "was", emoji: "⏰", hint: "With 'He' past we use 'was'", spoken: "He was late for school." },
-          { q: "They ___ playing in the garden.", ans: "were", emoji: "⚽", hint: "With 'They' past we use 'were'", spoken: "They were playing in the garden." },
-          { q: "She ___ singing a sweet song.", ans: "was", emoji: "🎤", hint: "With 'She' past we use 'was'", spoken: "She was singing a sweet song." },
-          { q: "We ___ excited about the picnic.", ans: "were", emoji: "🧺", hint: "With 'We' past we use 'were'", spoken: "We were excited about the picnic." },
-          { q: "It ___ cold and rainy last night.", ans: "was", emoji: "🌧️", hint: "With 'It' past we use 'was'", spoken: "It was cold and rainy last night." },
-          { q: "You ___ absent on Monday.", ans: "were", emoji: "📅", hint: "With 'You' past we use 'were'", spoken: "You were absent on Monday." },
-          { q: "Ajay ___ studying in his room.", ans: "was", emoji: "📖", hint: "Singular name Ajay takes 'was'", spoken: "Ajay was studying in his room." },
-          { q: "The birds ___ chirping in the morning.", ans: "were", emoji: "🐦", hint: "Plural birds take 'were'", spoken: "The birds were chirping in the morning." },
-          { q: "The baby ___ crying for milk.", ans: "was", emoji: "👶", hint: "One baby takes 'was'", spoken: "The baby was crying for milk." },
-          { q: "The monkeys ___ jumping on trees.", ans: "were", emoji: "🐒", hint: "Plural monkeys take 'were'", spoken: "The monkeys were jumping on trees." },
-          { q: "He ___ wearing a red cap.", ans: "was", emoji: "🧢", hint: "With 'He' past we use 'was'", spoken: "He was wearing a red cap." },
-          { q: "We ___ watching cartoons.", ans: "were", emoji: "📺", hint: "With 'We' past we use 'were'", spoken: "We were watching cartoons." },
-          { q: "She ___ drawing a flower.", ans: "was", emoji: "🌸", hint: "With 'She' past we use 'was'", spoken: "She was drawing a flower." },
-          { q: "You ___ first in the running race.", ans: "were", emoji: "🏃", hint: "With 'You' past we use 'were'", spoken: "You were first in the running race." },
-          { q: "It ___ a sunny holiday.", ans: "was", emoji: "☀️", hint: "With 'It' past we use 'was'", spoken: "It was a sunny holiday." },
-          { q: "The apples ___ fresh and sweet.", ans: "were", emoji: "🍎", hint: "Plural apples take 'were'", spoken: "The apples were fresh and sweet." },
-          { q: "I ___ sleeping at ten o'clock.", ans: "was", emoji: "😴", hint: "With 'I' past we use 'was'", spoken: "I was sleeping at ten o'clock." },
-          { q: "They ___ busy with their toys.", ans: "were", emoji: "🧸", hint: "With 'They' past we use 'were'", spoken: "They were busy with their toys." },
-          { q: "Rohan and Priya ___ painting pictures.", ans: "were", emoji: "🎨", hint: "Two persons take 'were'", spoken: "Rohan and Priya were painting pictures." },
-          { q: "The puppy ___ wagging its tail.", ans: "was", emoji: "🐶", hint: "One puppy takes 'was'", spoken: "The puppy was wagging its tail." },
-          { q: "We ___ ready before time.", ans: "were", emoji: "⏰", hint: "With 'We' past we use 'were'", spoken: "We were ready before time." }
+        subjectQuestions: [
+          { q: "I ___", ans: "was", emoji: "🙋", cue: "Singular (Past I)", hint: "I ➔ was", spoken: "I was!" },
+          { q: "He ___", ans: "was", emoji: "👦", cue: "Singular (Past He)", hint: "He ➔ was", spoken: "He was!" },
+          { q: "She ___", ans: "was", emoji: "👧", cue: "Singular (Past She)", hint: "She ➔ was", spoken: "She was!" },
+          { q: "It ___", ans: "was", emoji: "🐱", cue: "Singular (Past It)", hint: "It ➔ was", spoken: "It was!" },
+          { q: "Ajay ___", ans: "was", emoji: "👦", cue: "Singular (Past Ajay)", hint: "Ajay ➔ was", spoken: "Ajay was!" },
+          { q: "Boy ___", ans: "was", emoji: "👦", cue: "Singular (Past Boy)", hint: "Boy ➔ was", spoken: "Boy was!" },
+          { q: "We ___", ans: "were", emoji: "👥", cue: "Plural (Past We)", hint: "We ➔ were", spoken: "We were!" },
+          { q: "You ___", ans: "were", emoji: "🫵", cue: "Plural (Past You)", hint: "You ➔ were", spoken: "You were!" },
+          { q: "They ___", ans: "were", emoji: "🧑‍🤝‍🧑", cue: "Plural (Past They)", hint: "They ➔ were", spoken: "They were!" },
+          { q: "Boys ___", ans: "were", emoji: "👦👦", cue: "Plural (Past Boys)", hint: "Boys ➔ were", spoken: "Boys were!" },
+          { q: "Girls ___", ans: "were", emoji: "👧👧", cue: "Plural (Past Girls)", hint: "Girls ➔ were", spoken: "Girls were!" }
+        ],
+        sentenceQuestions: [
+          { q: "I ___ sad.", ans: "was", emoji: "😢", hint: "I ➔ was", spoken: "I was sad!" },
+          { q: "He ___ ill.", ans: "was", emoji: "🤒", hint: "He ➔ was", spoken: "He was ill!" },
+          { q: "They ___ late.", ans: "were", emoji: "⏰", hint: "They ➔ were", spoken: "They were late!" },
+          { q: "She ___ glad.", ans: "was", emoji: "😊", hint: "She ➔ was", spoken: "She was glad!" },
+          { q: "We ___ ready.", ans: "were", emoji: "👍", hint: "We ➔ were", spoken: "We were ready!" },
+          { q: "Ajay ___ absent.", ans: "was", emoji: "📅", hint: "Ajay ➔ was", spoken: "Ajay was absent!" },
+          { q: "It ___ cold.", ans: "was", emoji: "❄️", hint: "It ➔ was", spoken: "It was cold!" },
+          { q: "You ___ kind.", ans: "were", emoji: "💖", hint: "You ➔ were", spoken: "You were kind!" },
+          { q: "The boy ___ late.", ans: "was", emoji: "⏰", hint: "Boy ➔ was", spoken: "The boy was late!" },
+          { q: "The apples ___ sweet.", ans: "were", emoji: "🍎", hint: "Apples ➔ were", spoken: "The apples were sweet!" },
+          { q: "Boys ___ happy.", ans: "were", emoji: "🌟", hint: "Boys ➔ were", spoken: "Boys were happy!" },
+          { q: "I ___ at home.", ans: "was", emoji: "🏡", hint: "I ➔ was", spoken: "I was at home!" },
+          { q: "She ___ quiet.", ans: "was", emoji: "🤫", hint: "She ➔ was", spoken: "She was quiet!" },
+          { q: "They ___ busy.", ans: "were", emoji: "💼", hint: "They ➔ were", spoken: "They were busy!" }
         ]
       },
       prepositions: {
@@ -27544,21 +27563,30 @@ function setNurseryNumSubTab(st) {
 
     function setUkgGrammarSubTab(st) {
       appState.ukgGrammarSubTab = st;
+      appState.ukgGrammarStep = "subject"; // Default to Step 1: Subject Practice
       appState.quizIndex = 0;
       resetQuizQuestionState();
       renderCurrentView();
       scrollActiveFilterPill();
     }
 
+    function setUkgGrammarStep(step) {
+      appState.ukgGrammarStep = step;
+      appState.quizIndex = 0;
+      resetQuizQuestionState();
+      renderCurrentView();
+    }
+
     function handleUkgGrammarAns(isCorrect, optVal, targetSentence, targetEmoji, targetSpoken) {
-      var cacheKey = "ukg_gram_" + appState.ukgGrammarSubTab + "_" + appState.quizIndex;
+      var stepKey = (appState.ukgGrammarStep || "subject");
+      var cacheKey = "ukg_gram_" + appState.ukgGrammarSubTab + "_" + stepKey + "_" + appState.quizIndex;
       handleQuizAnswerSubmit(isCorrect, {
         key: cacheKey,
         display: (targetEmoji ? targetEmoji + " " : "") + targetSentence,
-        spoken: "Correct! " + (targetSpoken || targetSentence),
+        spoken: (targetSpoken ? targetSpoken : ("Correct! " + targetSentence)),
         lang: "en-IN",
         ansVal: optVal,
-        wrongMsg: "Try again! Remember the grammar rule."
+        wrongMsg: "Try again! Remember the rule."
       });
     }
 
@@ -27597,57 +27625,84 @@ function setNurseryNumSubTab(st) {
       var html = "";
 
       // 1. TOP: 📖 Learn Rules (Chart / Cards)
-      html += '<div class="grammar-rules-container" style="background: #FFFFFF; border: 2px solid #BBDEFB; border-radius: 20px; padding: 14px 12px; margin-bottom: 16px; box-shadow: 0 4px 12px rgba(33, 150, 243, 0.08);">';
+      html += '<div class="grammar-rules-container" style="background: #FFFFFF; border: 2px solid #BBDEFB; border-radius: 20px; padding: 14px 12px; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(33, 150, 243, 0.08);">';
       html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">';
       html += '    <div style="font-size: 15px; font-weight: 900; color: #0D47A1; display: flex; align-items: center; gap: 6px;">📖 Learn Rules: ' + gData.title + '</div>';
       html += '    <button class="rule-speak-btn" style="background: #E3F2FD; border: 1.5px solid #2196F3; color: #1565C0; font-size: 12px; font-weight: 800; border-radius: 12px; padding: 4px 10px; cursor: pointer;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + gData.spokenRule.replace(/'/g, "\\'") + '\', \'en-IN\'); })">🔊 Listen Rule</button>';
       html += '  </div>';
-      html += '  <div style="font-size: 13px; color: #37474F; font-weight: 700; margin-bottom: 10px; line-height: 1.4;">' + gData.ruleSummary + '</div>';
+      html += '  <div style="font-size: 13px; color: #37474F; font-weight: 700; margin-bottom: 8px; line-height: 1.4;">' + gData.ruleSummary + '</div>';
       html += gData.renderRulesHtml();
       html += '</div>';
 
-      // 2. BOTTOM: 🎯 Grammar Quiz
-      var qList = gData.questions || [];
+      // 2. Step Switcher for 2-step practice (Is/Am/Are, Was/Were, Has/Have)
+      if (gData.hasSteps) {
+        if (!appState.ukgGrammarStep) appState.ukgGrammarStep = "subject";
+        var isSubStep = (appState.ukgGrammarStep !== "sentence");
+        html += '<div class="grammar-step-switch" style="display: flex; justify-content: center; gap: 8px; margin: 10px auto 14px; max-width: 460px; width: 100%; box-sizing: border-box; padding: 0 4px;">';
+        html += '  <button class="step-btn ' + (isSubStep ? "active" : "") + '" style="flex: 1; min-height: 46px; padding: 6px 8px; font-size: 13px; font-weight: 900; border-radius: 14px; cursor: pointer; border: 2.5px solid #1976D2; background: ' + (isSubStep ? '#1976D2' : '#FFFFFF') + '; color: ' + (isSubStep ? '#FFFFFF' : '#0D47A1') + '; box-shadow: 0 3px 6px rgba(25,118,210,0.15);" onclick="safeAction(function(){ setUkgGrammarStep(\'subject\'); })">1️⃣ Subject Drill (He ___)</button>';
+        html += '  <button class="step-btn ' + (!isSubStep ? "active" : "") + '" style="flex: 1; min-height: 46px; padding: 6px 8px; font-size: 13px; font-weight: 900; border-radius: 14px; cursor: pointer; border: 2.5px solid #2E7D32; background: ' + (!isSubStep ? '#2E7D32' : '#FFFFFF') + '; color: ' + (!isSubStep ? '#FFFFFF' : '#1B5E20') + '; box-shadow: 0 3px 6px rgba(46,125,50,0.15);" onclick="safeAction(function(){ setUkgGrammarStep(\'sentence\'); })">2️⃣ Simple Sentences</button>';
+        html += '</div>';
+      }
+
+      // 3. Question list selection
+      var qList = [];
+      if (gData.hasSteps) {
+        qList = (appState.ukgGrammarStep === "sentence") ? (gData.sentenceQuestions || []) : (gData.subjectQuestions || []);
+      } else {
+        qList = gData.questions || [];
+      }
+
       var curIdx = appState.quizIndex % qList.length;
       var targetQ = qList[curIdx];
-      var cacheKey = "ukg_gram_" + subKey + "_" + curIdx;
+      var stepKey = (appState.ukgGrammarStep || "subject");
+      var cacheKey = "ukg_gram_" + subKey + "_" + stepKey + "_" + curIdx;
 
-      var opts = getShuffledOptions(cacheKey, function() {
-        var o = [targetQ.ans];
-        var pool = targetQ.options || gData.defaultOptions || [];
-        for (var i = 0; i < pool.length; i++) {
-          if (o.indexOf(pool[i]) === -1) o.push(pool[i]);
-          if (o.length >= 4) break;
-        }
-        return fisherYatesShuffle(o);
-      });
+      // Options
+      var opts = [];
+      if (gData.defaultOptions && (subKey === "is_am_are" || subKey === "was_were" || subKey === "has_have")) {
+        opts = gData.defaultOptions.slice();
+      } else {
+        opts = getShuffledOptions(cacheKey, function() {
+          var o = [targetQ.ans];
+          var pool = targetQ.options || gData.defaultOptions || [];
+          for (var i = 0; i < pool.length; i++) {
+            if (o.indexOf(pool[i]) === -1) o.push(pool[i]);
+            if (o.length >= 4) break;
+          }
+          return fisherYatesShuffle(o);
+        });
+      }
 
       var isAnswered = (quizState.isAnswered && quizState.activeKey === cacheKey);
 
       // Question speech prompt (strictly en-IN voice)
-      var qSpeakText = targetQ.spoken || (targetQ.q.replace(/___/g, "blank"));
-      autoSpeak(cacheKey, qSpeakText + ". Choose the correct word.", "en-IN");
+      var qSpeakPrompt = targetQ.q.replace(/___/g, "blank");
+      var qSpokenAns = targetQ.spoken || (targetQ.q.replace(/___/g, targetQ.ans) + "!");
+      autoSpeak(cacheKey, qSpeakPrompt + ". Choose the correct word.", "en-IN");
 
-      html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + qSpeakText.replace(/'/g, "\\'") + '\', \'en-IN\'); })">';
+      // Card Header & Step Label
+      var stepBadgeLabel = gData.hasSteps ? (appState.ukgGrammarStep === "sentence" ? "Step 2: Simple Sentence" : "Step 1: Subject Drill") : gData.pill;
+
+      html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + qSpeakPrompt.replace(/'/g, "\\'") + '\', \'en-IN\'); })">';
       html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">';
       html += '    <span style="background: #E3F2FD; color: #0D47A1; font-size: 12px; font-weight: 900; padding: 4px 10px; border-radius: 8px;">Question ' + (curIdx + 1) + ' / ' + qList.length + '</span>';
-      html += '    <span style="background: #FFF3E0; color: #E65100; font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 8px;">' + gData.pill + '</span>';
+      html += '    <span style="background: #FFF3E0; color: #E65100; font-size: 12px; font-weight: 800; padding: 4px 10px; border-radius: 8px;">' + stepBadgeLabel + '</span>';
       html += '  </div>';
 
       if (targetQ.cue) {
-        html += '  <div style="font-size: 14px; font-weight: 800; color: #00897B; margin-bottom: 4px;">' + targetQ.cue + '</div>';
+        html += '  <div style="font-size: 13px; font-weight: 800; color: #00897B; margin-bottom: 2px;">' + targetQ.cue + '</div>';
       }
 
-      html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 3.8rem !important; line-height: 1.1; margin: 6px auto;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + (targetQ.spoken || targetQ.ans).replace(/'/g, "\\'") + '\', \'en-IN\'); })">' + targetQ.emoji + '</div>';
+      html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 3.8rem !important; line-height: 1.1; margin: 4px auto;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + qSpokenAns.replace(/'/g, "\\'") + '\', \'en-IN\'); })">' + targetQ.emoji + '</div>';
 
-      // Sentence with strictly dash blank ___
+      // Sentence with strictly dash blank ___ and Subject in extra large, bold font (font-size: 2.4rem; font-weight: 900;)
       var displaySentence = "";
       if (isAnswered) {
-        displaySentence = targetQ.q.replace(/___/g, '<span style="color: #2E7D32; font-weight: 900; text-decoration: underline; background: #E8F5E9; padding: 2px 8px; border-radius: 6px;">' + targetQ.ans + '</span>');
+        displaySentence = targetQ.q.replace(/___/g, '<span style="color: #2E7D32; font-weight: 900; text-decoration: underline; background: #E8F5E9; padding: 2px 12px; border-radius: 10px;">' + targetQ.ans + '</span>');
       } else {
-        displaySentence = targetQ.q.replace(/___/g, '<span class="dash-blank" style="color: #1976D2; font-weight: 900; letter-spacing: 2px; text-decoration: underline; background: #E3F2FD; padding: 2px 10px; border-radius: 6px;">___</span>');
+        displaySentence = targetQ.q.replace(/___/g, '<span class="dash-blank" style="color: #1976D2; font-weight: 900; letter-spacing: 2px; text-decoration: underline; background: #E3F2FD; padding: 2px 14px; border-radius: 10px;">___</span>');
       }
-      html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + qSpeakText.replace(/'/g, "\\'") + '\', \'en-IN\'); })" style="font-size: 1.3rem; font-weight: 900; color: #1A237E; line-height: 1.35; margin: 8px 0;">' + displaySentence + '</div>';
+      html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + qSpeakPrompt.replace(/'/g, "\\'") + '\', \'en-IN\'); })" style="font-size: 2.4rem !important; font-weight: 900 !important; color: #1A237E; line-height: 1.25; margin: 10px 0; text-align: center; word-break: break-word;">' + displaySentence + '</div>';
       if (targetQ.hint) {
         html += '  <div class="audio-hint" style="font-size: 12px; color: #546E7A; font-weight: 700;">💡 Hint: ' + targetQ.hint + '</div>';
       }
@@ -27655,8 +27710,15 @@ function setNurseryNumSubTab(st) {
 
       html += '<div style="text-align: center; font-weight: 800; color: #37474F; margin-top: 12px; font-size: 14px;">Choose the correct word: 🔊</div>';
 
-      // 2x2 Wide Options Grid (large buttons)
-      html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 440px; margin: 12px auto 0;">';
+      // Button Grid Layout: 3 columns for Is/Am/Are, 2 columns for Was/Were and Has/Have
+      var gridCols = "repeat(" + opts.length + ", 1fr)";
+      if (opts.length === 4) {
+        gridCols = "1fr 1fr";
+      }
+      var btnMinHeight = (subKey === "is_am_are" || subKey === "was_were" || subKey === "has_have") ? "66px" : "60px";
+      var btnFontSize = (subKey === "is_am_are" || subKey === "was_were" || subKey === "has_have") ? "1.65rem" : "1.25rem";
+
+      html += '<div style="display: grid; grid-template-columns: ' + gridCols + '; gap: 12px; max-width: 440px; margin: 12px auto 0;">';
       for (var oi = 0; oi < opts.length; oi++) {
         var optVal = opts[oi];
         var isOk = (optVal === targetQ.ans);
@@ -27664,8 +27726,9 @@ function setNurseryNumSubTab(st) {
         if (isAnswered) {
           btnCls += isOk ? " correct-choice" : " disabled-choice";
         }
-        var fullAnsSentence = targetQ.q.replace(/___/g, optVal);
-        html += '<button class="' + btnCls + '" style="min-height: 60px; font-size: 1.25rem; font-weight: 900; border-radius: 14px; padding: 8px 10px; line-height: 1.2;" onclick="safeAction(function(){ handleUkgGrammarAns(' + isOk + ', \'' + optVal.replace(/'/g, "\\'") + '\', \'' + targetQ.q.replace(/___/g, targetQ.ans).replace(/'/g, "\\'") + '\', \'' + targetQ.emoji + '\', \'' + (targetQ.spoken || fullAnsSentence).replace(/'/g, "\\'") + '\'); })">' + optVal + '</button>';
+        var fullCompletedText = targetQ.q.replace(/___/g, targetQ.ans);
+        var clickSpoken = targetQ.spoken || (fullCompletedText + "!");
+        html += '<button class="' + btnCls + '" style="min-height: ' + btnMinHeight + '; font-size: ' + btnFontSize + '; font-weight: 900; border-radius: 16px; padding: 6px 8px; line-height: 1.2;" onclick="safeAction(function(){ handleUkgGrammarAns(' + isOk + ', \'' + optVal.replace(/'/g, "\\'") + '\', \'' + fullCompletedText.replace(/'/g, "\\'") + '\', \'' + targetQ.emoji + '\', \'' + clickSpoken.replace(/'/g, "\\'") + '\'); })">' + optVal + '</button>';
       }
       html += '</div>';
 
