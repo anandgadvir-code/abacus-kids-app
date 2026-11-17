@@ -228,6 +228,44 @@
       justify-content: space-between;
       align-items: center;
     }
+    .btn-logout {
+      background: #FFEBEE !important;
+      border: 2px solid #EF9A9A !important;
+      color: #C62828 !important;
+      font-size: 13px !important;
+      font-weight: 800 !important;
+      padding: 6px 12px !important;
+      border-radius: 14px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+      cursor: pointer !important;
+      transition: all 0.15s ease !important;
+      white-space: nowrap !important;
+      box-shadow: 0 2px 4px rgba(239, 83, 80, 0.2) !important;
+    }
+    .btn-logout:hover {
+      background: #FFCDD2 !important;
+      border-color: #E57373 !important;
+    }
+    .btn-logout:active {
+      transform: scale(0.92) !important;
+    }
+
+    /* Strict Homework-Only Lock */
+    body.homework-locked #subtabs-bar,
+    body.homework-locked #filter-pills-bar,
+    body.homework-locked #btn-home-nav,
+    body.homework-locked #btn-teacher-portal,
+    body.homework-locked .mode-switch,
+    body.homework-locked .home-grid,
+    body.homework-locked .class-switch-bar,
+    body.homework-locked .hero-banner {
+      display: none !important;
+    }
+    body.homework-locked .header-left {
+      pointer-events: none !important;
+    }
 
     /* High Performance Touch & Smooth Scroll Engine */
     button, .subtab-chip, .filter-pill, .mode-btn, .opt-btn, .letter-bubble,
@@ -1867,6 +1905,9 @@
         <button id="btn-home-nav" class="nav-icon-btn" onclick="safeAction(goHome)" style="display:none;" title="Home">
           <span class="safe-emoji">🏠</span>
         </button>
+        <button id="btn-app-logout" class="nav-icon-btn btn-logout" onclick="safeAction(logoutUser)" style="display:none;" title="Logout">
+          <span class="safe-emoji">🚪</span> <span class="logout-btn-label">Logout</span>
+        </button>
       </div>
     </header>
     <!-- Active Student Pass & Profile Status Strip -->
@@ -2318,12 +2359,17 @@
     function restoreSession() {
       var studentSession = localStorage.getItem("taa_kids_student_session");
       var teacherSession = localStorage.getItem("taa_kids_teacher_session");
+      document.body.classList.remove("homework-locked");
+      appSession.activeHomeworkId = null;
+      appSession.homeworkSession = null;
+      appSession.homeworkAnsweredCount = 0;
       if (studentSession) {
         try {
           appSession.type = "student";
           appSession.student = JSON.parse(studentSession);
           appState.stars = Math.floor(appSession.student.total_points || appSession.student.total_stars || 0);
-          document.getElementById("star-count").textContent = appState.stars;
+          var sc = document.getElementById("star-count");
+          if (sc) sc.textContent = appState.stars;
           return "student";
         } catch (e) {
           localStorage.removeItem("taa_kids_student_session");
@@ -2336,38 +2382,81 @@
       return null;
     }
 
-    // Render Student Pass Top Banner with Personal Rank
+    // Render Student / Teacher Top Banner & Top Sticky Header Controls
     function renderHeaderStatus() {
       var banner = document.getElementById("student-pass-banner");
-      if (!banner) return;
+      var btnLogout = document.getElementById("btn-app-logout");
+      var btnTeacherPortal = document.getElementById("btn-teacher-portal");
+      var starBadge = document.getElementById("star-badge");
+
       if (appSession.type === "student" && appSession.student) {
         var s = appSession.student;
         var rankInfo = getStudentRankAndTotal(s.student_id, s.class_name);
-        banner.style.display = "flex";
-        banner.innerHTML = '<div><span class="pass-badge">Student Pass ✅</span> <strong>' + escapeHtml(s.student_name) + '</strong> (' + s.class_name + ') • 🏆 <strong>Rank #' + rankInfo.rank + ' / ' + rankInfo.total + '</strong> (⭐ ' + (s.total_points || 0) + ' Pts)</div>' +
-          '<button class="switch-btn" onclick="safeAction(showSwitchUserPrompt)">Switch 👤</button>';
+        if (banner) {
+          banner.style.display = "flex";
+          if (appSession.activeHomeworkId && !appSession.isPreviewMode) {
+            var currentHw = getTodayActiveHomework(s.class_name);
+            var titleStr = currentHw ? currentHw.title : "Assigned Homework";
+            var targetQ = (appSession.homeworkSession && appSession.homeworkSession.targetQuestions) || (currentHw ? currentHw.target_questions : 10);
+            var curQ = Math.min((appSession.homeworkAnsweredCount || 0) + 1, targetQ);
+            banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
+              '<div><span class="pass-badge" style="background:#FF6F00; color:#FFF;">🔒 Homework Lock</span> <strong>' + escapeHtml(titleStr) + '</strong> • Q ' + curQ + ' / ' + targetQ + '</div>' +
+              '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Logout</button>' +
+              '</div>';
+          } else {
+            banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
+              '<div><span class="pass-badge">Student Pass ✅</span> <strong>' + escapeHtml(s.student_name) + '</strong> (' + s.class_name + ') • 🏆 <strong>Rank #' + rankInfo.rank + ' / ' + rankInfo.total + '</strong> (⭐ ' + (s.total_points || 0) + ' Pts)</div>' +
+              '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Logout</button>' +
+              '</div>';
+          }
+        }
+        if (btnLogout) btnLogout.style.display = "inline-flex";
+        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
+        if (starBadge) starBadge.style.display = "flex";
       } else if (appSession.type === "teacher") {
-        banner.style.display = "flex";
-        banner.innerHTML = '<div><span class="pass-badge" style="background:#FFE082; color:#E65100;">👩‍🏫 Faculty Panel</span> Active Class: <strong>' + appSession.teacherClass + '</strong></div>' +
-          '<button class="switch-btn" onclick="safeAction(showSwitchUserPrompt)">Switch 👤</button>';
+        if (banner) {
+          banner.style.display = "flex";
+          banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
+            '<div><span class="pass-badge" style="background:#FFE082; color:#E65100;">👩‍🏫 Faculty Panel</span> Active Class: <strong>' + appSession.teacherClass + '</strong></div>' +
+            '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Logout</button>' +
+            '</div>';
+        }
+        if (btnLogout) btnLogout.style.display = "inline-flex";
+        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
+        if (starBadge) starBadge.style.display = "none";
       } else {
-        banner.style.display = "none";
+        if (banner) banner.style.display = "none";
+        if (btnLogout) btnLogout.style.display = "none";
+        if (btnTeacherPortal) btnTeacherPortal.style.display = "inline-flex";
+        if (starBadge) starBadge.style.display = "none";
       }
     }
 
+    // Unified Logout Handler: Clears Active Student/Teacher Session & Resets to Login
+    function logoutUser() {
+      var confirmed = confirm("Are you sure you want to log out?");
+      if (!confirmed) return;
+      document.body.classList.remove("homework-locked");
+      NotificationBridge.clearHomeworkReminder();
+      localStorage.removeItem("taa_kids_student_session");
+      localStorage.removeItem("taa_kids_teacher_session");
+      appSession.type = null;
+      appSession.student = null;
+      appSession.teacherClass = "UKG";
+      appSession.teacherTab = "send";
+      appSession.isPreviewMode = false;
+      appSession.activeHomeworkId = null;
+      appSession.homeworkSession = null;
+      appSession.homeworkAnsweredCount = 0;
+      appState.section = "welcome";
+      showToast("Logged out successfully! 🚪", "success");
+      speak("Logged out successfully.", "en-IN");
+      renderHeaderStatus();
+      renderWelcomeView();
+    }
+
     function showSwitchUserPrompt() {
-      speak("Switching user account", "en-IN");
-      var confirmed = confirm("Do you want to switch or log out of current profile?");
-      if (confirmed) {
-        localStorage.removeItem("taa_kids_student_session");
-        localStorage.removeItem("taa_kids_teacher_session");
-        appSession.type = null;
-        appSession.student = null;
-        appSession.isPreviewMode = false;
-        appState.section = "welcome";
-        renderHeaderStatus();
-        renderWelcomeView();
-      }
+      logoutUser();
     }
 
     function escapeHtml(text) {
@@ -2425,20 +2514,14 @@
       html += '<div class="login-box">';
       html += '  <h3>🎒 Student Login (Unlock FREE Pass)</h3>';
       html += '  <div style="font-size: 12px; color: #607D8B; font-weight: 600;">Enter your Admission No. or Registered Mobile Number:</div>';
-      html += '  <input type="text" id="student-login-input" class="input-field" placeholder="e.g. ADM-103 or 9829033333" autocomplete="off" />';
+      html += '  <input type="text" id="student-login-input" class="input-field" placeholder="Enter Admission No. or Mobile No." autocomplete="off" />';
       html += '  <button class="btn-action-primary" onclick="safeAction(handleStudentLoginSubmit)">';
       html += '    Verify Student &amp; Unlock FREE Pass 🔓';
       html += '  </button>';
-      html += '  <div style="margin-top: 10px; font-size: 11px; color: #78909C; font-weight: 700;">Demo Pass Quick-Fill:</div>';
-      html += '  <div class="quick-chips">';
-      html += '    <span class="quick-chip" onclick="quickFillStudent(\'ADM-103\')">ADM-103 (Aryan, UKG)</span>';
-      html += '    <span class="quick-chip" onclick="quickFillStudent(\'ADM-102\')">ADM-102 (Priya, LKG)</span>';
-      html += '    <span class="quick-chip" onclick="quickFillStudent(\'ADM-101\')">ADM-101 (Aarav, Nursery)</span>';
-      html += '  </div>';
       html += '</div>';
 
       // Teacher Access Toggle
-      html += '<div style="text-align: center; margin-top: 8px;">';
+      html += '<div style="text-align: center; margin-top: 14px;">';
       html += '  <button style="background: none; border: none; font-size: 13px; font-weight: 900; color: #E65100; cursor: pointer; text-decoration: underline;" onclick="safeAction(openTeacherLoginModal)">';
       html += '    👩‍🏫 Class Teacher Portal Login (Send Tasks &amp; Rankings)';
       html += '  </button>';
@@ -2446,15 +2529,11 @@
 
       html += '</div>'; // End welcome-wrap
       view.innerHTML = html;
-      speak("Welcome to Abacus Kids! Enter your Admission Number to unlock your free school student pass.", "en-IN");
+      speak("Welcome to Abacus Kids! Enter your Admission Number or Mobile to access your student portal.", "en-IN");
     }
 
     function quickFillStudent(id) {
-      var input = document.getElementById("student-login-input");
-      if (input) {
-        input.value = id;
-        playTone("pop");
-      }
+      // Demo quick fill removed for clean school ERP testing
     }
 
     // Student Login Verification Handler (Supabase live verify + offline fallback)
@@ -2483,29 +2562,20 @@
         console.log("Supabase RPC live verify check:", err.message || err);
       }
 
-      // 2. Offline / local fallback check against registered school students
+      // 2. Offline / local fallback check ONLY against registered school students
       var cleanId = id.toUpperCase();
       var found = DEFAULT_STUDENTS_ROSTER.find(function(s) {
         return s.admission_no.toUpperCase() === cleanId ||
                s.student_id.toUpperCase() === cleanId ||
-               s.mobile === id ||
-               s.student_name.toUpperCase().includes(cleanId);
+               s.mobile === id;
       });
 
-      if (!found) {
-        found = {
-          student_id: "STU-" + Math.floor(100 + Math.random() * 900),
-          admission_no: id.startsWith("ADM-") ? id : ("ADM-" + id),
-          student_name: "School Student " + id,
-          class_name: "UKG",
-          total_points: 10.0,
-          total_stars: 10,
-          tasks_completed: 1,
-          badges: ["Welcome Explorer 🌟"]
-        };
+      if (found) {
+        activateStudentSession(found);
+      } else {
+        showToast("Access Denied: Student not found in school ERP!", "wrong");
+        speak("Access Denied. Student record not found in school database. Please contact school administration.", "en-IN");
       }
-
-      activateStudentSession(found);
     }
 
     function activateStudentSession(student) {
@@ -2555,21 +2625,15 @@
         '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 14px;">The Abacus Academy, Jodhpur</div>' +
         '  <div style="text-align: left; margin-bottom: 8px;">' +
         '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Teacher ID or Mobile No:</label>' +
-        '    <input type="text" id="teacher-id-input" class="input-field" placeholder="e.g. TCH-03 or 9829033333" style="margin-top: 4px;" />' +
+        '    <input type="text" id="teacher-id-input" class="input-field" placeholder="Enter Teacher ID or Mobile No." style="margin-top: 4px;" autocomplete="off" />' +
         '  </div>' +
         '  <div style="text-align: left; margin-bottom: 12px;">' +
-        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">4-Digit Security PIN (Default: 1234):</label>' +
-        '    <input type="password" id="teacher-pin-input" class="input-field" placeholder="••••" maxlength="6" style="margin-top: 4px; font-size: 18px; letter-spacing: 4px; text-align: center;" />' +
+        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">4-Digit Security PIN:</label>' +
+        '    <input type="password" id="teacher-pin-input" class="input-field" placeholder="••••" maxlength="6" style="margin-top: 4px; font-size: 18px; letter-spacing: 4px; text-align: center;" autocomplete="off" />' +
         '  </div>' +
         '  <button class="btn-action-primary" onclick="safeAction(submitTeacherModalLogin)">' +
         '    Login to Teacher Dashboard 🚀' +
         '  </button>' +
-        '  <div style="margin-top: 10px; font-size: 11px; color: #78909C; font-weight: 700;">Demo Faculty Quick-Fill:</div>' +
-        '  <div class="quick-chips" style="margin-top: 4px;">' +
-        '    <span class="quick-chip" onclick="quickFillTeacher(\'TCH-03\', \'1234\')">TCH-03 (UKG)</span>' +
-        '    <span class="quick-chip" onclick="quickFillTeacher(\'TCH-02\', \'1234\')">TCH-02 (LKG)</span>' +
-        '    <span class="quick-chip" onclick="quickFillTeacher(\'TCH-01\', \'1234\')">TCH-01 (Nursery)</span>' +
-        '  </div>' +
         '  <button style="margin-top: 14px; background: none; border: none; font-size: 12px; font-weight: 800; color: #78909C; cursor: pointer;" onclick="closeTeacherLoginModal()">' +
         '    Cancel &amp; Close ✕' +
         '  </button>' +
@@ -2584,11 +2648,7 @@
     }
 
     function quickFillTeacher(id, pin) {
-      var idInput = document.getElementById("teacher-id-input");
-      var pinInput = document.getElementById("teacher-pin-input");
-      if (idInput) idInput.value = id;
-      if (pinInput) pinInput.value = pin;
-      playTone("pop");
+      // Demo quick fill removed for clean school ERP testing
     }
 
     async function submitTeacherModalLogin() {
@@ -2597,6 +2657,11 @@
       var tid = idInput ? idInput.value.trim() : "";
       var pin = pinInput ? pinInput.value.trim() : "";
 
+      if (!tid) {
+        showToast("Please enter Teacher ID or Mobile No.", "wrong");
+        speak("Please enter your Teacher ID or Mobile Number.", "en-IN");
+        return;
+      }
       if (!pin) {
         showToast("Please enter 4-digit Teacher PIN", "wrong");
         speak("Please enter your PIN.", "en-IN");
@@ -2609,33 +2674,36 @@
       try {
         var res = await supabaseRest("/rpc/kids_verify_teacher", {
           method: "POST",
-          body: { p_identifier: tid || "TCH-03", p_pin: pin }
+          body: { p_identifier: tid, p_pin: pin }
         });
         if (res && res.success && res.teacher) {
           activateTeacherSession(res.teacher);
           closeTeacherLoginModal();
+          return;
+        } else if (res && !res.success) {
+          showToast(res.message || "Invalid Teacher ID or Security PIN!", "wrong");
+          speak("Invalid Teacher credentials. Access denied.", "en-IN");
           return;
         }
       } catch (err) {
         console.log("Teacher Supabase RPC note:", err.message || err);
       }
 
-      // 2. Offline / local fallback check
-      if (pin === "1234" || pin === "TAA2026" || pin === "admin") {
-        var cleanTid = tid.toUpperCase();
-        var foundTeacher = DEFAULT_TEACHERS_ROSTER.find(function(t) {
-          return t.teacher_id.toUpperCase() === cleanTid || t.mobile === tid;
-        });
-        var assignedClass = foundTeacher ? foundTeacher.class_name : (cleanTid.includes("NUR") ? "Nursery" : (cleanTid.includes("LKG") ? "LKG" : "UKG"));
+      // 2. Offline / local fallback check ONLY against registered faculty roster
+      var cleanTid = tid.toUpperCase();
+      var foundTeacher = DEFAULT_TEACHERS_ROSTER.find(function(t) {
+        return (t.teacher_id.toUpperCase() === cleanTid || t.mobile === tid) && t.pin === pin;
+      });
+      if (foundTeacher) {
         activateTeacherSession({
-          teacher_id: tid || "TCH-03",
-          teacher_name: foundTeacher ? foundTeacher.teacher_name : "Class Teacher",
-          class_name: assignedClass
+          teacher_id: foundTeacher.teacher_id,
+          teacher_name: foundTeacher.teacher_name,
+          class_name: foundTeacher.class_name
         });
         closeTeacherLoginModal();
       } else {
-        showToast("Incorrect Teacher PIN! Use default 1234.", "wrong");
-        speak("Incorrect PIN. Please try again with 1234.", "en-IN");
+        showToast("Access Denied: Invalid Teacher ID or PIN!", "wrong");
+        speak("Access Denied. Invalid Teacher credentials.", "en-IN");
       }
     }
 
@@ -2690,11 +2758,12 @@
       // Header row with Class switch and Preview mode toggle
       html += '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
       html += '  <h2 style="font-size: 19px; font-weight: 900; color: #D84315; margin: 0;">👩‍🏫 Class Teacher Portal</h2>';
-      html += '  <div style="display: flex; gap: 8px;">';
+      html += '  <div style="display: flex; gap: 8px; align-items: center;">';
       html += '    <button class="nav-icon-btn" style="background: #2E7D32; color: #FFF; font-size: 11px; padding: 6px 10px; font-weight: 800; border-radius: 10px;" onclick="safeAction(enterTeacherPreview)">';
       html += '      👁️ Preview All Classes';
       html += '    </button>';
       html += '    <button class="nav-icon-btn" style="font-size: 11px; padding: 6px 10px;" onclick="safeAction(goHome)">Home 🏠</button>';
+      html += '    <button class="btn-logout" style="font-size: 11px; padding: 5px 9px;" onclick="safeAction(logoutUser)">🚪 Logout</button>';
       html += '  </div>';
       html += '</div>';
 
@@ -3289,7 +3358,7 @@
       }
     }
 
-    // Launch Homework with Fair Decimal Scoring Session
+    // Launch Homework with Fair Decimal Scoring Session & Strict Lock
     function startAssignedHomework() {
       if (!appSession.student) return;
       var hw = getTodayActiveHomework(appSession.student.class_name);
@@ -3299,6 +3368,7 @@
       }
       var isCompletedEarlier = isHomeworkCompletedByStudent(appSession.student.student_id, hw.id);
 
+      // Lock session to homework mode
       appSession.activeHomeworkId = hw.id;
       appSession.homeworkAnsweredCount = 0;
       appSession.homeworkSession = {
@@ -3311,6 +3381,9 @@
         zeroMistakeBonus: 0.0,
         questionScores: []
       };
+
+      // Apply strict homework lock class to body
+      document.body.classList.add("homework-locked");
 
       var modules = getCurriculumModulesForClass(appSession.student.class_name);
       var mod = modules.find(function(m) { return m.key === hw.module_key; }) || modules[0];
@@ -3326,12 +3399,29 @@
       if (mod.grammarSubTab) {
         appState.ukgGrammarSubTab = mod.grammarSubTab;
       }
+      if (mod.mathSubTab) {
+        if (appSession.student.class_name === "UKG") appState.ukgMathSubTab = mod.mathSubTab;
+        if (appSession.student.class_name === "LKG") appState.lkgMathSubTab = mod.mathSubTab;
+      }
+      if (mod.numSubTab) {
+        appState.nurseryNumSubTab = mod.numSubTab;
+      }
+
+      // Hide all navigation & subtabs
+      var homeNav = document.getElementById("btn-home-nav");
+      if (homeNav) homeNav.style.display = "none";
+      var subtabs = document.getElementById("subtabs-bar");
+      if (subtabs) subtabs.style.display = "none";
+      var filters = document.getElementById("filter-pills-bar");
+      if (filters) filters.style.display = "none";
 
       openSection(mod.section, mod.tab);
       setMode(mod.mode || "quiz");
+      renderHeaderStatus();
+
       var welcomeMsg = isCompletedEarlier
         ? "Opening Practice Mode for: " + hw.title
-        : "Starting today's homework: " + hw.title + ". Target: " + hw.target_questions + " questions.";
+        : "Starting assigned homework: " + hw.title + ". Target: " + hw.target_questions + " questions.";
       speak(welcomeMsg, "en-IN");
     }
 
@@ -3441,7 +3531,7 @@
         '  <div style="font-size: 52px; margin-bottom: 8px;">' + (isPractice ? '📖🌟' : '🏆🎉') + '</div>' +
         '  <h2 style="font-size: 21px; font-weight: 900; color: #E65100; margin-bottom: 6px;">' + (isPractice ? 'Practice Complete! ✅' : 'Homework Completed! 🚀') + '</h2>' +
         '  <div style="font-size: 13px; color: #546E7A; font-weight: 700; line-height: 1.4;">' +
-        (isPractice ? 'You reviewed today\'s homework in practice mode.' : 'Awesome effort! Your score is added to your permanent wallet.') +
+        (isPractice ? 'You reviewed today\'s homework in practice mode.' : 'Awesome effort! Your score is submitted directly to your permanent wallet.') +
         '  </div>' +
         bonusHtml +
         '  <div style="background: #E8F5E9; border: 2px solid #81C784; border-radius: 16px; padding: 12px; margin: 12px 0;">' +
@@ -3452,13 +3542,25 @@
         '    </div>' +
         '  </div>' +
         '  <button class="hw-action-btn" onclick="safeAction(function(){ var m=document.getElementById(\'hw-complete-modal\'); if(m) m.remove(); goHome(); })">' +
-        '    Back to Dashboard 🏠' +
+        '    Back to Assigned Homework &amp; Leaderboard 🏆' +
         '  </button>' +
         '</div>';
       document.body.appendChild(modal);
 
+      // Release lock & clear active homework state
+      document.body.classList.remove("homework-locked");
       appSession.activeHomeworkId = null;
       appSession.homeworkSession = null;
+      appSession.homeworkAnsweredCount = 0;
+
+      // Auto-redirect to Assigned Homework + Leaderboard screen after 4 seconds
+      setTimeout(function() {
+        var m = document.getElementById("hw-complete-modal");
+        if (m) {
+          m.remove();
+          goHome();
+        }
+      }, 4000);
     }
 
 
@@ -3685,6 +3787,7 @@
             }, 600);
             return;
           }
+          renderHeaderStatus();
           renderCurrentView();
           return;
         }
@@ -27175,6 +27278,12 @@ var DATA_UKG_MATH_ADDITION = [
        ========================================================= */
     function goHome() {
       lastUtteranceKey = "";
+      // If student is actively in homework, prevent navigating away until questions are finished
+      if (appSession.activeHomeworkId && !appSession.isPreviewMode) {
+        showToast("Homework in progress! Complete your questions to finish.", "wrong");
+        speak("Homework is locked. Please complete all questions to submit your score.", "en-IN");
+        return;
+      }
       if (!appSession.type && !localStorage.getItem("taa_kids_student_session") && !localStorage.getItem("taa_kids_teacher_session")) {
         appState.section = "welcome";
         document.getElementById("btn-home-nav").style.display = "none";
@@ -27212,8 +27321,15 @@ var DATA_UKG_MATH_ADDITION = [
 
     function openSection(secName, tabTarget) {
       lastUtteranceKey = "";
+      if (appSession.activeHomeworkId && !appSession.isPreviewMode && appState.section && appState.section !== secName) {
+        return;
+      }
       appState.section = secName;
-      document.getElementById("btn-home-nav").style.display = "flex";
+      if (appSession.activeHomeworkId && !appSession.isPreviewMode) {
+        document.getElementById("btn-home-nav").style.display = "none";
+      } else {
+        document.getElementById("btn-home-nav").style.display = "flex";
+      }
       setTab(typeof tabTarget !== "undefined" ? tabTarget : 0);
     }
 
@@ -28775,6 +28891,12 @@ function setNurseryNumSubTab(st) {
       var filterBar = document.getElementById("filter-pills-bar");
       if (filterBar) filterBar.style.display = "none";
 
+      // If in strict homework mode, never display any other subject tabs
+      if (appSession.activeHomeworkId && !appSession.isPreviewMode) {
+        if (tabsContainer) tabsContainer.style.display = "none";
+        return;
+      }
+
       var tabs = SECTION_TABS[appState.section] || [];
       if (tabs.length === 0) {
         if (tabsContainer) tabsContainer.style.display = "none";
@@ -28819,12 +28941,18 @@ function setNurseryNumSubTab(st) {
         html += '    <strong style="color: #2E7D32;">👩‍🏫 Teacher Portal Active:</strong> ' + appSession.teacherClass + ' Class';
         html += '    <div style="font-size: 11px; color: #558B2F;">All Modules Unlocked for Preview &amp; Assignment</div>';
         html += '  </div>';
-        html += '  <button class="nav-icon-btn" style="background: #2E7D32; color: #FFF; font-size: 12px; padding: 6px 12px; font-weight: 800; border-radius: 12px;" onclick="safeAction(openTeacherPanel)">Teacher Dashboard 📋</button>';
+        html += '  <div style="display:flex; gap:6px; align-items:center;">';
+        html += '    <button class="nav-icon-btn" style="background: #2E7D32; color: #FFF; font-size: 12px; padding: 6px 12px; font-weight: 800; border-radius: 12px;" onclick="safeAction(openTeacherPanel)">Teacher Dashboard 📋</button>';
+        html += '    <button class="btn-logout" style="font-size: 12px; padding: 5px 9px;" onclick="safeAction(logoutUser)">🚪 Logout</button>';
+        html += '  </div>';
         html += '</div>';
       } else if (appSession.isPreviewMode) {
         html += '<div class="preview-mode-banner">';
         html += '  <div><strong style="color: #E65100;">👁️ Teacher Preview Mode:</strong> All classes unlocked</div>';
-        html += '  <button class="nav-icon-btn" style="background: #E65100; color: #FFF; font-size: 12px; padding: 6px 10px;" onclick="safeAction(exitTeacherPreview)">Exit Preview ✕</button>';
+        html += '  <div style="display:flex; gap:6px; align-items:center;">';
+        html += '    <button class="nav-icon-btn" style="background: #E65100; color: #FFF; font-size: 12px; padding: 6px 10px;" onclick="safeAction(exitTeacherPreview)">Exit Preview ✕</button>';
+        html += '    <button class="btn-logout" style="font-size: 12px; padding: 5px 9px;" onclick="safeAction(logoutUser)">🚪 Logout</button>';
+        html += '  </div>';
         html += '</div>';
       }
 
