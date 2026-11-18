@@ -2919,15 +2919,15 @@
         return [
           { key: "english", label: "🔤 Phonics & CVC Words" },
           { key: "math", label: "🔢 Numbers 1-100 & Before/After" },
-          { key: "hindi", label: "🪔 Hindi Vyanjan & Shabda" },
+          { key: "hindi", label: "🪔 Hindi Swar, Vyanjan & Shabda" },
           { key: "evs", label: "🌍 EVS Body & Animals" },
           { key: "gk", label: "💡 General Knowledge (100 Qs)" }
         ];
       } else {
         return [
-          { key: "english", label: "🔤 ABC & Phonic Sounds" },
-          { key: "math", label: "🔢 Numbers & Counting 1-50" },
-          { key: "hindi", label: "🕉️ Hindi Swar (अ-अः)" },
+          { key: "english", label: "🔤 English (Phonics & ABC 6 Sub-tabs)" },
+          { key: "math", label: "🔢 Mathematics (14 Sub-tabs 1-50)" },
+          { key: "hindi", label: "🕉️ हिंदी स्वर व व्यंजन (9 Sub-tabs)" },
           { key: "gk", label: "💡 General Knowledge (50 Qs)" }
         ];
       }
@@ -3126,25 +3126,73 @@
         ];
       } else if (className === "LKG") {
         return [
+          // English Phonics
           { key: "lkg_phonics_2letter", title: "English: 2-Letter Words (AT, IN, ON, GO)", section: "lkg", tab: "phonics", vowel: "two", mode: "quiz" },
           { key: "lkg_phonics_cvc_a", title: "English: 3-Letter CVC Short 'a' (CAT, BAT, MAT)", section: "lkg", tab: "phonics", vowel: "a", mode: "quiz" },
-          { key: "lkg_vowels_practice", title: "English: Vowels, Consonants & Phonics", section: "lkg", tab: "phonics", vowel: "vowels", mode: "learn" },
+          { key: "lkg_phonics_cvc_e", title: "English: 3-Letter CVC Short 'e' (PEN, BED, RED)", section: "lkg", tab: "phonics", vowel: "e", mode: "quiz" },
+          { key: "lkg_phonics_cvc_i", title: "English: 3-Letter CVC Short 'i' (PIN, TIN, BIN)", section: "lkg", tab: "phonics", vowel: "i", mode: "quiz" },
+          { key: "lkg_phonics_cvc_o", title: "English: 3-Letter CVC Short 'o' (POT, HOT, DOG)", section: "lkg", tab: "phonics", vowel: "o", mode: "quiz" },
+          { key: "lkg_phonics_cvc_u", title: "English: 3-Letter CVC Short 'u' (SUN, CUP, BUG)", section: "lkg", tab: "phonics", vowel: "u", mode: "quiz" },
+          { key: "lkg_vowels_practice", title: "English: Vowels & Consonants Phonics", section: "lkg", tab: "phonics", vowel: "vowels", mode: "learn" },
+          // Mathematics
           { key: "lkg_math_numbers", title: "Math: Numbers 1-100 & Before/After", section: "lkg", tab: "math", mode: "quiz" },
           { key: "lkg_math_names", title: "Math: Number Names (ONE to TWENTY)", section: "lkg", tab: "math", mathSubTab: "names", mode: "quiz" },
-          { key: "lkg_hindi_vyanjan", title: "Hindi: क-ज्ञ Vyanjan Picture Quiz", section: "lkg", tab: "vyanjan", mode: "quiz_pic_to_let" },
-          { key: "lkg_shabda_nirman", title: "Hindi: 2 व 3 अक्षर शब्द निर्माण", section: "lkg", tab: "shabda", mode: "learn" },
+          { key: "lkg_math_moreless", title: "Math: More or Less Comparison", section: "lkg", tab: "math", mathSubTab: "moreless", mode: "quiz" },
+          { key: "lkg_math_before_after", title: "Math: Before & After Numbers", section: "lkg", tab: "math", mathSubTab: "before_after", mode: "quiz" },
+          // Hindi
+          { key: "lkg_hindi_swar", title: "Hindi: स्वर अ-अः अभ्यास (Picture Quiz)", section: "lkg", tab: "vyanjan", lkgHindiSubTab: "swar", mode: "quiz_pic_to_let" },
+          { key: "lkg_hindi_vyanjan", title: "Hindi: क-ज्ञ Vyanjan Picture Quiz", section: "lkg", tab: "vyanjan", lkgHindiSubTab: "vyanjan", mode: "quiz_pic_to_let" },
+          { key: "lkg_shabda_nirman", title: "Hindi: 2 व 3 अक्षर शब्द निर्माण", section: "lkg", tab: "vyanjan", lkgHindiSubTab: "shabda", mode: "learn" },
+          // EVS
           { key: "lkg_evs_animals", title: "EVS: Domestic vs Wild Animals Quiz", section: "lkg", tab: "evs", topic: "animals", mode: "quiz" },
           { key: "lkg_evs_body", title: "EVS: My Body & Five Senses", section: "lkg", tab: "evs", topic: "body", mode: "quiz" },
+          { key: "lkg_evs_fruits", title: "EVS: Fruits & Vegetables Quiz", section: "lkg", tab: "evs", topic: "fruits", mode: "quiz" },
+          { key: "lkg_evs_colors", title: "EVS: Colors & Shapes Quiz", section: "lkg", tab: "evs", topic: "colors", mode: "quiz" },
+          // GK
           { key: "lkg_gk_quiz", title: "GK: LKG General Knowledge Challenge (100 Qs)", section: "lkg", tab: "gk", mode: "quiz" }
         ];
       } else {
         return [
-          { key: "nursery_phonics_sounds", title: "English: Initial Phonic Sound Match", section: "nursery", tab: "phonics", mode: "quiz" },
-          { key: "nursery_letters_quiz", title: "English: Letters A-Z Picture Quiz", section: "nursery", tab: "abc", mode: "quiz_pic_to_let" },
-          { key: "nursery_math_counting", title: "Math: Counting 1-20 Quiz", section: "nursery", tab: "numbers", mode: "quiz" },
-          { key: "nursery_math_count_50", title: "Math: Counting 1-50 Numbers", section: "nursery", tab: "numbers", numSubTab: "count_50", mode: "quiz" },
-          { key: "nursery_swar_quiz", title: "Hindi: Swar अ-अः Picture Quiz", section: "nursery", tab: "swar", mode: "quiz_pic_to_let" },
-          { key: "nursery_gk_quiz", title: "GK: Nursery General Knowledge (50 Qs)", section: "nursery", tab: "gk", mode: "quiz" }
+          // English Phonics & ABC 6 Sub-tabs
+          { key: "nursery_phonics_sounds", title: "English Phonics: 🔊 Initial Phonic Sound Match", section: "nursery", tab: "phonics", mode: "quiz" },
+          { key: "nursery_abc_match_pic", title: "English ABC: ✏️ Match Letter with Picture (Draw Line)", section: "nursery", tab: "abc", abcSubTab: "match_picture", mode: "learn" },
+          { key: "nursery_abc_match_same", title: "English ABC: 🔗 Match Same Capital Letters", section: "nursery", tab: "abc", abcSubTab: "match_same", mode: "learn" },
+          { key: "nursery_abc_match_small", title: "English ABC: 🔠 Capital to Small Letter Match", section: "nursery", tab: "abc", abcSubTab: "match_small", mode: "learn" },
+          { key: "nursery_abc_missing_letters", title: "English ABC: 🧩 Missing Letters (A–Z) Quiz", section: "nursery", tab: "abc", abcSubTab: "missing_letters", mode: "quiz" },
+          { key: "nursery_abc_choose_letter", title: "English ABC: 🎯 Choose Correct Letter Quiz", section: "nursery", tab: "abc", abcSubTab: "choose_letter", mode: "quiz" },
+          { key: "nursery_abc_order_az", title: "English ABC: 🔢 Write A–Z in Correct Order", section: "nursery", tab: "abc", abcSubTab: "order_az", mode: "learn" },
+          // Mathematics 14 Sub-tabs
+          { key: "nursery_num_count_50", title: "Math: 🔢 Counting 1–50 Numbers Chart", section: "nursery", tab: "numbers", numSubTab: "count_50", mode: "learn" },
+          { key: "nursery_num_count_tap_10", title: "Math: 👆 Count & Tap (1–10) Quiz", section: "nursery", tab: "numbers", numSubTab: "count_tap_10", mode: "quiz" },
+          { key: "nursery_num_count_tap_20", title: "Math: 👆 Count & Tap (11–20) Quiz", section: "nursery", tab: "numbers", numSubTab: "count_tap_20", mode: "quiz" },
+          { key: "nursery_num_match_num", title: "Math: 🔗 Match Numbers (Draw Line)", section: "nursery", tab: "numbers", numSubTab: "match_num", mode: "learn" },
+          { key: "nursery_num_match_pic_num", title: "Math: ✏️ Match Pictures & Numbers", section: "nursery", tab: "numbers", numSubTab: "match_pic_num", mode: "learn" },
+          { key: "nursery_num_after", title: "Math: 👉 After Numbers (1–20) Quiz", section: "nursery", tab: "numbers", numSubTab: "after_num", mode: "quiz" },
+          { key: "nursery_num_before", title: "Math: 👈 Before Numbers (1–20) Quiz", section: "nursery", tab: "numbers", numSubTab: "before_num", mode: "quiz" },
+          { key: "nursery_num_between", title: "Math: ↔️ Between Numbers (1–20) Quiz", section: "nursery", tab: "numbers", numSubTab: "between_num", mode: "quiz" },
+          { key: "nursery_num_odd_even", title: "Math: ⚖️ Odd & Even Numbers Quiz", section: "nursery", tab: "numbers", numSubTab: "odd_even", mode: "quiz" },
+          { key: "nursery_num_names_1_10", title: "Math: 🔤 Number Names (ONE to TEN) Quiz", section: "nursery", tab: "numbers", numSubTab: "names_1_10", mode: "quiz" },
+          { key: "nursery_num_names_11_20", title: "Math: 🔤 Number Names (ELEVEN to TWENTY) Quiz", section: "nursery", tab: "numbers", numSubTab: "names_11_20", mode: "quiz" },
+          { key: "nursery_num_compare", title: "Math: 🐘 Pre-Math Comparisons (Big/Small)", section: "nursery", tab: "numbers", numSubTab: "compare_size", mode: "quiz" },
+          { key: "nursery_num_shapes", title: "Math: 🔺 Shapes & Real Objects Quiz", section: "nursery", tab: "numbers", numSubTab: "shapes_objects", mode: "quiz" },
+          { key: "nursery_num_missing", title: "Math: ❓ Missing Numbers (1–20) Quiz", section: "nursery", tab: "numbers", numSubTab: "missing_num", mode: "quiz" },
+          // Hindi 9 Sub-tabs
+          { key: "nursery_hindi_learn_all", title: "Hindi: 📖 स्वर व व्यंजन सीखें (अ-अः & क-ज्ञ)", section: "nursery", tab: "swar", hindiSubTab: "learn_all", mode: "learn" },
+          { key: "nursery_hindi_match_pic", title: "Hindi: ✏️ चित्र पहचान कर सही अक्षर मिलाओ", section: "nursery", tab: "swar", hindiSubTab: "match_pic", mode: "learn" },
+          { key: "nursery_hindi_match_same", title: "Hindi: 🔗 समान अक्षर मिलाओ (Draw Line)", section: "nursery", tab: "swar", hindiSubTab: "match_same", mode: "learn" },
+          { key: "nursery_hindi_after", title: "Hindi: 👉 बाद वाला अक्षर बताओ (Quiz)", section: "nursery", tab: "swar", hindiSubTab: "after_letter", mode: "quiz" },
+          { key: "nursery_hindi_before", title: "Hindi: 👈 पहले वाला अक्षर बताओ (Quiz)", section: "nursery", tab: "swar", hindiSubTab: "before_letter", mode: "quiz" },
+          { key: "nursery_hindi_between", title: "Hindi: ↔️ बीच वाला अक्षर बताओ (Quiz)", section: "nursery", tab: "swar", hindiSubTab: "between_letter", mode: "quiz" },
+          { key: "nursery_hindi_missing", title: "Hindi: 🧩 खाली स्थान भरो (Quiz)", section: "nursery", tab: "swar", hindiSubTab: "missing_letters", mode: "quiz" },
+          { key: "nursery_hindi_choose_6", title: "Hindi: 🎯 6 अक्षरों में से सही पहचानो (Quiz)", section: "nursery", tab: "swar", hindiSubTab: "choose_6", mode: "quiz" },
+          { key: "nursery_hindi_order", title: "Hindi: 🔢 क से ज्ञ क्रम में लगाओ", section: "nursery", tab: "swar", hindiSubTab: "order_hindi", mode: "learn" },
+          // GK
+          { key: "nursery_gk_quiz", title: "GK: 🌍 Nursery General Knowledge (50 Qs)", section: "nursery", tab: "gk", mode: "quiz" },
+          // Backward Compatibility Fallback Keys
+          { key: "nursery_letters_quiz", title: "English: Letters A-Z Picture Quiz", section: "nursery", tab: "abc", abcSubTab: "choose_letter", mode: "quiz" },
+          { key: "nursery_math_counting", title: "Math: Counting 1-20 Quiz", section: "nursery", tab: "numbers", numSubTab: "count_tap_10", mode: "quiz" },
+          { key: "nursery_math_count_50", title: "Math: Counting 1-50 Numbers", section: "nursery", tab: "numbers", numSubTab: "count_50", mode: "learn" },
+          { key: "nursery_swar_quiz", title: "Hindi: Swar अ-अः Picture Quiz", section: "nursery", tab: "swar", hindiSubTab: "choose_6", mode: "quiz" }
         ];
       }
     }
@@ -3368,25 +3416,24 @@
       }
       var isCompletedEarlier = isHomeworkCompletedByStudent(appSession.student.student_id, hw.id);
 
-      // Lock session to homework mode
-      appSession.activeHomeworkId = hw.id;
-      appSession.homeworkAnsweredCount = 0;
-      appSession.homeworkSession = {
-        homeworkId: hw.id,
-        isPracticeMode: isCompletedEarlier, // Reopening completed homework awards 0 points!
-        targetQuestions: hw.target_questions || 10,
-        currentQuestionWrongTaps: 0,
-        totalWrongTapsAllQs: 0,
-        totalScore: 0.0,
-        zeroMistakeBonus: 0.0,
-        questionScores: []
-      };
-
-      // Apply strict homework lock class to body
-      document.body.classList.add("homework-locked");
+      // Temporarily release active homework lock to allow clean section transition
+      appSession.activeHomeworkId = null;
+      document.body.classList.remove("homework-locked");
 
       var modules = getCurriculumModulesForClass(appSession.student.class_name);
-      var mod = modules.find(function(m) { return m.key === hw.module_key; }) || modules[0];
+      var mod = modules.find(function(m) { return m.key === hw.module_key; });
+      if (!mod && hw.sub_topic) {
+        mod = modules.find(function(m) { return m.title === hw.sub_topic; });
+      }
+      if (!mod) {
+        var sLow = ((hw.subject || "") + " " + (hw.title || "")).toLowerCase();
+        mod = modules.find(function(m) {
+          if (sLow.indexOf("math") !== -1 || sLow.indexOf("number") !== -1 || sLow.indexOf("गिनती") !== -1 || sLow.indexOf("संख्या") !== -1) return m.tab === "numbers" || m.tab === "math";
+          if (sLow.indexOf("hindi") !== -1 || sLow.indexOf("स्वर") !== -1 || sLow.indexOf("हिंदी") !== -1 || sLow.indexOf("व्यंजन") !== -1) return m.tab === "swar" || m.tab === "vyanjan" || m.tab === "matra";
+          if (sLow.indexOf("gk") !== -1 || sLow.indexOf("knowledge") !== -1) return m.tab === "gk";
+          return m.tab === "phonics" || m.tab === "abc" || m.tab === "grammar";
+        }) || modules[0];
+      }
 
       if (mod.vowel) appState.phonicsVowel = mod.vowel;
       if (mod.topic) {
@@ -3406,6 +3453,36 @@
       if (mod.numSubTab) {
         appState.nurseryNumSubTab = mod.numSubTab;
       }
+      if (mod.abcSubTab) {
+        appState.nurseryAbcSubTab = mod.abcSubTab;
+      }
+      if (mod.hindiSubTab) {
+        appState.nurseryHindiSubTab = mod.hindiSubTab;
+      }
+      if (mod.lkgHindiSubTab) {
+        appState.lkgHindiSubTab = mod.lkgHindiSubTab;
+      }
+
+      // Open target section and set mode with bypass flag
+      openSection(mod.section, mod.tab, true);
+      setMode(mod.mode || "quiz");
+
+      // Now lock session to homework mode
+      appSession.activeHomeworkId = hw.id;
+      appSession.homeworkAnsweredCount = 0;
+      appSession.homeworkSession = {
+        homeworkId: hw.id,
+        isPracticeMode: isCompletedEarlier, // Reopening completed homework awards 0 points!
+        targetQuestions: hw.target_questions || 10,
+        currentQuestionWrongTaps: 0,
+        totalWrongTapsAllQs: 0,
+        totalScore: 0.0,
+        zeroMistakeBonus: 0.0,
+        questionScores: []
+      };
+
+      // Apply strict homework lock class to body
+      document.body.classList.add("homework-locked");
 
       // Hide all navigation & subtabs
       var homeNav = document.getElementById("btn-home-nav");
@@ -3415,13 +3492,11 @@
       var filters = document.getElementById("filter-pills-bar");
       if (filters) filters.style.display = "none";
 
-      openSection(mod.section, mod.tab);
-      setMode(mod.mode || "quiz");
       renderHeaderStatus();
 
       var welcomeMsg = isCompletedEarlier
         ? "Opening Practice Mode for: " + hw.title
-        : "Starting assigned homework: " + hw.title + ". Target: " + hw.target_questions + " questions.";
+        : "Starting assigned homework: " + hw.title + ". Target: " + (hw.target_questions || 10) + " questions.";
       speak(welcomeMsg, "en-IN");
     }
 
@@ -3688,6 +3763,21 @@
       triggerConfetti();
       showToast(message || "🎉 Awesome! Great job!", "success");
       speak(speechText || "Awesome! Great job!", speechLang || "en-IN");
+
+      // If active homework session is in non-quiz activity (e.g. matching board or ordering)
+      if (appSession.activeHomeworkId && appSession.homeworkSession) {
+        var hs = appSession.homeworkSession;
+        var earned = hs.isPracticeMode ? 0.0 : 1.0;
+        hs.totalScore = Math.round((hs.totalScore + earned) * 10) / 10;
+        hs.questionScores.push(earned);
+        appSession.homeworkAnsweredCount = (appSession.homeworkAnsweredCount || 0) + 1;
+        renderHeaderStatus();
+        if (appSession.homeworkAnsweredCount >= hs.targetQuestions) {
+          setTimeout(function() {
+            completeActiveHomeworkRecord(appSession.activeHomeworkId);
+          }, 800);
+        }
+      }
     }
 
     function showToast(text, type) {
@@ -27319,16 +27409,18 @@ var DATA_UKG_MATH_ADDITION = [
       return appState.tabKey;
     }
 
-    function openSection(secName, tabTarget) {
+    function openSection(secName, tabTarget, isBypassHwLock) {
       lastUtteranceKey = "";
-      if (appSession.activeHomeworkId && !appSession.isPreviewMode && appState.section && appState.section !== secName) {
+      if (!isBypassHwLock && appSession.activeHomeworkId && !appSession.isPreviewMode && appState.section && appState.section !== secName) {
         return;
       }
       appState.section = secName;
       if (appSession.activeHomeworkId && !appSession.isPreviewMode) {
-        document.getElementById("btn-home-nav").style.display = "none";
+        var hNav = document.getElementById("btn-home-nav");
+        if (hNav) hNav.style.display = "none";
       } else {
-        document.getElementById("btn-home-nav").style.display = "flex";
+        var hNav = document.getElementById("btn-home-nav");
+        if (hNav) hNav.style.display = "flex";
       }
       setTab(typeof tabTarget !== "undefined" ? tabTarget : 0);
     }
