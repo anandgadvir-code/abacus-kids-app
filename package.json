@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "mkdir -p www && cp index.html logo.jpeg www/"
+    "test": "node test.js",
+    "build": "node build.js"
   },
   "dependencies": {
     "@capacitor-community/text-to-speech": "^5.1.0",

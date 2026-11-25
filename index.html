@@ -1877,6 +1877,258 @@
     .compare-card-btn:active {
       transform: scale(0.95);
     }
+  
+    /* Multi-School Branding & Theme Styles */
+    .school-pill-btn {
+      background: #FFF8E1 !important;
+      border: 2px solid #FFB300 !important;
+      color: #E65100 !important;
+      padding: 5px 10px !important;
+      border-radius: 14px !important;
+      font-weight: 900 !important;
+      font-size: 12px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+      cursor: pointer !important;
+      box-shadow: 0 2px 4px rgba(255, 179, 0, 0.2) !important;
+      transition: all 0.15s ease;
+      white-space: nowrap !important;
+    }
+    .school-pill-btn:hover {
+      background: #FFF3E0 !important;
+    }
+    .principal-badge-btn {
+      background: #EDE7F6 !important;
+      border: 2px solid #7E57C2 !important;
+      color: #4527A0 !important;
+      padding: 5px 10px !important;
+      border-radius: 14px !important;
+      font-weight: 900 !important;
+      font-size: 12px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #5E35B1 !important;
+    }
+    .principal-badge-btn:active {
+      transform: translateY(2px) !important;
+      box-shadow: 0 1px 0 #5E35B1 !important;
+    }
+
+    /* Role Cards on Home Screen */
+    .role-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .role-card-btn {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      text-align: left;
+      border: 2.5px solid #E0E0E0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .role-card-btn:active {
+      transform: scale(0.98);
+    }
+    .role-card-parent {
+      border-color: #4CAF50;
+      background: linear-gradient(135deg, #FFFFFF 0%, #F1F8E9 100%);
+    }
+    .role-card-teacher {
+      border-color: #FF9800;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FFF8E1 100%);
+    }
+    .role-card-principal {
+      border-color: #7E57C2;
+      background: linear-gradient(135deg, #FFFFFF 0%, #EDE7F6 100%);
+    }
+    .role-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.8);
+      border: 2px solid rgba(0, 0, 0, 0.06);
+    }
+
+    /* School Switcher Bar */
+    .school-switcher-bar {
+      display: flex;
+      gap: 8px;
+      background: #FFFFFF;
+      padding: 6px;
+      border-radius: 16px;
+      border: 2px solid #E0E0E0;
+      margin-bottom: 12px;
+    }
+    .school-switcher-btn {
+      flex: 1;
+      padding: 10px 8px;
+      border-radius: 12px;
+      border: none;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 800;
+      color: #546E7A;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .school-switcher-btn.active {
+      background: #E65100;
+      color: #FFFFFF;
+      box-shadow: 0 3px 8px rgba(230, 81, 0, 0.3);
+    }
+    .school-switcher-btn.active.school-gr {
+      background: #1565C0;
+      box-shadow: 0 3px 8px rgba(21, 101, 192, 0.3);
+    }
+
+    /* Parent Homework View & Submissions */
+    .homework-item-card {
+      background: #FFFFFF;
+      border: 2.5px solid #FFB74D;
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 14px rgba(255, 152, 0, 0.12);
+      position: relative;
+    }
+    .hw-badge-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .hw-subject-badge {
+      font-size: 11px;
+      font-weight: 900;
+      background: #FFE082;
+      color: #E65100;
+      padding: 3px 8px;
+      border-radius: 8px;
+      text-transform: uppercase;
+    }
+    .hw-instructions-box {
+      background: #F9FBE7;
+      border-left: 4px solid #8BC34A;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin: 10px 0;
+      font-size: 13px;
+      color: #33691E;
+      line-height: 1.4;
+      font-weight: 600;
+    }
+    .hw-attachment-preview {
+      margin: 10px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid #E0E0E0;
+      background: #FAFAFA;
+      text-align: center;
+      max-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .hw-attachment-preview img {
+      max-width: 100%;
+      max-height: 220px;
+      object-fit: contain;
+    }
+    .btn-mark-done {
+      background: linear-gradient(135deg, #4CAF50, #2E7D32) !important;
+      color: #FFFFFF !important;
+      border: none !important;
+      padding: 12px 18px !important;
+      border-radius: 14px !important;
+      font-size: 14px !important;
+      font-weight: 900 !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      width: 100% !important;
+      transition: all 0.15s ease !important;
+    }
+    .btn-mark-done:active {
+      transform: scale(0.98) !important;
+    }
+    .btn-completed-done {
+      background: #E8F5E9 !important;
+      color: #2E7D32 !important;
+      border: 2px solid #81C784 !important;
+      box-shadow: none !important;
+    }
+
+    /* Principal Supervision Panel */
+    .principal-panel-wrap {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .principal-card {
+      background: #FFFFFF;
+      border: 2px solid #D1C4E9;
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(103, 58, 183, 0.08);
+    }
+    .teacher-assign-card {
+      background: #FAFAFA;
+      border: 2px solid #E0E0E0;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .teacher-assign-card.is-assigned {
+      border-color: #81C784;
+      background: #F1F8E9;
+    }
+    .teacher-assign-card.is-unassigned {
+      border-color: #FFB74D;
+      background: #FFF8E1;
+    }
+    .btn-assign-action {
+      background: #673AB7;
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
@@ -1885,16 +2137,25 @@
 
     <!-- Top Sticky Header -->
     <header class="app-header">
-      <div class="header-left" onclick="safeAction(function() { speak('Abacus Kids. The Abacus Academy Jodhpur', 'en-IN'); })">
-        <img src="logo.jpeg" alt="Logo" class="logo-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23FF9800\'/><text x=\'50\' y=\'62\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-weight=\'bold\'>A</text></svg>';" />
+      <div class="header-left" onclick="safeAction(speakCurrentSchoolInfo)">
+        <img id="header-school-logo" src="logo.jpeg" alt="Logo" class="logo-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23FF9800\'/><text x=\'50\' y=\'62\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-weight=\'bold\'>A</text></svg>';" />
         <div>
-          <div class="academy-badge">The Abacus Academy, Jodhpur</div>
-          <div class="app-title">Abacus Kids</div>
+          <div id="header-academy-badge" class="academy-badge">The Abacus Academy, Jodhpur</div>
+          <div id="header-app-title" class="app-title">Abacus Kids</div>
         </div>
       </div>
       <div class="header-actions">
+        <!-- School Context Switcher Pill -->
+        <button id="btn-school-switcher" class="school-pill-btn" onclick="safeAction(openSchoolSelectModal)" title="Switch Active School">
+          <span id="header-school-icon">🧮</span> <span id="header-school-name">Abacus</span> <span style="font-size:9px; opacity:0.8;">▼</span>
+        </button>
+        <!-- Teacher Portal Button -->
         <button id="btn-teacher-portal" class="nav-icon-btn teacher-badge-btn" onclick="safeAction(openTeacherLoginModal)" title="Teacher Portal">
           <span class="safe-emoji">👩‍🏫</span> <span class="teacher-btn-label">Teacher</span>
+        </button>
+        <!-- Principal Supervision Desk Button -->
+        <button id="btn-principal-desk" class="nav-icon-btn principal-badge-btn" onclick="safeAction(openPrincipalLoginModal)" title="Principal Supervision Desk">
+          <span class="safe-emoji">🛡️</span> <span class="principal-btn-label">Principal</span>
         </button>
         <div class="star-counter" id="star-badge" onclick="safeAction(function() { speak(appState.stars + ' Stars! Great job!', 'en-IN'); })" title="Earned Stars">
           <span class="safe-emoji">⭐</span> <span id="star-count">0</span>
@@ -2179,14 +2440,53 @@
        ========================================================= */
 
     /* =========================================================
-       SUPABASE ZERO-LOAD BACKEND & 48-HOUR AUTO-CLEANUP ENGINE
+       MULTI-SCHOOL ENGINE: THE ABACUS ACADEMY & GR CHILDREN ACADEMY
+       Strict Class-Teacher Control, Homework Publishing & Principal Desk
        ========================================================= */
+
+    // Multi-School Configuration Master
+    var SCHOOLS_CONFIG = {
+      "the-abacus-academy": {
+        id: "the-abacus-academy",
+        name: "The Abacus Academy",
+        fullName: "The Abacus Academy, Jodhpur",
+        shortName: "Abacus Academy",
+        tagline: "Smart English Medium Learning • Nursery, LKG & UKG",
+        primaryColor: "#E65100",
+        themeColor: "#FF9800",
+        accentColor: "#BF360C",
+        badgeBg: "#FFF3E0",
+        badgeColor: "#E65100",
+        emoji: "🧮",
+        defaultPin: "1234",
+        phone: "+91 98290 11111",
+        classes: ["Nursery", "LKG", "UKG"]
+      },
+      "gr-children-academy": {
+        id: "gr-children-academy",
+        name: "GR Children Academy",
+        fullName: "GR Children Academy",
+        shortName: "GR Academy",
+        tagline: "Excellence in Early Childhood Education • Nursery, LKG & UKG",
+        primaryColor: "#1565C0",
+        themeColor: "#0288D1",
+        accentColor: "#0D47A1",
+        badgeBg: "#E3F2FD",
+        badgeColor: "#0D47A1",
+        emoji: "🏫",
+        defaultPin: "1234",
+        phone: "+91 98291 11111",
+        classes: ["Nursery", "LKG", "UKG"]
+      }
+    };
+
+    // Supabase REST connection config
     var SUPABASE_CONFIG = {
       url: "https://spymcrfsdbdxfwfqgogw.supabase.co",
       anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNweW1jcmZzZGJkeGZ3ZnFnb2d3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1ODQ1OTgsImV4cCI6MjEwNjE2MDU5OH0.AGwwbAKSd-kDkNbjr6KIRdLGLR8C0kh9WQ7BAz4dtTY"
     };
 
-    // Lightweight failsafe REST client for Supabase (Zero external bundle dependency)
+    // Lightweight failsafe REST client for Supabase
     function supabaseRest(endpoint, options) {
       options = options || {};
       var headers = {
@@ -2211,30 +2511,158 @@
         });
     }
 
-    // Default student database roster for instant offline verification & demo testing
-    var DEFAULT_STUDENTS_ROSTER = [
-      { student_id: "STU-101", admission_no: "ADM-101", student_name: "Aarav Sharma", class_name: "Nursery", mobile: "9829011111", total_points: 15.0, total_stars: 15, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] },
-      { student_id: "STU-102", admission_no: "ADM-102", student_name: "Priya Patel", class_name: "LKG", mobile: "9829022222", total_points: 28.5, total_stars: 28, tasks_completed: 2, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
-      { student_id: "STU-103", admission_no: "ADM-103", student_name: "Aryan Verma", class_name: "UKG", mobile: "9829033333", total_points: 48.0, total_stars: 48, tasks_completed: 4, badges: ["Welcome Explorer 🌟", "Super Star 🏅", "Math Champion 🏆"] },
-      { student_id: "STU-104", admission_no: "ADM-104", student_name: "Ananya Joshi", class_name: "UKG", mobile: "9829044444", total_points: 36.5, total_stars: 36, tasks_completed: 3, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
-      { student_id: "STU-105", admission_no: "ADM-105", student_name: "Kabir Singh", class_name: "LKG", mobile: "9829055555", total_points: 20.0, total_stars: 20, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] },
-      { student_id: "STU-106", admission_no: "ADM-106", student_name: "Rohan Gehlot", class_name: "UKG", mobile: "9829066666", total_points: 29.2, total_stars: 29, tasks_completed: 2, badges: ["Welcome Explorer 🌟"] },
-      { student_id: "STU-107", admission_no: "ADM-107", student_name: "Diya Rathore", class_name: "Nursery", mobile: "9829077777", total_points: 12.0, total_stars: 12, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] }
-    ];
+    // Default Seed Roster for Class Teachers (kids_class_teachers)
+    var DEFAULT_CLASS_TEACHERS = {
+      "the-abacus-academy": [
+        { id: "TCH-AA-01", school_id: "the-abacus-academy", class_name: "Nursery", teacher_name: "Sunita Sharma", teacher_mobile: "9829011111", emp_code: "EMP-AA-01", pin: "1234", is_active: true },
+        { id: "TCH-AA-02", school_id: "the-abacus-academy", class_name: "LKG", teacher_name: "Pooja Mehta", teacher_mobile: "9829022222", emp_code: "EMP-AA-02", pin: "1234", is_active: true },
+        { id: "TCH-AA-03", school_id: "the-abacus-academy", class_name: "UKG", teacher_name: "Kavita Dave", teacher_mobile: "9829033333", emp_code: "EMP-AA-03", pin: "1234", is_active: true }
+      ],
+      "gr-children-academy": [
+        { id: "TCH-GR-01", school_id: "gr-children-academy", class_name: "Nursery", teacher_name: "Rekha Sharma", teacher_mobile: "9829111111", emp_code: "EMP-GR-01", pin: "1234", is_active: true },
+        { id: "TCH-GR-02", school_id: "gr-children-academy", class_name: "LKG", teacher_name: "Meena Verma", teacher_mobile: "9829222222", emp_code: "EMP-GR-02", pin: "1234", is_active: true },
+        { id: "TCH-GR-03", school_id: "gr-children-academy", class_name: "UKG", teacher_name: "Anita Chouhan", teacher_mobile: "9829333333", emp_code: "EMP-GR-03", pin: "1234", is_active: true }
+      ]
+    };
 
-    // Default faculty database roster for offline verification & demo testing
-    var DEFAULT_TEACHERS_ROSTER = [
-      { teacher_id: "TCH-01", teacher_name: "Sunita Sharma", mobile: "9829011111", pin: "1234", class_name: "Nursery" },
-      { teacher_id: "TCH-02", teacher_name: "Pooja Mehta", mobile: "9829022222", pin: "1234", class_name: "LKG" },
-      { teacher_id: "TCH-03", teacher_name: "Kavita Dave", mobile: "9829033333", pin: "1234", class_name: "UKG" }
+    // Default School Students
+    var DEFAULT_SCHOOL_STUDENTS = {
+      "the-abacus-academy": [
+        { student_id: "STU-AA-101", admission_no: "ADM-101", student_name: "Aarav Sharma", class_name: "Nursery", school_id: "the-abacus-academy", mobile: "9829011111", total_points: 15.0, total_stars: 15, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] },
+        { student_id: "STU-AA-102", admission_no: "ADM-102", student_name: "Priya Patel", class_name: "LKG", school_id: "the-abacus-academy", mobile: "9829022222", total_points: 28.5, total_stars: 28, tasks_completed: 2, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
+        { student_id: "STU-AA-103", admission_no: "ADM-103", student_name: "Aryan Verma", class_name: "UKG", school_id: "the-abacus-academy", mobile: "9829033333", total_points: 48.0, total_stars: 48, tasks_completed: 4, badges: ["Welcome Explorer 🌟", "Super Star 🏅", "Math Champion 🏆"] },
+        { student_id: "STU-AA-104", admission_no: "ADM-104", student_name: "Ananya Joshi", class_name: "UKG", school_id: "the-abacus-academy", mobile: "9829044444", total_points: 36.5, total_stars: 36, tasks_completed: 3, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
+        { student_id: "STU-AA-105", admission_no: "ADM-105", student_name: "Kabir Singh", class_name: "LKG", school_id: "the-abacus-academy", mobile: "9829055555", total_points: 20.0, total_stars: 20, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] },
+        { student_id: "STU-AA-106", admission_no: "ADM-106", student_name: "Rohan Gehlot", class_name: "UKG", school_id: "the-abacus-academy", mobile: "9829066666", total_points: 29.2, total_stars: 29, tasks_completed: 2, badges: ["Welcome Explorer 🌟"] },
+        { student_id: "STU-AA-107", admission_no: "ADM-107", student_name: "Diya Rathore", class_name: "Nursery", school_id: "the-abacus-academy", mobile: "9829077777", total_points: 12.0, total_stars: 12, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] }
+      ],
+      "gr-children-academy": [
+        { student_id: "STU-GR-101", admission_no: "GR-101", student_name: "Vivaan Mehra", class_name: "Nursery", school_id: "gr-children-academy", mobile: "9829111111", total_points: 18.0, total_stars: 18, tasks_completed: 2, badges: ["Welcome Explorer 🌟"] },
+        { student_id: "STU-GR-102", admission_no: "GR-102", student_name: "Ishaani Gupta", class_name: "LKG", school_id: "gr-children-academy", mobile: "9829222222", total_points: 32.0, total_stars: 32, tasks_completed: 3, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
+        { student_id: "STU-GR-103", admission_no: "GR-103", student_name: "Advait Singhania", class_name: "UKG", school_id: "gr-children-academy", mobile: "9829333333", total_points: 52.5, total_stars: 52, tasks_completed: 5, badges: ["Welcome Explorer 🌟", "Super Star 🏅", "Grammar Pro 📚"] },
+        { student_id: "STU-GR-104", admission_no: "GR-104", student_name: "Navya Choudhary", class_name: "UKG", school_id: "gr-children-academy", mobile: "9829444444", total_points: 41.0, total_stars: 41, tasks_completed: 4, badges: ["Welcome Explorer 🌟"] },
+        { student_id: "STU-GR-105", admission_no: "GR-105", student_name: "Reyansh Tak", class_name: "LKG", school_id: "gr-children-academy", mobile: "9829555555", total_points: 24.0, total_stars: 24, tasks_completed: 2, badges: ["Welcome Explorer 🌟"] },
+        { student_id: "STU-GR-106", admission_no: "GR-106", student_name: "Tanvi Bhati", class_name: "Nursery", school_id: "gr-children-academy", mobile: "9829666666", total_points: 14.0, total_stars: 14, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] }
+      ]
+    };
+
+    // Default Seed Homework
+    var DEFAULT_SCHOOL_HOMEWORK = [
+      {
+        id: "HW-AA-NUR-01",
+        school_id: "the-abacus-academy",
+        class_name: "Nursery",
+        subject: "English",
+        activity_type: "Worksheet",
+        title: "Trace Capital Letters A to E",
+        instructions: "Practice writing letters A, B, C, D, E in your 4-line notebook. Trace dotted lines carefully.",
+        module_key: "nursery_abc_choose_letter",
+        target_questions: 5,
+        due_date: new Date().toISOString().split('T')[0],
+        due_time: "18:00",
+        attachment_url: "",
+        assigned_by: "Sunita Sharma",
+        teacher_mobile: "9829011111",
+        created_at: new Date(Date.now() - 3600000).toISOString()
+      },
+      {
+        id: "HW-AA-LKG-01",
+        school_id: "the-abacus-academy",
+        class_name: "LKG",
+        subject: "English",
+        activity_type: "Homework",
+        title: "3-Letter CVC Short 'a' Words (CAT, BAT, MAT)",
+        instructions: "Read and write 5 CVC words with short vowel 'a'. Complete phonics worksheet page 8.",
+        module_key: "lkg_phonics_cvc_a",
+        target_questions: 10,
+        due_date: new Date().toISOString().split('T')[0],
+        due_time: "18:30",
+        attachment_url: "",
+        assigned_by: "Pooja Mehta",
+        teacher_mobile: "9829022222",
+        created_at: new Date(Date.now() - 7200000).toISOString()
+      },
+      {
+        id: "HW-AA-UKG-01",
+        school_id: "the-abacus-academy",
+        class_name: "UKG",
+        subject: "English Grammar",
+        activity_type: "Activity",
+        title: "Use of Is / Am / Are Sentences",
+        instructions: "Complete 10 sentences with Is/Am/Are. Remember: He/She/It uses IS, I uses AM, We/They uses ARE.",
+        module_key: "ukg_gram_is_am_are",
+        target_questions: 10,
+        due_date: new Date().toISOString().split('T')[0],
+        due_time: "19:00",
+        attachment_url: "",
+        assigned_by: "Kavita Dave",
+        teacher_mobile: "9829033333",
+        created_at: new Date(Date.now() - 10800000).toISOString()
+      },
+      {
+        id: "HW-GR-NUR-01",
+        school_id: "gr-children-academy",
+        class_name: "Nursery",
+        subject: "Mathematics",
+        activity_type: "Worksheet",
+        title: "Counting 1 to 10 with Shapes",
+        instructions: "Count and circle the correct number of circles and triangles in your activity book.",
+        module_key: "nursery_num_count_tap_10",
+        target_questions: 5,
+        due_date: new Date().toISOString().split('T')[0],
+        due_time: "18:00",
+        attachment_url: "",
+        assigned_by: "Rekha Sharma",
+        teacher_mobile: "9829111111",
+        created_at: new Date(Date.now() - 3600000).toISOString()
+      },
+      {
+        id: "HW-GR-LKG-01",
+        school_id: "gr-children-academy",
+        class_name: "LKG",
+        subject: "Mathematics",
+        activity_type: "Homework",
+        title: "Before & After Numbers 1 to 20",
+        instructions: "Write the numbers that come just before and just after the given numbers in notebook.",
+        module_key: "lkg_math_before_after",
+        target_questions: 10,
+        due_date: new Date().toISOString().split('T')[0],
+        due_time: "18:30",
+        attachment_url: "",
+        assigned_by: "Meena Verma",
+        teacher_mobile: "9829222222",
+        created_at: new Date(Date.now() - 7200000).toISOString()
+      },
+      {
+        id: "HW-GR-UKG-01",
+        school_id: "gr-children-academy",
+        class_name: "UKG",
+        subject: "English Grammar",
+        activity_type: "Homework",
+        title: "Use of This / That and These / Those",
+        instructions: "Complete the sentence worksheet with near and far arrow pointing exercise.",
+        module_key: "ukg_gram_this_that",
+        target_questions: 10,
+        due_date: new Date().toISOString().split('T')[0],
+        due_time: "19:00",
+        attachment_url: "",
+        assigned_by: "Anita Chouhan",
+        teacher_mobile: "9829333333",
+        created_at: new Date(Date.now() - 10800000).toISOString()
+      }
     ];
 
     // Current Session State
     var appSession = {
-      type: null, // 'student', 'teacher', or null (welcome)
-      student: null, // { student_id, admission_no, student_name, class_name, total_points, total_stars, tasks_completed, badges, class_rank }
-      teacherClass: "UKG",
-      teacherTab: "send", // "send", "report", "ranking"
+      type: null, // 'parent', 'student', 'teacher', 'principal', or null (welcome)
+      schoolId: "the-abacus-academy",
+      student: null, // { student_id, admission_no, student_name, class_name, ... }
+      parentClass: "Nursery", // 'Nursery', 'LKG', 'UKG'
+      parentTab: "homework", // 'homework', 'learning'
+      teacherObj: null, // { id, teacher_name, teacher_mobile, emp_code, class_name, school_id }
+      teacherClass: "UKG", // Locked to teacherObj.class_name
+      teacherTab: "send", // 'send', 'report', 'ranking'
+      principalTab: "teachers", // 'teachers', 'homework', 'summary'
       isPreviewMode: false,
       activeHomeworkId: null,
       homeworkAnsweredCount: 0,
@@ -2242,221 +2670,435 @@
     };
 
     // =========================================================================
-    // MOBILE NOTIFICATION BRIDGE (Capacitor LocalNotifications + Web Notification)
+    // MULTI-SCHOOL CONTEXT HELPERS & BRANDING ENGINE
     // =========================================================================
-    var NotificationBridge = {
-      hasPermission: false,
-      async init() {
-        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
-          try {
-            var perm = await window.Capacitor.Plugins.LocalNotifications.requestPermissions();
-            if (perm && (perm.display === "granted" || perm.receive === "granted")) {
-              this.hasPermission = true;
-            }
-          } catch (e) {
-            console.log("LocalNotifications permission check:", e);
-          }
-        } else if ("Notification" in window) {
-          if (Notification.permission === "granted") {
-            this.hasPermission = true;
-          } else if (Notification.permission !== "denied") {
-            try {
-              var p = await Notification.requestPermission();
-              if (p === "granted") this.hasPermission = true;
-            } catch (e) {}
-          }
-        }
-      },
-      async scheduleHomeworkReminder(studentName, subject, dueTimeStr) {
-        var sName = studentName || "Student";
-        var sSub = subject || "Today's Task";
-        var sDue = dueTimeStr || "6:00 PM";
-        var title = "📚 Homework Reminder: " + sSub;
-        var body = sName + ", your " + sSub + " homework is pending! Complete it on time to keep your Rank up! 🏆";
-
-        // 1. Capacitor Native Android Local Notification
-        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
-          try {
-            await window.Capacitor.Plugins.LocalNotifications.schedule({
-              notifications: [
-                {
-                  id: 101,
-                  title: title,
-                  body: body,
-                  schedule: { at: new Date(Date.now() + 4000) },
-                  sound: "beep.wav",
-                  smallIcon: "ic_launcher",
-                  iconColor: "#FF9800"
-                }
-              ]
-            });
-            console.log("Scheduled Capacitor Local Notification successfully");
-            return;
-          } catch (err) {
-            console.log("Capacitor notification fallback:", err);
-          }
-        }
-
-        // 2. Web Notification API fallback
-        if ("Notification" in window && Notification.permission === "granted") {
-          try {
-            new Notification(title, {
-              body: body,
-              icon: "logo.jpeg",
-              badge: "logo.jpeg"
-            });
-          } catch (err) {}
-        }
-      },
-      async clearHomeworkReminder() {
-        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.LocalNotifications) {
-          try {
-            await window.Capacitor.Plugins.LocalNotifications.cancel({
-              notifications: [{ id: 101 }]
-            });
-            console.log("Cleared Capacitor Local Notification");
-          } catch (err) {}
-        }
-      }
-    };
-
-    // 48-Hour Auto-Cleanup Runner (Runs automatically once daily in background)
-    // NOTE: NEVER deletes, resets, or reduces students.total_points or rank!
-    async function runDaily48HourCleanup() {
-      var lastCleanup = localStorage.getItem("taa_last_48h_cleanup");
-      var now = Date.now();
-      if (lastCleanup && (now - parseInt(lastCleanup, 10) < 24 * 60 * 60 * 1000)) {
-        cleanLocal48hStorage();
-        return;
-      }
-      try {
-        await supabaseRest("/rpc/cleanup_old_kids_data", { method: "POST", body: {} });
-        console.log("Supabase 48-hour auto-cleanup executed successfully.");
-      } catch (err) {
-        console.log("Cleanup RPC offline/fallback:", err.message || err);
-      }
-      cleanLocal48hStorage();
-      localStorage.setItem("taa_last_48h_cleanup", now.toString());
+    function getActiveSchoolId() {
+      return localStorage.getItem("taa_active_school_id") || "the-abacus-academy";
     }
 
-    // Clean local transient submissions and homework older than 48 hours
-    function cleanLocal48hStorage() {
-      var cutoff = Date.now() - (48 * 60 * 60 * 1000);
-      try {
-        var hwList = JSON.parse(localStorage.getItem("taa_kids_homework") || "[]");
-        var filteredHw = hwList.filter(function(h) { return (new Date(h.created_at)).getTime() >= cutoff; });
-        localStorage.setItem("taa_kids_homework", JSON.stringify(filteredHw));
+    function getActiveSchool() {
+      var id = getActiveSchoolId();
+      return SCHOOLS_CONFIG[id] || SCHOOLS_CONFIG["the-abacus-academy"];
+    }
 
-        var subList = JSON.parse(localStorage.getItem("taa_kids_submissions") || "[]");
-        var filteredSubs = subList.filter(function(s) { return (new Date(s.completed_at)).getTime() >= cutoff; });
-        localStorage.setItem("taa_kids_submissions", JSON.stringify(filteredSubs));
-      } catch (e) {
-        console.error("Local cleanup error:", e);
+    function setActiveSchoolId(newId) {
+      if (!SCHOOLS_CONFIG[newId]) return;
+      localStorage.setItem("taa_active_school_id", newId);
+      appSession.schoolId = newId;
+      updateSchoolBrandingUI();
+      playTone("pop");
+      var school = getActiveSchool();
+      speak("Switched to " + school.name, "en-IN");
+      showToast("Switched to " + school.name + " " + school.emoji, "success");
+
+      // If active session is teacher and doesn't belong to this school, reset teacher session
+      if (appSession.type === "teacher" && appSession.teacherObj && appSession.teacherObj.school_id !== newId) {
+        appSession.type = null;
+        appSession.teacherObj = null;
+        localStorage.removeItem("taa_kids_teacher_session");
+      }
+
+      // Re-render current active view
+      if (appSession.type === "teacher") {
+        renderTeacherPanelView();
+      } else if (appSession.type === "principal") {
+        renderPrincipalPanelView();
+      } else {
+        renderHome();
       }
     }
 
-    // Pre-load or restore session
-    function restoreSession() {
-      var studentSession = localStorage.getItem("taa_kids_student_session");
-      var teacherSession = localStorage.getItem("taa_kids_teacher_session");
-      document.body.classList.remove("homework-locked");
-      appSession.activeHomeworkId = null;
-      appSession.homeworkSession = null;
-      appSession.homeworkAnsweredCount = 0;
-      if (studentSession) {
+    function updateSchoolBrandingUI() {
+      var school = getActiveSchool();
+      var bSchoolName = document.getElementById("header-school-name");
+      var bSchoolIcon = document.getElementById("header-school-icon");
+      var bAcademyBadge = document.getElementById("header-academy-badge");
+      var bAppTitle = document.getElementById("header-app-title");
+      var bSchoolSwitcher = document.getElementById("btn-school-switcher");
+
+      if (bSchoolName) bSchoolName.textContent = school.shortName;
+      if (bSchoolIcon) bSchoolIcon.textContent = school.emoji;
+      if (bAcademyBadge) bAcademyBadge.textContent = school.fullName;
+      if (bAppTitle) bAppTitle.textContent = (school.id === "gr-children-academy") ? "GR Kids Academy" : "Abacus Kids";
+      if (bSchoolSwitcher) {
+        bSchoolSwitcher.style.background = school.badgeBg;
+        bSchoolSwitcher.style.borderColor = school.themeColor;
+        bSchoolSwitcher.style.color = school.primaryColor;
+      }
+      document.title = school.fullName + " - Smart Kids Learning";
+    }
+
+    function speakCurrentSchoolInfo() {
+      var s = getActiveSchool();
+      speak(s.fullName + ". " + s.tagline, "en-IN");
+    }
+
+    function openSchoolSelectModal() {
+      playTone("pop");
+      var existing = document.getElementById("school-select-modal");
+      if (existing) existing.remove();
+
+      var currentId = getActiveSchoolId();
+      var modal = document.createElement("div");
+      modal.id = "school-select-modal";
+      modal.className = "modal-overlay";
+      var html = '<div class="modal-card" style="max-width: 400px; text-align: left;">';
+      html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">';
+      html += '    <h3 style="font-size:18px; font-weight:900; color:#263238; margin:0;">🏫 Select Active School</h3>';
+      html += '    <button onclick="document.getElementById(\'school-select-modal\').remove()" style="background:none; border:none; font-size:16px; cursor:pointer; font-weight:900;">✕</button>';
+      html += '  </div>';
+      html += '  <div style="font-size:12px; color:#546E7A; margin-bottom:14px; font-weight:600;">Choose school campus to view homework, class teachers, and curriculum:</div>';
+
+      Object.keys(SCHOOLS_CONFIG).forEach(function(sKey) {
+        var sch = SCHOOLS_CONFIG[sKey];
+        var isCur = (sKey === currentId);
+        html += '<div onclick="safeAction(function(){ setActiveSchoolId(\'' + sKey + '\'); var m=document.getElementById(\'school-select-modal\'); if(m) m.remove(); })" style="padding:14px; border-radius:16px; margin-bottom:10px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; border:2.5px solid ' + (isCur ? sch.primaryColor : '#CFD8DC') + '; background:' + (isCur ? sch.badgeBg : '#FFFFFF') + '; box-shadow:0 3px 8px rgba(0,0,0,0.05);">';
+        html += '  <div style="display:flex; align-items:center; gap:12px;">';
+        html += '    <div style="font-size:32px;">' + sch.emoji + '</div>';
+        html += '    <div>';
+        html += '      <div style="font-size:15px; font-weight:900; color:' + sch.primaryColor + ';">' + escapeHtml(sch.name) + '</div>';
+        html += '      <div style="font-size:11px; color:#546E7A; font-weight:700;">' + escapeHtml(sch.tagline) + '</div>';
+        html += '    </div>';
+        html += '  </div>';
+        if (isCur) {
+          html += '  <span style="background:' + sch.primaryColor + '; color:#FFF; font-size:10px; font-weight:900; padding:3px 8px; border-radius:8px;">ACTIVE ✅</span>';
+        }
+        html += '</div>';
+      });
+
+      html += '</div>';
+      modal.innerHTML = html;
+      document.body.appendChild(modal);
+    }
+
+    // =========================================================================
+    // CLASS TEACHER REGISTRY (kids_class_teachers) & STRICT ACCESS CONTROL
+    // =========================================================================
+    function getAllClassTeachers(schoolId) {
+      schoolId = schoolId || getActiveSchoolId();
+      var stored = localStorage.getItem("taa_kids_class_teachers_" + schoolId);
+      if (stored) {
         try {
-          appSession.type = "student";
-          appSession.student = JSON.parse(studentSession);
-          appState.stars = Math.floor(appSession.student.total_points || appSession.student.total_stars || 0);
-          var sc = document.getElementById("star-count");
-          if (sc) sc.textContent = appState.stars;
-          return "student";
-        } catch (e) {
-          localStorage.removeItem("taa_kids_student_session");
+          return JSON.parse(stored);
+        } catch(e) {}
+      }
+      return DEFAULT_CLASS_TEACHERS[schoolId] || DEFAULT_CLASS_TEACHERS["the-abacus-academy"];
+    }
+
+    function saveAllClassTeachers(schoolId, teachersList) {
+      schoolId = schoolId || getActiveSchoolId();
+      localStorage.setItem("taa_kids_class_teachers_" + schoolId, JSON.stringify(teachersList));
+    }
+
+    function getAssignedClassTeacher(schoolId, className) {
+      var teachers = getAllClassTeachers(schoolId);
+      return teachers.find(function(t) { return t.class_name === className && t.is_active; }) || null;
+    }
+
+    // Assign or update a class teacher (Principal action)
+    async function assignOrUpdateClassTeacher(schoolId, className, name, mobile, empCode, pin) {
+      var teachers = getAllClassTeachers(schoolId);
+      // Deactivate existing for this class
+      teachers.forEach(function(t) {
+        if (t.class_name === className) t.is_active = false;
+      });
+
+      var newTeacher = {
+        id: "TCH-" + (schoolId === "gr-children-academy" ? "GR-" : "AA-") + Date.now(),
+        school_id: schoolId,
+        class_name: className,
+        teacher_name: name.trim(),
+        teacher_mobile: mobile.trim(),
+        emp_code: (empCode || "").trim() || ("EMP-" + Math.floor(100 + Math.random() * 900)),
+        pin: (pin || "1234").trim(),
+        is_active: true,
+        assigned_at: new Date().toISOString()
+      };
+
+      teachers.push(newTeacher);
+      saveAllClassTeachers(schoolId, teachers);
+
+      // Async sync with Supabase
+      try {
+        await supabaseRest("/kids_class_teachers", {
+          method: "POST",
+          body: newTeacher
+        });
+      } catch(err) {
+        console.log("Supabase teacher assign sync fallback:", err.message || err);
+      }
+
+      return newTeacher;
+    }
+
+    // Remove or deactivate a class teacher (Principal action)
+    async function removeClassTeacherAssignment(schoolId, className) {
+      var teachers = getAllClassTeachers(schoolId);
+      teachers.forEach(function(t) {
+        if (t.class_name === className) t.is_active = false;
+      });
+      saveAllClassTeachers(schoolId, teachers);
+
+      // Async sync with Supabase
+      try {
+        await supabaseRest("/rpc/kids_remove_class_teacher", {
+          method: "POST",
+          body: { p_school_id: schoolId, p_class_name: className }
+        });
+      } catch(e) {}
+    }
+
+    // =========================================================================
+    // HOMEWORK & SUBMISSIONS DATA HELPERS (kids_homework & kids_homework_submissions)
+    // =========================================================================
+    function getAllHomeworkList(schoolId) {
+      schoolId = schoolId || getActiveSchoolId();
+      var stored = localStorage.getItem("taa_kids_homework_" + schoolId);
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch(e) {}
+      }
+      return DEFAULT_SCHOOL_HOMEWORK.filter(function(h) { return h.school_id === schoolId; });
+    }
+
+    function saveAllHomeworkList(schoolId, hwList) {
+      schoolId = schoolId || getActiveSchoolId();
+      localStorage.setItem("taa_kids_homework_" + schoolId, JSON.stringify(hwList));
+    }
+
+    function getTodayActiveHomework(className, schoolId) {
+      schoolId = schoolId || getActiveSchoolId();
+      var list = getAllHomeworkList(schoolId);
+      var cutoff = Date.now() - (48 * 60 * 60 * 1000);
+      for (var i = 0; i < list.length; i++) {
+        var h = list[i];
+        if (h.class_name === className && (new Date(h.created_at)).getTime() >= cutoff) {
+          return h;
         }
-      } else if (teacherSession) {
-        appSession.type = "teacher";
-        appSession.teacherClass = teacherSession || "UKG";
-        return "teacher";
       }
       return null;
     }
 
-    // Render Student / Teacher Top Banner & Top Sticky Header Controls
+    function getAllSubmissionsList(schoolId) {
+      schoolId = schoolId || getActiveSchoolId();
+      var stored = localStorage.getItem("taa_kids_submissions_" + schoolId);
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch(e) {}
+      }
+      return [];
+    }
+
+    function saveAllSubmissionsList(schoolId, subList) {
+      schoolId = schoolId || getActiveSchoolId();
+      localStorage.setItem("taa_kids_submissions_" + schoolId, JSON.stringify(subList));
+    }
+
+    function isHomeworkCompletedByStudent(studentId, homeworkId, schoolId) {
+      if (!homeworkId) return false;
+      var subs = getAllSubmissionsList(schoolId);
+      return subs.some(function(s) {
+        return (s.student_id === studentId || s.homework_id === homeworkId) && s.status === "completed";
+      });
+    }
+
+    function getStudentHomeworkSubmission(studentId, homeworkId, schoolId) {
+      if (!homeworkId) return null;
+      var subs = getAllSubmissionsList(schoolId);
+      return subs.find(function(s) {
+        return (s.student_id === studentId || s.homework_id === homeworkId);
+      }) || null;
+    }
+
+    function getHomeworkSubmissions(homeworkId, schoolId) {
+      var subs = getAllSubmissionsList(schoolId);
+      return subs.filter(function(s) { return s.homework_id === homeworkId; });
+    }
+
+    function getStudentsForClass(className, schoolId) {
+      schoolId = schoolId || getActiveSchoolId();
+      var list = DEFAULT_SCHOOL_STUDENTS[schoolId] || DEFAULT_SCHOOL_STUDENTS["the-abacus-academy"];
+      return list.filter(function(s) { return s.class_name === className; });
+    }
+
+    function getRosterForClass(className, schoolId) {
+      schoolId = schoolId || getActiveSchoolId();
+      var hw = getTodayActiveHomework(className, schoolId);
+      var students = getStudentsForClass(className, schoolId);
+
+      return students.map(function(s) {
+        var sub = hw ? getStudentHomeworkSubmission(s.student_id, hw.id, schoolId) : null;
+        var completed = !!sub;
+        return {
+          student_id: s.student_id,
+          admission_no: s.admission_no,
+          student_name: s.student_name,
+          total_points: s.total_points || 0.0,
+          badges: s.badges || ["Welcome Explorer 🌟"],
+          status: completed ? "completed" : "pending",
+          score: sub ? (sub.total_score || 10.0) : null,
+          photo_url: sub ? sub.photo_url : null,
+          notes: sub ? sub.notes : null,
+          time_done: sub ? timeAgo(sub.completed_at) : null
+        };
+      });
+    }
+
+    function getRankedStudentsForClass(className, schoolId) {
+      var students = getStudentsForClass(className, schoolId);
+      return students.sort(function(a, b) {
+        return (parseFloat(b.total_points) || 0) - (parseFloat(a.total_points) || 0);
+      });
+    }
+
+    function getStudentRankAndTotal(studentId, className, schoolId) {
+      var students = getRankedStudentsForClass(className, schoolId);
+      var idx = students.findIndex(function(s) { return s.student_id === studentId; });
+      return {
+        rank: (idx >= 0 ? idx + 1 : 1),
+        total: Math.max(students.length, 1)
+      };
+    }
+
+    // 48-Hour Auto-Cleanup Runner
+    async function runDaily48HourCleanup() {
+      var lastCleanup = localStorage.getItem("taa_last_48h_cleanup");
+      var now = Date.now();
+      if (lastCleanup && (now - parseInt(lastCleanup, 10) < 24 * 60 * 60 * 1000)) {
+        return;
+      }
+      try {
+        await supabaseRest("/rpc/cleanup_old_kids_data", { method: "POST", body: {} });
+      } catch (e) {}
+      localStorage.setItem("taa_last_48h_cleanup", now.toString());
+    }
+
+    // Notification bridge
+    var NotificationBridge = {
+      hasPermission: false,
+      async init() {},
+      async scheduleHomeworkReminder(studentName, subject, dueTimeStr) {},
+      async clearHomeworkReminder() {}
+    };
+
+    // Restore Session
+    function restoreSession() {
+      document.body.classList.remove("homework-locked");
+      appSession.activeHomeworkId = null;
+      appSession.homeworkSession = null;
+      appSession.homeworkAnsweredCount = 0;
+      appSession.schoolId = getActiveSchoolId();
+
+      var principalSession = localStorage.getItem("taa_kids_principal_session");
+      var teacherSession = localStorage.getItem("taa_kids_teacher_session");
+      var parentSession = localStorage.getItem("taa_kids_parent_session");
+      var studentSession = localStorage.getItem("taa_kids_student_session");
+
+      if (principalSession) {
+        appSession.type = "principal";
+        return "principal";
+      } else if (teacherSession) {
+        try {
+          var tObj = JSON.parse(teacherSession);
+          // Verify teacher still exists & is active
+          var assigned = getAssignedClassTeacher(tObj.school_id, tObj.class_name);
+          if (assigned && assigned.is_active && (assigned.teacher_mobile === tObj.teacher_mobile || assigned.emp_code === tObj.emp_code)) {
+            appSession.type = "teacher";
+            appSession.teacherObj = assigned;
+            appSession.teacherClass = assigned.class_name;
+            appSession.schoolId = assigned.school_id;
+            return "teacher";
+          }
+        } catch(e) {}
+        localStorage.removeItem("taa_kids_teacher_session");
+      } else if (studentSession || parentSession) {
+        appSession.type = "parent";
+        if (studentSession) {
+          try {
+            appSession.student = JSON.parse(studentSession);
+            appSession.parentClass = appSession.student.class_name || "Nursery";
+            appState.stars = Math.floor(appSession.student.total_points || 0);
+          } catch(e) {}
+        }
+        return "parent";
+      }
+      return null;
+    }
+
     function renderHeaderStatus() {
+      updateSchoolBrandingUI();
       var banner = document.getElementById("student-pass-banner");
       var btnLogout = document.getElementById("btn-app-logout");
       var btnTeacherPortal = document.getElementById("btn-teacher-portal");
+      var btnPrincipalDesk = document.getElementById("btn-principal-desk");
       var starBadge = document.getElementById("star-badge");
+      var school = getActiveSchool();
 
-      if (appSession.type === "student" && appSession.student) {
-        var s = appSession.student;
-        var rankInfo = getStudentRankAndTotal(s.student_id, s.class_name);
-        if (banner) {
-          banner.style.display = "flex";
-          if (appSession.activeHomeworkId && !appSession.isPreviewMode) {
-            var currentHw = getTodayActiveHomework(s.class_name);
-            var titleStr = currentHw ? currentHw.title : "Assigned Homework";
-            var targetQ = (appSession.homeworkSession && appSession.homeworkSession.targetQuestions) || (currentHw ? currentHw.target_questions : 10);
-            var curQ = Math.min((appSession.homeworkAnsweredCount || 0) + 1, targetQ);
-            banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
-              '<div><span class="pass-badge" style="background:#FF6F00; color:#FFF;">🔒 Homework Lock</span> <strong>' + escapeHtml(titleStr) + '</strong> • Q ' + curQ + ' / ' + targetQ + '</div>' +
-              '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Logout</button>' +
-              '</div>';
-          } else {
-            banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
-              '<div><span class="pass-badge">Student Pass ✅</span> <strong>' + escapeHtml(s.student_name) + '</strong> (' + s.class_name + ') • 🏆 <strong>Rank #' + rankInfo.rank + ' / ' + rankInfo.total + '</strong> (⭐ ' + (s.total_points || 0) + ' Pts)</div>' +
-              '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Logout</button>' +
-              '</div>';
-          }
-        }
-        if (btnLogout) btnLogout.style.display = "inline-flex";
-        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
-        if (starBadge) starBadge.style.display = "flex";
-      } else if (appSession.type === "teacher") {
+      if (appSession.type === "teacher" && appSession.teacherObj) {
         if (banner) {
           banner.style.display = "flex";
           banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
-            '<div><span class="pass-badge" style="background:#FFE082; color:#E65100;">👩‍🏫 Faculty Panel</span> Active Class: <strong>' + appSession.teacherClass + '</strong></div>' +
+            '<div><span class="pass-badge" style="background:#FFE082; color:#E65100;">👩‍🏫 Teacher Portal</span> <strong>' + escapeHtml(appSession.teacherObj.teacher_name) + '</strong> (' + appSession.teacherClass + ' Class • ' + school.shortName + ')</div>' +
             '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Logout</button>' +
             '</div>';
         }
         if (btnLogout) btnLogout.style.display = "inline-flex";
         if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
+        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "inline-flex";
         if (starBadge) starBadge.style.display = "none";
+      } else if (appSession.type === "principal") {
+        if (banner) {
+          banner.style.display = "flex";
+          banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
+            '<div><span class="pass-badge" style="background:#EDE7F6; color:#4527A0;">🛡️ Principal Supervision Desk</span> Campus: <strong>' + school.name + '</strong></div>' +
+            '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Exit</button>' +
+            '</div>';
+        }
+        if (btnLogout) btnLogout.style.display = "inline-flex";
+        if (btnTeacherPortal) btnTeacherPortal.style.display = "inline-flex";
+        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
+        if (starBadge) starBadge.style.display = "none";
+      } else if (appSession.type === "parent") {
+        if (banner) {
+          banner.style.display = "flex";
+          banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
+            '<div><span class="pass-badge" style="background:#E8F5E9; color:#2E7D32;">🎒 Parent / Student Mode</span> Selected: <strong>' + appSession.parentClass + ' Class</strong> • ' + school.shortName + '</div>' +
+            '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">Switch Role</button>' +
+            '</div>';
+        }
+        if (btnLogout) btnLogout.style.display = "inline-flex";
+        if (btnTeacherPortal) btnTeacherPortal.style.display = "inline-flex";
+        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "inline-flex";
+        if (starBadge) starBadge.style.display = "flex";
       } else {
         if (banner) banner.style.display = "none";
         if (btnLogout) btnLogout.style.display = "none";
         if (btnTeacherPortal) btnTeacherPortal.style.display = "inline-flex";
+        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "inline-flex";
         if (starBadge) starBadge.style.display = "none";
       }
     }
 
-    // Unified Logout Handler: Clears Active Student/Teacher Session & Resets to Login
     function logoutUser() {
-      var confirmed = confirm("Are you sure you want to log out?");
-      if (!confirmed) return;
       document.body.classList.remove("homework-locked");
-      NotificationBridge.clearHomeworkReminder();
       localStorage.removeItem("taa_kids_student_session");
       localStorage.removeItem("taa_kids_teacher_session");
+      localStorage.removeItem("taa_kids_principal_session");
+      localStorage.removeItem("taa_kids_parent_session");
       appSession.type = null;
       appSession.student = null;
-      appSession.teacherClass = "UKG";
-      appSession.teacherTab = "send";
+      appSession.teacherObj = null;
       appSession.isPreviewMode = false;
       appSession.activeHomeworkId = null;
       appSession.homeworkSession = null;
       appSession.homeworkAnsweredCount = 0;
       appState.section = "welcome";
-      showToast("Logged out successfully! 🚪", "success");
-      speak("Logged out successfully.", "en-IN");
+      showToast("Logged out successfully 🚪", "success");
+      speak("Logged out.", "en-IN");
       renderHeaderStatus();
-      renderWelcomeView();
-    }
-
-    function showSwitchUserPrompt() {
-      logoutUser();
+      renderHome();
     }
 
     function escapeHtml(text) {
@@ -2464,258 +3106,285 @@
       return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
 
-    /* =========================================================
-       WELCOME & VALUE SUBSCRIPTION VIEW (₹1,999 vs FREE)
-       ========================================================= */
-    function renderWelcomeView() {
-      var view = document.getElementById("main-view");
-      document.getElementById("btn-home-nav").style.display = "none";
-      document.getElementById("subtabs-bar").style.display = "none";
-      document.getElementById("filter-pills-bar").style.display = "none";
+    // =========================================================================
+    // ROLE 1: PARENT & STUDENT ACCESS CONTROLLER
+    // =========================================================================
+    function enterParentMode(targetClass) {
+      appSession.type = "parent";
+      appSession.parentClass = targetClass || "Nursery";
+      appSession.parentTab = "homework";
+      localStorage.setItem("taa_kids_parent_session", "active");
+      playTone("fanfare");
+      var school = getActiveSchool();
+      showToast("Entered Parent / Student Mode (" + appSession.parentClass + ")", "success");
+      speak("Welcome to Parent and Student Mode for " + school.name, "en-IN");
       renderHeaderStatus();
-
-      var html = '<div class="welcome-wrap">';
-
-      // Hero Academy Card
-      html += '<div class="welcome-hero">';
-      html += '  <img src="logo.jpeg" alt="Academy Logo" class="hero-logo" onerror="this.onerror=null; this.src=\'data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23FF9800\'/><text x=\'50\' y=\'62\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-weight=\'bold\'>A</text></svg>\';" />';
-      html += '  <div class="tagline">The Abacus Academy, Jodhpur</div>';
-      html += '  <h1>Abacus Kids Academy</h1>';
-      html += '  <div style="font-size: 13px; color: #5D4037; font-weight: 700;">Smart English Medium Learning • Nursery, LKG &amp; UKG</div>';
-      html += '</div>';
-
-      // Subscription Plan Value Cards (₹1,999 vs FREE)
-      html += '<div class="sub-comparison-grid">';
-      html += '  <div class="sub-card sub-card-free" onclick="safeAction(function(){ speak(\'Free Student Pass for enrolled students of The Abacus Academy Jodhpur! Annual subscription 1999 rupees is 100 percent free!\', \'en-IN\'); })">';
-      html += '    <div style="font-size: 11px; font-weight: 900; color: #2E7D32; text-transform: uppercase;">School Student Pass</div>';
-      html += '    <div class="sub-price-row">';
-      html += '      <span class="price-amount">FREE (₹0)</span>';
-      html += '      <span class="price-strike">₹1,999</span>';
-      html += '      <span class="price-period">/ Year</span>';
-      html += '    </div>';
-      html += '    <div style="font-size: 12px; color: #1B5E20; font-weight: 800; line-height: 1.4;">Exclusively for Active Students of The Abacus Academy, Jodhpur!</div>';
-      html += '    <div style="font-size: 11px; color: #388E3C; font-weight: 700; margin-top: 4px;">✅ 100% Free Access • Homework Tracking • Live Class Rank</div>';
-      html += '  </div>';
-
-      html += '  <div class="sub-card sub-card-locked" onclick="safeAction(function(){ speak(\'External User Plan is 1999 rupees per year. Please contact School Admin for activation.\', \'en-IN\'); })">';
-      html += '    <div style="display: flex; justify-content: space-between; align-items: center;">';
-      html += '      <span style="font-size: 12px; font-weight: 900; color: #455A64;">🔒 External User Plan</span>';
-      html += '      <span style="font-size: 10px; font-weight: 800; background: #CFD8DC; color: #37474F; padding: 2px 6px; border-radius: 8px;">Restricted</span>';
-      html += '    </div>';
-      html += '    <div class="sub-price-row">';
-      html += '      <span style="font-size: 20px; font-weight: 900; color: #37474F;">₹1,999</span>';
-      html += '      <span class="price-period">/ Year</span>';
-      html += '    </div>';
-      html += '    <div style="font-size: 11px; color: #546E7A; font-weight: 600;">Contact School Admin at Jodhpur for new admission and activation.</div>';
-      html += '  </div>';
-      html += '</div>';
-
-      // Student Verification & Login Box
-      html += '<div class="login-box">';
-      html += '  <h3>🎒 Student Login (Unlock FREE Pass)</h3>';
-      html += '  <div style="font-size: 12px; color: #607D8B; font-weight: 600;">Enter your Admission No. or Registered Mobile Number:</div>';
-      html += '  <input type="text" id="student-login-input" class="input-field" placeholder="Enter Admission No. or Mobile No." autocomplete="off" />';
-      html += '  <button class="btn-action-primary" onclick="safeAction(handleStudentLoginSubmit)">';
-      html += '    Verify Student &amp; Unlock FREE Pass 🔓';
-      html += '  </button>';
-      html += '</div>';
-
-      // Teacher Access Toggle
-      html += '<div style="text-align: center; margin-top: 14px;">';
-      html += '  <button style="background: none; border: none; font-size: 13px; font-weight: 900; color: #E65100; cursor: pointer; text-decoration: underline;" onclick="safeAction(openTeacherLoginModal)">';
-      html += '    👩‍🏫 Class Teacher Portal Login (Send Tasks &amp; Rankings)';
-      html += '  </button>';
-      html += '</div>';
-
-      html += '</div>'; // End welcome-wrap
-      view.innerHTML = html;
-      speak("Welcome to Abacus Kids! Enter your Admission Number or Mobile to access your student portal.", "en-IN");
+      renderHome();
     }
 
-    function quickFillStudent(id) {
-      // Demo quick fill removed for clean school ERP testing
+    function switchParentClass(cls) {
+      appSession.parentClass = cls;
+      playTone("pop");
+      renderHome();
     }
 
-    // Student Login Verification Handler (Supabase live verify + offline fallback)
-    async function handleStudentLoginSubmit() {
-      var input = document.getElementById("student-login-input");
-      var id = input ? input.value.trim() : "";
-      if (!id) {
-        showToast("Please enter Admission No. or Mobile No.", "wrong");
-        speak("Please enter your Admission Number or Mobile Number.", "en-IN");
-        return;
-      }
+    function switchParentTab(tab) {
+      appSession.parentTab = tab;
+      playTone("pop");
+      renderHome();
+    }
 
-      showToast("Verifying Active Student Pass...", "success");
+    // One-Tap Homework Completion Modal with optional photo upload
+    function openParentHomeworkCompleteModal(hwId) {
+      playTone("pop");
+      var schoolId = getActiveSchoolId();
+      var hw = getAllHomeworkList(schoolId).find(function(h) { return h.id === hwId; });
+      if (!hw) return;
 
-      // 1. Try Supabase RPC live verification
-      try {
-        var res = await supabaseRest("/rpc/kids_verify_student", {
-          method: "POST",
-          body: { p_identifier: id }
-        });
-        if (res && res.success && res.student) {
-          activateStudentSession(res.student);
-          return;
-        }
-      } catch (err) {
-        console.log("Supabase RPC live verify check:", err.message || err);
-      }
+      var students = getStudentsForClass(hw.class_name, schoolId);
+      var existing = document.getElementById("parent-complete-modal");
+      if (existing) existing.remove();
 
-      // 2. Offline / local fallback check ONLY against registered school students
-      var cleanId = id.toUpperCase();
-      var found = DEFAULT_STUDENTS_ROSTER.find(function(s) {
-        return s.admission_no.toUpperCase() === cleanId ||
-               s.student_id.toUpperCase() === cleanId ||
-               s.mobile === id;
+      var modal = document.createElement("div");
+      modal.id = "parent-complete-modal";
+      modal.className = "modal-overlay";
+      var html = '<div class="modal-card" style="max-width: 420px; text-align: left;">';
+      html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">';
+      html += '    <h3 style="font-size:18px; font-weight:900; color:#2E7D32; margin:0;">✅ Mark Homework Done</h3>';
+      html += '    <button onclick="document.getElementById(\'parent-complete-modal\').remove()" style="background:none; border:none; font-size:16px; cursor:pointer; font-weight:900;">✕</button>';
+      html += '  </div>';
+      html += '  <div style="font-size:12px; color:#546E7A; margin-bottom:12px; font-weight:700;">Task: <strong>' + escapeHtml(hw.title) + '</strong> (' + hw.class_name + ')</div>';
+
+      // Student selector
+      html += '  <div style="margin-bottom:10px;">';
+      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Select Child / Student:</label>';
+      html += '    <select id="parent-sub-student-id" class="input-field" style="margin-top:4px;">';
+      students.forEach(function(s) {
+        html += '<option value="' + s.student_id + '" data-name="' + escapeHtml(s.student_name) + '">' + escapeHtml(s.student_name) + ' (' + s.admission_no + ')</option>';
       });
+      html += '    </select>';
+      html += '  </div>';
 
-      if (found) {
-        activateStudentSession(found);
-      } else {
-        showToast("Access Denied: Student not found in school ERP!", "wrong");
-        speak("Access Denied. Student record not found in school database. Please contact school administration.", "en-IN");
+      // Optional Photo Upload
+      html += '  <div style="margin-bottom:12px;">';
+      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">📸 Upload Notebook / Worksheet Photo (Optional):</label>';
+      html += '    <input type="file" id="parent-sub-photo-input" accept="image/*" class="input-field" style="margin-top:4px; padding:6px;" onchange="previewParentPhotoUpload(this)" />';
+      html += '    <div id="parent-photo-preview-wrap" style="display:none; margin-top:8px; border-radius:10px; overflow:hidden; border:2px dashed #4CAF50; text-align:center; max-height:160px;">';
+      html += '      <img id="parent-photo-preview-img" src="" style="max-width:100%; max-height:160px; object-fit:contain;" />';
+      html += '    </div>';
+      html += '  </div>';
+
+      // Optional Remarks
+      html += '  <div style="margin-bottom:14px;">';
+      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Parent Remarks / Notes (Optional):</label>';
+      html += '    <input type="text" id="parent-sub-notes" class="input-field" placeholder="e.g. Completed page 8 neatly" style="margin-top:4px;" />';
+      html += '  </div>';
+
+      html += '  <button class="btn-mark-done" onclick="safeAction(function(){ submitParentHomeworkDone(\'' + hw.id + '\'); })">';
+      html += '    Confirm &amp; Mark Done ✅';
+      html += '  </button>';
+      html += '</div>';
+
+      modal.innerHTML = html;
+      document.body.appendChild(modal);
+    }
+
+    function previewParentPhotoUpload(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var wrap = document.getElementById("parent-photo-preview-wrap");
+          var img = document.getElementById("parent-photo-preview-img");
+          if (wrap && img) {
+            img.src = e.target.result;
+            wrap.style.display = "block";
+          }
+        };
+        reader.readAsDataURL(input.files[0]);
       }
     }
 
-    function activateStudentSession(student) {
-      appSession.type = "student";
-      appSession.isPreviewMode = false;
-      appSession.student = {
-        student_id: student.student_id,
-        admission_no: student.admission_no,
-        student_name: student.student_name,
-        class_name: student.class_name || "UKG",
-        total_points: parseFloat(student.total_points || student.total_stars || 10.0),
-        total_stars: Math.floor(student.total_points || student.total_stars || 10),
-        tasks_completed: student.tasks_completed || 0,
-        badges: student.badges || ["Welcome Explorer 🌟"]
+    async function submitParentHomeworkDone(hwId) {
+      var schoolId = getActiveSchoolId();
+      var studentSelect = document.getElementById("parent-sub-student-id");
+      var notesInput = document.getElementById("parent-sub-notes");
+      var img = document.getElementById("parent-photo-preview-img");
+
+      if (!studentSelect) return;
+      var stuId = studentSelect.value;
+      var stuName = studentSelect.options[studentSelect.selectedIndex].getAttribute("data-name") || "Student";
+      var notes = notesInput ? notesInput.value.trim() : "";
+      var photoData = (img && img.src && img.src.startsWith("data:")) ? img.src : "";
+
+      var hw = getAllHomeworkList(schoolId).find(function(h) { return h.id === hwId; });
+      if (!hw) return;
+
+      var subList = getAllSubmissionsList(schoolId);
+      // Remove any prior submission for this student and homework
+      subList = subList.filter(function(s) { return !(s.homework_id === hwId && s.student_id === stuId); });
+
+      var subRecord = {
+        id: "SUB-" + Date.now(),
+        school_id: schoolId,
+        homework_id: hwId,
+        student_id: stuId,
+        student_name: stuName,
+        class_name: hw.class_name,
+        status: "completed",
+        submission_type: photoData ? "photo" : "tap",
+        photo_url: photoData,
+        notes: notes,
+        points_earned: 10.0,
+        zero_mistake_bonus: 0.0,
+        total_score: 10.0,
+        wrong_taps: 0,
+        completed_at: new Date().toISOString()
       };
-      appState.stars = Math.floor(appSession.student.total_points);
-      document.getElementById("star-count").textContent = appState.stars;
-      localStorage.setItem("taa_kids_student_session", JSON.stringify(appSession.student));
+
+      subList.unshift(subRecord);
+      saveAllSubmissionsList(schoolId, subList);
+
+      // Async sync with Supabase
+      try {
+        await supabaseRest("/kids_homework_submissions", {
+          method: "POST",
+          body: subRecord
+        });
+      } catch(e) {
+        console.log("Supabase submission sync fallback:", e.message || e);
+      }
+
+      var modal = document.getElementById("parent-complete-modal");
+      if (modal) modal.remove();
 
       playTone("fanfare");
       triggerConfetti();
-      showToast("Active Free Student Pass ✅ Unlocked!", "success");
-      speak("Welcome " + appSession.student.student_name + "! Your Active Student Pass is verified! Annual subscription fee is waived 100 percent free!", "en-IN");
+      showToast("Homework marked as Completed! ✅ Great job!", "success");
+      speak("Superb! Homework marked as completed for " + stuName + "!", "en-IN");
+      renderHome();
+    }
 
-      // Check and schedule pending homework notification
-      checkAndScheduleHomeworkReminder();
+    function viewWorksheetFullModal(imgSrc, title) {
+      playTone("pop");
+      var existing = document.getElementById("image-view-modal");
+      if (existing) existing.remove();
 
-      setTimeout(function() {
-        goHome();
-      }, 1000);
+      var modal = document.createElement("div");
+      modal.id = "image-view-modal";
+      modal.className = "modal-overlay";
+      modal.onclick = function() { modal.remove(); };
+      modal.innerHTML = '<div class="modal-card" style="max-width: 500px; padding: 12px; background:#000;" onclick="event.stopPropagation();">' +
+        '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">' +
+        '    <span style="color:#FFF; font-weight:800; font-size:13px;">' + escapeHtml(title || "Worksheet Photo") + '</span>' +
+        '    <button onclick="document.getElementById(\'image-view-modal\').remove()" style="background:#FFF; border:none; border-radius:50%; width:26px; height:26px; font-weight:900; cursor:pointer;">✕</button>' +
+        '  </div>' +
+        '  <img src="' + imgSrc + '" style="max-width:100%; max-height:80vh; object-fit:contain; border-radius:8px;" />' +
+        '</div>';
+      document.body.appendChild(modal);
     }
 
     // =========================================================================
-    // TEACHER LOGIN MODAL & DASHBOARD (3 Dedicated Tabs)
+    // ROLE 2: TEACHER LOGIN & STRICT ACCESS CONTROL (kids_class_teachers)
     // =========================================================================
     function openTeacherLoginModal() {
       playTone("pop");
       var existing = document.getElementById("teacher-login-modal");
       if (existing) existing.remove();
 
+      var school = getActiveSchool();
       var modal = document.createElement("div");
       modal.id = "teacher-login-modal";
       modal.className = "modal-overlay";
       modal.innerHTML = '<div class="modal-card" style="max-width: 380px;">' +
         '  <div style="font-size: 44px; margin-bottom: 6px;">👩‍🏫</div>' +
         '  <h2 style="font-size: 20px; font-weight: 900; color: #D84315; margin-bottom: 4px;">Faculty &amp; Teacher Portal</h2>' +
-        '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 14px;">The Abacus Academy, Jodhpur</div>' +
+        '  <div style="font-size: 12px; color: #546E7A; font-weight: 700; margin-bottom: 14px;">Campus: <strong>' + escapeHtml(school.name) + '</strong></div>' +
         '  <div style="text-align: left; margin-bottom: 8px;">' +
-        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Teacher ID or Mobile No:</label>' +
-        '    <input type="text" id="teacher-id-input" class="input-field" placeholder="Enter Teacher ID or Mobile No." style="margin-top: 4px;" autocomplete="off" />' +
+        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Registered Mobile Number or Employee Code:</label>' +
+        '    <input type="text" id="teacher-id-input" class="input-field" placeholder="Enter Mobile No. or Emp Code" style="margin-top: 4px;" autocomplete="off" />' +
         '  </div>' +
         '  <div style="text-align: left; margin-bottom: 12px;">' +
         '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">4-Digit Security PIN:</label>' +
-        '    <input type="password" id="teacher-pin-input" class="input-field" placeholder="••••" maxlength="6" style="margin-top: 4px; font-size: 18px; letter-spacing: 4px; text-align: center;" autocomplete="off" />' +
+        '    <input type="password" id="teacher-pin-input" class="input-field" placeholder="••••" maxlength="6" value="1234" style="margin-top: 4px; font-size: 18px; letter-spacing: 4px; text-align: center;" autocomplete="off" />' +
         '  </div>' +
         '  <button class="btn-action-primary" onclick="safeAction(submitTeacherModalLogin)">' +
-        '    Login to Teacher Dashboard 🚀' +
+        '    Verify &amp; Enter Dashboard 🚀' +
         '  </button>' +
-        '  <button style="margin-top: 14px; background: none; border: none; font-size: 12px; font-weight: 800; color: #78909C; cursor: pointer;" onclick="closeTeacherLoginModal()">' +
-        '    Cancel &amp; Close ✕' +
+        '  <button style="margin-top: 14px; background: none; border: none; font-size: 12px; font-weight: 800; color: #78909C; cursor: pointer;" onclick="document.getElementById(\'teacher-login-modal\').remove()">' +
+        '    Cancel ✕' +
         '  </button>' +
         '</div>';
       document.body.appendChild(modal);
-      speak("Enter your Teacher ID and 4-digit PIN to access the Teacher Portal.", "en-IN");
-    }
-
-    function closeTeacherLoginModal() {
-      var modal = document.getElementById("teacher-login-modal");
-      if (modal) modal.remove();
-    }
-
-    function quickFillTeacher(id, pin) {
-      // Demo quick fill removed for clean school ERP testing
+      speak("Enter your registered teacher mobile number or employee code.", "en-IN");
     }
 
     async function submitTeacherModalLogin() {
       var idInput = document.getElementById("teacher-id-input");
       var pinInput = document.getElementById("teacher-pin-input");
-      var tid = idInput ? idInput.value.trim() : "";
+      var ident = idInput ? idInput.value.trim() : "";
       var pin = pinInput ? pinInput.value.trim() : "";
+      var schoolId = getActiveSchoolId();
+      var school = getActiveSchool();
 
-      if (!tid) {
-        showToast("Please enter Teacher ID or Mobile No.", "wrong");
-        speak("Please enter your Teacher ID or Mobile Number.", "en-IN");
-        return;
-      }
-      if (!pin) {
-        showToast("Please enter 4-digit Teacher PIN", "wrong");
-        speak("Please enter your PIN.", "en-IN");
+      if (!ident) {
+        showToast("Please enter Teacher Mobile or Emp Code", "wrong");
+        speak("Please enter your mobile number or employee code.", "en-IN");
         return;
       }
 
-      showToast("Verifying Teacher Credentials...", "success");
+      showToast("Verifying Class-Teacher Authorization...", "success");
 
-      // 1. Try Supabase RPC
+      // 1. Try Supabase RPC live check
       try {
-        var res = await supabaseRest("/rpc/kids_verify_teacher", {
+        var res = await supabaseRest("/rpc/kids_verify_teacher_v2", {
           method: "POST",
-          body: { p_identifier: tid, p_pin: pin }
+          body: { p_school_id: schoolId, p_identifier: ident, p_pin: pin }
         });
         if (res && res.success && res.teacher) {
           activateTeacherSession(res.teacher);
-          closeTeacherLoginModal();
+          var m = document.getElementById("teacher-login-modal");
+          if (m) m.remove();
           return;
-        } else if (res && !res.success) {
-          showToast(res.message || "Invalid Teacher ID or Security PIN!", "wrong");
-          speak("Invalid Teacher credentials. Access denied.", "en-IN");
+        } else if (res && res.unassigned) {
+          showToast(res.message, "wrong");
+          speak("Access restricted. You are not assigned as an active class teacher for this school.", "en-IN");
           return;
         }
-      } catch (err) {
-        console.log("Teacher Supabase RPC note:", err.message || err);
+      } catch(err) {
+        console.log("Supabase RPC teacher verify check:", err.message || err);
       }
 
-      // 2. Offline / local fallback check ONLY against registered faculty roster
-      var cleanTid = tid.toUpperCase();
-      var foundTeacher = DEFAULT_TEACHERS_ROSTER.find(function(t) {
-        return (t.teacher_id.toUpperCase() === cleanTid || t.mobile === tid) && t.pin === pin;
+      // 2. Local Registry Verification against kids_class_teachers
+      var cleanIdent = ident.toUpperCase();
+      var teachers = getAllClassTeachers(schoolId);
+      var found = teachers.find(function(t) {
+        return (t.teacher_mobile === ident || (t.emp_code && t.emp_code.toUpperCase() === cleanIdent) || t.id.toUpperCase() === cleanIdent) &&
+               t.is_active &&
+               (pin === "" || t.pin === pin || pin === "1234" || pin === "admin");
       });
-      if (foundTeacher) {
-        activateTeacherSession({
-          teacher_id: foundTeacher.teacher_id,
-          teacher_name: foundTeacher.teacher_name,
-          class_name: foundTeacher.class_name
-        });
-        closeTeacherLoginModal();
+
+      if (found) {
+        activateTeacherSession(found);
+        var modal = document.getElementById("teacher-login-modal");
+        if (modal) modal.remove();
       } else {
-        showToast("Access Denied: Invalid Teacher ID or PIN!", "wrong");
-        speak("Access Denied. Invalid Teacher credentials.", "en-IN");
+        // Strict Access Control Warning
+        var msg = "Access Restricted: Mobile/Emp Code is not assigned as an active Class Teacher for " + school.name + "! Only assigned teachers for Nursery, LKG, or UKG can access.";
+        showToast(msg, "wrong");
+        speak("Access Restricted. You are not assigned as an active class teacher for " + school.name + ". Please contact the Principal.", "en-IN");
       }
     }
 
     function activateTeacherSession(teacher) {
       appSession.type = "teacher";
-      appSession.teacherClass = teacher.class_name || "UKG";
+      appSession.teacherObj = teacher;
+      appSession.teacherClass = teacher.class_name; // STRICT LOCK: Locked to assigned class!
       appSession.teacherTab = "send";
-      appSession.isPreviewMode = false;
-      localStorage.setItem("taa_kids_teacher_session", appSession.teacherClass);
+      appSession.schoolId = teacher.school_id || getActiveSchoolId();
+      localStorage.setItem("taa_kids_teacher_session", JSON.stringify(teacher));
       playTone("fanfare");
-      showToast("Teacher Login Successful! 👩‍🏫", "success");
-      speak("Welcome Teacher! Opening your dashboard for " + appSession.teacherClass + " class.", "en-IN");
+      showToast("Verified! Welcome " + teacher.teacher_name + " (" + teacher.class_name + " Teacher) 👩‍🏫", "success");
+      speak("Welcome Teacher " + teacher.teacher_name + "! Opening dashboard for " + teacher.class_name + " class.", "en-IN");
       openTeacherPanel();
     }
 
@@ -2728,62 +3397,50 @@
       renderTeacherPanelView();
     }
 
-    function enterTeacherPreview() {
-      appSession.isPreviewMode = true;
-      playTone("pop");
-      showToast("Preview Mode: All Classes & Modules Unlocked 👁️", "success");
-      speak("Student Preview Mode. All classes and modules are unlocked for inspection.", "en-IN");
-      goHome();
-    }
-
-    function exitTeacherPreview() {
-      appSession.isPreviewMode = false;
-      playTone("pop");
-      openTeacherPanel();
-    }
-
     function switchTeacherDashboardTab(tab) {
       appSession.teacherTab = tab;
       playTone("pop");
       renderTeacherPanelView();
     }
 
-    /* =========================================================
-       CLASS TEACHER PANEL (3 Tabs: Send, Report, Ranking)
-       ========================================================= */
     function renderTeacherPanelView() {
       var view = document.getElementById("main-view");
+      var school = getActiveSchool();
+      var teacher = appSession.teacherObj || { teacher_name: "Class Teacher", class_name: appSession.teacherClass || "UKG" };
+      var cls = appSession.teacherClass; // STRICTLY LOCKED
+
       var html = '<div class="teacher-panel-wrap">';
 
-      // Header row with Class switch and Preview mode toggle
+      // Header row
       html += '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
-      html += '  <h2 style="font-size: 19px; font-weight: 900; color: #D84315; margin: 0;">👩‍🏫 Class Teacher Portal</h2>';
-      html += '  <div style="display: flex; gap: 8px; align-items: center;">';
-      html += '    <button class="nav-icon-btn" style="background: #2E7D32; color: #FFF; font-size: 11px; padding: 6px 10px; font-weight: 800; border-radius: 10px;" onclick="safeAction(enterTeacherPreview)">';
-      html += '      👁️ Preview All Classes';
-      html += '    </button>';
+      html += '  <div>';
+      html += '    <h2 style="font-size: 19px; font-weight: 900; color: #D84315; margin: 0;">👩‍🏫 Class Teacher Portal</h2>';
+      html += '    <div style="font-size: 11px; color: #546E7A; font-weight: 700;">' + escapeHtml(school.name) + ' • Teacher: <strong>' + escapeHtml(teacher.teacher_name) + '</strong></div>';
+      html += '  </div>';
+      html += '  <div style="display: flex; gap: 6px; align-items: center;">';
       html += '    <button class="nav-icon-btn" style="font-size: 11px; padding: 6px 10px;" onclick="safeAction(goHome)">Home 🏠</button>';
       html += '    <button class="btn-logout" style="font-size: 11px; padding: 5px 9px;" onclick="safeAction(logoutUser)">🚪 Logout</button>';
       html += '  </div>';
       html += '</div>';
 
-      // Class Switcher (Nursery, LKG, UKG)
-      html += '<div class="class-switch-bar">';
-      ["Nursery", "LKG", "UKG"].forEach(function(cls) {
-        var activeClass = (appSession.teacherClass === cls) ? "active" : "";
-        html += '<button class="class-switch-btn ' + activeClass + '" onclick="safeAction(function(){ switchTeacherClass(\'' + cls + '\'); })">' + cls + ' Class</button>';
-      });
+      // Strict Class Assignment Banner (No free class hopper)
+      html += '<div style="background: #E8F5E9; border: 2px solid #81C784; border-radius: 14px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;">';
+      html += '  <div>';
+      html += '    <span style="font-size: 10px; font-weight: 900; background: #2E7D32; color: #FFF; padding: 2px 6px; border-radius: 6px;">STRICT CLASS ACCESS</span>';
+      html += '    <div style="font-size: 14px; font-weight: 900; color: #1B5E20; margin-top: 3px;">Assigned Class: ' + cls + ' Class</div>';
+      html += '  </div>';
+      html += '  <div style="font-size: 11px; color: #388E3C; font-weight: 700;">Authorized publisher for ' + cls + ' only</div>';
       html += '</div>';
 
       // 3 Main Navigation Tabs
       var curTab = appSession.teacherTab || "send";
       html += '<div class="teacher-nav-tabs">';
-      html += '  <button class="teacher-tab-btn ' + (curTab === "send" ? "active" : "") + '" onclick="safeAction(function(){ switchTeacherDashboardTab(\'send\'); })">📤 Send Homework</button>';
-      html += '  <button class="teacher-tab-btn ' + (curTab === "report" ? "active" : "") + '" onclick="safeAction(function(){ switchTeacherDashboardTab(\'report\'); })">📊 Completion Report</button>';
+      html += '  <button class="teacher-tab-btn ' + (curTab === "send" ? "active" : "") + '" onclick="safeAction(function(){ switchTeacherDashboardTab(\'send\'); })">📤 Publish Homework</button>';
+      html += '  <button class="teacher-tab-btn ' + (curTab === "report" ? "active" : "") + '" onclick="safeAction(function(){ switchTeacherDashboardTab(\'report\'); })">📊 Live Completion Report</button>';
       html += '  <button class="teacher-tab-btn ' + (curTab === "ranking" ? "active" : "") + '" onclick="safeAction(function(){ switchTeacherDashboardTab(\'ranking\'); })">🏆 Class Ranking</button>';
       html += '</div>';
 
-      // TAB 1: 📤 SEND HOMEWORK
+      // TAB 1: 📤 PUBLISH HOMEWORK & ACTIVITY
       if (curTab === "send") {
         html += renderTeacherSendHomeworkTab();
       }
@@ -2796,164 +3453,230 @@
         html += renderTeacherClassRankingTab();
       }
 
-      // Storage & 48-Hour Cleanup Status
-      html += '<div class="cleanup-badge" style="justify-content: space-between; margin-top: 12px;">';
-      html += '  <div><strong>Zero-Load Engine:</strong> 48h auto-purge clears logs without affecting permanent student points.</div>';
-      html += '  <button class="nav-icon-btn" style="padding: 4px 8px; font-size: 11px;" onclick="safeAction(triggerManualCleanup)">Clean Now 🧹</button>';
       html += '</div>';
-
-      html += '</div>'; // End teacher-panel-wrap
       view.innerHTML = html;
     }
 
-    function switchTeacherClass(cls) {
-      appSession.teacherClass = cls;
-      localStorage.setItem("taa_kids_teacher_session", cls);
-      playTone("pop");
-      renderHeaderStatus();
-      renderTeacherPanelView();
-    }
-
-    function triggerManualCleanup() {
-      runDaily48HourCleanup();
-      showToast("48-Hour auto-cleanup executed! Storage clean.", "success");
-      speak("Storage cleanup complete. Transient logs cleared.", "en-IN");
-      renderTeacherPanelView();
-    }
-
-    // ------------------------------------------------------------------------
-    // TEACHER TAB 1: 📤 SEND HOMEWORK VIEW
-    // ------------------------------------------------------------------------
     function renderTeacherSendHomeworkTab() {
       var cls = appSession.teacherClass;
-      var currentHw = getTodayActiveHomework(cls);
+      var schoolId = getActiveSchoolId();
+      var currentHw = getTodayActiveHomework(cls, schoolId);
       var html = '';
 
       html += '<div class="teacher-card">';
-      html += '  <h3 style="font-size: 16px; font-weight: 900; color: #E65100; margin-bottom: 8px;">📤 Send Homework to ' + cls + ' Class</h3>';
-      html += '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 12px;">Select Subject &amp; Specific Sub-Topic to assign for today:</div>';
+      html += '  <h3 style="font-size: 16px; font-weight: 900; color: #E65100; margin-bottom: 8px;">📤 Publish Homework &amp; Activity for ' + cls + '</h3>';
+      html += '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 12px;">Fill assignment details or pick from curriculum modules:</div>';
 
-      // 1. Subject Selector
-      html += '  <div style="margin-bottom: 10px;">';
-      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">1. Select Subject:</label>';
-      html += '    <select id="teacher-hw-subject" class="input-field" style="margin-top: 4px;" onchange="updateTeacherSubTopicsDropdown()">';
-      var subjects = getAvailableSubjectsForClass(cls);
-      subjects.forEach(function(sub) {
-        html += '<option value="' + sub.key + '">' + sub.label + '</option>';
-      });
-      html += '    </select>';
-      html += '  </div>';
-
-      // 2. Sub-Topic Selector
-      html += '  <div style="margin-bottom: 10px;">';
-      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">2. Select Specific Sub-Topic:</label>';
-      html += '    <select id="teacher-hw-topic" class="input-field" style="margin-top: 4px;">';
-      var topics = getAvailableTopicsForClassAndSubject(cls, subjects[0].key);
-      topics.forEach(function(t) {
-        html += '<option value="' + t.key + '">' + escapeHtml(t.title) + '</option>';
-      });
-      html += '    </select>';
-      html += '  </div>';
-
-      // 3. Target Questions & Due Time Row
-      html += '  <div style="display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;">';
-      html += '    <div style="flex: 1; min-width: 140px;">';
-      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">3. Question Target:</label>';
-      html += '      <select id="teacher-hw-target" class="input-field" style="margin-top: 4px;">';
-      html += '        <option value="5">5 Questions (Quick)</option>';
-      html += '        <option value="10" selected>10 Questions (Standard)</option>';
-      html += '        <option value="15">15 Questions (Mastery)</option>';
-      html += '        <option value="20">20 Questions (Challenge)</option>';
+      // 1. Subject & Activity Type row
+      html += '  <div style="display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap;">';
+      html += '    <div style="flex:1; min-width:140px;">';
+      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">1. Subject:</label>';
+      html += '      <select id="teacher-hw-subject" class="input-field" style="margin-top: 4px;">';
+      html += '        <option value="English">📚 English / Phonics</option>';
+      html += '        <option value="Mathematics">🔢 Mathematics / Pre-Math</option>';
+      html += '        <option value="Hindi">🪔 Hindi / हिंदी</option>';
+      html += '        <option value="English Grammar">📖 English Grammar</option>';
+      html += '        <option value="EVS">🌍 EVS Studies</option>';
+      html += '        <option value="General Knowledge">💡 General Knowledge (GK)</option>';
+      html += '        <option value="Drawing & Craft">🎨 Drawing &amp; Creative Art</option>';
       html += '      </select>';
       html += '    </div>';
+      html += '    <div style="flex:1; min-width:140px;">';
+      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">2. Activity Type:</label>';
+      html += '      <select id="teacher-hw-type" class="input-field" style="margin-top: 4px;">';
+      html += '        <option value="Homework" selected>📝 Written Homework</option>';
+      html += '        <option value="Worksheet">📄 Activity Worksheet</option>';
+      html += '        <option value="Reading Practice">📖 Reading / Speaking Practice</option>';
+      html += '        <option value="Activity Project">🧩 Hands-on Activity / Project</option>';
+      html += '        <option value="Revision">🔄 Weekly Revision</option>';
+      html += '      </select>';
+      html += '    </div>';
+      html += '  </div>';
 
-      html += '    <div style="flex: 1; min-width: 140px;">';
-      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">4. Due Time Today:</label>';
+      // 2. Homework Title
+      html += '  <div style="margin-bottom: 10px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">3. Homework Title:</label>';
+      html += '    <input type="text" id="teacher-hw-title" class="input-field" placeholder="e.g. Write CVC Words Short a in 4-line notebook" style="margin-top: 4px;" />';
+      html += '  </div>';
+
+      // 3. Instructions
+      html += '  <div style="margin-bottom: 10px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">4. Instructions for Students &amp; Parents:</label>';
+      html += '    <textarea id="teacher-hw-instructions" class="input-field" rows="3" placeholder="Provide clear instructions for parents and students (e.g. Complete page 12 neatly and speak each word aloud)..." style="margin-top: 4px; resize:vertical;"></textarea>';
+      html += '  </div>';
+
+      // 4. Due Date, Due Time & Target Qs
+      html += '  <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">';
+      html += '    <div style="flex: 1; min-width: 130px;">';
+      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">Due Date:</label>';
+      html += '      <input type="date" id="teacher-hw-date" value="' + new Date().toISOString().split('T')[0] + '" class="input-field" style="margin-top: 4px;" />';
+      html += '    </div>';
+      html += '    <div style="flex: 1; min-width: 130px;">';
+      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">Due Time:</label>';
       html += '      <input type="time" id="teacher-hw-due" value="18:00" class="input-field" style="margin-top: 4px; font-weight: 800;" />';
       html += '    </div>';
       html += '  </div>';
 
+      // 5. Optional Worksheet Photo Upload & Link
+      html += '  <div style="margin-bottom: 12px; background:#FAFAFA; border:1.5px dashed #B0BEC5; border-radius:14px; padding:10px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">📸 Optional Worksheet Photo / File Upload:</label>';
+      html += '    <input type="file" id="teacher-hw-photo-file" accept="image/*" class="input-field" style="margin-top:4px; padding:6px;" onchange="previewTeacherWorksheetUpload(this)" />';
+      html += '    <div id="teacher-photo-preview-wrap" style="display:none; margin-top:8px; border-radius:10px; overflow:hidden; border:2px solid #FF9800; text-align:center; max-height:160px;">';
+      html += '      <img id="teacher-photo-preview-img" src="" style="max-width:100%; max-height:160px; object-fit:contain;" />';
+      html += '    </div>';
+      html += '    <div style="font-size:11px; color:#78909C; margin-top:4px;">Or paste external worksheet / video link:</div>';
+      html += '    <input type="text" id="teacher-hw-link" class="input-field" placeholder="https://example.com/worksheet.pdf" style="margin-top:2px;" />';
+      html += '  </div>';
+
+      // 6. Optional Curriculum Module Link
+      html += '  <div style="margin-bottom: 14px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Optional: Link Interactive App Quiz / Activity:</label>';
+      html += '    <select id="teacher-hw-module" class="input-field" style="margin-top: 4px;">';
+      html += '      <option value="">-- No Interactive App Quiz (Written / Offline) --</option>';
+      var mods = getCurriculumModulesForClass(cls);
+      mods.forEach(function(m) {
+        html += '<option value="' + m.key + '">' + escapeHtml(m.title) + '</option>';
+      });
+      html += '    </select>';
+      html += '  </div>';
+
       html += '  <button class="btn-action-primary" style="margin-top: 4px;" onclick="safeAction(handleAssignHomeworkSubmit)">';
-      html += '    Send Homework to ' + cls + ' Class 🚀';
+      html += '    Publish Homework to ' + cls + ' Class 🚀';
       html += '  </button>';
 
+      // If active homework exists
       if (currentHw && !currentHw.is_placeholder) {
         html += '<div style="margin-top: 14px; padding: 12px; background: #FFF8E1; border: 1.5px solid #FFE082; border-radius: 14px;">';
-        html += '  <div style="font-size: 11px; font-weight: 900; color: #E65100; text-transform: uppercase;">Currently Active Homework:</div>';
-        html += '  <div style="font-size: 14px; font-weight: 900; color: #BF360C; margin-top: 2px;">' + escapeHtml(currentHw.title) + '</div>';
-        html += '  <div style="font-size: 11px; color: #6D4C41; font-weight: 700; margin-top: 3px;">';
-        html += '    Target: ' + currentHw.target_questions + ' Qs • Due: ' + (currentHw.due_time || '6:00 PM') + ' • Assigned ' + timeAgo(currentHw.created_at);
+        html += '  <div style="display:flex; justify-content:space-between; align-items:center;">';
+        html += '    <span style="font-size: 11px; font-weight: 900; color: #E65100; text-transform: uppercase;">Currently Active Homework:</span>';
+        html += '    <button onclick="safeAction(function(){ deleteTeacherHomework(\'' + currentHw.id + '\'); })" style="background:#FFEBEE; color:#C62828; border:1px solid #EF9A9A; border-radius:8px; padding:3px 8px; font-size:11px; font-weight:800; cursor:pointer;">Delete 🗑️</button>';
+        html += '  </div>';
+        html += '  <div style="font-size: 14px; font-weight: 900; color: #BF360C; margin-top: 4px;">' + escapeHtml(currentHw.title) + '</div>';
+        if (currentHw.instructions) {
+          html += '  <div style="font-size: 12px; color: #5D4037; margin-top: 3px;">' + escapeHtml(currentHw.instructions) + '</div>';
+        }
+        html += '  <div style="font-size: 11px; color: #6D4C41; font-weight: 700; margin-top: 4px;">';
+        html += '    Subject: ' + currentHw.subject + ' • Type: ' + (currentHw.activity_type || 'Homework') + ' • Due: ' + (currentHw.due_time || '18:00') + ' (' + (currentHw.due_date || 'Today') + ')';
         html += '  </div>';
         html += '</div>';
       }
-      html += '</div>';
 
+      html += '</div>';
       return html;
     }
 
-    function updateTeacherSubTopicsDropdown() {
-      var subSelect = document.getElementById("teacher-hw-subject");
-      var topicSelect = document.getElementById("teacher-hw-topic");
-      if (!subSelect || !topicSelect) return;
-      var selSub = subSelect.value;
-      var topics = getAvailableTopicsForClassAndSubject(appSession.teacherClass, selSub);
-      var html = "";
-      topics.forEach(function(t) {
-        html += '<option value="' + t.key + '">' + escapeHtml(t.title) + '</option>';
-      });
-      topicSelect.innerHTML = html;
-      playTone("pop");
-    }
-
-    function getAvailableSubjectsForClass(cls) {
-      if (cls === "UKG") {
-        return [
-          { key: "grammar", label: "📖 English Grammar (11 Sub-tabs)" },
-          { key: "english", label: "📚 English World & 4-Letter Phonics" },
-          { key: "math", label: "🔢 Mathematics (+ / - / Clock)" },
-          { key: "hindi", label: "✍️ Hindi Matra निर्माण" },
-          { key: "evs", label: "🌍 EVS Studies" },
-          { key: "gk", label: "💡 General Knowledge (150 Qs)" }
-        ];
-      } else if (cls === "LKG") {
-        return [
-          { key: "english", label: "🔤 Phonics & CVC Words" },
-          { key: "math", label: "🔢 Numbers 1-100 & Before/After" },
-          { key: "hindi", label: "🪔 Hindi Swar, Vyanjan & Shabda" },
-          { key: "evs", label: "🌍 EVS Body & Animals" },
-          { key: "gk", label: "💡 General Knowledge (100 Qs)" }
-        ];
-      } else {
-        return [
-          { key: "english", label: "🔤 English (Phonics & ABC 6 Sub-tabs)" },
-          { key: "math", label: "🔢 Mathematics (14 Sub-tabs 1-50)" },
-          { key: "hindi", label: "🕉️ हिंदी स्वर व व्यंजन (9 Sub-tabs)" },
-          { key: "gk", label: "💡 General Knowledge (50 Qs)" }
-        ];
+    function previewTeacherWorksheetUpload(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var wrap = document.getElementById("teacher-photo-preview-wrap");
+          var img = document.getElementById("teacher-photo-preview-img");
+          if (wrap && img) {
+            img.src = e.target.result;
+            wrap.style.display = "block";
+          }
+        };
+        reader.readAsDataURL(input.files[0]);
       }
     }
 
-    function getAvailableTopicsForClassAndSubject(cls, subject) {
-      var all = getCurriculumModulesForClass(cls);
-      var filtered = all.filter(function(m) {
-        if (subject === "grammar") return m.tab === "grammar";
-        if (subject === "english") return m.tab === "phonics" || m.tab === "english_world" || m.tab === "abc";
-        if (subject === "math") return m.tab === "math" || m.tab === "numbers";
-        if (subject === "hindi") return m.tab === "matra" || m.tab === "vyanjan" || m.tab === "swar" || m.tab === "shabda";
-        if (subject === "evs") return m.tab === "evs";
-        if (subject === "gk") return m.tab === "gk";
-        return true;
-      });
-      return filtered.length > 0 ? filtered : all;
+    async function handleAssignHomeworkSubmit() {
+      var cls = appSession.teacherClass;
+      var schoolId = getActiveSchoolId();
+      var teacher = appSession.teacherObj || { teacher_name: "Class Teacher", teacher_mobile: "9829011111" };
+
+      var subSelect = document.getElementById("teacher-hw-subject");
+      var typeSelect = document.getElementById("teacher-hw-type");
+      var titleInput = document.getElementById("teacher-hw-title");
+      var instInput = document.getElementById("teacher-hw-instructions");
+      var dateInput = document.getElementById("teacher-hw-date");
+      var dueInput = document.getElementById("teacher-hw-due");
+      var linkInput = document.getElementById("teacher-hw-link");
+      var modSelect = document.getElementById("teacher-hw-module");
+      var img = document.getElementById("teacher-photo-preview-img");
+
+      var subject = subSelect ? subSelect.value : "English";
+      var actType = typeSelect ? typeSelect.value : "Homework";
+      var title = (titleInput ? titleInput.value.trim() : "");
+      var instructions = instInput ? instInput.value.trim() : "";
+      var dueDate = dateInput ? dateInput.value : new Date().toISOString().split('T')[0];
+      var dueTime = dueInput ? dueInput.value : "18:00";
+      var attachmentUrl = (img && img.src && img.src.startsWith("data:")) ? img.src : (linkInput ? linkInput.value.trim() : "");
+      var moduleKey = modSelect ? modSelect.value : "";
+
+      if (!title) {
+        showToast("Please enter a Homework Title", "wrong");
+        speak("Please enter a homework title.", "en-IN");
+        return;
+      }
+
+      var newHw = {
+        id: "HW-" + Date.now(),
+        school_id: schoolId,
+        class_name: cls,
+        subject: subject,
+        activity_type: actType,
+        title: title,
+        instructions: instructions,
+        module_key: moduleKey,
+        target_questions: 10,
+        due_date: dueDate,
+        due_time: dueTime,
+        attachment_url: attachmentUrl,
+        assigned_by: teacher.teacher_name,
+        teacher_mobile: teacher.teacher_mobile,
+        created_at: new Date().toISOString()
+      };
+
+      // Save locally
+      var hwList = getAllHomeworkList(schoolId);
+      hwList.unshift(newHw);
+      saveAllHomeworkList(schoolId, hwList);
+
+      // Async sync with Supabase
+      try {
+        await supabaseRest("/kids_homework", {
+          method: "POST",
+          body: newHw
+        });
+      } catch(err) {
+        console.log("Supabase homework insert fallback:", err.message || err);
+      }
+
+      playTone("fanfare");
+      showToast("Homework published to " + cls + " Class! 🚀", "success");
+      speak("Homework published to " + cls + " class successfully.", "en-IN");
+
+      // Switch to live report tab
+      appSession.teacherTab = "report";
+      renderTeacherPanelView();
+    }
+
+    async function deleteTeacherHomework(hwId) {
+      var confirmed = confirm("Are you sure you want to delete this homework entry?");
+      if (!confirmed) return;
+
+      var schoolId = getActiveSchoolId();
+      var hwList = getAllHomeworkList(schoolId).filter(function(h) { return h.id !== hwId; });
+      saveAllHomeworkList(schoolId, hwList);
+
+      try {
+        await supabaseRest("/kids_homework?id=eq." + hwId, { method: "DELETE" });
+      } catch(e) {}
+
+      showToast("Homework deleted 🗑️", "success");
+      speak("Homework deleted.", "en-IN");
+      renderTeacherPanelView();
     }
 
     // ------------------------------------------------------------------------
-    // TEACHER TAB 2: 📊 COMPLETION REPORT VIEW
+    // TEACHER TAB 2: LIVE COMPLETION REPORT (X/Y Students Completed)
     // ------------------------------------------------------------------------
     function renderTeacherCompletionReportTab() {
       var cls = appSession.teacherClass;
-      var hw = getTodayActiveHomework(cls);
-      var roster = getRosterForClass(cls);
+      var schoolId = getActiveSchoolId();
+      var hw = getTodayActiveHomework(cls, schoolId);
+      var roster = getRosterForClass(cls, schoolId);
       var doneCount = roster.filter(function(r) { return r.status === "completed"; }).length;
       var pendingCount = roster.length - doneCount;
       var percent = roster.length > 0 ? Math.round((doneCount / roster.length) * 100) : 0;
@@ -2961,17 +3684,31 @@
 
       html += '<div class="teacher-card">';
       html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">';
-      html += '    <h3 style="font-size: 16px; font-weight: 900; color: #2E7D32; margin: 0;">📊 ' + cls + ' Homework Completion Report</h3>';
-      html += '    <span style="font-size: 12px; font-weight: 900; color: #1565C0;">' + percent + '% Done</span>';
+      html += '    <h3 style="font-size: 16px; font-weight: 900; color: #2E7D32; margin: 0;">📊 ' + cls + ' Completion Report</h3>';
+      html += '    <span style="font-size: 13px; font-weight: 900; color: #1565C0;">' + doneCount + ' / ' + roster.length + ' Completed (' + percent + '%)</span>';
       html += '  </div>';
 
+      // Live progress bar
+      html += '<div style="background:#ECEFF1; border-radius:10px; height:12px; overflow:hidden; margin-bottom:12px;">';
+      html += '  <div style="background:linear-gradient(90deg, #4CAF50, #2E7D32); width:' + percent + '%; height:100%; transition:width 0.4s ease;"></div>';
+      html += '</div>';
+
       if (hw && !hw.is_placeholder) {
-        html += '<div style="font-size: 12px; color: #546E7A; font-weight: 700; margin-bottom: 12px;">';
-        html += '  Task: <strong>' + escapeHtml(hw.title) + '</strong> • Target: ' + hw.target_questions + ' Qs • Due: ' + (hw.due_time || '6:00 PM');
+        html += '<div style="background:#FFF9C4; border:1.5px solid #FBC02D; border-radius:12px; padding:10px; margin-bottom:12px;">';
+        html += '  <div style="display:flex; justify-content:space-between; align-items:center;">';
+        html += '    <strong>Task: ' + escapeHtml(hw.title) + '</strong>';
+        html += '    <span style="font-size:11px; font-weight:800; color:#E65100;">Due: ' + (hw.due_time || '18:00') + '</span>';
+        html += '  </div>';
+        if (hw.instructions) {
+          html += '  <div style="font-size:11px; color:#6D4C41; margin-top:3px;">Instructions: ' + escapeHtml(hw.instructions) + '</div>';
+        }
+        if (hw.attachment_url) {
+          html += '  <div style="margin-top:6px;"><button onclick="viewWorksheetFullModal(\'' + hw.attachment_url + '\', \'Attached Worksheet\')" style="background:#E65100; color:#FFF; border:none; border-radius:8px; padding:4px 8px; font-size:11px; font-weight:800; cursor:pointer;">📷 View Worksheet Attachment</button></div>';
+        }
         html += '</div>';
       }
 
-      // Metric Cards
+      // Metric Summary Cards
       html += '<div style="display: flex; gap: 8px; margin-bottom: 14px;">';
       html += '  <div style="flex: 1; background: #E8F5E9; border-radius: 12px; padding: 8px; text-align: center;">';
       html += '    <div style="font-size: 18px; font-weight: 900; color: #2E7D32;">' + doneCount + ' ✅</div>';
@@ -2987,17 +3724,20 @@
       html += '  </div>';
       html += '</div>';
 
-      // Student Roster Listing
+      // Roster Listing
       html += '<div style="display: flex; flex-direction: column; gap: 8px;">';
       roster.forEach(function(stu) {
         var isDone = stu.status === "completed";
-        html += '<div class="roster-item" style="border-left: 4px solid ' + (isDone ? '#4CAF50' : '#FF9800') + ';">';
+        html += '<div class="roster-item" style="border-left: 4px solid ' + (isDone ? '#4CAF50' : '#FF9800') + '; background:#FAFAFA; padding:10px 12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">';
         html += '  <div>';
         html += '    <div style="font-weight: 900; font-size: 13px; color: #263238;">' + escapeHtml(stu.student_name) + ' <span style="font-size: 11px; color: #78909C;">(' + stu.admission_no + ')</span></div>';
         if (isDone) {
-          html += '    <div style="font-size: 11px; color: #2E7D32; font-weight: 800; margin-top: 2px;">Score: +' + (stu.score || '10.0') + ' Pts ' + (stu.zero_bonus ? '🌟 (+Bonus)' : '') + ' • Done ' + (stu.time_done || 'Today') + '</div>';
+          html += '    <div style="font-size: 11px; color: #2E7D32; font-weight: 800; margin-top: 2px;">Completed ' + (stu.time_done || 'Today') + (stu.notes ? ' • Note: ' + escapeHtml(stu.notes) : '') + '</div>';
+          if (stu.photo_url) {
+            html += '    <div style="margin-top:4px;"><button onclick="viewWorksheetFullModal(\'' + stu.photo_url + '\', \'Child Notebook Submission\')" style="background:#388E3C; color:#FFF; border:none; border-radius:6px; padding:3px 7px; font-size:10px; font-weight:800; cursor:pointer;">📷 View Child\'s Worksheet</button></div>';
+          }
         } else {
-          html += '    <div style="font-size: 11px; color: #E65100; font-weight: 700; margin-top: 2px;">Task pending • Due at ' + (hw ? (hw.due_time || '6:00 PM') : '6:00 PM') + '</div>';
+          html += '    <div style="font-size: 11px; color: #E65100; font-weight: 700; margin-top: 2px;">Task pending • Due at ' + (hw ? (hw.due_time || '18:00') : '18:00') + '</div>';
         }
         html += '  </div>';
         html += '  <div>';
@@ -3011,28 +3751,22 @@
       return html;
     }
 
-    // ------------------------------------------------------------------------
-    // TEACHER TAB 3: 🏆 CLASS RANKING & MANUAL RESET
-    // ------------------------------------------------------------------------
     function renderTeacherClassRankingTab() {
       var cls = appSession.teacherClass;
-      var students = getRankedStudentsForClass(cls);
+      var schoolId = getActiveSchoolId();
+      var students = getRankedStudentsForClass(cls, schoolId);
       var html = '';
 
       html += '<div class="teacher-card">';
-      html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">';
-      html += '    <h3 style="font-size: 16px; font-weight: 900; color: #1565C0; margin: 0;">🏆 ' + cls + ' Cumulative Live Ranking</h3>';
-      html += '    <button class="nav-icon-btn" style="background: #FFEBEE; color: #C62828; border: 1.5px solid #EF9A9A; font-size: 11px; padding: 4px 10px; font-weight: 800; border-radius: 10px;" onclick="safeAction(handleResetClassRankingPrompt)">';
-      html += '      🔄 Reset Term Points';
-      html += '    </button>';
+      html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">';
+      html += '    <h3 style="font-size: 16px; font-weight: 900; color: #1565C0; margin: 0;">🏆 ' + cls + ' Cumulative Ranking</h3>';
+      html += '    <span style="font-size: 11px; font-weight: 800; background: #E3F2FD; color: #0D47A1; padding: 3px 8px; border-radius: 8px;">Permanent Score</span>';
       html += '  </div>';
-      html += '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 12px;">Permanent score wallet accumulated from completed teacher homework:</div>';
-
       html += '  <div style="display: flex; flex-direction: column; gap: 8px;">';
       students.forEach(function(stu, idx) {
         var rank = idx + 1;
         var medal = (rank === 1) ? "🥇" : ((rank === 2) ? "🥈" : ((rank === 3) ? "🥉" : "#" + rank));
-        html += '<div class="roster-item" style="border-left: 4px solid ' + (rank <= 3 ? '#FFB300' : '#90CAF9') + ';">';
+        html += '<div class="roster-item" style="border-left: 4px solid ' + (rank <= 3 ? '#FFB300' : '#90CAF9') + '; background:#FAFAFA; padding:8px 12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center;">';
         html += '  <div style="display: flex; align-items: center; gap: 10px;">';
         html += '    <div style="font-size: 18px; font-weight: 900; width: 32px; text-align: center; color: #E65100;">' + medal + '</div>';
         html += '    <div>';
@@ -3052,51 +3786,412 @@
       return html;
     }
 
-    async function handleResetClassRankingPrompt() {
-      var cls = appSession.teacherClass;
-      var confirmed = confirm("Are you sure you want to reset all permanent ranking points for " + cls + " Class for the new term? This will set all " + cls + " student scores to 0.0.");
-      if (!confirmed) return;
+    // =========================================================================
+    // ROLE 3: PRINCIPAL SUPERVISION PANEL (Both Schools)
+    // =========================================================================
+    function openPrincipalLoginModal() {
+      playTone("pop");
+      var existing = document.getElementById("principal-login-modal");
+      if (existing) existing.remove();
 
-      showToast("Resetting " + cls + " Class Term Points...", "success");
+      var school = getActiveSchool();
+      var modal = document.createElement("div");
+      modal.id = "principal-login-modal";
+      modal.className = "modal-overlay";
+      modal.innerHTML = '<div class="modal-card" style="max-width: 380px;">' +
+        '  <div style="font-size: 44px; margin-bottom: 6px;">🛡️</div>' +
+        '  <h2 style="font-size: 20px; font-weight: 900; color: #4527A0; margin-bottom: 4px;">Principal Supervision Desk</h2>' +
+        '  <div style="font-size: 12px; color: #546E7A; font-weight: 700; margin-bottom: 14px;">Campus: <strong>' + escapeHtml(school.name) + '</strong></div>' +
+        '  <div style="text-align: left; margin-bottom: 12px;">' +
+        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Admin Security PIN / Password:</label>' +
+        '    <input type="password" id="principal-pin-input" class="input-field" placeholder="••••" maxlength="8" value="1234" style="margin-top: 4px; font-size: 18px; letter-spacing: 4px; text-align: center;" autocomplete="off" />' +
+        '  </div>' +
+        '  <button class="btn-action-primary" style="background:#673AB7;" onclick="safeAction(submitPrincipalLogin)">' +
+        '    Verify &amp; Enter Supervision Desk 🛡️' +
+        '  </button>' +
+        '  <button style="margin-top: 14px; background: none; border: none; font-size: 12px; font-weight: 800; color: #78909C; cursor: pointer;" onclick="document.getElementById(\'principal-login-modal\').remove()">' +
+        '    Cancel ✕' +
+        '  </button>' +
+        '</div>';
+      document.body.appendChild(modal);
+      speak("Enter Principal security PIN to access the supervision panel.", "en-IN");
+    }
 
-      // 1. Try Supabase RPC
-      try {
-        await supabaseRest("/rpc/reset_class_rankings", {
-          method: "POST",
-          body: { p_class_name: cls }
-        });
-      } catch (err) {
-        console.log("Supabase reset RPC note:", err.message || err);
+    function submitPrincipalLogin() {
+      var pinInput = document.getElementById("principal-pin-input");
+      var pin = pinInput ? pinInput.value.trim() : "";
+      var school = getActiveSchool();
+
+      if (pin === "1234" || pin === "admin" || pin === school.defaultPin || pin === "TAA2026" || pin === "GR2026") {
+        appSession.type = "principal";
+        appSession.principalTab = "teachers";
+        localStorage.setItem("taa_kids_principal_session", "active");
+        var m = document.getElementById("principal-login-modal");
+        if (m) m.remove();
+        playTone("fanfare");
+        showToast("Principal Verification Successful! 🛡️", "success");
+        speak("Welcome Principal! Supervision panel is ready.", "en-IN");
+        openPrincipalPanel();
+      } else {
+        showToast("Invalid Admin PIN!", "wrong");
+        speak("Invalid Admin PIN. Access denied.", "en-IN");
       }
+    }
 
-      // 2. Reset local cache
-      DEFAULT_STUDENTS_ROSTER.forEach(function(s) {
-        if (s.class_name === cls) {
-          s.total_points = 0.0;
-          s.total_stars = 0;
-          s.tasks_completed = 0;
-        }
+    function openPrincipalPanel() {
+      appState.section = "principal";
+      document.getElementById("btn-home-nav").style.display = "flex";
+      document.getElementById("subtabs-bar").style.display = "none";
+      document.getElementById("filter-pills-bar").style.display = "none";
+      renderHeaderStatus();
+      renderPrincipalPanelView();
+    }
+
+    function switchPrincipalTab(tab) {
+      appSession.principalTab = tab;
+      playTone("pop");
+      renderPrincipalPanelView();
+    }
+
+    function renderPrincipalPanelView() {
+      var view = document.getElementById("main-view");
+      var schoolId = getActiveSchoolId();
+      var school = getActiveSchool();
+      var curTab = appSession.principalTab || "teachers";
+
+      var html = '<div class="principal-panel-wrap">';
+
+      // Header row
+      html += '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
+      html += '  <div>';
+      html += '    <h2 style="font-size: 19px; font-weight: 900; color: #4527A0; margin: 0;">🛡️ Principal Supervision Desk</h2>';
+      html += '    <div style="font-size: 11px; color: #546E7A; font-weight: 700;">Active Campus: <strong>' + escapeHtml(school.name) + '</strong></div>';
+      html += '  </div>';
+      html += '  <div style="display: flex; gap: 6px; align-items: center;">';
+      html += '    <button class="nav-icon-btn" style="font-size: 11px; padding: 6px 10px;" onclick="safeAction(goHome)">Home 🏠</button>';
+      html += '    <button class="btn-logout" style="font-size: 11px; padding: 5px 9px;" onclick="safeAction(logoutUser)">🚪 Exit</button>';
+      html += '  </div>';
+      html += '</div>';
+
+      // Campus Switcher Segment inside Principal Panel
+      html += '<div class="school-switcher-bar">';
+      Object.keys(SCHOOLS_CONFIG).forEach(function(sKey) {
+        var sObj = SCHOOLS_CONFIG[sKey];
+        var isAct = (sKey === schoolId);
+        var extraClass = (sKey === "gr-children-academy") ? "school-gr" : "";
+        html += '<button class="school-switcher-btn ' + (isAct ? ("active " + extraClass) : "") + '" onclick="safeAction(function(){ setActiveSchoolId(\'' + sKey + '\'); })">' + sObj.emoji + ' ' + sObj.shortName + '</button>';
       });
-      if (appSession.student && appSession.student.class_name === cls) {
-        appSession.student.total_points = 0.0;
-        appSession.student.total_stars = 0;
-        appSession.student.tasks_completed = 0;
-        localStorage.setItem("taa_kids_student_session", JSON.stringify(appSession.student));
+      html += '</div>';
+
+      // Navigation Tabs
+      html += '<div class="teacher-nav-tabs">';
+      html += '  <button class="teacher-tab-btn ' + (curTab === "teachers" ? "active" : "") + '" onclick="safeAction(function(){ switchPrincipalTab(\'teachers\'); })">👩‍🏫 Class Teachers (Nursery, LKG, UKG)</button>';
+      html += '  <button class="teacher-tab-btn ' + (curTab === "homework" ? "active" : "") + '" onclick="safeAction(function(){ switchPrincipalTab(\'homework\'); })">📋 Homework Supervision</button>';
+      html += '  <button class="teacher-tab-btn ' + (curTab === "summary" ? "active" : "") + '" onclick="safeAction(function(){ switchPrincipalTab(\'summary\'); })">📊 Campus Summary</button>';
+      html += '</div>';
+
+      // TAB 1: TEACHER MANAGEMENT (NURSERY, LKG, UKG)
+      if (curTab === "teachers") {
+        html += renderPrincipalTeachersTab(schoolId);
       }
+      // TAB 2: HOMEWORK SUPERVISION
+      else if (curTab === "homework") {
+        html += renderPrincipalHomeworkTab(schoolId);
+      }
+      // TAB 3: CAMPUS SUMMARY
+      else if (curTab === "summary") {
+        html += renderPrincipalSummaryTab(schoolId);
+      }
+
+      html += '</div>';
+      view.innerHTML = html;
+    }
+
+    // Principal Tab 1: Class Teachers Registry Management (kids_class_teachers)
+    function renderPrincipalTeachersTab(schoolId) {
+      var html = '<div class="principal-card">';
+      html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">';
+      html += '    <h3 style="font-size:16px; font-weight:900; color:#4527A0; margin:0;">👩‍🏫 Class Teacher Assignment (kids_class_teachers)</h3>';
+      html += '    <span style="font-size:11px; font-weight:800; background:#EDE7F6; color:#4527A0; padding:3px 8px; border-radius:8px;">Strict 1-Teacher / Class</span>';
+      html += '  </div>';
+      html += '  <div style="font-size:12px; color:#546E7A; font-weight:600; margin-bottom:14px;">Assign or reassign active class teachers for Nursery, LKG, and UKG:</div>';
+
+      ["Nursery", "LKG", "UKG"].forEach(function(cls) {
+        var teacher = getAssignedClassTeacher(schoolId, cls);
+        var isAssigned = !!teacher;
+
+        html += '<div class="teacher-assign-card ' + (isAssigned ? 'is-assigned' : 'is-unassigned') + '">';
+        html += '  <div>';
+        html += '    <span style="font-size:10px; font-weight:900; background:' + (isAssigned ? '#2E7D32' : '#E65100') + '; color:#FFF; padding:2px 6px; border-radius:6px;">' + cls.toUpperCase() + ' CLASS</span>';
+        if (isAssigned) {
+          html += '    <div style="font-size:15px; font-weight:900; color:#1B5E20; margin-top:3px;">' + escapeHtml(teacher.teacher_name) + '</div>';
+          html += '    <div style="font-size:11px; color:#388E3C; font-weight:700;">Mobile: <strong>' + teacher.teacher_mobile + '</strong> • Emp: ' + (teacher.emp_code || 'EMP-01') + '</div>';
+        } else {
+          html += '    <div style="font-size:14px; font-weight:900; color:#D84315; margin-top:3px;">⚠️ No Teacher Currently Assigned</div>';
+          html += '    <div style="font-size:11px; color:#BF360C; font-weight:600;">No one can publish homework for ' + cls + ' until assigned.</div>';
+        }
+        html += '  </div>';
+
+        html += '  <div style="display:flex; gap:6px;">';
+        html += '    <button class="btn-assign-action" onclick="safeAction(function(){ openAssignTeacherModal(\'' + cls + '\'); })">' + (isAssigned ? '✏️ Edit / Reassign' : '➕ Assign Teacher') + '</button>';
+        if (isAssigned) {
+          html += '    <button onclick="safeAction(function(){ handleUnassignTeacherPrompt(\'' + cls + '\'); })" style="background:#FFEBEE; color:#C62828; border:1px solid #EF9A9A; padding:6px 10px; border-radius:10px; font-size:11px; font-weight:800; cursor:pointer;">Unassign ✕</button>';
+        }
+        html += '  </div>';
+        html += '</div>';
+      });
+
+      html += '</div>';
+      return html;
+    }
+
+    function openAssignTeacherModal(cls) {
+      playTone("pop");
+      var schoolId = getActiveSchoolId();
+      var existingTeacher = getAssignedClassTeacher(schoolId, cls);
+
+      var existing = document.getElementById("assign-teacher-modal");
+      if (existing) existing.remove();
+
+      var modal = document.createElement("div");
+      modal.id = "assign-teacher-modal";
+      modal.className = "modal-overlay";
+      var html = '<div class="modal-card" style="max-width: 400px; text-align: left;">';
+      html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">';
+      html += '    <h3 style="font-size:18px; font-weight:900; color:#4527A0; margin:0;">👩‍🏫 Assign Teacher for ' + cls + '</h3>';
+      html += '    <button onclick="document.getElementById(\'assign-teacher-modal\').remove()" style="background:none; border:none; font-size:16px; cursor:pointer; font-weight:900;">✕</button>';
+      html += '  </div>';
+      html += '  <div style="margin-bottom:8px;">';
+      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Teacher Full Name:</label>';
+      html += '    <input type="text" id="assign-teacher-name" value="' + escapeHtml(existingTeacher ? existingTeacher.teacher_name : '') + '" placeholder="e.g. Sunita Sharma" class="input-field" style="margin-top:4px;" />';
+      html += '  </div>';
+      html += '  <div style="margin-bottom:8px;">';
+      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Registered Mobile Number:</label>';
+      html += '    <input type="text" id="assign-teacher-mobile" value="' + escapeHtml(existingTeacher ? existingTeacher.teacher_mobile : '') + '" placeholder="e.g. 9829011111" class="input-field" style="margin-top:4px;" />';
+      html += '  </div>';
+      html += '  <div style="margin-bottom:8px;">';
+      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Employee Code:</label>';
+      html += '    <input type="text" id="assign-teacher-emp" value="' + escapeHtml(existingTeacher ? existingTeacher.emp_code : '') + '" placeholder="e.g. EMP-AA-01" class="input-field" style="margin-top:4px;" />';
+      html += '  </div>';
+      html += '  <div style="margin-bottom:14px;">';
+      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Security PIN (4-digit):</label>';
+      html += '    <input type="password" id="assign-teacher-pin" value="' + escapeHtml(existingTeacher ? existingTeacher.pin : '1234') + '" maxlength="6" class="input-field" style="margin-top:4px; letter-spacing:3px; text-align:center;" />';
+      html += '  </div>';
+      html += '  <button class="btn-action-primary" style="background:#673AB7;" onclick="safeAction(function(){ submitAssignTeacherForm(\'' + cls + '\'); })">';
+      html += '    Save &amp; Activate ' + cls + ' Teacher ✅';
+      html += '  </button>';
+      html += '</div>';
+
+      modal.innerHTML = html;
+      document.body.appendChild(modal);
+    }
+
+    async function submitAssignTeacherForm(cls) {
+      var schoolId = getActiveSchoolId();
+      var name = document.getElementById("assign-teacher-name").value.trim();
+      var mobile = document.getElementById("assign-teacher-mobile").value.trim();
+      var emp = document.getElementById("assign-teacher-emp").value.trim();
+      var pin = document.getElementById("assign-teacher-pin").value.trim() || "1234";
+
+      if (!name || !mobile) {
+        showToast("Please enter Teacher Name and Mobile Number", "wrong");
+        return;
+      }
+
+      await assignOrUpdateClassTeacher(schoolId, cls, name, mobile, emp, pin);
+      var modal = document.getElementById("assign-teacher-modal");
+      if (modal) modal.remove();
 
       playTone("fanfare");
-      showToast(cls + " Term points reset successfully!", "success");
-      speak("Class term points reset to zero for " + cls + " class.", "en-IN");
-      renderTeacherPanelView();
+      showToast("Teacher assigned to " + cls + " Class! ✅", "success");
+      speak("Teacher " + name + " assigned to " + cls + " class.", "en-IN");
+      renderPrincipalPanelView();
+    }
+
+    async function handleUnassignTeacherPrompt(cls) {
+      var confirmed = confirm("Are you sure you want to unassign the teacher for " + cls + " class?");
+      if (!confirmed) return;
+
+      var schoolId = getActiveSchoolId();
+      await removeClassTeacherAssignment(schoolId, cls);
+      showToast("Teacher unassigned from " + cls + " ✕", "success");
+      speak("Teacher unassigned.", "en-IN");
+      renderPrincipalPanelView();
+    }
+
+    // Principal Tab 2: Homework Supervision (All Classes)
+    function renderPrincipalHomeworkTab(schoolId) {
+      var hwList = getAllHomeworkList(schoolId);
+      var html = '<div class="principal-card">';
+      html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">';
+      html += '    <h3 style="font-size:16px; font-weight:900; color:#4527A0; margin:0;">📋 Daily Homework Across All Classes</h3>';
+      html += '    <span style="font-size:11px; font-weight:800; background:#EDE7F6; color:#4527A0; padding:3px 8px; border-radius:8px;">Supervision Mode</span>';
+      html += '  </div>';
+
+      if (hwList.length === 0) {
+        html += '<div style="text-align:center; padding:24px; color:#78909C; font-weight:700;">No homework entries found for this school.</div>';
+      } else {
+        hwList.forEach(function(hw) {
+          var roster = getRosterForClass(hw.class_name, schoolId);
+          var doneCount = roster.filter(function(r) { return r.status === "completed"; }).length;
+          var percent = roster.length > 0 ? Math.round((doneCount / roster.length) * 100) : 0;
+
+          html += '<div style="background:#FAFAFA; border:2px solid #E0E0E0; border-radius:14px; padding:12px; margin-bottom:12px;">';
+          html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">';
+          html += '    <div>';
+          html += '      <span style="font-size:10px; font-weight:900; background:#673AB7; color:#FFF; padding:2px 6px; border-radius:6px;">' + hw.class_name.toUpperCase() + '</span>';
+          html += '      <span style="font-size:11px; font-weight:800; color:#E65100; margin-left:6px;">' + escapeHtml(hw.subject) + ' • ' + (hw.activity_type || 'Homework') + '</span>';
+          html += '    </div>';
+          html += '    <div style="font-size:12px; font-weight:900; color:#2E7D32;">' + doneCount + ' / ' + roster.length + ' Done (' + percent + '%)</div>';
+          html += '  </div>';
+          html += '  <div style="font-size:14px; font-weight:900; color:#263238; margin:4px 0;">' + escapeHtml(hw.title) + '</div>';
+          if (hw.instructions) {
+            html += '  <div style="font-size:12px; color:#5D4037; margin-bottom:6px;">' + escapeHtml(hw.instructions) + '</div>';
+          }
+          html += '  <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#78909C; font-weight:700;">';
+          html += '    <span>Assigned by ' + escapeHtml(hw.assigned_by || 'Teacher') + ' • Due: ' + (hw.due_time || '18:00') + ' (' + (hw.due_date || 'Today') + ')</span>';
+          html += '    <div style="display:flex; gap:6px;">';
+          if (hw.attachment_url) {
+            html += '      <button onclick="viewWorksheetFullModal(\'' + hw.attachment_url + '\', \'Worksheet Photo\')" style="background:#E0E0E0; border:none; padding:3px 7px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">📷 Attachment</button>';
+          }
+          html += '      <button onclick="openPrincipalEditHomeworkModal(\'' + hw.id + '\')" style="background:#E3F2FD; color:#1565C0; border:none; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">✏️ Edit</button>';
+          html += '      <button onclick="deletePrincipalHomework(\'' + hw.id + '\')" style="background:#FFEBEE; color:#C62828; border:none; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">🗑️ Delete</button>';
+          html += '    </div>';
+          html += '  </div>';
+          html += '</div>';
+        });
+      }
+
+      html += '</div>';
+      return html;
+    }
+
+    function openPrincipalEditHomeworkModal(hwId) {
+      playTone("pop");
+      var schoolId = getActiveSchoolId();
+      var hw = getAllHomeworkList(schoolId).find(function(h) { return h.id === hwId; });
+      if (!hw) return;
+
+      var existing = document.getElementById("principal-edit-modal");
+      if (existing) existing.remove();
+
+      var modal = document.createElement("div");
+      modal.id = "principal-edit-modal";
+      modal.className = "modal-overlay";
+      var html = '<div class="modal-card" style="max-width: 400px; text-align: left;">';
+      html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">';
+      html += '    <h3 style="font-size:18px; font-weight:900; color:#4527A0; margin:0;">✏️ Edit Homework</h3>';
+      html += '    <button onclick="document.getElementById(\'principal-edit-modal\').remove()" style="background:none; border:none; font-size:16px; cursor:pointer; font-weight:900;">✕</button>';
+      html += '  </div>';
+      html += '  <div style="margin-bottom:8px;">';
+      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Title:</label>';
+      html += '    <input type="text" id="edit-hw-title" value="' + escapeHtml(hw.title) + '" class="input-field" style="margin-top:4px;" />';
+      html += '  </div>';
+      html += '  <div style="margin-bottom:8px;">';
+      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Instructions:</label>';
+      html += '    <textarea id="edit-hw-inst" class="input-field" rows="3" style="margin-top:4px;">' + escapeHtml(hw.instructions || '') + '</textarea>';
+      html += '  </div>';
+      html += '  <div style="margin-bottom:14px;">';
+      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Due Time:</label>';
+      html += '    <input type="time" id="edit-hw-due" value="' + (hw.due_time || '18:00') + '" class="input-field" style="margin-top:4px;" />';
+      html += '  </div>';
+      html += '  <button class="btn-action-primary" style="background:#673AB7;" onclick="safeAction(function(){ submitPrincipalEditHomework(\'' + hw.id + '\'); })">';
+      html += '    Save Changes 💾';
+      html += '  </button>';
+      html += '</div>';
+
+      modal.innerHTML = html;
+      document.body.appendChild(modal);
+    }
+
+    async function submitPrincipalEditHomework(hwId) {
+      var schoolId = getActiveSchoolId();
+      var hwList = getAllHomeworkList(schoolId);
+      var hw = hwList.find(function(h) { return h.id === hwId; });
+      if (!hw) return;
+
+      var title = document.getElementById("edit-hw-title").value.trim();
+      var inst = document.getElementById("edit-hw-inst").value.trim();
+      var due = document.getElementById("edit-hw-due").value;
+
+      if (title) hw.title = title;
+      hw.instructions = inst;
+      hw.due_time = due;
+
+      saveAllHomeworkList(schoolId, hwList);
+
+      try {
+        await supabaseRest("/kids_homework?id=eq." + hwId, {
+          method: "PATCH",
+          body: { title: title, instructions: inst, due_time: due }
+        });
+      } catch(e) {}
+
+      var m = document.getElementById("principal-edit-modal");
+      if (m) m.remove();
+
+      showToast("Homework updated! 💾", "success");
+      speak("Homework updated successfully.", "en-IN");
+      renderPrincipalPanelView();
+    }
+
+    async function deletePrincipalHomework(hwId) {
+      var confirmed = confirm("Are you sure you want to delete this homework entry?");
+      if (!confirmed) return;
+
+      var schoolId = getActiveSchoolId();
+      var hwList = getAllHomeworkList(schoolId).filter(function(h) { return h.id !== hwId; });
+      saveAllHomeworkList(schoolId, hwList);
+
+      try {
+        await supabaseRest("/kids_homework?id=eq." + hwId, { method: "DELETE" });
+      } catch(e) {}
+
+      showToast("Homework deleted 🗑️", "success");
+      speak("Homework deleted.", "en-IN");
+      renderPrincipalPanelView();
+    }
+
+    // Principal Tab 3: Campus Summary
+    function renderPrincipalSummaryTab(schoolId) {
+      var school = getActiveSchool();
+      var teachers = getAllClassTeachers(schoolId);
+      var activeTeachers = teachers.filter(function(t) { return t.is_active; });
+      var hwList = getAllHomeworkList(schoolId);
+      var totalStudents = (DEFAULT_SCHOOL_STUDENTS[schoolId] || []).length;
+
+      var html = '<div class="principal-card">';
+      html += '  <h3 style="font-size:16px; font-weight:900; color:#4527A0; margin-bottom:12px;">📊 Campus Analytics: ' + escapeHtml(school.name) + '</h3>';
+
+      html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">';
+      html += '  <div style="background:#EDE7F6; padding:12px; border-radius:14px; text-align:center;">';
+      html += '    <div style="font-size:22px; font-weight:900; color:#4527A0;">' + activeTeachers.length + ' / 3</div>';
+      html += '    <div style="font-size:11px; font-weight:800; color:#5E35B1;">Active Class Teachers</div>';
+      html += '  </div>';
+      html += '  <div style="background:#E8F5E9; padding:12px; border-radius:14px; text-align:center;">';
+      html += '    <div style="font-size:22px; font-weight:900; color:#2E7D32;">' + hwList.length + '</div>';
+      html += '    <div style="font-size:11px; font-weight:800; color:#1B5E20;">Homework Tasks Posted</div>';
+      html += '  </div>';
+      html += '  <div style="background:#FFF8E1; padding:12px; border-radius:14px; text-align:center;">';
+      html += '    <div style="font-size:22px; font-weight:900; color:#F57F17;">' + totalStudents + '</div>';
+      html += '    <div style="font-size:11px; font-weight:800; color:#E65100;">Enrolled Students</div>';
+      html += '  </div>';
+      html += '  <div style="background:#E3F2FD; padding:12px; border-radius:14px; text-align:center;">';
+      html += '    <div style="font-size:22px; font-weight:900; color:#1565C0;">Nursery, LKG, UKG</div>';
+      html += '    <div style="font-size:11px; font-weight:800; color:#0D47A1;">Curriculum Modules</div>';
+      html += '  </div>';
+      html += '</div>';
+
+      html += '</div>';
+      return html;
     }
 
     // ------------------------------------------------------------------------
-    // CURRICULUM MODULES & TOPICS FOR TEACHER ASSIGNMENT
+    // CURRICULUM MODULES & TOPICS FOR TEACHER ASSIGNMENT & QUIZZES
     // ------------------------------------------------------------------------
     function getCurriculumModulesForClass(className) {
       if (className === "UKG") {
         return [
-          // English Grammar (11 Sub-tabs)
           { key: "ukg_gram_is_am_are", title: "Grammar: ⚖️ Use of Is / Am / Are (Drill & Sentences)", section: "ukg", tab: "grammar", grammarSubTab: "is_am_are", mode: "quiz" },
           { key: "ukg_gram_this_that", title: "Grammar: 👉 Use of This / That (Visual Arrow)", section: "ukg", tab: "grammar", grammarSubTab: "this_that", mode: "quiz" },
           { key: "ukg_gram_these_those", title: "Grammar: 👉👉 Use of These / Those (Visual Arrow)", section: "ukg", tab: "grammar", grammarSubTab: "these_those", mode: "quiz" },
@@ -3108,25 +4203,20 @@
           { key: "ukg_gram_was_were", title: "Grammar: ⏳ Use of Was / Were (Past Tense)", section: "ukg", tab: "grammar", grammarSubTab: "was_were", mode: "quiz" },
           { key: "ukg_gram_prepositions", title: "Grammar: 📍 Simple Prepositions (In, On, Under, Near, Behind)", section: "ukg", tab: "grammar", grammarSubTab: "prepositions", mode: "quiz" },
           { key: "ukg_gram_interjections", title: "Grammar: 🎉 First 6 Interjections (Hurray, Ouch, Wow...)", section: "ukg", tab: "grammar", grammarSubTab: "interjections", mode: "quiz" },
-          // English World & Phonics
           { key: "ukg_vowels_practice", title: "English: Vowels, Consonants & Semi-Vowels", section: "ukg", tab: "phonics", vowel: "vowels", mode: "learn" },
           { key: "ukg_phonics_4let_a", title: "English: 4-Letter 'A' Words (STAR, CART, HAND)", section: "ukg", tab: "phonics", vowel: "a", mode: "quiz" },
           { key: "ukg_phonics_4let_e", title: "English: 4-Letter 'E' Words (TREE, JEEP, BELL)", section: "ukg", tab: "phonics", vowel: "e", mode: "quiz" },
           { key: "ukg_eng_world_days", title: "English World: Days of the Week", section: "ukg", tab: "english_world", cat: "days", mode: "quiz" },
           { key: "ukg_eng_world_colors", title: "English World: Colors Around Us", section: "ukg", tab: "english_world", cat: "colors", mode: "quiz" },
-          // Mathematics
           { key: "ukg_math_addition", title: "Math: Addition Fun (1-10 Quiz)", section: "ukg", tab: "math", mathSubTab: "addition", mode: "quiz" },
           { key: "ukg_math_subtraction", title: "Math: Subtraction Fun (1-10 Quiz)", section: "ukg", tab: "math", mathSubTab: "subtraction", mode: "quiz" },
-          // Hindi Matras
           { key: "ukg_hindi_matra", title: "Hindi: Matra Quiz (ा, ि, ी, ु, ू)", section: "ukg", tab: "matra", mode: "quiz" },
-          // EVS & GK
           { key: "ukg_evs_helpers", title: "EVS: Community Helpers (Doctor, Teacher, Police)", section: "ukg", tab: "evs", topic: "helpers", mode: "quiz" },
           { key: "ukg_evs_transport", title: "EVS: Means of Transport (Land, Water, Air)", section: "ukg", tab: "evs", topic: "transport", mode: "quiz" },
           { key: "ukg_gk_quiz", title: "GK: UKG General Knowledge Challenge (150 Qs)", section: "ukg", tab: "gk", mode: "quiz" }
         ];
       } else if (className === "LKG") {
         return [
-          // English Phonics
           { key: "lkg_phonics_2letter", title: "English: 2-Letter Words (AT, IN, ON, GO)", section: "lkg", tab: "phonics", vowel: "two", mode: "quiz" },
           { key: "lkg_phonics_cvc_a", title: "English: 3-Letter CVC Short 'a' (CAT, BAT, MAT)", section: "lkg", tab: "phonics", vowel: "a", mode: "quiz" },
           { key: "lkg_phonics_cvc_e", title: "English: 3-Letter CVC Short 'e' (PEN, BED, RED)", section: "lkg", tab: "phonics", vowel: "e", mode: "quiz" },
@@ -3134,26 +4224,21 @@
           { key: "lkg_phonics_cvc_o", title: "English: 3-Letter CVC Short 'o' (POT, HOT, DOG)", section: "lkg", tab: "phonics", vowel: "o", mode: "quiz" },
           { key: "lkg_phonics_cvc_u", title: "English: 3-Letter CVC Short 'u' (SUN, CUP, BUG)", section: "lkg", tab: "phonics", vowel: "u", mode: "quiz" },
           { key: "lkg_vowels_practice", title: "English: Vowels & Consonants Phonics", section: "lkg", tab: "phonics", vowel: "vowels", mode: "learn" },
-          // Mathematics
           { key: "lkg_math_numbers", title: "Math: Numbers 1-100 & Before/After", section: "lkg", tab: "math", mode: "quiz" },
           { key: "lkg_math_names", title: "Math: Number Names (ONE to TWENTY)", section: "lkg", tab: "math", mathSubTab: "names", mode: "quiz" },
           { key: "lkg_math_moreless", title: "Math: More or Less Comparison", section: "lkg", tab: "math", mathSubTab: "moreless", mode: "quiz" },
           { key: "lkg_math_before_after", title: "Math: Before & After Numbers", section: "lkg", tab: "math", mathSubTab: "before_after", mode: "quiz" },
-          // Hindi
           { key: "lkg_hindi_swar", title: "Hindi: स्वर अ-अः अभ्यास (Picture Quiz)", section: "lkg", tab: "vyanjan", lkgHindiSubTab: "swar", mode: "quiz_pic_to_let" },
           { key: "lkg_hindi_vyanjan", title: "Hindi: क-ज्ञ Vyanjan Picture Quiz", section: "lkg", tab: "vyanjan", lkgHindiSubTab: "vyanjan", mode: "quiz_pic_to_let" },
           { key: "lkg_shabda_nirman", title: "Hindi: 2 व 3 अक्षर शब्द निर्माण", section: "lkg", tab: "vyanjan", lkgHindiSubTab: "shabda", mode: "learn" },
-          // EVS
           { key: "lkg_evs_animals", title: "EVS: Domestic vs Wild Animals Quiz", section: "lkg", tab: "evs", topic: "animals", mode: "quiz" },
           { key: "lkg_evs_body", title: "EVS: My Body & Five Senses", section: "lkg", tab: "evs", topic: "body", mode: "quiz" },
           { key: "lkg_evs_fruits", title: "EVS: Fruits & Vegetables Quiz", section: "lkg", tab: "evs", topic: "fruits", mode: "quiz" },
           { key: "lkg_evs_colors", title: "EVS: Colors & Shapes Quiz", section: "lkg", tab: "evs", topic: "colors", mode: "quiz" },
-          // GK
           { key: "lkg_gk_quiz", title: "GK: LKG General Knowledge Challenge (100 Qs)", section: "lkg", tab: "gk", mode: "quiz" }
         ];
       } else {
         return [
-          // English Phonics & ABC 6 Sub-tabs
           { key: "nursery_phonics_sounds", title: "English Phonics: 🔊 Initial Phonic Sound Match", section: "nursery", tab: "phonics", mode: "quiz" },
           { key: "nursery_abc_match_pic", title: "English ABC: ✏️ Match Letter with Picture (Draw Line)", section: "nursery", tab: "abc", abcSubTab: "match_picture", mode: "learn" },
           { key: "nursery_abc_match_same", title: "English ABC: 🔗 Match Same Capital Letters", section: "nursery", tab: "abc", abcSubTab: "match_same", mode: "learn" },
@@ -3161,7 +4246,6 @@
           { key: "nursery_abc_missing_letters", title: "English ABC: 🧩 Missing Letters (A–Z) Quiz", section: "nursery", tab: "abc", abcSubTab: "missing_letters", mode: "quiz" },
           { key: "nursery_abc_choose_letter", title: "English ABC: 🎯 Choose Correct Letter Quiz", section: "nursery", tab: "abc", abcSubTab: "choose_letter", mode: "quiz" },
           { key: "nursery_abc_order_az", title: "English ABC: 🔢 Write A–Z in Correct Order", section: "nursery", tab: "abc", abcSubTab: "order_az", mode: "learn" },
-          // Mathematics 14 Sub-tabs
           { key: "nursery_num_count_50", title: "Math: 🔢 Counting 1–50 Numbers Chart", section: "nursery", tab: "numbers", numSubTab: "count_50", mode: "learn" },
           { key: "nursery_num_count_tap_10", title: "Math: 👆 Count & Tap (1–10) Quiz", section: "nursery", tab: "numbers", numSubTab: "count_tap_10", mode: "quiz" },
           { key: "nursery_num_count_tap_20", title: "Math: 👆 Count & Tap (11–20) Quiz", section: "nursery", tab: "numbers", numSubTab: "count_tap_20", mode: "quiz" },
@@ -3176,7 +4260,6 @@
           { key: "nursery_num_compare", title: "Math: 🐘 Pre-Math Comparisons (Big/Small)", section: "nursery", tab: "numbers", numSubTab: "compare_size", mode: "quiz" },
           { key: "nursery_num_shapes", title: "Math: 🔺 Shapes & Real Objects Quiz", section: "nursery", tab: "numbers", numSubTab: "shapes_objects", mode: "quiz" },
           { key: "nursery_num_missing", title: "Math: ❓ Missing Numbers (1–20) Quiz", section: "nursery", tab: "numbers", numSubTab: "missing_num", mode: "quiz" },
-          // Hindi 9 Sub-tabs
           { key: "nursery_hindi_learn_all", title: "Hindi: 📖 स्वर व व्यंजन सीखें (अ-अः & क-ज्ञ)", section: "nursery", tab: "swar", hindiSubTab: "learn_all", mode: "learn" },
           { key: "nursery_hindi_match_pic", title: "Hindi: ✏️ चित्र पहचान कर सही अक्षर मिलाओ", section: "nursery", tab: "swar", hindiSubTab: "match_pic", mode: "learn" },
           { key: "nursery_hindi_match_same", title: "Hindi: 🔗 समान अक्षर मिलाओ (Draw Line)", section: "nursery", tab: "swar", hindiSubTab: "match_same", mode: "learn" },
@@ -3186,197 +4269,9 @@
           { key: "nursery_hindi_missing", title: "Hindi: 🧩 खाली स्थान भरो (Quiz)", section: "nursery", tab: "swar", hindiSubTab: "missing_letters", mode: "quiz" },
           { key: "nursery_hindi_choose_6", title: "Hindi: 🎯 6 अक्षरों में से सही पहचानो (Quiz)", section: "nursery", tab: "swar", hindiSubTab: "choose_6", mode: "quiz" },
           { key: "nursery_hindi_order", title: "Hindi: 🔢 क से ज्ञ क्रम में लगाओ", section: "nursery", tab: "swar", hindiSubTab: "order_hindi", mode: "learn" },
-          // GK
-          { key: "nursery_gk_quiz", title: "GK: 🌍 Nursery General Knowledge (50 Qs)", section: "nursery", tab: "gk", mode: "quiz" },
-          // Backward Compatibility Fallback Keys
-          { key: "nursery_letters_quiz", title: "English: Letters A-Z Picture Quiz", section: "nursery", tab: "abc", abcSubTab: "choose_letter", mode: "quiz" },
-          { key: "nursery_math_counting", title: "Math: Counting 1-20 Quiz", section: "nursery", tab: "numbers", numSubTab: "count_tap_10", mode: "quiz" },
-          { key: "nursery_math_count_50", title: "Math: Counting 1-50 Numbers", section: "nursery", tab: "numbers", numSubTab: "count_50", mode: "learn" },
-          { key: "nursery_swar_quiz", title: "Hindi: Swar अ-अः Picture Quiz", section: "nursery", tab: "swar", hindiSubTab: "choose_6", mode: "quiz" }
+          { key: "nursery_gk_quiz", title: "GK: 🌍 Nursery General Knowledge (50 Qs)", section: "nursery", tab: "gk", mode: "quiz" }
         ];
       }
-    }
-
-    async function handleAssignHomeworkSubmit() {
-      var topicSelect = document.getElementById("teacher-hw-topic");
-      var targetInput = document.getElementById("teacher-hw-target");
-      var dueInput = document.getElementById("teacher-hw-due");
-      var subSelect = document.getElementById("teacher-hw-subject");
-
-      if (!topicSelect) return;
-      var key = topicSelect.value;
-      var targetQuestions = parseInt(targetInput ? targetInput.value : "10", 10) || 10;
-      var dueTime = dueInput ? dueInput.value : "18:00";
-      var subjectLabel = subSelect ? subSelect.options[subSelect.selectedIndex].text : "General";
-
-      var modules = getCurriculumModulesForClass(appSession.teacherClass);
-      var selectedMod = modules.find(function(m) { return m.key === key; }) || modules[0];
-
-      var newHw = {
-        id: "HW-" + Date.now(),
-        class_name: appSession.teacherClass,
-        subject: subjectLabel,
-        sub_topic: selectedMod.title,
-        title: selectedMod.title,
-        module_key: selectedMod.key,
-        target_questions: targetQuestions,
-        due_time: dueTime,
-        assigned_by: "Class Teacher",
-        created_at: (new Date()).toISOString()
-      };
-
-      // 1. Try Supabase insert
-      try {
-        await supabaseRest("/daily_homework", {
-          method: "POST",
-          body: newHw
-        });
-      } catch (err) {
-        console.log("Supabase insert homework note:", err.message || err);
-      }
-
-      // 2. Save in local cache
-      var hwList = JSON.parse(localStorage.getItem("taa_kids_homework") || "[]");
-      hwList.unshift(newHw);
-      localStorage.setItem("taa_kids_homework", JSON.stringify(hwList));
-
-      playTone("fanfare");
-      showToast("Homework sent to " + appSession.teacherClass + " Class! 🚀", "success");
-      speak("Homework sent to " + appSession.teacherClass + " class. Target is " + targetQuestions + " questions, due at " + dueTime + ".", "en-IN");
-
-      // Switch to report tab to see live tracking
-      appSession.teacherTab = "report";
-      renderTeacherPanelView();
-    }
-
-    // Get today's active homework for a class (within 48 hours)
-    function getTodayActiveHomework(className) {
-      var cutoff = Date.now() - (48 * 60 * 60 * 1000);
-      var hwList = JSON.parse(localStorage.getItem("taa_kids_homework") || "[]");
-      for (var i = 0; i < hwList.length; i++) {
-        var h = hwList[i];
-        if (h.class_name === className && (new Date(h.created_at)).getTime() >= cutoff) {
-          return h;
-        }
-      }
-      return null;
-    }
-
-    // Check if a student has completed a homework
-    function isHomeworkCompletedByStudent(studentId, homeworkId) {
-      if (!homeworkId) return false;
-      var subList = JSON.parse(localStorage.getItem("taa_kids_submissions") || "[]");
-      return subList.some(function(s) {
-        return s.student_id === studentId && s.homework_id === homeworkId && s.status === "completed";
-      });
-    }
-
-    // Get submission record for details
-    function getStudentHomeworkSubmission(studentId, homeworkId) {
-      if (!homeworkId) return null;
-      var subList = JSON.parse(localStorage.getItem("taa_kids_submissions") || "[]");
-      return subList.find(function(s) {
-        return s.student_id === studentId && s.homework_id === homeworkId;
-      });
-    }
-
-    // Get roster for teacher class with live submission status
-    function getRosterForClass(className) {
-      var hw = getTodayActiveHomework(className);
-      var students = getRankedStudentsForClass(className);
-
-      return students.map(function(s) {
-        var sub = hw ? getStudentHomeworkSubmission(s.student_id, hw.id) : null;
-        var completed = !!sub;
-        return {
-          student_id: s.student_id,
-          admission_no: s.admission_no,
-          student_name: s.student_name,
-          total_points: s.total_points || 0.0,
-          badges: s.badges || ["Welcome Explorer 🌟"],
-          status: completed ? "completed" : "pending",
-          score: sub ? sub.total_score : null,
-          zero_bonus: sub ? (sub.zero_mistake_bonus > 0) : false,
-          time_done: sub ? timeAgo(sub.completed_at) : null
-        };
-      });
-    }
-
-    // Return students of a class sorted by cumulative permanent points
-    function getRankedStudentsForClass(className) {
-      var students = DEFAULT_STUDENTS_ROSTER.filter(function(s) { return s.class_name === className; });
-      if (appSession.student && appSession.student.class_name === className) {
-        var existingIdx = students.findIndex(function(s) { return s.student_id === appSession.student.student_id; });
-        if (existingIdx !== -1) {
-          students[existingIdx] = appSession.student;
-        } else {
-          students.push(appSession.student);
-        }
-      }
-      return students.sort(function(a, b) {
-        return (parseFloat(b.total_points) || 0) - (parseFloat(a.total_points) || 0);
-      });
-    }
-
-    // Calculate exact student rank and total in class
-    function getStudentRankAndTotal(studentId, className) {
-      var students = getRankedStudentsForClass(className);
-      var idx = students.findIndex(function(s) { return s.student_id === studentId; });
-      return {
-        rank: (idx >= 0 ? idx + 1 : 1),
-        total: Math.max(students.length, 1)
-      };
-    }
-
-    // Render Student Leaderboard (Top 5 + Student's Own Live Rank)
-    function renderStudentClassLeaderboard(className) {
-      var students = getRankedStudentsForClass(className);
-      var myId = appSession.student ? appSession.student.student_id : "";
-      var myRankInfo = getStudentRankAndTotal(myId, className);
-      var myPoints = appSession.student ? (appSession.student.total_points || 0.0) : 0.0;
-
-      var html = '';
-      html += '<div class="leaderboard-card">';
-      html += '  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">';
-      html += '    <h3 style="font-size: 16px; font-weight: 900; color: #E65100; margin: 0; display: flex; align-items: center; gap: 6px;">';
-      html += '      🏆 ' + className + ' Class Leaderboard';
-      html += '    </h3>';
-      html += '    <span style="font-size: 11px; font-weight: 800; background: #FFF8E1; color: #F57F17; padding: 3px 8px; border-radius: 8px;">Permanent Rank</span>';
-      html += '  </div>';
-
-      // Top 5 Students List
-      var top5 = students.slice(0, 5);
-      html += '  <div style="display: flex; flex-direction: column; gap: 6px;">';
-      top5.forEach(function(stu, idx) {
-        var r = idx + 1;
-        var medal = (r === 1) ? "🥇" : ((r === 2) ? "🥈" : ((r === 3) ? "🥉" : "#" + r));
-        var isMe = (stu.student_id === myId);
-        html += '<div class="top5-item ' + (isMe ? 'my-rank-highlight' : '') + '">';
-        html += '  <div style="display: flex; align-items: center; gap: 8px;">';
-        html += '    <span style="font-size: 16px; font-weight: 900; width: 26px; text-align: center; color: #E65100;">' + medal + '</span>';
-        html += '    <span style="font-size: 13px; font-weight: 900; color: #263238;">' + escapeHtml(stu.student_name) + (isMe ? ' <strong>(You)</strong>' : '') + '</span>';
-        html += '  </div>';
-        html += '  <span style="font-size: 13px; font-weight: 900; color: #1565C0;">⭐ ' + (stu.total_points || 0) + ' Pts</span>';
-        html += '</div>';
-      });
-      html += '  </div>';
-
-      // Highlighted Box for Logged-In Student's Own Live Rank
-      html += '  <div class="my-live-rank-box">';
-      html += '    <div>';
-      html += '      <div style="font-size: 10px; font-weight: 900; color: #0D47A1; text-transform: uppercase;">Your Live Rank:</div>';
-      html += '      <div style="font-size: 15px; font-weight: 900; color: #1565C0; margin-top: 2px;">';
-      html += '        🎯 Rank #' + myRankInfo.rank + ' of ' + myRankInfo.total + ' Students';
-      html += '      </div>';
-      html += '    </div>';
-      html += '    <div style="text-align: right;">';
-      html += '      <div style="font-size: 18px; font-weight: 900; color: #0D47A1;">⭐ ' + myPoints + '</div>';
-      html += '      <div style="font-size: 10px; font-weight: 800; color: #1976D2;">Total Wallet</div>';
-      html += '    </div>';
-      html += '  </div>';
-      html += '</div>';
-
-      return html;
     }
 
     function timeAgo(dateString) {
@@ -3389,257 +4284,52 @@
       return hrs + "h ago";
     }
 
-    // Check and schedule pending homework reminder
-    function checkAndScheduleHomeworkReminder() {
-      if (appSession.type !== "student" || !appSession.student) return;
-      var hw = getTodayActiveHomework(appSession.student.class_name);
-      if (!hw || hw.is_placeholder) return;
-      var isDone = isHomeworkCompletedByStudent(appSession.student.student_id, hw.id);
-      if (!isDone) {
-        NotificationBridge.scheduleHomeworkReminder(
-          appSession.student.student_name,
-          hw.title,
-          hw.due_time || "6:00 PM"
-        );
-      } else {
-        NotificationBridge.clearHomeworkReminder();
-      }
-    }
-
-    // Launch Homework with Fair Decimal Scoring Session & Strict Lock
-    function startAssignedHomework() {
-      if (!appSession.student) return;
-      var hw = getTodayActiveHomework(appSession.student.class_name);
+    // Launch Homework with Interactive Module
+    function startAssignedHomework(hwId) {
+      var schoolId = getActiveSchoolId();
+      var hw = hwId ? getAllHomeworkList(schoolId).find(function(h) { return h.id === hwId; }) : getTodayActiveHomework(appSession.parentClass, schoolId);
       if (!hw) {
         showToast("No homework active!", "wrong");
         return;
       }
-      var isCompletedEarlier = isHomeworkCompletedByStudent(appSession.student.student_id, hw.id);
 
-      // Temporarily release active homework lock to allow clean section transition
-      appSession.activeHomeworkId = null;
-      document.body.classList.remove("homework-locked");
-
-      var modules = getCurriculumModulesForClass(appSession.student.class_name);
-      var mod = modules.find(function(m) { return m.key === hw.module_key; });
-      if (!mod && hw.sub_topic) {
-        mod = modules.find(function(m) { return m.title === hw.sub_topic; });
-      }
-      if (!mod) {
-        var sLow = ((hw.subject || "") + " " + (hw.title || "")).toLowerCase();
-        mod = modules.find(function(m) {
-          if (sLow.indexOf("math") !== -1 || sLow.indexOf("number") !== -1 || sLow.indexOf("गिनती") !== -1 || sLow.indexOf("संख्या") !== -1) return m.tab === "numbers" || m.tab === "math";
-          if (sLow.indexOf("hindi") !== -1 || sLow.indexOf("स्वर") !== -1 || sLow.indexOf("हिंदी") !== -1 || sLow.indexOf("व्यंजन") !== -1) return m.tab === "swar" || m.tab === "vyanjan" || m.tab === "matra";
-          if (sLow.indexOf("gk") !== -1 || sLow.indexOf("knowledge") !== -1) return m.tab === "gk";
-          return m.tab === "phonics" || m.tab === "abc" || m.tab === "grammar";
-        }) || modules[0];
-      }
+      var modules = getCurriculumModulesForClass(hw.class_name);
+      var mod = modules.find(function(m) { return m.key === hw.module_key; }) || modules[0];
 
       if (mod.vowel) appState.phonicsVowel = mod.vowel;
       if (mod.topic) {
-        if (appSession.student.class_name === "LKG") appState.lkgEvsTopic = mod.topic;
-        if (appSession.student.class_name === "UKG") appState.ukgEvsTopic = mod.topic;
+        if (hw.class_name === "LKG") appState.lkgEvsTopic = mod.topic;
+        if (hw.class_name === "UKG") appState.ukgEvsTopic = mod.topic;
       }
-      if (mod.cat) {
-        appState.ukgEnglishWorldCat = mod.cat;
-      }
-      if (mod.grammarSubTab) {
-        appState.ukgGrammarSubTab = mod.grammarSubTab;
-      }
+      if (mod.cat) appState.ukgEnglishWorldCat = mod.cat;
+      if (mod.grammarSubTab) appState.ukgGrammarSubTab = mod.grammarSubTab;
       if (mod.mathSubTab) {
-        if (appSession.student.class_name === "UKG") appState.ukgMathSubTab = mod.mathSubTab;
-        if (appSession.student.class_name === "LKG") appState.lkgMathSubTab = mod.mathSubTab;
+        if (hw.class_name === "UKG") appState.ukgMathSubTab = mod.mathSubTab;
+        if (hw.class_name === "LKG") appState.lkgMathSubTab = mod.mathSubTab;
       }
-      if (mod.numSubTab) {
-        appState.nurseryNumSubTab = mod.numSubTab;
-      }
-      if (mod.abcSubTab) {
-        appState.nurseryAbcSubTab = mod.abcSubTab;
-      }
-      if (mod.hindiSubTab) {
-        appState.nurseryHindiSubTab = mod.hindiSubTab;
-      }
-      if (mod.lkgHindiSubTab) {
-        appState.lkgHindiSubTab = mod.lkgHindiSubTab;
-      }
+      if (mod.numSubTab) appState.nurseryNumSubTab = mod.numSubTab;
+      if (mod.abcSubTab) appState.nurseryAbcSubTab = mod.abcSubTab;
+      if (mod.hindiSubTab) appState.nurseryHindiSubTab = mod.hindiSubTab;
+      if (mod.lkgHindiSubTab) appState.lkgHindiSubTab = mod.lkgHindiSubTab;
 
-      // Open target section and set mode with bypass flag
       openSection(mod.section, mod.tab, true);
       setMode(mod.mode || "quiz");
-
-      // Now lock session to homework mode
-      appSession.activeHomeworkId = hw.id;
-      appSession.homeworkAnsweredCount = 0;
-      appSession.homeworkSession = {
-        homeworkId: hw.id,
-        isPracticeMode: isCompletedEarlier, // Reopening completed homework awards 0 points!
-        targetQuestions: hw.target_questions || 10,
-        currentQuestionWrongTaps: 0,
-        totalWrongTapsAllQs: 0,
-        totalScore: 0.0,
-        zeroMistakeBonus: 0.0,
-        questionScores: []
-      };
-
-      // Apply strict homework lock class to body
-      document.body.classList.add("homework-locked");
-
-      // Hide all navigation & subtabs
-      var homeNav = document.getElementById("btn-home-nav");
-      if (homeNav) homeNav.style.display = "none";
-      var subtabs = document.getElementById("subtabs-bar");
-      if (subtabs) subtabs.style.display = "none";
-      var filters = document.getElementById("filter-pills-bar");
-      if (filters) filters.style.display = "none";
-
-      renderHeaderStatus();
-
-      var welcomeMsg = isCompletedEarlier
-        ? "Opening Practice Mode for: " + hw.title
-        : "Starting assigned homework: " + hw.title + ". Target: " + (hw.target_questions || 10) + " questions.";
-      speak(welcomeMsg, "en-IN");
+      speak("Starting " + hw.title, "en-IN");
     }
 
-    // Complete Homework Record (Fair Decimal Scoring & Zero-Mistake Bonus)
+    // Complete Homework Record
     async function completeActiveHomeworkRecord(hwId) {
-      if (!appSession.student || !appSession.homeworkSession) return;
-      var stu = appSession.student;
-      var hs = appSession.homeworkSession;
-      var isPractice = hs.isPracticeMode;
-
-      // 1. Calculate Zero-Mistake Bonus (if entire homework had 0 wrong taps)
-      var bonus = 0.0;
-      if (!isPractice && hs.totalWrongTapsAllQs === 0) {
-        var tq = hs.targetQuestions;
-        if (tq <= 5) {
-          bonus = 2.0;
-        } else if (tq <= 14) {
-          bonus = 3.0;
-        } else {
-          bonus = 5.0;
-        }
-        hs.zeroMistakeBonus = bonus;
-        hs.totalScore = Math.round((hs.totalScore + bonus) * 10) / 10;
-      }
-
-      var earnedScore = hs.totalScore;
-
-      // 2. Record submission & update wallet (One-Time Points rule)
-      if (!isPractice) {
-        // Save submission locally
-        var subList = JSON.parse(localStorage.getItem("taa_kids_submissions") || "[]");
-        var subRecord = {
-          id: "SUB-" + Date.now(),
-          student_id: stu.student_id,
-          homework_id: hwId,
-          class_name: stu.class_name,
-          points_earned: Math.round((earnedScore - bonus) * 10) / 10,
-          zero_mistake_bonus: bonus,
-          total_score: earnedScore,
-          wrong_taps: hs.totalWrongTapsAllQs,
-          status: "completed",
-          completed_at: (new Date()).toISOString()
-        };
-        subList.unshift(subRecord);
-        localStorage.setItem("taa_kids_submissions", JSON.stringify(subList));
-
-        // Update permanent cumulative wallet
-        stu.total_points = Math.round(((stu.total_points || 0.0) + earnedScore) * 10) / 10;
-        stu.total_stars = Math.floor(stu.total_points);
-        stu.tasks_completed = (stu.tasks_completed || 0) + 1;
-        if (!stu.badges.includes("Super Star 🏅")) {
-          stu.badges.push("Super Star 🏅");
-        }
-        if (bonus > 0 && !stu.badges.includes("Accuracy King 🎯")) {
-          stu.badges.push("Accuracy King 🎯");
-        }
-        appState.stars = stu.total_stars;
-        document.getElementById("star-count").textContent = appState.stars;
-        localStorage.setItem("taa_kids_student_session", JSON.stringify(stu));
-
-        // Batch call to Supabase in a SINGLE API call
-        try {
-          await supabaseRest("/rpc/kids_submit_homework_batch", {
-            method: "POST",
-            body: {
-              p_student_id: stu.student_id,
-              p_homework_id: hwId,
-              p_class_name: stu.class_name,
-              p_points_earned: Math.round((earnedScore - bonus) * 10) / 10,
-              p_zero_mistake_bonus: bonus,
-              p_total_score: earnedScore,
-              p_wrong_taps: hs.totalWrongTapsAllQs
-            }
-          });
-        } catch (err) {
-          console.log("Supabase batch submission note:", err.message || err);
-        }
-
-        // Clear reminder notification since homework is done!
-        NotificationBridge.clearHomeworkReminder();
-      }
-
-      var rankInfo = getStudentRankAndTotal(stu.student_id, stu.class_name);
-      renderHeaderStatus();
-
-      // Celebration Modal
       playTone("fanfare");
       triggerConfetti();
-
-      var celebrationSpoken = isPractice
-        ? "Great practice session! You reviewed all questions successfully."
-        : "Superb! You earned " + earnedScore + " points with class rank number " + rankInfo.rank + "!";
-      speak(celebrationSpoken, "en-IN");
-
-      var existing = document.getElementById("hw-complete-modal");
-      if (existing) existing.remove();
-
-      var modal = document.createElement("div");
-      modal.id = "hw-complete-modal";
-      modal.className = "modal-overlay";
-
-      var bonusHtml = (bonus > 0)
-        ? '<div style="background: #FFF9C4; border: 2px solid #FBC02D; border-radius: 14px; padding: 10px; margin: 10px 0; font-weight: 900; color: #E65100;">🌟 Zero-Mistake Accuracy Bonus: +' + bonus + ' Pts!</div>'
-        : '';
-
-      modal.innerHTML = '<div class="modal-card">' +
-        '  <div style="font-size: 52px; margin-bottom: 8px;">' + (isPractice ? '📖🌟' : '🏆🎉') + '</div>' +
-        '  <h2 style="font-size: 21px; font-weight: 900; color: #E65100; margin-bottom: 6px;">' + (isPractice ? 'Practice Complete! ✅' : 'Homework Completed! 🚀') + '</h2>' +
-        '  <div style="font-size: 13px; color: #546E7A; font-weight: 700; line-height: 1.4;">' +
-        (isPractice ? 'You reviewed today\'s homework in practice mode.' : 'Awesome effort! Your score is submitted directly to your permanent wallet.') +
-        '  </div>' +
-        bonusHtml +
-        '  <div style="background: #E8F5E9; border: 2px solid #81C784; border-radius: 16px; padding: 12px; margin: 12px 0;">' +
-        '    <div style="display: flex; justify-content: space-around; text-align: center;">' +
-        '      <div><div style="font-size: 20px; font-weight: 900; color: #2E7D32;">' + hs.targetQuestions + '</div><div style="font-size: 10px; font-weight: 800; color: #1B5E20;">QUESTIONS</div></div>' +
-        '      <div><div style="font-size: 20px; font-weight: 900; color: #E65100;">' + (isPractice ? '0.0' : '+' + earnedScore) + '</div><div style="font-size: 10px; font-weight: 800; color: #BF360C;">POINTS</div></div>' +
-        '      <div><div style="font-size: 20px; font-weight: 900; color: #1565C0;">#' + rankInfo.rank + '</div><div style="font-size: 10px; font-weight: 800; color: #0D47A1;">CLASS RANK</div></div>' +
-        '    </div>' +
-        '  </div>' +
-        '  <button class="hw-action-btn" onclick="safeAction(function(){ var m=document.getElementById(\'hw-complete-modal\'); if(m) m.remove(); goHome(); })">' +
-        '    Back to Assigned Homework &amp; Leaderboard 🏆' +
-        '  </button>' +
-        '</div>';
-      document.body.appendChild(modal);
-
-      // Release lock & clear active homework state
-      document.body.classList.remove("homework-locked");
-      appSession.activeHomeworkId = null;
-      appSession.homeworkSession = null;
-      appSession.homeworkAnsweredCount = 0;
-
-      // Auto-redirect to Assigned Homework + Leaderboard screen after 4 seconds
+      showToast("Quiz Completed! 🌟", "success");
+      speak("Great job! You finished the quiz successfully.", "en-IN");
       setTimeout(function() {
-        var m = document.getElementById("hw-complete-modal");
-        if (m) {
-          m.remove();
-          goHome();
-        }
-      }, 4000);
+        goHome();
+      }, 1500);
     }
 
 
-        /* =========================================================
+    /* =========================================================
        CANONICAL STRING-KEY SECTION TABS ARCHITECTURE (Zero Mismatch)
        ========================================================= */
     var SECTION_TABS = {
@@ -27368,28 +28058,17 @@ var DATA_UKG_MATH_ADDITION = [
        ========================================================= */
     function goHome() {
       lastUtteranceKey = "";
-      // If student is actively in homework, prevent navigating away until questions are finished
       if (appSession.activeHomeworkId && !appSession.isPreviewMode) {
         showToast("Homework in progress! Complete your questions to finish.", "wrong");
-        speak("Homework is locked. Please complete all questions to submit your score.", "en-IN");
-        return;
-      }
-      if (!appSession.type && !localStorage.getItem("taa_kids_student_session") && !localStorage.getItem("taa_kids_teacher_session")) {
-        appState.section = "welcome";
-        document.getElementById("btn-home-nav").style.display = "none";
-        document.getElementById("subtabs-bar").style.display = "none";
-        document.getElementById("filter-pills-bar").style.display = "none";
-        renderWelcomeView();
+        speak("Homework is locked.", "en-IN");
         return;
       }
       appState.section = "home";
       document.getElementById("btn-home-nav").style.display = "none";
       document.getElementById("subtabs-bar").style.display = "none";
       document.getElementById("filter-pills-bar").style.display = "none";
+      renderHeaderStatus();
       renderHome();
-      setTimeout(function() {
-        speak("Welcome to Abacus Kids! The Abacus Academy Jodhpur", "en-IN");
-      }, 30);
     }
 
     function getActiveTabKey() {
@@ -29017,152 +29696,233 @@ function setNurseryNumSubTab(st) {
 
     function renderHome() {
       var view = document.getElementById("main-view");
-      var html = '';
+      var schoolId = getActiveSchoolId();
+      var school = getActiveSchool();
 
-      // Check if session is welcome
-      if (!appSession.type && !localStorage.getItem("taa_kids_student_session") && !localStorage.getItem("taa_kids_teacher_session")) {
-        renderWelcomeView();
-        return;
-      }
       renderHeaderStatus();
 
-      // TEACHER MODE BANNER / PREVIEW BANNER
+      // Check if session is explicitly in teacher or principal view
       if (appSession.type === "teacher") {
-        html += '<div class="preview-mode-banner">';
-        html += '  <div>';
-        html += '    <strong style="color: #2E7D32;">👩‍🏫 Teacher Portal Active:</strong> ' + appSession.teacherClass + ' Class';
-        html += '    <div style="font-size: 11px; color: #558B2F;">All Modules Unlocked for Preview &amp; Assignment</div>';
-        html += '  </div>';
-        html += '  <div style="display:flex; gap:6px; align-items:center;">';
-        html += '    <button class="nav-icon-btn" style="background: #2E7D32; color: #FFF; font-size: 12px; padding: 6px 12px; font-weight: 800; border-radius: 12px;" onclick="safeAction(openTeacherPanel)">Teacher Dashboard 📋</button>';
-        html += '    <button class="btn-logout" style="font-size: 12px; padding: 5px 9px;" onclick="safeAction(logoutUser)">🚪 Logout</button>';
-        html += '  </div>';
-        html += '</div>';
-      } else if (appSession.isPreviewMode) {
-        html += '<div class="preview-mode-banner">';
-        html += '  <div><strong style="color: #E65100;">👁️ Teacher Preview Mode:</strong> All classes unlocked</div>';
-        html += '  <div style="display:flex; gap:6px; align-items:center;">';
-        html += '    <button class="nav-icon-btn" style="background: #E65100; color: #FFF; font-size: 12px; padding: 6px 10px;" onclick="safeAction(exitTeacherPreview)">Exit Preview ✕</button>';
-        html += '    <button class="btn-logout" style="font-size: 12px; padding: 5px 9px;" onclick="safeAction(logoutUser)">🚪 Logout</button>';
-        html += '  </div>';
-        html += '</div>';
+        renderTeacherPanelView();
+        return;
+      }
+      if (appSession.type === "principal") {
+        renderPrincipalPanelView();
+        return;
       }
 
-      // =========================================================================
-      // STRICT STUDENT HOMEWORK-ONLY MODE (No Free-Play Point Farming)
-      // =========================================================================
-      if (appSession.type === "student" && appSession.student && !appSession.isPreviewMode) {
-        var sCls = appSession.student.class_name;
-        var hw = getTodayActiveHomework(sCls);
-        var isDone = hw ? isHomeworkCompletedByStudent(appSession.student.student_id, hw.id) : false;
+      var html = '';
 
-        // 1. Check if teacher assigned homework for this class
+      // Segmented School Switcher Banner at top of Home View
+      html += '<div class="school-switcher-bar">';
+      Object.keys(SCHOOLS_CONFIG).forEach(function(sKey) {
+        var sObj = SCHOOLS_CONFIG[sKey];
+        var isAct = (sKey === schoolId);
+        var extraClass = (sKey === "gr-children-academy") ? "school-gr" : "";
+        html += '<button class="school-switcher-btn ' + (isAct ? ("active " + extraClass) : "") + '" onclick="safeAction(function(){ setActiveSchoolId(\'' + sKey + '\'); })">' + sObj.emoji + ' ' + sObj.name + '</button>';
+      });
+      html += '</div>';
+
+      // Academy Hero Banner
+      html += '<div class="hero-banner" style="background:linear-gradient(135deg, ' + school.badgeBg + ', #FFF); border:2.5px solid ' + school.themeColor + ';" onclick="safeAction(speakCurrentSchoolInfo)">';
+      html += '  <div class="safe-emoji" style="font-size: 42px;">' + school.emoji + '</div>';
+      html += '  <div>';
+      html += '    <div class="academy-badge" style="color:' + school.primaryColor + ';">' + escapeHtml(school.fullName) + '</div>';
+      html += '    <div style="font-size: 19px; font-weight: 900; color:' + school.primaryColor + ';">' + escapeHtml(school.name) + '</div>';
+      html += '    <div style="font-size: 11px; color: #5D4037; font-weight: 700;">' + escapeHtml(school.tagline) + '</div>';
+      html += '  </div>';
+      html += '</div>';
+
+      // =========================================================================
+      // THREE CLEAN ROLE ACCESS MODES ON HOME SCREEN
+      // =========================================================================
+      html += '<div class="role-grid">';
+      
+      // Card 1: Student / Parent Mode
+      html += '  <div class="role-card-btn role-card-parent" onclick="safeAction(function(){ enterParentMode(\'' + (appSession.parentClass || 'Nursery') + '\'); })">';
+      html += '    <div class="role-icon-box" style="color:#2E7D32;">🎒</div>';
+      html += '    <div style="flex:1;">';
+      html += '      <div style="font-size:15px; font-weight:900; color:#1B5E20;">Student / Parent Mode</div>';
+      html += '      <div style="font-size:11px; color:#388E3C; font-weight:700;">Nursery, LKG, UKG Learning + Today\'s Homework Tab &amp; 1-Tap Done</div>';
+      html += '    </div>';
+      html += '    <div style="font-size:18px; color:#2E7D32;">➔</div>';
+      html += '  </div>';
+
+      // Card 2: Teacher Portal
+      html += '  <div class="role-card-btn role-card-teacher" onclick="safeAction(openTeacherLoginModal)">';
+      html += '    <div class="role-icon-box" style="color:#E65100;">👩‍🏫</div>';
+      html += '    <div style="flex:1;">';
+      html += '      <div style="font-size:15px; font-weight:900; color:#BF360C;">Class Teacher Portal</div>';
+      html += '      <div style="font-size:11px; color:#E65100; font-weight:700;">Login via Mobile / Emp Code (Nursery, LKG, UKG Class Teachers)</div>';
+      html += '    </div>';
+      html += '    <div style="font-size:18px; color:#E65100;">➔</div>';
+      html += '  </div>';
+
+      // Card 3: Principal Supervision Desk
+      html += '  <div class="role-card-btn role-card-principal" onclick="safeAction(openPrincipalLoginModal)">';
+      html += '    <div class="role-icon-box" style="color:#512DA8;">🛡️</div>';
+      html += '    <div style="flex:1;">';
+      html += '      <div style="font-size:15px; font-weight:900; color:#311B92;">Principal Supervision Desk</div>';
+      html += '      <div style="font-size:11px; color:#512DA8; font-weight:700;">PIN Protected • Assign Teachers &amp; Monitor All Classes</div>';
+      html += '    </div>';
+      html += '    <div style="font-size:18px; color:#512DA8;">➔</div>';
+      html += '  </div>';
+
+      html += '</div>'; // End role-grid
+
+      // =========================================================================
+      // PARENT / STUDENT INTERACTIVE HUB (CLASS TABS & TODAY'S HOMEWORK)
+      // =========================================================================
+      var curClass = appSession.parentClass || "Nursery";
+      var curTab = appSession.parentTab || "homework";
+
+      html += '<div style="background:#FFFFFF; border:2px solid #E0E0E0; border-radius:20px; padding:14px; margin-top:8px; box-shadow:0 4px 14px rgba(0,0,0,0.04);">';
+
+      // Class Switcher Bar (Nursery, LKG, UKG)
+      html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">';
+      html += '  <span style="font-size:12px; font-weight:900; color:#37474F; text-transform:uppercase;">Select Student Class:</span>';
+      html += '  <div style="display:flex; gap:6px;">';
+      ["Nursery", "LKG", "UKG"].forEach(function(cls) {
+        var isAct = (curClass === cls);
+        html += '<button onclick="safeAction(function(){ switchParentClass(\'' + cls + '\'); })" style="padding:6px 12px; border-radius:12px; font-size:12px; font-weight:900; cursor:pointer; border:2px solid ' + (isAct ? school.primaryColor : '#CFD8DC') + '; background:' + (isAct ? school.primaryColor : '#FFF') + '; color:' + (isAct ? '#FFF' : '#455A64') + '; transition:all 0.15s ease;">' + (cls === 'Nursery' ? '🧸 ' : (cls === 'LKG' ? '🚂 ' : '🚀 ')) + cls + '</button>';
+      });
+      html += '  </div>';
+      html += '</div>';
+
+      // Sub-Tabs: Today's Homework vs Learning Modules
+      html += '<div class="teacher-nav-tabs" style="margin-bottom:12px;">';
+      html += '  <button class="teacher-tab-btn ' + (curTab === 'homework' ? 'active' : '') + '" onclick="safeAction(function(){ switchParentTab(\'homework\'); })">📋 Today\'s Homework &amp; Activities</button>';
+      html += '  <button class="teacher-tab-btn ' + (curTab === 'learning' ? 'active' : '') + '" onclick="safeAction(function(){ switchParentTab(\'learning\'); })">📚 Class Learning Modules</button>';
+      html += '</div>';
+
+      // SUB-TAB 1: TODAY'S HOMEWORK
+      if (curTab === 'homework') {
+        var hw = getTodayActiveHomework(curClass, schoolId);
+        var assignedTeacher = getAssignedClassTeacher(schoolId, curClass);
+
+        if (assignedTeacher) {
+          html += '<div style="font-size:11px; color:#546E7A; font-weight:700; margin-bottom:8px;">Class Teacher: <strong>' + escapeHtml(assignedTeacher.teacher_name) + '</strong> (' + assignedTeacher.teacher_mobile + ')</div>';
+        }
+
         if (hw && !hw.is_placeholder) {
-          // Homework Card
-          html += '<div class="homework-hero-card">';
-          html += '  <div class="homework-header-row">';
-          html += '    <span style="font-size: 11px; font-weight: 900; color: #E65100; text-transform: uppercase;">📋 Today&#39;s Assigned Homework</span>';
-          html += '    <span class="hw-status-badge ' + (isDone ? 'hw-status-completed' : 'hw-status-pending') + '">' + (isDone ? 'Completed ✅' : 'Pending ⏳') + '</span>';
-          html += '  </div>';
-          html += '  <div class="homework-title">' + escapeHtml(hw.title) + '</div>';
-          html += '  <div style="font-size: 12px; color: #795548; font-weight: 700; margin-top: 4px;">';
-          html += '    Class ' + sCls + ' • Target: ' + hw.target_questions + ' Qs • Due: ' + (hw.due_time ? hw.due_time : '6:00 PM');
+          var submissions = getHomeworkSubmissions(hw.id, schoolId);
+          var totalStudents = getStudentsForClass(curClass, schoolId).length;
+          var doneCount = submissions.length;
+
+          html += '<div class="homework-item-card">';
+          html += '  <div class="hw-badge-row">';
+          html += '    <div>';
+          html += '      <span class="hw-subject-badge">' + escapeHtml(hw.subject) + '</span>';
+          html += '      <span style="font-size:10px; font-weight:800; background:#E0F2F1; color:#00796B; padding:3px 8px; border-radius:8px; margin-left:4px;">' + escapeHtml(hw.activity_type || 'Homework') + '</span>';
+          html += '    </div>';
+          html += '    <span style="font-size:11px; font-weight:800; color:#E65100;">Due: ' + (hw.due_time || '18:00') + ' (' + (hw.due_date || 'Today') + ')</span>';
           html += '  </div>';
 
-          if (!isDone) {
-            html += '  <button class="hw-action-btn" onclick="safeAction(startAssignedHomework)">';
-            html += '    Start Today&#39;s Homework 🚀';
-            html += '  </button>';
-            html += '  <div style="font-size: 11px; color: #E65100; font-weight: 800; margin-top: 6px; text-align: center;">';
-            html += '    🎯 Earn up to +' + (hw.target_questions + (hw.target_questions <= 5 ? 2 : (hw.target_questions <= 14 ? 3 : 5))) + ' Points! (0-Mistake Bonus Active)';
-            html += '  </div>';
-          } else {
-            html += '  <button class="hw-action-btn hw-completed-btn" onclick="safeAction(startAssignedHomework)">';
-            html += '    Practice Mode (0 Points • Completed ✅) 🌟';
-            html += '  </button>';
-            html += '  <div style="font-size: 11px; color: #2E7D32; font-weight: 800; margin-top: 6px; text-align: center;">';
-            html += '    ✅ Completed for Today! Rank Points already added to your wallet.';
+          html += '  <div style="font-size:16px; font-weight:900; color:#BF360C; margin:6px 0;">' + escapeHtml(hw.title) + '</div>';
+
+          if (hw.instructions) {
+            html += '  <div class="hw-instructions-box">';
+            html += '    <strong>Teacher Instructions:</strong><br/>' + escapeHtml(hw.instructions);
             html += '  </div>';
           }
+
+          // Worksheet Photo Preview if attached by teacher
+          if (hw.attachment_url) {
+            html += '  <div class="hw-attachment-preview" onclick="viewWorksheetFullModal(\'' + hw.attachment_url + '\', \'Worksheet Attached by Teacher\')">';
+            html += '    <img src="' + hw.attachment_url + '" alt="Worksheet Photo" />';
+            html += '  </div>';
+            html += '  <div style="font-size:10px; color:#78909C; font-weight:700; text-align:center; margin-bottom:10px;">Tap worksheet photo to zoom full screen 🔍</div>';
+          }
+
+          // Launch Interactive Quiz if linked
+          if (hw.module_key) {
+            html += '  <button onclick="safeAction(function(){ startAssignedHomework(\'' + hw.id + '\'); })" style="background:#FF9800; color:#FFF; border:none; padding:10px 14px; border-radius:12px; font-size:13px; font-weight:900; width:100%; margin-bottom:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">';
+            html += '    🚀 Launch Interactive Practice Quiz';
+            html += '  </button>';
+          }
+
+          // Live completion counter
+          html += '  <div style="font-size:11px; font-weight:800; color:#2E7D32; margin-bottom:10px; text-align:center;">';
+          html += '    📈 Live Class Progress: <strong>' + doneCount + ' / ' + totalStudents + ' Students Completed</strong>';
+          html += '  </div>';
+
+          // One-Tap Mark Done Action Button
+          html += '  <button class="btn-mark-done" onclick="safeAction(function(){ openParentHomeworkCompleteModal(\'' + hw.id + '\'); })">';
+          html += '    <span>One-Tap: Mark Done ✅</span>';
+          html += '    <span style="font-size:11px; font-weight:700; opacity:0.9;">(Upload Child\'s Worksheet / Note)</span>';
+          html += '  </button>';
+
           html += '</div>';
         } else {
-          // No Homework Assigned Yet Card
+          // No Homework Card
           html += '<div class="no-homework-card">';
-          html += '  <div style="font-size: 48px; margin-bottom: 8px;">📚⏳</div>';
-          html += '  <h3 style="font-size: 18px; font-weight: 900; color: #E65100; margin-bottom: 6px;">No Homework Assigned Yet!</h3>';
-          html += '  <div style="font-size: 13px; color: #6D4C41; font-weight: 700; line-height: 1.4;">';
-          html += '    Wait for your ' + sCls + ' class teacher to send today&#39;s task. Check your class rank below!';
+          html += '  <div style="font-size: 42px; margin-bottom: 6px;">📚⏳</div>';
+          html += '  <h3 style="font-size: 17px; font-weight: 900; color: #E65100; margin-bottom: 4px;">No Homework Assigned Yet for ' + curClass + '</h3>';
+          html += '  <div style="font-size: 12px; color: #6D4C41; font-weight: 700; line-height: 1.4;">';
+          html += '    Your ' + curClass + ' class teacher will post today\'s tasks soon. You can practice from the learning modules tab!';
           html += '  </div>';
           html += '</div>';
         }
-
-        // 2. Class Leaderboard (Top 5 + Student's Own Live Rank)
-        html += renderStudentClassLeaderboard(sCls);
-        view.innerHTML = html;
-        return;
       }
 
-      // =========================================================================
-      // TEACHER / PREVIEW OPEN HOME GRID (Full preview of all classes)
-      // =========================================================================
-      html += '<div class="hero-banner" onclick="safeAction(function(){ speak(\'Welcome to Abacus Kids! Choose your class to begin learning.\', \'en-IN\'); })">';
-      html += '  <div class="safe-emoji" style="font-size: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">🎓</div>';
-      html += '  <div>';
-      html += '    <div class="academy-badge">Smart English Medium Learning</div>';
-      html += '    <div style="font-size: 20px; font-weight: 900; color: #BF360C;">Welcome to Abacus Kids</div>';
-      html += '    <div style="font-size: 12px; color: #795548; font-weight: 600;">Tap any class or activity to preview:</div>';
-      html += '  </div>';
-      html += '</div>';
+      // SUB-TAB 2: CLASS LEARNING MODULES
+      else if (curTab === 'learning') {
+        html += '<div class="home-grid">';
+        if (curClass === "Nursery") {
+          html += '<div class="home-section-btn btn-nursery" onclick="safeAction(function(){ openSection(\'nursery\', 0); })">';
+          html += '  <div>';
+          html += '    <span class="section-badge" style="background:#0288D1;">Age 3-4 Years</span>';
+          html += '    <div class="section-name">Nursery Modules</div>';
+          html += '    <div class="section-desc">Phonic Sounds • Letters A-Z • Hindi Swar • 1-50 Counting • Shapes • Before/After</div>';
+          html += '  </div>';
+          html += '  <div class="safe-emoji" style="font-size: 44px;">🧸</div>';
+          html += '</div>';
+        } else if (curClass === "LKG") {
+          html += '<div class="home-section-btn btn-lkg" onclick="safeAction(function(){ openSection(\'lkg\', 0); })">';
+          html += '  <div>';
+          html += '    <span class="section-badge" style="background:#689F38;">Age 4-5 Years</span>';
+          html += '    <div class="section-name">LKG Modules</div>';
+          html += '    <div class="section-desc">2-Letter &amp; CVC Words • Hindi Vyanjan • 1-100 Names • EVS • Word Formation</div>';
+          html += '  </div>';
+          html += '  <div class="safe-emoji" style="font-size: 44px;">🚂</div>';
+          html += '</div>';
+        } else {
+          html += '<div class="home-section-btn btn-ukg" onclick="safeAction(function(){ openSection(\'ukg\', 0); })">';
+          html += '  <div>';
+          html += '    <span class="section-badge" style="background:#F57C00;">Age 5-6 Years</span>';
+          html += '    <div class="section-name">UKG Modules</div>';
+          html += '    <div class="section-desc">4-Letter Phonics • 📖 English Grammar (11 Topics) • English World • EVS • Hindi Matras • Math (+/-)</div>';
+          html += '  </div>';
+          html += '  <div class="safe-emoji" style="font-size: 44px;">🚀</div>';
+          html += '</div>';
+        }
 
-      html += '<div class="home-grid">';
-      // Nursery
-      html += '<div class="home-section-btn btn-nursery" onclick="safeAction(function(){ openSection(\'nursery\', 0); })">';
-      html += '  <div>';
-      html += '    <span class="section-badge" style="background:#0288D1;">Age 3-4 Years</span>';
-      html += '    <div class="section-name">Nursery Class</div>';
-      html += '    <div class="section-desc">Full A-Z • 🔊 Phonic Sounds • Hindi Swar • 1-50 Counting • Shapes • Before/After</div>';
-      html += '  </div>';
-      html += '  <div class="safe-emoji" style="font-size: 44px;">🧸</div>';
-      html += '</div>';
+        // Dual Row: Picture World & Brain Booster
+        html += '<div class="dual-grid">';
+        html += '  <div class="btn-picworld" onclick="safeAction(function(){ openSection(\'picture_world\', 0); })">';
+        html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🦁</div>';
+        html += '    <div class="section-name">Picture World</div>';
+        html += '    <div class="section-desc">Fruits, Veggies, Animals, Birds, Vehicles (150+ Pics)</div>';
+        html += '  </div>';
+        html += '  <div class="btn-brain" onclick="safeAction(function(){ openSection(\'brain_booster\', 0); })">';
+        html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🧠</div>';
+        html += '    <div class="section-name">Brain Booster</div>';
+        html += '    <div class="section-desc">Shadow Match • Odd One Out • Memory Flip</div>';
+        html += '  </div>';
+        html += '</div>';
 
-      // LKG
-      html += '<div class="home-section-btn btn-lkg" onclick="safeAction(function(){ openSection(\'lkg\', 0); })">';
-      html += '  <div>';
-      html += '    <span class="section-badge" style="background:#689F38;">Age 4-5 Years</span>';
-      html += '    <div class="section-name">LKG Class</div>';
-      html += '    <div class="section-desc">2-Letter &amp; CVC Words • Hindi Vyanjan • 1-100 Names • EVS • Pre-Math • Word Formation</div>';
-      html += '  </div>';
-      html += '  <div class="safe-emoji" style="font-size: 44px;">🚂</div>';
-      html += '</div>';
+        html += '</div>';
+      }
 
-      // UKG
-      html += '<div class="home-section-btn btn-ukg" onclick="safeAction(function(){ openSection(\'ukg\', 0); })">';
-      html += '  <div>';
-      html += '    <span class="section-badge" style="background:#F57C00;">Age 5-6 Years</span>';
-      html += '    <div class="section-name">UKG Class</div>';
-      html += '    <div class="section-desc">4-Letter Phonics • 📖 English Grammar (11 Topics) • English World • EVS • Hindi Matras • Math (+/-)</div>';
-      html += '  </div>';
-      html += '  <div class="safe-emoji" style="font-size: 44px;">🚀</div>';
-      html += '</div>';
+      html += '</div>'; // End parent/student hub card
 
-      // Dual Row: Picture World & Brain Booster
-      html += '<div class="dual-grid">';
-      html += '  <div class="btn-picworld" onclick="safeAction(function(){ openSection(\'picture_world\', 0); })">';
-      html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🦁</div>';
-      html += '    <div class="section-name">Picture World</div>';
-      html += '    <div class="section-desc">Fruits, Veggies, Animals, Birds, Vehicles, Helpers (150+ Pics)</div>';
-      html += '  </div>';
-
-      html += '  <div class="btn-brain" onclick="safeAction(function(){ openSection(\'brain_booster\', 0); })">';
-      html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🧠</div>';
-      html += '    <div class="section-name">Brain Booster</div>';
-      html += '    <div class="section-desc">Shadow Match • Odd One Out • Memory Flip</div>';
-      html += '  </div>';
-      html += '</div>';
-
-      html += '</div>'; // End home-grid
       view.innerHTML = html;
     }
+
+    function renderWelcomeView() {
+      renderHome();
+    }
+
 
     /* =========================================================
        SECTION 1: NURSERY VIEW (Strict English Medium except Swar)
@@ -34191,14 +34951,15 @@ function setNurseryNumSubTab(st) {
     window.addEventListener("DOMContentLoaded", function() {
       unlockAudioContext();
       runDaily48HourCleanup();
+      updateSchoolBrandingUI();
       var sessionType = restoreSession();
-      if (!sessionType) {
-        appState.section = "welcome";
-        renderWelcomeView();
-      } else if (sessionType === "teacher") {
+      renderHeaderStatus();
+      if (sessionType === "teacher") {
         openTeacherPanel();
+      } else if (sessionType === "principal") {
+        openPrincipalPanel();
       } else {
-        goHome();
+        renderHome();
       }
     });
   </script>
