@@ -2145,8 +2145,8 @@
         </div>
       </div>
       <div class="header-actions">
-        <!-- School Context Switcher Pill -->
-        <button id="btn-school-switcher" class="school-pill-btn" onclick="safeAction(openSchoolSelectModal)" title="Switch Active School">
+        <!-- School Context Switcher Pill (Auto-resolved from UDISE, manual dropdown hidden) -->
+        <button id="btn-school-switcher" class="school-pill-btn" onclick="safeAction(openSchoolSelectModal)" title="Switch Active School" style="display:none !important;">
           <span id="header-school-icon">🧮</span> <span id="header-school-name">Abacus</span> <span style="font-size:9px; opacity:0.8;">▼</span>
         </button>
         <!-- Teacher Portal Button -->
@@ -2511,146 +2511,742 @@
         });
     }
 
-    // Default Seed Roster for Class Teachers (kids_class_teachers)
+    // Production Class Teachers Registry (kids_class_teachers - Supabase Backed)
     var DEFAULT_CLASS_TEACHERS = {
-      "the-abacus-academy": [
-        { id: "TCH-AA-01", school_id: "the-abacus-academy", class_name: "Nursery", teacher_name: "Sunita Sharma", teacher_mobile: "9829011111", emp_code: "EMP-AA-01", pin: "1234", is_active: true },
-        { id: "TCH-AA-02", school_id: "the-abacus-academy", class_name: "LKG", teacher_name: "Pooja Mehta", teacher_mobile: "9829022222", emp_code: "EMP-AA-02", pin: "1234", is_active: true },
-        { id: "TCH-AA-03", school_id: "the-abacus-academy", class_name: "UKG", teacher_name: "Kavita Dave", teacher_mobile: "9829033333", emp_code: "EMP-AA-03", pin: "1234", is_active: true }
-      ],
-      "gr-children-academy": [
-        { id: "TCH-GR-01", school_id: "gr-children-academy", class_name: "Nursery", teacher_name: "Rekha Sharma", teacher_mobile: "9829111111", emp_code: "EMP-GR-01", pin: "1234", is_active: true },
-        { id: "TCH-GR-02", school_id: "gr-children-academy", class_name: "LKG", teacher_name: "Meena Verma", teacher_mobile: "9829222222", emp_code: "EMP-GR-02", pin: "1234", is_active: true },
-        { id: "TCH-GR-03", school_id: "gr-children-academy", class_name: "UKG", teacher_name: "Anita Chouhan", teacher_mobile: "9829333333", emp_code: "EMP-GR-03", pin: "1234", is_active: true }
-      ]
+      "the-abacus-academy": [],
+      "gr-children-academy": []
     };
 
-    // Default School Students
-    var DEFAULT_SCHOOL_STUDENTS = {
-      "the-abacus-academy": [
-        { student_id: "STU-AA-101", admission_no: "ADM-101", student_name: "Aarav Sharma", class_name: "Nursery", school_id: "the-abacus-academy", mobile: "9829011111", total_points: 15.0, total_stars: 15, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] },
-        { student_id: "STU-AA-102", admission_no: "ADM-102", student_name: "Priya Patel", class_name: "LKG", school_id: "the-abacus-academy", mobile: "9829022222", total_points: 28.5, total_stars: 28, tasks_completed: 2, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
-        { student_id: "STU-AA-103", admission_no: "ADM-103", student_name: "Aryan Verma", class_name: "UKG", school_id: "the-abacus-academy", mobile: "9829033333", total_points: 48.0, total_stars: 48, tasks_completed: 4, badges: ["Welcome Explorer 🌟", "Super Star 🏅", "Math Champion 🏆"] },
-        { student_id: "STU-AA-104", admission_no: "ADM-104", student_name: "Ananya Joshi", class_name: "UKG", school_id: "the-abacus-academy", mobile: "9829044444", total_points: 36.5, total_stars: 36, tasks_completed: 3, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
-        { student_id: "STU-AA-105", admission_no: "ADM-105", student_name: "Kabir Singh", class_name: "LKG", school_id: "the-abacus-academy", mobile: "9829055555", total_points: 20.0, total_stars: 20, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] },
-        { student_id: "STU-AA-106", admission_no: "ADM-106", student_name: "Rohan Gehlot", class_name: "UKG", school_id: "the-abacus-academy", mobile: "9829066666", total_points: 29.2, total_stars: 29, tasks_completed: 2, badges: ["Welcome Explorer 🌟"] },
-        { student_id: "STU-AA-107", admission_no: "ADM-107", student_name: "Diya Rathore", class_name: "Nursery", school_id: "the-abacus-academy", mobile: "9829077777", total_points: 12.0, total_stars: 12, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] }
-      ],
-      "gr-children-academy": [
-        { student_id: "STU-GR-101", admission_no: "GR-101", student_name: "Vivaan Mehra", class_name: "Nursery", school_id: "gr-children-academy", mobile: "9829111111", total_points: 18.0, total_stars: 18, tasks_completed: 2, badges: ["Welcome Explorer 🌟"] },
-        { student_id: "STU-GR-102", admission_no: "GR-102", student_name: "Ishaani Gupta", class_name: "LKG", school_id: "gr-children-academy", mobile: "9829222222", total_points: 32.0, total_stars: 32, tasks_completed: 3, badges: ["Welcome Explorer 🌟", "Super Star 🏅"] },
-        { student_id: "STU-GR-103", admission_no: "GR-103", student_name: "Advait Singhania", class_name: "UKG", school_id: "gr-children-academy", mobile: "9829333333", total_points: 52.5, total_stars: 52, tasks_completed: 5, badges: ["Welcome Explorer 🌟", "Super Star 🏅", "Grammar Pro 📚"] },
-        { student_id: "STU-GR-104", admission_no: "GR-104", student_name: "Navya Choudhary", class_name: "UKG", school_id: "gr-children-academy", mobile: "9829444444", total_points: 41.0, total_stars: 41, tasks_completed: 4, badges: ["Welcome Explorer 🌟"] },
-        { student_id: "STU-GR-105", admission_no: "GR-105", student_name: "Reyansh Tak", class_name: "LKG", school_id: "gr-children-academy", mobile: "9829555555", total_points: 24.0, total_stars: 24, tasks_completed: 2, badges: ["Welcome Explorer 🌟"] },
-        { student_id: "STU-GR-106", admission_no: "GR-106", student_name: "Tanvi Bhati", class_name: "Nursery", school_id: "gr-children-academy", mobile: "9829666666", total_points: 14.0, total_stars: 14, tasks_completed: 1, badges: ["Welcome Explorer 🌟"] }
-      ]
-    };
-
-    // Default Seed Homework
-    var DEFAULT_SCHOOL_HOMEWORK = [
+    // =========================================================================
+    // REMOTE SCHOOL SUBSCRIPTION & OWNER CONTROL ENGINE (public.school_subscriptions)
+    // =========================================================================
+    var DEFAULT_SCHOOL_SUBSCRIPTIONS = [
       {
-        id: "HW-AA-NUR-01",
-        school_id: "the-abacus-academy",
-        class_name: "Nursery",
-        subject: "English",
-        activity_type: "Worksheet",
-        title: "Trace Capital Letters A to E",
-        instructions: "Practice writing letters A, B, C, D, E in your 4-line notebook. Trace dotted lines carefully.",
-        module_key: "nursery_abc_choose_letter",
-        target_questions: 5,
-        due_date: new Date().toISOString().split('T')[0],
-        due_time: "18:00",
-        attachment_url: "",
-        assigned_by: "Sunita Sharma",
-        teacher_mobile: "9829011111",
-        created_at: new Date(Date.now() - 3600000).toISOString()
+        udise_code: "08150803534",
+        school_name: "The Abacus Academy, Jodhpur",
+        is_active: true,
+        valid_until: "2099-12-31",
+        max_students: 1000,
+        plan_name: "Owner Lifetime Free"
       },
       {
-        id: "HW-AA-LKG-01",
-        school_id: "the-abacus-academy",
-        class_name: "LKG",
-        subject: "English",
-        activity_type: "Homework",
-        title: "3-Letter CVC Short 'a' Words (CAT, BAT, MAT)",
-        instructions: "Read and write 5 CVC words with short vowel 'a'. Complete phonics worksheet page 8.",
-        module_key: "lkg_phonics_cvc_a",
-        target_questions: 10,
-        due_date: new Date().toISOString().split('T')[0],
-        due_time: "18:30",
-        attachment_url: "",
-        assigned_by: "Pooja Mehta",
-        teacher_mobile: "9829022222",
-        created_at: new Date(Date.now() - 7200000).toISOString()
-      },
-      {
-        id: "HW-AA-UKG-01",
-        school_id: "the-abacus-academy",
-        class_name: "UKG",
-        subject: "English Grammar",
-        activity_type: "Activity",
-        title: "Use of Is / Am / Are Sentences",
-        instructions: "Complete 10 sentences with Is/Am/Are. Remember: He/She/It uses IS, I uses AM, We/They uses ARE.",
-        module_key: "ukg_gram_is_am_are",
-        target_questions: 10,
-        due_date: new Date().toISOString().split('T')[0],
-        due_time: "19:00",
-        attachment_url: "",
-        assigned_by: "Kavita Dave",
-        teacher_mobile: "9829033333",
-        created_at: new Date(Date.now() - 10800000).toISOString()
-      },
-      {
-        id: "HW-GR-NUR-01",
-        school_id: "gr-children-academy",
-        class_name: "Nursery",
-        subject: "Mathematics",
-        activity_type: "Worksheet",
-        title: "Counting 1 to 10 with Shapes",
-        instructions: "Count and circle the correct number of circles and triangles in your activity book.",
-        module_key: "nursery_num_count_tap_10",
-        target_questions: 5,
-        due_date: new Date().toISOString().split('T')[0],
-        due_time: "18:00",
-        attachment_url: "",
-        assigned_by: "Rekha Sharma",
-        teacher_mobile: "9829111111",
-        created_at: new Date(Date.now() - 3600000).toISOString()
-      },
-      {
-        id: "HW-GR-LKG-01",
-        school_id: "gr-children-academy",
-        class_name: "LKG",
-        subject: "Mathematics",
-        activity_type: "Homework",
-        title: "Before & After Numbers 1 to 20",
-        instructions: "Write the numbers that come just before and just after the given numbers in notebook.",
-        module_key: "lkg_math_before_after",
-        target_questions: 10,
-        due_date: new Date().toISOString().split('T')[0],
-        due_time: "18:30",
-        attachment_url: "",
-        assigned_by: "Meena Verma",
-        teacher_mobile: "9829222222",
-        created_at: new Date(Date.now() - 7200000).toISOString()
-      },
-      {
-        id: "HW-GR-UKG-01",
-        school_id: "gr-children-academy",
-        class_name: "UKG",
-        subject: "English Grammar",
-        activity_type: "Homework",
-        title: "Use of This / That and These / Those",
-        instructions: "Complete the sentence worksheet with near and far arrow pointing exercise.",
-        module_key: "ukg_gram_this_that",
-        target_questions: 10,
-        due_date: new Date().toISOString().split('T')[0],
-        due_time: "19:00",
-        attachment_url: "",
-        assigned_by: "Anita Chouhan",
-        teacher_mobile: "9829333333",
-        created_at: new Date(Date.now() - 10800000).toISOString()
+        udise_code: "08150803535",
+        school_name: "GR Children Academy, Jodhpur",
+        is_active: true,
+        valid_until: (function(){ var d = new Date(); d.setMonth(d.getMonth() + 6); return d.toISOString().split("T")[0]; })(),
+        max_students: 200,
+        plan_name: "6-Month Free Plan"
       }
     ];
+
+    function getLocalSchoolSubscriptions() {
+      try {
+        var raw = localStorage.getItem("taa_school_subscriptions_cache");
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch(e) {}
+      return DEFAULT_SCHOOL_SUBSCRIPTIONS.slice();
+    }
+
+    function saveLocalSchoolSubscriptions(list) {
+      try {
+        localStorage.setItem("taa_school_subscriptions_cache", JSON.stringify(list));
+      } catch(e) {}
+    }
+
+    async function fetchSchoolSubscription(udiseCode) {
+      var cleanCode = String(udiseCode || "").trim();
+      if (!cleanCode) return null;
+
+      // 1. Supabase REST query
+      try {
+        var res = await supabaseRest("/school_subscriptions?udise_code=eq." + encodeURIComponent(cleanCode));
+        if (Array.isArray(res) && res.length > 0) {
+          var sub = res[0];
+          var list = getLocalSchoolSubscriptions();
+          var idx = list.findIndex(function(s) { return String(s.udise_code).trim() === cleanCode; });
+          if (idx !== -1) list[idx] = sub;
+          else list.push(sub);
+          saveLocalSchoolSubscriptions(list);
+          return sub;
+        }
+      } catch(e) {
+        console.log("Supabase subscription check fallback note:", e.message || e);
+      }
+
+      // 2. Fallback to cached or seed defaults
+      var list = getLocalSchoolSubscriptions();
+      var found = list.find(function(s) { return String(s.udise_code).trim() === cleanCode; });
+      return found || null;
+    }
+
+    function isSubscriptionValid(sub) {
+      if (!sub) return { valid: false, reason: "notFound" };
+      if (sub.is_active === false) return { valid: false, reason: "locked", sub: sub };
+      var today = new Date().toISOString().split("T")[0];
+      if (sub.valid_until && sub.valid_until < today) {
+        return { valid: false, reason: "expired", sub: sub };
+      }
+      return { valid: true, sub: sub };
+    }
+
+    function getUdiseCodeForSchool(schoolId) {
+      if (appSession.principalObj && appSession.principalObj.udise_code) return appSession.principalObj.udise_code;
+      if (appSession.teacherObj && appSession.teacherObj.udise_code) return appSession.teacherObj.udise_code;
+      if (appSession.student && appSession.student.udise_code) return appSession.student.udise_code;
+      if (schoolId === "the-abacus-academy" || schoolId === "abacus") return "08150803534";
+      if (schoolId === "gr-children-academy" || schoolId === "gr_academy") return "08150803535";
+      return "08150803534";
+    }
+
+    function renderSubscriptionExpiredScreen(sub, udiseCode) {
+      appState.section = "subscription_expired";
+      var view = document.getElementById("main-view");
+      var subTabs = document.getElementById("subtabs-bar");
+      if (subTabs) subTabs.style.display = "none";
+      var filterBar = document.getElementById("filter-pills-bar");
+      if (filterBar) filterBar.style.display = "none";
+      var homeBtn = document.getElementById("btn-home-nav");
+      if (homeBtn) homeBtn.style.display = "none";
+
+      var schoolName = (sub && sub.school_name) ? sub.school_name : "Your School";
+      var plan = (sub && sub.plan_name) ? sub.plan_name : "School Subscription";
+      var validUntil = (sub && sub.valid_until) ? sub.valid_until : "Expired";
+
+      var html = '<div style="max-width:480px; margin:20px auto; padding:16px;">';
+      html += '<div style="background:#FFF; border:2px solid #FFAB91; border-radius:22px; padding:24px 20px; box-shadow:0 10px 30px rgba(191,54,12,0.12); text-align:center;">';
+      html += '  <div style="font-size:54px; margin-bottom:8px;">⏳🔒</div>';
+      html += '  <h2 style="font-size:22px; font-weight:900; color:#BF360C; margin:0 0 6px 0;">Subscription Expired</h2>';
+      html += '  <div style="font-size:12px; font-weight:800; color:#546E7A; margin-bottom:14px;">Campus: <strong>' + escapeHtml(schoolName) + '</strong> (UDISE: ' + escapeHtml(udiseCode) + ')</div>';
+
+      html += '  <div style="background:#FBE9E7; border:1.5px solid #FFCCBC; border-radius:14px; padding:12px 14px; font-size:13px; font-weight:700; color:#D84315; line-height:1.5; margin-bottom:18px;">';
+      html += '    Your school\'s subscription has expired or is paused. Please renew to continue using Abacus Kids.';
+      html += '    <div style="font-size:11px; margin-top:4px; opacity:0.85;">Plan: ' + escapeHtml(plan) + ' • Expired on: ' + escapeHtml(validUntil) + '</div>';
+      html += '  </div>';
+
+      // Payment Box (UPI / Bank Transfer)
+      html += '  <div style="background:#F1F8E9; border:2px solid #C5E1A5; border-radius:16px; padding:16px; margin-bottom:18px; text-align:left;">';
+      html += '    <div style="font-size:12px; font-weight:900; color:#2E7D32; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">';
+      html += '      <span>⚡ Instant Renewal via UPI</span>';
+      html += '      <span style="background:#DCEDC8; color:#33691E; font-size:10px; padding:2px 8px; border-radius:8px;">Fast Activation</span>';
+      html += '    </div>';
+      html += '    <div style="background:#FFF; border:1.5px solid #A5D6A7; border-radius:12px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">';
+      html += '      <div>';
+      html += '        <div style="font-size:10px; color:#558B2F; font-weight:800;">OFFICIAL UPI ID:</div>';
+      html += '        <div style="font-size:16px; font-weight:900; color:#1B5E20; font-family:monospace; letter-spacing:0.5px;">tamlio@ybl</div>';
+      html += '      </div>';
+      html += '      <button class="btn-copy-upi" onclick="copyUpiIdToClipboard()" style="background:#2E7D32; color:#FFF; border:none; border-radius:10px; padding:8px 12px; font-size:11px; font-weight:900; cursor:pointer;">📋 Copy UPI ID</button>';
+      html += '    </div>';
+      html += '    <div style="font-size:11px; color:#33691E; font-weight:700; line-height:1.4;">';
+      html += '      1. Transfer renewal amount via PhonePe / GPay / Paytm to <strong>tamlio@ybl</strong>.<br/>';
+      html += '      2. Send screenshot on WhatsApp to <strong>+91-8005829561</strong> with your School UDISE code for instant activation.';
+      html += '    </div>';
+      html += '  </div>';
+
+      // Direct WhatsApp Button
+      var waUrl = "https://wa.me/918005829561?text=" + encodeURIComponent("Hello Abacus Kids, I have completed the payment for School Subscription Renewal. School: " + schoolName + " (UDISE: " + udiseCode + "). Please find payment screenshot attached.");
+      html += '  <a href="' + waUrl + '" target="_blank" style="display:flex; align-items:center; justify-content:center; gap:8px; background:#25D366; color:#FFF; text-decoration:none; padding:12px 18px; border-radius:14px; font-size:14px; font-weight:900; box-shadow:0 4px 12px rgba(37,211,102,0.3); margin-bottom:12px;">';
+      html += '    💬 Send Screenshot on WhatsApp';
+      html += '  </a>';
+
+      // Logout Button
+      html += '  <button onclick="safeAction(logoutUser)" style="background:#ECEFF1; color:#546E7A; border:none; padding:10px 18px; border-radius:12px; font-size:13px; font-weight:800; cursor:pointer; width:100%;">';
+      html += '    🚪 Logout';
+      html += '  </button>';
+
+      html += '</div>';
+      html += '</div>';
+
+      view.innerHTML = html;
+      speak("Your school subscription has expired or is paused. Please renew via UPI to continue.", "en-IN");
+    }
+
+    function copyUpiIdToClipboard() {
+      var upi = "tamlio@ybl";
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(upi).then(function() {
+          showToast("UPI ID copied: " + upi + " ✅", "success");
+        }).catch(function() {
+          fallbackCopyText(upi);
+        });
+      } else {
+        fallbackCopyText(upi);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      var temp = document.createElement("input");
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand("copy");
+      document.body.removeChild(temp);
+      showToast("UPI ID copied: " + text + " ✅", "success");
+    }
+
+    // =========================================================================
+    // OWNER / SUPER ADMIN CONTROL PANEL (Master Password Protected)
+    // Master Password: AbacusOwner@2026
+    // SHA-256 Hash: b488c4c213af40daf535b81984d6acc7eaebd731abd3d2f9362a670068b727e2
+    // =========================================================================
+    var OWNER_MASTER_HASH = "b488c4c213af40daf535b81984d6acc7eaebd731abd3d2f9362a670068b727e2";
+
+    function openOwnerPasswordModal() {
+      playTone("pop");
+      var existing = document.getElementById("owner-password-modal");
+      if (existing) existing.remove();
+
+      var modal = document.createElement("div");
+      modal.id = "owner-password-modal";
+      modal.className = "modal-overlay";
+      modal.innerHTML = '<div class="modal-card" style="max-width:380px; text-align:left;">' +
+        '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">' +
+        '    <div style="display:flex; align-items:center; gap:8px;">' +
+        '      <span style="font-size:26px;">👑</span>' +
+        '      <div>' +
+        '        <h3 style="font-size:17px; font-weight:900; color:#37474F; margin:0;">Owner Control Desk</h3>' +
+        '        <div style="font-size:11px; color:#78909C; font-weight:700;">Super Admin Multi-School Access</div>' +
+        '      </div>' +
+        '    </div>' +
+        '    <button onclick="document.getElementById(\'owner-password-modal\').remove()" style="background:none; border:none; font-size:18px; cursor:pointer; font-weight:900; color:#546E7A;">✕</button>' +
+        '  </div>' +
+        '  <div style="background:#ECEFF1; border-radius:10px; padding:10px 12px; margin-bottom:12px; font-size:11px; color:#455A64; font-weight:700;">' +
+        '    Enter the Owner Master Password to manage school subscriptions and tenant locks.' +
+        '  </div>' +
+        '  <div style="margin-bottom:14px;">' +
+        '    <label style="font-size:11px; font-weight:800; color:#37474F;">Master Password:</label>' +
+        '    <input type="password" id="owner-master-pass" class="input-field" placeholder="Enter Owner Master Password" style="margin-top:4px; font-size:15px;" autocomplete="current-password" />' +
+        '  </div>' +
+        '  <button class="btn-action-primary" style="background:#263238; color:#FFF; font-size:13px;" onclick="safeAction(submitOwnerPassword)">' +
+        '    Verify &amp; Enter Super Admin 🚀' +
+        '  </button>' +
+        '</div>';
+      document.body.appendChild(modal);
+    }
+
+    async function submitOwnerPassword() {
+      var passInput = document.getElementById("owner-master-pass");
+      if (!passInput) return;
+      var pass = passInput.value.trim();
+
+      if (!pass) {
+        showToast("Please enter the Owner Master Password", "wrong");
+        return;
+      }
+
+      var hash = await hashPassword(pass);
+      var isValid = (pass === "AbacusOwner@2026" || hash === OWNER_MASTER_HASH);
+
+      if (!isValid) {
+        showToast("Incorrect Master Password!", "wrong");
+        speak("Incorrect master password.", "en-IN");
+        return;
+      }
+
+      var modal = document.getElementById("owner-password-modal");
+      if (modal) modal.remove();
+
+      playTone("fanfare");
+      showToast("Owner Authenticated! Super Admin Desk Ready 👑", "success");
+      speak("Owner authenticated. Opening super admin desk.", "en-IN");
+      openOwnerSuperAdminPanel();
+    }
+
+    function openOwnerSuperAdminPanel() {
+      appState.section = "owner";
+      var subTabs = document.getElementById("subtabs-bar");
+      if (subTabs) subTabs.style.display = "none";
+      var filterBar = document.getElementById("filter-pills-bar");
+      if (filterBar) filterBar.style.display = "none";
+      var homeBtn = document.getElementById("btn-home-nav");
+      if (homeBtn) homeBtn.style.display = "flex";
+
+      renderHeaderStatus();
+      renderOwnerSuperAdminPanelView();
+
+      // Background sync from Supabase
+      supabaseRest("/school_subscriptions?order=udise_code.asc").then(function(subs) {
+        if (Array.isArray(subs) && subs.length > 0) {
+          saveLocalSchoolSubscriptions(subs);
+          if (appState.section === "owner") {
+            renderOwnerSuperAdminPanelView();
+          }
+        }
+      }).catch(function(e) {});
+    }
+
+    function renderOwnerSuperAdminPanelView() {
+      var view = document.getElementById("main-view");
+      var schools = getLocalSchoolSubscriptions();
+      var today = new Date().toISOString().split("T")[0];
+
+      var activeCount = schools.filter(function(s) { return s.is_active && (!s.valid_until || s.valid_until >= today); }).length;
+      var lockedCount = schools.length - activeCount;
+
+      var html = '<div style="max-width:800px; margin:0 auto; padding:12px;">';
+
+      // Header row
+      html += '<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:14px;">';
+      html += '  <div>';
+      html += '    <h2 style="font-size:20px; font-weight:900; color:#263238; margin:0;">👑 Owner Super Admin Panel</h2>';
+      html += '    <div style="font-size:12px; color:#546E7A; font-weight:700;">Remote Subscription Locks, UPI Renewals &amp; Multi-Tenant Control</div>';
+      html += '  </div>';
+      html += '  <button onclick="safeAction(goHome)" style="background:#ECEFF1; color:#37474F; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:800; cursor:pointer;">← Exit to Home</button>';
+      html += '</div>';
+
+      // Stats Ribbon
+      html += '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin-bottom:16px;">';
+      html += '  <div style="background:#EDE7F6; border:1.5px solid #D1C4E9; border-radius:12px; padding:10px; text-align:center;">';
+      html += '    <div style="font-size:10px; font-weight:800; color:#512DA8;">TOTAL TENANTS</div>';
+      html += '    <div style="font-size:20px; font-weight:900; color:#311B92;">' + schools.length + '</div>';
+      html += '  </div>';
+      html += '  <div style="background:#E8F5E9; border:1.5px solid #A5D6A7; border-radius:12px; padding:10px; text-align:center;">';
+      html += '    <div style="font-size:10px; font-weight:800; color:#2E7D32;">ACTIVE SCHOOLS</div>';
+      html += '    <div style="font-size:20px; font-weight:900; color:#1B5E20;">' + activeCount + '</div>';
+      html += '  </div>';
+      html += '  <div style="background:#FFEBEE; border:1.5px solid #FFCDD2; border-radius:12px; padding:10px; text-align:center;">';
+      html += '    <div style="font-size:10px; font-weight:800; color:#C62828;">LOCKED / EXPIRED</div>';
+      html += '    <div style="font-size:20px; font-weight:900; color:#B71C1C;">' + lockedCount + '</div>';
+      html += '  </div>';
+      html += '</div>';
+
+      // SECTION 1: ADD NEW SCHOOL FORM
+      html += '<div style="background:#FFF; border:2px solid #E0E0E0; border-radius:16px; padding:16px; margin-bottom:16px; box-shadow:0 4px 14px rgba(0,0,0,0.05);">';
+      html += '  <h3 style="font-size:16px; font-weight:900; color:#263238; margin:0 0 10px 0;">➕ Register New School Tenant</h3>';
+      html += '  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-bottom:12px;">';
+      html += '    <div>';
+      html += '      <label style="font-size:11px; font-weight:800; color:#37474F;">UDISE Code:</label>';
+      html += '      <input type="text" id="owner-add-udise" class="input-field" placeholder="e.g. 08150999999" style="margin-top:4px;" />';
+      html += '    </div>';
+      html += '    <div>';
+      html += '      <label style="font-size:11px; font-weight:800; color:#37474F;">School Name:</label>';
+      html += '      <input type="text" id="owner-add-name" class="input-field" placeholder="e.g. DPS Jodhpur" style="margin-top:4px;" />';
+      html += '    </div>';
+      html += '    <div>';
+      html += '      <label style="font-size:11px; font-weight:800; color:#37474F;">Principal Mobile Number:</label>';
+      html += '      <input type="tel" id="owner-add-mobile" class="input-field" placeholder="10-digit mobile" maxlength="10" style="margin-top:4px;" />';
+      html += '    </div>';
+      html += '    <div>';
+      html += '      <label style="font-size:11px; font-weight:800; color:#37474F;">Free Trial Days:</label>';
+      html += '      <input type="number" id="owner-add-days" class="input-field" value="14" style="margin-top:4px;" />';
+      html += '    </div>';
+      html += '    <div>';
+      html += '      <label style="font-size:11px; font-weight:800; color:#37474F;">Max Students:</label>';
+      html += '      <input type="number" id="owner-add-max" class="input-field" value="200" style="margin-top:4px;" />';
+      html += '    </div>';
+      html += '  </div>';
+      html += '  <button class="btn-action-primary" style="background:#263238; color:#FFF; font-size:13px;" onclick="safeAction(submitOwnerAddSchool)">';
+      html += '    ➕ Authorize &amp; Register School';
+      html += '  </button>';
+      html += '</div>';
+
+      // SECTION 2: VIEW ALL SCHOOLS & CONTROLS
+      html += '<div style="background:#FFF; border:2px solid #E0E0E0; border-radius:16px; padding:16px; box-shadow:0 4px 14px rgba(0,0,0,0.05);">';
+      html += '  <h3 style="font-size:16px; font-weight:900; color:#263238; margin:0 0 12px 0;">🏫 Registered Schools &amp; Remote Locks</h3>';
+      
+      if (schools.length === 0) {
+        html += '<div style="text-align:center; padding:20px; color:#78909C;">No schools registered yet.</div>';
+      } else {
+        html += '<div style="display:flex; flex-direction:column; gap:12px;">';
+        schools.forEach(function(s) {
+          var isExpired = s.valid_until && s.valid_until < today;
+          var isLocked = !s.is_active;
+          var statusText = (isLocked ? "LOCKED 🔒" : (isExpired ? "EXPIRED ⏳" : "ACTIVE ✅"));
+          var statusColor = (isLocked || isExpired) ? "#C62828" : "#2E7D32";
+          var statusBg = (isLocked || isExpired) ? "#FFEBEE" : "#E8F5E9";
+
+          html += '<div style="border:1.5px solid #E0E0E0; border-radius:14px; padding:14px; background:#FAFAFA;">';
+          html += '  <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px; margin-bottom:8px;">';
+          html += '    <div>';
+          html += '      <div style="font-size:15px; font-weight:900; color:#263238;">' + escapeHtml(s.school_name) + '</div>';
+          html += '      <div style="font-size:11px; color:#546E7A; font-weight:700;">UDISE: <strong style="font-family:monospace;">' + escapeHtml(s.udise_code) + '</strong> • Plan: ' + escapeHtml(s.plan_name || 'Standard') + ' • Max Students: ' + (s.max_students || 200) + '</div>';
+          html += '    </div>';
+          html += '    <div style="display:flex; align-items:center; gap:6px;">';
+          html += '      <span style="font-size:10px; font-weight:900; background:' + statusBg + '; color:' + statusColor + '; padding:3px 8px; border-radius:8px;">' + statusText + '</span>';
+          html += '      <span style="font-size:11px; font-weight:800; color:#455A64;">Valid Until: ' + escapeHtml(s.valid_until || '2099-12-31') + '</span>';
+          html += '    </div>';
+          html += '  </div>';
+
+          // Action Buttons: 1-Click Lock + Quick Renew Buttons
+          html += '  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-top:10px; padding-top:10px; border-top:1px solid #ECEFF1;">';
+          html += '    <div>';
+          if (s.is_active) {
+            html += '      <button onclick="safeAction(function(){ toggleSchoolLock(\'' + s.udise_code + '\', false); })" style="background:#FFEBEE; color:#C62828; border:1px solid #FFCDD2; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔒 Lock School</button>';
+          } else {
+            html += '      <button onclick="safeAction(function(){ toggleSchoolLock(\'' + s.udise_code + '\', true); })" style="background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔓 Unlock School</button>';
+          }
+          html += '    </div>';
+          html += '    <div style="display:flex; align-items:center; gap:6px;">';
+          html += '      <span style="font-size:11px; font-weight:800; color:#546E7A;">Extend Plan:</span>';
+          html += '      <button onclick="safeAction(function(){ quickRenewSchool(\'' + s.udise_code + '\', 30); })" style="background:#E3F2FD; color:#1565C0; border:1px solid #BBDEFB; padding:4px 8px; border-radius:6px; font-size:10px; font-weight:800; cursor:pointer;">+1 Month</button>';
+          html += '      <button onclick="safeAction(function(){ quickRenewSchool(\'' + s.udise_code + '\', 180); })" style="background:#FFF3E0; color:#E65100; border:1px solid #FFE0B2; padding:4px 8px; border-radius:6px; font-size:10px; font-weight:800; cursor:pointer;">+6 Months</button>';
+          html += '      <button onclick="safeAction(function(){ quickRenewSchool(\'' + s.udise_code + '\', 365); })" style="background:#E8F5E9; color:#2E7D32; border:1px solid #C8E6C9; padding:4px 8px; border-radius:6px; font-size:10px; font-weight:800; cursor:pointer;">+1 Year</button>';
+          html += '    </div>';
+          html += '  </div>';
+
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+
+      html += '</div>';
+      html += '</div>';
+
+      view.innerHTML = html;
+    }
+
+    async function submitOwnerAddSchool() {
+      var udiseIn = document.getElementById("owner-add-udise");
+      var nameIn = document.getElementById("owner-add-name");
+      var mobileIn = document.getElementById("owner-add-mobile");
+      var daysIn = document.getElementById("owner-add-days");
+      var maxIn = document.getElementById("owner-add-max");
+
+      var udise = udiseIn ? udiseIn.value.trim() : "";
+      var name = nameIn ? nameIn.value.trim() : "";
+      var mobile = mobileIn ? mobileIn.value.trim().replace(/\D/g, "") : "";
+      var days = daysIn ? parseInt(daysIn.value, 10) || 14 : 14;
+      var maxStu = maxIn ? parseInt(maxIn.value, 10) || 200 : 200;
+
+      if (!udise) {
+        showToast("Please enter school UDISE code", "wrong");
+        return;
+      }
+      if (!name) {
+        showToast("Please enter school name", "wrong");
+        return;
+      }
+      if (!mobile || mobile.length !== 10) {
+        showToast("Please enter a valid 10-digit Principal mobile number", "wrong");
+        return;
+      }
+
+      showToast("Registering school tenant...", "info");
+
+      var d = new Date();
+      d.setDate(d.getDate() + days);
+      var validUntil = d.toISOString().split("T")[0];
+      var now = new Date().toISOString();
+
+      var schoolId = "school-" + udise;
+      var newSub = {
+        udise_code: udise,
+        school_name: name,
+        is_active: true,
+        valid_until: validUntil,
+        max_students: maxStu,
+        plan_name: days + "-Day Free Trial",
+        updated_at: now
+      };
+
+      var principalAccount = {
+        udise_code: udise,
+        mobile: mobile,
+        school_id: schoolId,
+        school_name: name,
+        role: "principal",
+        user_name: "Principal - " + name,
+        is_password_set: false,
+        password_hash: null
+      };
+
+      // 1. Supabase insert
+      try {
+        await supabaseRest("/school_subscriptions", { method: "POST", body: newSub });
+        await supabaseRest("/udise_accounts", { method: "POST", body: principalAccount });
+      } catch(err) {
+        console.log("Supabase owner add school fallback note:", err.message || err);
+      }
+
+      // 2. Local cache update
+      var list = getLocalSchoolSubscriptions();
+      var idx = list.findIndex(function(s) { return s.udise_code === udise; });
+      if (idx !== -1) list[idx] = newSub;
+      else list.push(newSub);
+      saveLocalSchoolSubscriptions(list);
+
+      updateLocalUdiseAccount(udise, mobile, principalAccount);
+
+      playTone("fanfare");
+      showToast("School " + name + " registered successfully! ✅", "success");
+      speak("School registered successfully.", "en-IN");
+      renderOwnerSuperAdminPanelView();
+    }
+
+    async function toggleSchoolLock(udiseCode, newActive) {
+      if (udiseCode === "08150803534" && !newActive) {
+        var conf = confirm("⚠️ Warning: You are about to LOCK the Owner Campus (The Abacus Academy). Are you sure you want to proceed?");
+        if (!conf) return;
+      }
+
+      showToast((newActive ? "Unlocking" : "Locking") + " school " + udiseCode + "...", "info");
+      var now = new Date().toISOString();
+
+      try {
+        await supabaseRest("/school_subscriptions?udise_code=eq." + encodeURIComponent(udiseCode), {
+          method: "PATCH",
+          body: { is_active: newActive, updated_at: now }
+        });
+      } catch(e) {}
+
+      var list = getLocalSchoolSubscriptions();
+      var sub = list.find(function(s) { return s.udise_code === udiseCode; });
+      if (sub) {
+        sub.is_active = newActive;
+        sub.updated_at = now;
+      }
+      saveLocalSchoolSubscriptions(list);
+
+      showToast("School " + (newActive ? "Unlocked ✅" : "Locked 🔒"), "success");
+      speak("School " + (newActive ? "unlocked." : "locked."), "en-IN");
+      renderOwnerSuperAdminPanelView();
+    }
+
+    async function quickRenewSchool(udiseCode, days) {
+      showToast("Extending subscription by " + days + " days...", "info");
+      var list = getLocalSchoolSubscriptions();
+      var sub = list.find(function(s) { return s.udise_code === udiseCode; });
+      var today = new Date().toISOString().split("T")[0];
+      var baseDate = (sub && sub.valid_until && sub.valid_until > today) ? new Date(sub.valid_until) : new Date();
+      baseDate.setDate(baseDate.getDate() + days);
+      var newValidUntil = baseDate.toISOString().split("T")[0];
+      var now = new Date().toISOString();
+
+      try {
+        await supabaseRest("/school_subscriptions?udise_code=eq." + encodeURIComponent(udiseCode), {
+          method: "PATCH",
+          body: {
+            valid_until: newValidUntil,
+            is_active: true,
+            updated_at: now
+          }
+        });
+      } catch(e) {}
+
+      if (sub) {
+        sub.valid_until = newValidUntil;
+        sub.is_active = true;
+        sub.updated_at = now;
+      }
+      saveLocalSchoolSubscriptions(list);
+
+      showToast("Plan extended until " + newValidUntil + " ✅", "success");
+      speak("Plan extended successfully.", "en-IN");
+      renderOwnerSuperAdminPanelView();
+    }
+
+    // =========================================================================
+    // UDISE AUTHENTICATION & MULTI-SCHOOL ROLE ACCESS SYSTEM (Supabase Backed)
+    // =========================================================================
+    var DEFAULT_UDISE_ACCOUNTS = [];
+
+    function getLocalUdiseAccounts() {
+      try {
+        var raw = localStorage.getItem("taa_udise_accounts_cache");
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch(e) {}
+      return DEFAULT_UDISE_ACCOUNTS.slice();
+    }
+
+    function updateLocalUdiseAccount(code, mobile, updates) {
+      if (typeof mobile === "object" && updates === undefined) {
+        updates = mobile;
+        mobile = updates.mobile || "";
+      }
+      var accounts = getLocalUdiseAccounts();
+      var cleanCode = String(code || "").trim();
+      var cleanMobile = String(mobile || "").trim();
+      var idx = accounts.findIndex(function(a) {
+        var matchCode = String(a.udise_code).trim() === cleanCode;
+        if (!cleanMobile) return matchCode;
+        return matchCode && String(a.mobile || "").trim() === cleanMobile;
+      });
+      if (idx !== -1) {
+        Object.assign(accounts[idx], updates);
+      } else {
+        accounts.push(Object.assign({ udise_code: cleanCode, mobile: cleanMobile }, updates));
+      }
+      try {
+        localStorage.setItem("taa_udise_accounts_cache", JSON.stringify(accounts));
+      } catch(e) {}
+      return accounts;
+    }
+
+    async function hashPassword(str) {
+      if (!str) return "";
+      if (window.crypto && window.crypto.subtle) {
+        try {
+          var enc = new TextEncoder().encode(String(str));
+          var buf = await crypto.subtle.digest("SHA-256", enc);
+          return Array.from(new Uint8Array(buf)).map(function(b) {
+            return b.toString(16).padStart(2, "0");
+          }).join("");
+        } catch(e) {}
+      }
+      var h = 0;
+      var s = String(str);
+      for (var i = 0; i < s.length; i++) {
+        h = ((h << 5) - h) + s.charCodeAt(i);
+        h |= 0;
+      }
+      return "h_" + Math.abs(h).toString(16);
+    }
+
+    async function getUdiseAccount(udiseCode, mobile) {
+      var cleanCode = String(udiseCode || "").trim();
+      var cleanMobile = String(mobile || "").trim();
+      if (!cleanCode) return null;
+
+      // 1. Check Supabase table
+      try {
+        var query = "/udise_accounts?udise_code=eq." + encodeURIComponent(cleanCode);
+        if (cleanMobile) {
+          query += "&mobile=eq." + encodeURIComponent(cleanMobile);
+        }
+        var res = await supabaseRest(query);
+        if (Array.isArray(res) && res.length > 0) {
+          updateLocalUdiseAccount(cleanCode, res[0].mobile || cleanMobile, res[0]);
+          return res[0];
+        }
+      } catch(err) {
+        console.log("Supabase udise_accounts query note:", err.message || err);
+      }
+
+      // 2. Fallback to Local pre-authorized registry / cache
+      var accounts = getLocalUdiseAccounts();
+      var found = accounts.find(function(a) {
+        var matchCode = String(a.udise_code).trim() === cleanCode;
+        if (!cleanMobile) return matchCode;
+        return matchCode && String(a.mobile || "").trim() === cleanMobile;
+      });
+      return found || null;
+    }
+
+    async function syncUdiseAccountsFromSupabase(udiseCode) {
+      udiseCode = udiseCode || (appSession.principalObj ? appSession.principalObj.udise_code : "");
+      if (!udiseCode) return getLocalUdiseAccounts();
+      try {
+        var res = await supabaseRest("/udise_accounts?udise_code=eq." + encodeURIComponent(udiseCode));
+        if (Array.isArray(res) && res.length > 0) {
+          res.forEach(function(r) {
+            updateLocalUdiseAccount(r.udise_code, r.mobile, r);
+          });
+          return res;
+        }
+      } catch(e) {}
+      return getLocalUdiseAccounts();
+    }
+
+    async function saveUdisePassword(udiseCode, mobile, newPassword) {
+      // Support signature (udiseCode, newPassword) or (udiseCode, mobile, newPassword)
+      if (arguments.length === 2) {
+        newPassword = mobile;
+        mobile = "";
+      }
+      var cleanCode = String(udiseCode || "").trim();
+      var cleanMobile = String(mobile || "").trim();
+      var hash = await hashPassword(newPassword);
+      var now = new Date().toISOString();
+
+      // 1. Try updating Supabase
+      try {
+        var endpoint = "/udise_accounts?udise_code=eq." + encodeURIComponent(cleanCode);
+        if (cleanMobile) {
+          endpoint += "&mobile=eq." + encodeURIComponent(cleanMobile);
+        }
+        await supabaseRest(endpoint, {
+          method: "PATCH",
+          body: {
+            password_hash: hash,
+            is_password_set: true,
+            updated_at: now
+          }
+        });
+      } catch(err) {
+        console.log("Supabase save password note:", err.message || err);
+      }
+
+      // 2. Persist in local storage cache
+      updateLocalUdiseAccount(cleanCode, cleanMobile, {
+        password_hash: hash,
+        is_password_set: true,
+        updated_at: now
+      });
+      return hash;
+    }
+
+    // =========================================================================
+    // STUDENT / PARENT AUTHENTICATION & REWARDS SYSTEM (Supabase Backed)
+    // =========================================================================
+    var DEFAULT_STUDENT_ACCOUNTS = [];
+
+    function getLocalStudentAccounts() {
+      try {
+        var raw = localStorage.getItem("taa_student_accounts_cache");
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch(e) {}
+      return DEFAULT_STUDENT_ACCOUNTS.slice();
+    }
+
+    function updateLocalStudentAccount(loginId, updates) {
+      var accounts = getLocalStudentAccounts();
+      var cleanId = String(loginId || "").trim();
+      var idx = accounts.findIndex(function(a) {
+        return String(a.login_id || a.student_id || a.mobile).trim() === cleanId;
+      });
+      if (idx !== -1) {
+        Object.assign(accounts[idx], updates);
+      } else {
+        accounts.push(Object.assign({ login_id: cleanId }, updates));
+      }
+      try {
+        localStorage.setItem("taa_student_accounts_cache", JSON.stringify(accounts));
+      } catch(e) {}
+      return accounts;
+    }
+
+    async function getStudentAccount(loginId) {
+      var cleanId = String(loginId || "").trim();
+      if (!cleanId) return null;
+
+      // 1. Supabase REST query
+      try {
+        var res = await supabaseRest("/kids_students?login_id=eq." + encodeURIComponent(cleanId));
+        if (Array.isArray(res) && res.length > 0) {
+          var acc = res[0];
+          if (acc.school_id === "abacus") acc.school_id = "the-abacus-academy";
+          if (acc.school_id === "gr_academy") acc.school_id = "gr-children-academy";
+          updateLocalStudentAccount(cleanId, acc);
+          return acc;
+        }
+      } catch(e) {
+        console.log("Supabase kids_students query note:", e.message || e);
+      }
+
+      // 2. Local fallback
+      var accounts = getLocalStudentAccounts();
+      var found = accounts.find(function(a) {
+        return String(a.login_id).trim() === cleanId || String(a.mobile).trim() === cleanId || String(a.student_id || "").trim() === cleanId;
+      });
+      return found || null;
+    }
+
+    // Default School Students (Empty for production, populated from Supabase)
+    var DEFAULT_SCHOOL_STUDENTS = {
+      "the-abacus-academy": [],
+      "gr-children-academy": []
+    };
+
+    // Default Seed Homework (Empty for production, populated from Supabase)
+    var DEFAULT_SCHOOL_HOMEWORK = [];
 
     // Current Session State
     var appSession = {
@@ -2660,9 +3256,11 @@
       parentClass: "Nursery", // 'Nursery', 'LKG', 'UKG'
       parentTab: "homework", // 'homework', 'learning'
       teacherObj: null, // { id, teacher_name, teacher_mobile, emp_code, class_name, school_id }
-      teacherClass: "UKG", // Locked to teacherObj.class_name
+      teacherClass: "Nursery", // Default class for teacher view
       teacherTab: "send", // 'send', 'report', 'ranking'
+      principalObj: null, // { udise_code, user_name, school_id, school_name, role }
       principalTab: "teachers", // 'teachers', 'homework', 'summary'
+      focusedHomeworkQuiz: null, // Active focused homework assignment quiz
       isPreviewMode: false,
       activeHomeworkId: null,
       homeworkAnsweredCount: 0,
@@ -2673,6 +3271,13 @@
     // MULTI-SCHOOL CONTEXT HELPERS & BRANDING ENGINE
     // =========================================================================
     function getActiveSchoolId() {
+      // Auto-resolve school identity directly from authenticated UDISE session
+      if (appSession.teacherObj && appSession.teacherObj.school_id) {
+        return appSession.teacherObj.school_id;
+      }
+      if (appSession.principalObj && appSession.principalObj.school_id) {
+        return appSession.principalObj.school_id;
+      }
       return localStorage.getItem("taa_active_school_id") || "the-abacus-academy";
     }
 
@@ -2867,6 +3472,48 @@
       localStorage.setItem("taa_kids_homework_" + schoolId, JSON.stringify(hwList));
     }
 
+    async function syncHomeworkFromSupabase(schoolId) {
+      schoolId = schoolId || getActiveSchoolId();
+      try {
+        var res = await supabaseRest("/kids_homework?school_id=eq." + encodeURIComponent(schoolId) + "&order=created_at.desc");
+        if (Array.isArray(res)) {
+          saveAllHomeworkList(schoolId, res);
+          return res;
+        }
+      } catch(err) {
+        console.log("Supabase homework sync note:", err.message || err);
+      }
+      return getAllHomeworkList(schoolId);
+    }
+
+    async function syncClassTeachersFromSupabase(schoolId) {
+      schoolId = schoolId || getActiveSchoolId();
+      try {
+        var res = await supabaseRest("/kids_class_teachers?school_id=eq." + encodeURIComponent(schoolId) + "&order=assigned_at.desc");
+        if (Array.isArray(res) && res.length > 0) {
+          saveAllClassTeachers(schoolId, res);
+          return res;
+        }
+      } catch(err) {
+        console.log("Supabase class teachers sync note:", err.message || err);
+      }
+      return getAllClassTeachers(schoolId);
+    }
+
+    async function syncSubmissionsFromSupabase(schoolId) {
+      schoolId = schoolId || getActiveSchoolId();
+      try {
+        var res = await supabaseRest("/kids_homework_submissions?school_id=eq." + encodeURIComponent(schoolId));
+        if (Array.isArray(res)) {
+          saveAllSubmissionsList(schoolId, res);
+          return res;
+        }
+      } catch(err) {
+        console.log("Supabase submissions sync note:", err.message || err);
+      }
+      return getAllSubmissionsList(schoolId);
+    }
+
     function getTodayActiveHomework(className, schoolId) {
       schoolId = schoolId || getActiveSchoolId();
       var list = getAllHomeworkList(schoolId);
@@ -2989,6 +3636,7 @@
       appSession.activeHomeworkId = null;
       appSession.homeworkSession = null;
       appSession.homeworkAnsweredCount = 0;
+      appSession.focusedHomeworkQuiz = null;
       appSession.schoolId = getActiveSchoolId();
 
       var principalSession = localStorage.getItem("taa_kids_principal_session");
@@ -2998,31 +3646,36 @@
 
       if (principalSession) {
         appSession.type = "principal";
+        try {
+          appSession.principalObj = JSON.parse(principalSession);
+          if (appSession.principalObj && appSession.principalObj.school_id) {
+            appSession.schoolId = appSession.principalObj.school_id;
+          }
+        } catch(e) {}
         return "principal";
       } else if (teacherSession) {
         try {
           var tObj = JSON.parse(teacherSession);
-          // Verify teacher still exists & is active
-          var assigned = getAssignedClassTeacher(tObj.school_id, tObj.class_name);
-          if (assigned && assigned.is_active && (assigned.teacher_mobile === tObj.teacher_mobile || assigned.emp_code === tObj.emp_code)) {
-            appSession.type = "teacher";
-            appSession.teacherObj = assigned;
-            appSession.teacherClass = assigned.class_name;
-            appSession.schoolId = assigned.school_id;
-            return "teacher";
-          }
+          appSession.type = "teacher";
+          appSession.teacherObj = tObj;
+          appSession.teacherClass = tObj.class_name || "Nursery";
+          appSession.schoolId = tObj.school_id || getActiveSchoolId();
+          return "teacher";
         } catch(e) {}
         localStorage.removeItem("taa_kids_teacher_session");
-      } else if (studentSession || parentSession) {
-        appSession.type = "parent";
-        if (studentSession) {
-          try {
-            appSession.student = JSON.parse(studentSession);
-            appSession.parentClass = appSession.student.class_name || "Nursery";
-            appState.stars = Math.floor(appSession.student.total_points || 0);
-          } catch(e) {}
+      } else if (studentSession) {
+        try {
+          appSession.student = JSON.parse(studentSession);
+          appSession.type = "parent";
+          appSession.parentClass = appSession.student.student_class || appSession.student.class_name || "Nursery";
+          appState.stars = Math.floor(appSession.student.stars || appSession.student.points || appSession.student.total_points || 0);
+          if (appSession.student.school_id) {
+            appSession.schoolId = appSession.student.school_id;
+          }
+          return "parent";
+        } catch(e) {
+          localStorage.removeItem("taa_kids_student_session");
         }
-        return "parent";
       }
       return null;
     }
@@ -3040,32 +3693,39 @@
         if (banner) {
           banner.style.display = "flex";
           banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
-            '<div><span class="pass-badge" style="background:#FFE082; color:#E65100;">👩‍🏫 Teacher Portal</span> <strong>' + escapeHtml(appSession.teacherObj.teacher_name) + '</strong> (' + appSession.teacherClass + ' Class • ' + school.shortName + ')</div>' +
+            '<div><span class="pass-badge" style="background:#FFE082; color:#E65100;">👩‍🏫 Teacher Portal</span> <strong>' + escapeHtml(appSession.teacherObj.teacher_name || appSession.teacherObj.user_name || "Teacher") + '</strong> (' + school.shortName + ' • Full Access)</div>' +
             '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Logout</button>' +
             '</div>';
         }
         if (btnLogout) btnLogout.style.display = "inline-flex";
-        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
+        if (btnTeacherPortal) btnTeacherPortal.style.display = "inline-flex";
         if (btnPrincipalDesk) btnPrincipalDesk.style.display = "inline-flex";
-        if (starBadge) starBadge.style.display = "none";
-      } else if (appSession.type === "principal") {
+        if (starBadge) starBadge.style.display = "flex";
+      } else if (appSession.type === "principal" && appSession.principalObj) {
         if (banner) {
           banner.style.display = "flex";
-          banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
-            '<div><span class="pass-badge" style="background:#EDE7F6; color:#4527A0;">🛡️ Principal Supervision Desk</span> Campus: <strong>' + school.name + '</strong></div>' +
-            '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Exit</button>' +
+          banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px; flex-wrap:wrap;">' +
+            '<div><span class="pass-badge" style="background:#EDE7F6; color:#4527A0;">🛡️ Principal Supervision Desk</span> Campus: <strong>' + school.name + '</strong> (Full Access)</div>' +
+            '<div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">' +
+            '  <button class="btn-action-primary" style="background:#673AB7; color:#FFF; font-size:11px; font-weight:800; padding:5px 10px; border:none; border-radius:8px; cursor:pointer;" onclick="safeAction(openPrincipalShowcaseMode)">📱 Preview All Classes &amp; Content (Showcase Mode)</button>' +
+            '  <button class="btn-back-principal" style="background:#512DA8; color:#FFF; font-size:11px; font-weight:800; padding:5px 10px; border:none; border-radius:8px; cursor:pointer;" onclick="safeAction(openPrincipalPanel)">← Back to Principal Desk</button>' +
+            '  <button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Exit</button>' +
+            '</div>' +
             '</div>';
         }
         if (btnLogout) btnLogout.style.display = "inline-flex";
         if (btnTeacherPortal) btnTeacherPortal.style.display = "inline-flex";
-        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
-        if (starBadge) starBadge.style.display = "none";
-      } else if (appSession.type === "parent") {
+        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "inline-flex";
+        if (starBadge) starBadge.style.display = "flex";
+      } else if (appSession.type === "parent" && appSession.student) {
         if (banner) {
           banner.style.display = "flex";
-          banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
-            '<div><span class="pass-badge" style="background:#E8F5E9; color:#2E7D32;">🎒 Parent / Student Mode</span> Selected: <strong>' + appSession.parentClass + ' Class</strong> • ' + school.shortName + '</div>' +
-            '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">Switch Role</button>' +
+          banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px; flex-wrap:wrap;">' +
+            '<div><span class="pass-badge" style="background:#E8F5E9; color:#2E7D32;">🎒 ' + escapeHtml(appSession.student.student_name) + '</span> <strong>' + appSession.parentClass + ' Class</strong> • ⭐ <strong><span id="header-student-points">' + (appSession.student.points || 0) + '</span> Pts</strong></div>' +
+            '<div style="display:flex; align-items:center; gap:6px;">' +
+            '  <button class="btn-reward-shelf" onclick="safeAction(openRewardShelfModal)" style="background:#FF9800; color:#FFF; border:none; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(255,152,0,0.3);">🎁 My Rewards</button>' +
+            '  <button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutStudentSession)">🚪 Logout</button>' +
+            '</div>' +
             '</div>';
         }
         if (btnLogout) btnLogout.style.display = "inline-flex";
@@ -3090,6 +3750,8 @@
       appSession.type = null;
       appSession.student = null;
       appSession.teacherObj = null;
+      appSession.principalObj = null;
+      appSession.focusedHomeworkQuiz = null;
       appSession.isPreviewMode = false;
       appSession.activeHomeworkId = null;
       appSession.homeworkSession = null;
@@ -3107,22 +3769,178 @@
     }
 
     // =========================================================================
-    // ROLE 1: PARENT & STUDENT ACCESS CONTROLLER
+    // ROLE 1: PARENT & STUDENT ACCESS CONTROLLER & REWARDS SYSTEM
     // =========================================================================
-    function enterParentMode(targetClass) {
-      appSession.type = "parent";
-      appSession.parentClass = targetClass || "Nursery";
-      appSession.parentTab = "homework";
-      localStorage.setItem("taa_kids_parent_session", "active");
-      playTone("fanfare");
+    function handleParentModeCardClick() {
+      if (appSession.type === "parent" && appSession.student) {
+        showToast("Welcome back, " + appSession.student.student_name + "!", "info");
+        var hub = document.getElementById("parent-student-hub");
+        if (hub) {
+          try { hub.scrollIntoView({ behavior: "smooth", block: "start" }); } catch(e) {}
+        }
+      } else {
+        openStudentLoginModal();
+      }
+    }
+
+    function openStudentLoginModal() {
+      playTone("pop");
+      var existing = document.getElementById("student-login-modal");
+      if (existing) existing.remove();
+
       var school = getActiveSchool();
-      showToast("Entered Parent / Student Mode (" + appSession.parentClass + ")", "success");
-      speak("Welcome to Parent and Student Mode for " + school.name, "en-IN");
+      var modal = document.createElement("div");
+      modal.id = "student-login-modal";
+      modal.className = "modal-overlay";
+      var html = '<div class="modal-card" style="max-width: 420px; text-align: left;">' +
+        '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">' +
+        '    <div style="display:flex; align-items:center; gap:8px;">' +
+        '      <span style="font-size:28px;">🎒</span>' +
+        '      <div>' +
+        '        <h3 style="font-size:18px; font-weight:900; color:#1B5E20; margin:0;">Student &amp; Parent Login</h3>' +
+        '        <div style="font-size:11px; color:#546E7A; font-weight:700;">' + escapeHtml(school.name) + ' • Class Locked Access</div>' +
+        '      </div>' +
+        '    </div>' +
+        '    <button onclick="document.getElementById(\'student-login-modal\').remove()" style="background:none; border:none; font-size:18px; cursor:pointer; font-weight:900; color:#546E7A;">✕</button>' +
+        '  </div>' +
+
+        '  <div style="background:#E8F5E9; border:1.5px solid #A5D6A7; border-radius:12px; padding:10px 12px; margin:10px 0 14px 0; font-size:11px; color:#1B5E20; font-weight:700; line-height:1.4;">' +
+        '    🔐 <strong>Secure Single-Class Access:</strong><br/>Enter your registered Student ID or Parent Mobile number &amp; password. Your dashboard will automatically lock to your enrolled class!' +
+        '  </div>' +
+
+        '  <div style="margin-bottom:12px;">' +
+        '    <label style="font-size:11px; font-weight:800; color:#37474F;">Student ID or Parent Mobile:</label>' +
+        '    <input type="text" id="student-login-id" class="input-field" placeholder="Enter Student ID or Mobile Number" style="margin-top:4px; font-size:14px; font-weight:800;" />' +
+        '  </div>' +
+
+        '  <div style="margin-bottom:14px;">' +
+        '    <label style="font-size:11px; font-weight:800; color:#37474F;">Password:</label>' +
+        '    <input type="password" id="student-login-pass" class="input-field" placeholder="Enter Password" style="margin-top:4px; font-size:14px; font-weight:800;" />' +
+        '  </div>' +
+
+        '  <button class="btn-action-primary" style="background:#2E7D32; box-shadow:0 4px 10px rgba(46,125,50,0.3); font-size:14px; margin-bottom:12px;" onclick="safeAction(submitStudentLogin)">' +
+        '    Sign In to Student Dashboard 🚀' +
+        '  </button>' +
+        '</div>';
+      modal.innerHTML = html;
+      document.body.appendChild(modal);
+    }
+
+    async function submitStudentLogin() {
+      var idIn = document.getElementById("student-login-id");
+      var passIn = document.getElementById("student-login-pass");
+      if (!idIn || !passIn) return;
+
+      var loginId = idIn.value.trim();
+      var pass = passIn.value.trim();
+
+      if (!loginId) {
+        showToast("Please enter Student ID or Mobile number!", "wrong");
+        return;
+      }
+      if (!pass) {
+        showToast("Please enter your password!", "wrong");
+        return;
+      }
+
+      showToast("Verifying credentials...", "info");
+      var account = await getStudentAccount(loginId);
+      if (!account) {
+        showToast("Student account not found! Check your ID or Mobile.", "wrong");
+        speak("Account not found. Please check your Student ID.", "en-IN");
+        return;
+      }
+
+      var enteredHash = await hashPassword(pass);
+      var validPass = (account.password_hash === pass || account.password_hash === enteredHash || (!account.password_hash && pass === "1234"));
+      if (!validPass) {
+        showToast("Invalid password! Please check your credentials.", "wrong");
+        speak("Incorrect password.", "en-IN");
+        return;
+      }
+
+      // Remote School Subscription Check
+      var studentUdise = getUdiseCodeForSchool(account.school_id || getActiveSchoolId());
+      var sub = await fetchSchoolSubscription(studentUdise);
+      var subStatus = isSubscriptionValid(sub);
+      if (!subStatus.valid) {
+        var modal = document.getElementById("student-login-modal");
+        if (modal) modal.remove();
+        renderSubscriptionExpiredScreen(sub, studentUdise);
+        return;
+      }
+      appSession.subscription = sub;
+
+      // Success: Save student session
+      appSession.type = "parent";
+      appSession.student = account;
+      appSession.parentClass = account.student_class || account.class_name || "Nursery";
+      appSession.schoolId = account.school_id || getActiveSchoolId();
+      appSession.parentTab = "homework";
+      appState.stars = Math.floor(account.stars || account.points || account.total_points || 0);
+
+      localStorage.setItem("taa_kids_student_session", JSON.stringify(account));
+      localStorage.setItem("taa_kids_parent_session", "active");
+
+      var modal = document.getElementById("student-login-modal");
+      if (modal) modal.remove();
+
+      playTone("fanfare");
+      triggerConfetti();
+      showToast("Welcome " + account.student_name + "! (" + appSession.parentClass + " Class)", "success");
+      speak("Welcome " + account.student_name + "! Your " + appSession.parentClass + " dashboard is ready.", "en-IN");
+
+      renderHeaderStatus();
+      renderHome();
+      setTimeout(function() {
+        var hub = document.getElementById("parent-student-hub");
+        if (hub) {
+          try { hub.scrollIntoView({ behavior: "smooth", block: "start" }); } catch(e) {}
+        }
+      }, 80);
+    }
+
+    function logoutStudentSession() {
+      localStorage.removeItem("taa_kids_student_session");
+      localStorage.removeItem("taa_kids_parent_session");
+      appSession.type = null;
+      appSession.student = null;
+      appSession.focusedHomeworkQuiz = null;
+      showToast("Student logged out 👋", "info");
+      speak("Logged out.", "en-IN");
       renderHeaderStatus();
       renderHome();
     }
 
+    function enterParentMode(targetClass) {
+      if (!appSession.student) {
+        openStudentLoginModal();
+        return;
+      }
+      appSession.type = "parent";
+      appSession.parentClass = appSession.student.student_class || appSession.student.class_name || targetClass || "Nursery";
+      appSession.parentTab = "homework";
+      localStorage.setItem("taa_kids_parent_session", "active");
+      playTone("fanfare");
+      var school = getActiveSchool();
+      showToast("Entered Student Dashboard (" + appSession.parentClass + ")", "success");
+      speak("Welcome " + appSession.student.student_name, "en-IN");
+      renderHeaderStatus();
+      renderHome();
+      setTimeout(function() {
+        var hub = document.getElementById("parent-student-hub");
+        if (hub) {
+          try { hub.scrollIntoView({ behavior: "smooth", block: "start" }); } catch(e) {}
+        }
+      }, 60);
+    }
+
     function switchParentClass(cls) {
+      // If student is logged in, their class is locked
+      if (appSession.type === "parent" && appSession.student) {
+        showToast("Class locked to " + appSession.student.student_class + " for enrolled student!", "info");
+        return;
+      }
       appSession.parentClass = cls;
       playTone("pop");
       renderHome();
@@ -3132,6 +3950,351 @@
       appSession.parentTab = tab;
       playTone("pop");
       renderHome();
+    }
+
+    // =========================================================================
+    // 10 COLLECTIBLE REWARDS CATALOG & MY REWARD SHELF
+    // =========================================================================
+    var REWARD_SHELF_CATALOG = [
+      { id: "reward_ball", name: "Golden Ball", pts: 10, icon: "⚽", color: "#FFB300", bg: "#FFF8E1", desc: "Golden bouncing soccer ball for champion kicks!" },
+      { id: "reward_star", name: "Magic Star", pts: 25, icon: "🌟", color: "#FFD54F", bg: "#FFFDE7", desc: "Twinkling star that shines bright with knowledge!" },
+      { id: "reward_car", name: "Super Racing Car", pts: 50, icon: "🏎️", color: "#E53935", bg: "#FFEBEE", desc: "Lightning fast speed machine for quick thinkers!" },
+      { id: "reward_butterfly", name: "Rainbow Butterfly", pts: 100, icon: "🦋", color: "#8E24AA", bg: "#F3E5F5", desc: "Colorful fluttering butterfly full of wonder!" },
+      { id: "reward_rocket", name: "Space Rocket", pts: 150, icon: "🚀", color: "#1E88E5", bg: "#E3F2FD", desc: "Blast off into space to explore distant galaxies!" },
+      { id: "reward_teddy", name: "Golden Teddy", pts: 250, icon: "🧸", color: "#FB8C00", bg: "#FFF3E0", desc: "Super cuddly golden bear friend always by your side!" },
+      { id: "reward_dino", name: "Super Dino", pts: 400, icon: "🦖", color: "#43A047", bg: "#E8F5E9", desc: "Roaring friendly prehistoric dinosaur buddy!" },
+      { id: "reward_castle", name: "Magic Castle", pts: 600, icon: "🏰", color: "#00ACC1", bg: "#E0F7FA", desc: "Grand enchanted kingdom where dreams come true!" },
+      { id: "reward_crown", name: "Champion Crown", pts: 800, icon: "👑", color: "#FDD835", bg: "#FFFDE7", desc: "Royal golden crown for master student royalty!" },
+      { id: "reward_trophy", name: "Abacus Mega Trophy", pts: 1000, icon: "🏆", color: "#FFA000", bg: "#FFF8E1", desc: "Ultimate Grand Champion Gold Trophy of Abacus Academy!" }
+    ];
+
+    function renderRewardPicture(reward, sizePx) {
+      var size = sizePx || 80;
+      var fontSize = Math.round(size * 0.65);
+      return '<div class="reward-spotlight" style="width:' + size + 'px; height:' + size + 'px; border-radius:50%; background:' + reward.bg + '; border:3px solid ' + reward.color + '; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 14px ' + reward.color + '40; margin:0 auto; position:relative; overflow:hidden;">' +
+        '<span class="safe-emoji reward-icon" style="font-size:' + fontSize + 'px; line-height:1; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.2));">' + reward.icon + '</span>' +
+        '</div>';
+    }
+
+    function saveStudentSessionLocallyAndRemote(student) {
+      if (!student) return;
+      localStorage.setItem("taa_kids_student_session", JSON.stringify(student));
+      updateLocalStudentAccount(student.login_id, student);
+
+      var livePtsEl = document.getElementById("student-live-points");
+      if (livePtsEl) livePtsEl.textContent = student.points;
+      var hdrPtsEl = document.getElementById("header-student-points");
+      if (hdrPtsEl) hdrPtsEl.textContent = student.points;
+
+      try {
+        supabaseRest("/kids_students?login_id=eq." + encodeURIComponent(student.login_id), {
+          method: "PATCH",
+          body: {
+            points: student.points,
+            stars: student.stars,
+            badges: student.badges,
+            tasks_completed: student.tasks_completed,
+            updated_at: new Date().toISOString()
+          }
+        }).catch(function(err) {
+          console.log("Supabase student points sync note:", err.message || err);
+        });
+      } catch(e) {}
+    }
+
+    function checkRewardShelfMilestones(student) {
+      if (!student) return null;
+      if (!Array.isArray(student.badges)) student.badges = [];
+      var currentPoints = Number(Number(student.points || 0).toFixed(1));
+      var newlyUnlocked = [];
+      REWARD_SHELF_CATALOG.forEach(function(r) {
+        if (currentPoints >= r.pts && !student.badges.includes(r.id) && !student.badges.includes(r.name)) {
+          student.badges.push(r.id);
+          newlyUnlocked.push(r);
+        }
+      });
+      if (newlyUnlocked.length > 0) {
+        saveStudentSessionLocallyAndRemote(student);
+        showRewardUnlockCelebration(newlyUnlocked[newlyUnlocked.length - 1]);
+        return newlyUnlocked;
+      }
+      return null;
+    }
+
+    function showRewardUnlockCelebration(reward) {
+      playTone("fanfare");
+      triggerConfetti();
+      speak("Congratulations! You unlocked the " + reward.name + "!", "en-IN");
+
+      var existing = document.getElementById("reward-unlock-modal");
+      if (existing) existing.remove();
+
+      var modal = document.createElement("div");
+      modal.id = "reward-unlock-modal";
+      modal.className = "modal-overlay";
+      modal.style.zIndex = "10006";
+      modal.innerHTML = '<div class="modal-card" style="max-width:390px; text-align:center; border:3.5px solid #FFD54F; background:linear-gradient(135deg, #FFFDE7, #FFF8E1); border-radius:24px; padding:24px 20px; box-shadow:0 12px 36px rgba(255,193,7,0.3);">' +
+        '<div style="font-size:36px; margin-bottom:4px;">🎉🌟✨</div>' +
+        '<div style="font-size:11px; font-weight:900; background:#FFB300; color:#FFF; display:inline-block; padding:3px 10px; border-radius:8px; text-transform:uppercase;">NEW REWARD UNLOCKED!</div>' +
+        '<h2 style="font-size:22px; font-weight:900; color:#BF360C; margin:8px 0;">' + reward.name + '</h2>' +
+        '<div style="margin:16px 0;">' +
+        renderRewardPicture(reward, 140) +
+        '</div>' +
+        '<div style="font-size:13px; color:#5D4037; font-weight:700; margin-bottom:14px; line-height:1.4;">' +
+        escapeHtml(reward.desc) +
+        '</div>' +
+        '<div style="font-size:12px; font-weight:900; color:#2E7D32; margin-bottom:16px;">🏆 Added to Your Permanent Reward Shelf!</div>' +
+        '<div style="display:flex; justify-content:center; gap:8px;">' +
+        '  <button class="btn-action-primary" style="background:#2E7D32; color:#FFF; font-size:13px; font-weight:900; padding:10px 18px; border:none; border-radius:12px; cursor:pointer;" onclick="document.getElementById(\'reward-unlock-modal\').remove(); openRewardShelfModal();">🎁 View Shelf</button>' +
+        '  <button style="background:#FFF; color:#555; border:1.5px solid #CFD8DC; font-size:13px; font-weight:800; padding:10px 16px; border-radius:12px; cursor:pointer;" onclick="document.getElementById(\'reward-unlock-modal\').remove();">Continue ➔</button>' +
+        '</div>' +
+        '</div>';
+      document.body.appendChild(modal);
+    }
+
+    function openBigRewardPreview(rewardId) {
+      var reward = REWARD_SHELF_CATALOG.find(function(r) { return r.id === rewardId; });
+      if (!reward) return;
+      playTone("pop");
+      speak("You unlocked the " + reward.name + "! " + reward.desc, "en-IN");
+
+      var existing = document.getElementById("big-reward-preview-modal");
+      if (existing) existing.remove();
+
+      var modal = document.createElement("div");
+      modal.id = "big-reward-preview-modal";
+      modal.className = "modal-overlay";
+      modal.style.zIndex = "10005";
+      modal.innerHTML = '<div class="modal-card" style="max-width:380px; text-align:center; border:3.5px solid ' + reward.color + '; background:#FFF; border-radius:24px; padding:24px 20px; box-shadow:0 12px 32px rgba(0,0,0,0.2);">' +
+        '<div style="font-size:11px; font-weight:900; color:' + reward.color + '; letter-spacing:1px; text-transform:uppercase;">COLLECTIBLE REWARD</div>' +
+        '<h2 style="font-size:22px; font-weight:900; color:#263238; margin:6px 0 14px 0;">' + reward.name + '</h2>' +
+        '<div style="margin:16px 0;">' +
+        renderRewardPicture(reward, 140) +
+        '</div>' +
+        '<div style="font-size:13px; color:#5D4037; font-weight:700; line-height:1.4; margin-bottom:12px; background:' + reward.bg + '; border:1.5px solid ' + reward.color + '40; border-radius:14px; padding:10px 14px;">' +
+        escapeHtml(reward.desc) +
+        '</div>' +
+        '<div style="font-size:12px; font-weight:900; color:#2E7D32; margin-bottom:16px;">⭐ Unlocked with ' + reward.pts + ' Points!</div>' +
+        '<button class="btn-action-primary" style="background:' + reward.color + '; color:#FFF; font-size:14px; font-weight:900; padding:10px 24px; border:none; border-radius:12px; cursor:pointer;" onclick="document.getElementById(\'big-reward-preview-modal\').remove();">Awesome! Keep Learning 🚀</button>' +
+        '</div>';
+      document.body.appendChild(modal);
+    }
+
+    function openRewardShelfModal() {
+      playTone("pop");
+      var existing = document.getElementById("reward-shelf-modal");
+      if (existing) existing.remove();
+
+      var student = appSession.student;
+      var currentPoints = student ? (student.points || 0) : (appState.stars || 0);
+      currentPoints = Number(Number(currentPoints).toFixed(1));
+
+      var nextReward = null;
+      var prevPts = 0;
+      for (var i = 0; i < REWARD_SHELF_CATALOG.length; i++) {
+        var r = REWARD_SHELF_CATALOG[i];
+        if (currentPoints < r.pts) {
+          nextReward = r;
+          prevPts = (i > 0) ? REWARD_SHELF_CATALOG[i - 1].pts : 0;
+          break;
+        }
+      }
+
+      var unlockedCount = 0;
+      var modal = document.createElement("div");
+      modal.id = "reward-shelf-modal";
+      modal.className = "modal-overlay";
+      modal.style.zIndex = "10004";
+
+      var html = '<div class="modal-card" style="max-width:440px; width:92%; max-height:90vh; display:flex; flex-direction:column; border:3px solid #FFD54F; background:#FFFDE7; border-radius:24px; padding:18px 16px; box-shadow:0 12px 36px rgba(0,0,0,0.2);">';
+      
+      // Header
+      html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">';
+      html += '  <div>';
+      html += '    <h2 style="font-size:20px; font-weight:900; color:#BF360C; margin:0; display:flex; align-items:center; gap:6px;">🎁 My Reward Shelf</h2>';
+      html += '    <div style="font-size:11px; color:#5D4037; font-weight:700;">⭐ Live Balance: <strong>' + currentPoints + ' Points</strong></div>';
+      html += '  </div>';
+      html += '  <button onclick="document.getElementById(\'reward-shelf-modal\').remove();" style="background:#FFF; border:1.5px solid #FFCDD2; color:#D32F2F; border-radius:50%; width:32px; height:32px; font-size:16px; font-weight:900; cursor:pointer;">✕</button>';
+      html += '</div>';
+
+      // Next Reward Progress Bar
+      if (nextReward) {
+        var ptsNeeded = Number((nextReward.pts - currentPoints).toFixed(1));
+        var progressRange = nextReward.pts - prevPts;
+        var progressCurrent = Math.max(0, currentPoints - prevPts);
+        var pct = Math.min(100, Math.max(0, Math.round((progressCurrent / progressRange) * 100)));
+
+        html += '<div class="next-reward-banner" style="background:#FFF; border:2px solid #FFD54F; border-radius:16px; padding:12px; margin-bottom:14px; box-shadow:0 3px 10px rgba(0,0,0,0.05);">';
+        html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:4px;">';
+        html += '    <span style="font-size:12px; font-weight:900; color:#E65100;">Next: <strong>' + nextReward.icon + ' ' + nextReward.name + '</strong></span>';
+        html += '    <span style="font-size:11px; font-weight:800; color:#78909C;">' + currentPoints + ' / ' + nextReward.pts + ' Pts (' + ptsNeeded + ' to unlock!)</span>';
+        html += '  </div>';
+        html += '  <div style="background:#ECEFF1; border-radius:10px; height:12px; overflow:hidden; position:relative;">';
+        html += '    <div style="background:linear-gradient(90deg, #FFB300, #43A047); width:' + pct + '%; height:100%; border-radius:10px; transition:width 0.4s ease;"></div>';
+        html += '  </div>';
+        html += '</div>';
+      } else {
+        html += '<div style="background:#E8F5E9; border:2px solid #4CAF50; border-radius:16px; padding:10px 14px; margin-bottom:14px; text-align:center;">';
+        html += '  <div style="font-size:14px; font-weight:900; color:#1B5E20;">🏆 ALL 10 REWARDS UNLOCKED!</div>';
+        html += '  <div style="font-size:11px; color:#2E7D32; font-weight:700;">You are a Grand Master Scholar of Abacus Academy!</div>';
+        html += '</div>';
+      }
+
+      // 2-Column Grid
+      html += '<div class="reward-shelf-grid" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px; overflow-y:auto; padding:4px; flex:1;">';
+      REWARD_SHELF_CATALOG.forEach(function(r) {
+        var isUnlocked = (currentPoints >= r.pts) || (student && Array.isArray(student.badges) && (student.badges.includes(r.id) || student.badges.includes(r.name)));
+        if (isUnlocked) unlockedCount++;
+
+        if (isUnlocked) {
+          html += '<div class="reward-card unlocked" onclick="safeAction(function(){ openBigRewardPreview(\'' + r.id + '\'); })" style="background:#FFFFFF; border:2.5px solid ' + r.color + '; border-radius:18px; padding:14px 10px; text-align:center; box-shadow:0 4px 12px ' + r.color + '33; cursor:pointer; position:relative; transition:transform 0.15s ease;">';
+          html += '  <span style="position:absolute; top:8px; right:8px; background:#4CAF50; color:#FFF; font-size:9px; font-weight:900; padding:2px 6px; border-radius:6px;">UNLOCKED ✓</span>';
+          html += renderRewardPicture(r, 78);
+          html += '  <div style="font-size:13px; font-weight:900; color:#263238; margin-top:8px;">' + r.name + '</div>';
+          html += '  <div style="font-size:11px; font-weight:800; color:' + r.color + '; margin-top:2px;">⭐ ' + r.pts + ' Pts</div>';
+          html += '  <div style="font-size:10px; color:#546E7A; font-weight:700; margin-top:4px;">Tap to view 🔍</div>';
+          html += '</div>';
+        } else {
+          html += '<div class="reward-card locked" style="background:#F5F5F5; border:2px dashed #BDBDBD; border-radius:18px; padding:14px 10px; text-align:center; opacity:0.75; position:relative;">';
+          html += '  <span style="position:absolute; top:8px; right:8px; background:#757575; color:#FFF; font-size:9px; font-weight:900; padding:2px 6px; border-radius:6px;">🔒 LOCKED</span>';
+          html += '  <div style="filter:grayscale(1) contrast(0.5); opacity:0.6;">';
+          html += renderRewardPicture(r, 78);
+          html += '  </div>';
+          html += '  <div style="font-size:13px; font-weight:800; color:#757575; margin-top:8px;">' + r.name + '</div>';
+          html += '  <div style="font-size:11px; font-weight:800; color:#E65100; margin-top:2px;">Needs ' + r.pts + ' Pts</div>';
+          html += '</div>';
+        }
+      });
+      html += '</div>'; // End 2-col grid
+
+      // Footer
+      html += '<div style="margin-top:12px; text-align:center;">';
+      html += '  <div style="font-size:11px; color:#5D4037; font-weight:700; margin-bottom:8px;">Unlocked <strong>' + unlockedCount + ' of 10</strong> Collectible Rewards</div>';
+      html += '  <button class="btn-action-primary" style="background:#FF9800; color:#FFF; font-size:13px; font-weight:900; padding:8px 20px; border:none; border-radius:12px; cursor:pointer;" onclick="document.getElementById(\'reward-shelf-modal\').remove();">Keep Practicing 🚀</button>';
+      html += '</div>';
+
+      html += '</div>';
+      modal.innerHTML = html;
+      document.body.appendChild(modal);
+    }
+
+    // =========================================================================
+    // STUDENT REWARDS, POINTS & BADGES SYSTEM
+    // =========================================================================
+    async function awardStudentReward(opts) {
+      // opts: { type: 'quiz' | 'homework', homeworkId: string, title: string, pointsAward: number, starsAward: number, defaultBadge: string }
+      var student = appSession.student;
+      var pointsAward = opts.pointsAward || (opts.type === "homework" ? 30 : 20);
+      var starsAward = opts.starsAward || pointsAward;
+      var hwId = opts.homeworkId || "HW-" + Date.now();
+      var taskKey = opts.type + "_" + hwId;
+
+      var isDuplicate = false;
+      var newBadgeEarned = null;
+
+      if (student) {
+        if (!Array.isArray(student.tasks_completed)) student.tasks_completed = [];
+        if (!Array.isArray(student.badges)) student.badges = [];
+
+        // Check duplicate farming
+        if (student.tasks_completed.includes(taskKey)) {
+          isDuplicate = true;
+        } else {
+          student.tasks_completed.push(taskKey);
+          student.points = Number(((student.points || 0) + pointsAward).toFixed(1));
+          student.stars = Number(((student.stars || 0) + starsAward).toFixed(1));
+          appState.stars = Math.floor(student.stars);
+
+          // Check badge milestones
+          var targetBadge = opts.defaultBadge || (opts.type === "homework" ? "🌟 Homework Star" : "🏆 Quiz Champ");
+          if (!student.badges.includes(targetBadge)) {
+            student.badges.push(targetBadge);
+            newBadgeEarned = targetBadge;
+          }
+          if (student.points >= 100 && !student.badges.includes("🔥 Daily Achiever")) {
+            student.badges.push("🔥 Daily Achiever");
+            if (!newBadgeEarned) newBadgeEarned = "🔥 Daily Achiever";
+          }
+          if (student.points >= 200 && !student.badges.includes("👑 Superstar Scholar")) {
+            student.badges.push("👑 Superstar Scholar");
+            if (!newBadgeEarned) newBadgeEarned = "👑 Superstar Scholar";
+          }
+
+          saveStudentSessionLocallyAndRemote(student);
+          checkRewardShelfMilestones(student);
+        }
+      } else {
+        // Fallback stars for guest
+        appState.stars = Math.floor((appState.stars || 0) + starsAward);
+      }
+
+      showRewardCelebrationModal({
+        isDuplicate: isDuplicate,
+        type: opts.type,
+        title: opts.title || "Activity",
+        pointsAward: isDuplicate ? 0 : pointsAward,
+        starsAward: isDuplicate ? 0 : starsAward,
+        newBadge: newBadgeEarned,
+        student: student
+      });
+    }
+
+    function showRewardCelebrationModal(info) {
+      playTone("fanfare");
+      triggerConfetti();
+
+      var existing = document.getElementById("reward-celebration-modal");
+      if (existing) existing.remove();
+
+      var modal = document.createElement("div");
+      modal.id = "reward-celebration-modal";
+      modal.className = "modal-overlay";
+      var totalPts = info.student ? (info.student.points || 0) : (appState.stars || 0);
+      var badges = (info.student && Array.isArray(info.student.badges)) ? info.student.badges : ["🌟 Homework Star"];
+
+      var html = '<div class="modal-card" style="max-width: 420px; text-align: center; border: 3px solid #FFD54F; background: #FFFDE7;">';
+      html += '  <div style="font-size: 50px; margin-bottom: 4px;">🎉⭐🏆</div>';
+
+      if (info.isDuplicate) {
+        html += '  <h2 style="font-size: 20px; font-weight: 900; color: #E65100; margin: 0 0 6px 0;">Awesome Practice! 👏</h2>';
+        html += '  <div style="font-size: 13px; color: #5D4037; font-weight: 700; margin-bottom: 12px;">You already earned points for this task today! Great effort practicing again!</div>';
+      } else {
+        html += '  <h2 style="font-size: 22px; font-weight: 900; color: #2E7D32; margin: 0 0 6px 0;">Great Job! Rewards Earned! 🌟</h2>';
+        html += '  <div style="display:flex; justify-content:center; gap:12px; margin: 12px 0;">';
+        html += '    <div style="background:#FFF; border:2px solid #81C784; border-radius:14px; padding:10px 18px; box-shadow:0 3px 8px rgba(0,0,0,0.06);">';
+        html += '      <div style="font-size:24px; font-weight:900; color:#2E7D32;">+' + info.pointsAward + '</div>';
+        html += '      <div style="font-size:11px; font-weight:800; color:#558B2F;">Points Earned ⭐</div>';
+        html += '    </div>';
+        html += '    <div style="background:#FFF; border:2px solid #FFB74D; border-radius:14px; padding:10px 18px; box-shadow:0 3px 8px rgba(0,0,0,0.06);">';
+        html += '      <div style="font-size:24px; font-weight:900; color:#E65100;">' + totalPts + '</div>';
+        html += '      <div style="font-size:11px; font-weight:800; color:#BF360C;">Total Score 🏆</div>';
+        html += '    </div>';
+        html += '  </div>';
+      }
+
+      if (info.newBadge) {
+        html += '  <div style="background:#FFF3E0; border:2px dashed #FF9800; border-radius:14px; padding:10px; margin-bottom:12px;">';
+        html += '    <div style="font-size:11px; font-weight:900; color:#E65100; text-transform:uppercase;">🎖️ New Badge Unlocked!</div>';
+        html += '    <div style="font-size:16px; font-weight:900; color:#BF360C; margin-top:2px;">' + escapeHtml(info.newBadge) + '</div>';
+        html += '  </div>';
+      }
+
+      html += '  <div style="background:#FFFFFF; border-radius:12px; padding:10px; margin-bottom:14px; border:1px solid #FFE082;">';
+      html += '    <div style="font-size:11px; font-weight:800; color:#795548; margin-bottom:6px;">Your Trophies &amp; Badges:</div>';
+      html += '    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px;">';
+      badges.forEach(function(b) {
+        html += '<span style="background:#FFF9C4; border:1px solid #FBC02D; border-radius:8px; padding:3px 8px; font-size:11px; font-weight:800; color:#5D4037;">' + escapeHtml(b) + '</span>';
+      });
+      html += '    </div>';
+      html += '  </div>';
+
+      html += '  <button class="btn-action-primary" style="background:#2E7D32; font-size:14px;" onclick="document.getElementById(\'reward-celebration-modal\').remove(); renderHeaderStatus(); renderHome();">';
+      html += '    Awesome! Keep Learning 🚀';
+      html += '  </button>';
+      html += '</div>';
+
+      modal.innerHTML = html;
+      document.body.appendChild(modal);
     }
 
     // One-Tap Homework Completion Modal with optional photo upload
@@ -3157,11 +4320,15 @@
 
       // Student selector
       html += '  <div style="margin-bottom:10px;">';
-      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Select Child / Student:</label>';
+      html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Child / Student:</label>';
       html += '    <select id="parent-sub-student-id" class="input-field" style="margin-top:4px;">';
-      students.forEach(function(s) {
-        html += '<option value="' + s.student_id + '" data-name="' + escapeHtml(s.student_name) + '">' + escapeHtml(s.student_name) + ' (' + s.admission_no + ')</option>';
-      });
+      if (appSession.student) {
+        html += '<option value="' + (appSession.student.login_id || appSession.student.student_id) + '" data-name="' + escapeHtml(appSession.student.student_name) + '" selected>' + escapeHtml(appSession.student.student_name) + ' (' + (appSession.student.login_id || appSession.student.student_id) + ')</option>';
+      } else {
+        students.forEach(function(s) {
+          html += '<option value="' + s.student_id + '" data-name="' + escapeHtml(s.student_name) + '">' + escapeHtml(s.student_name) + ' (' + s.admission_no + ')</option>';
+        });
+      }
       html += '    </select>';
       html += '  </div>';
 
@@ -3181,7 +4348,7 @@
       html += '  </div>';
 
       html += '  <button class="btn-mark-done" onclick="safeAction(function(){ submitParentHomeworkDone(\'' + hw.id + '\'); })">';
-      html += '    Confirm &amp; Mark Done ✅';
+      html += '    Confirm &amp; Mark Done ✅ (+30 Pts)';
       html += '  </button>';
       html += '</div>';
 
@@ -3234,9 +4401,9 @@
         submission_type: photoData ? "photo" : "tap",
         photo_url: photoData,
         notes: notes,
-        points_earned: 10.0,
+        points_earned: 30.0,
         zero_mistake_bonus: 0.0,
-        total_score: 10.0,
+        total_score: 30.0,
         wrong_taps: 0,
         completed_at: new Date().toISOString()
       };
@@ -3257,8 +4424,16 @@
       var modal = document.getElementById("parent-complete-modal");
       if (modal) modal.remove();
 
-      playTone("fanfare");
-      triggerConfetti();
+      // Award Points & Stars (+30 pts) with duplicate farming prevention
+      await awardStudentReward({
+        type: "homework",
+        homeworkId: hwId,
+        title: hw.title,
+        pointsAward: 30,
+        starsAward: 30,
+        defaultBadge: "🌟 Homework Star"
+      });
+
       showToast("Homework marked as Completed! ✅ Great job!", "success");
       speak("Superb! Homework marked as completed for " + stuName + "!", "en-IN");
       renderHome();
@@ -3284,101 +4459,286 @@
     }
 
     // =========================================================================
-    // ROLE 2: TEACHER LOGIN & STRICT ACCESS CONTROL (kids_class_teachers)
+    // ROLE 2: UDISE AUTHENTICATION (TEACHERS & PRINCIPAL) & FULL CLASS ACCESS
     // =========================================================================
-    function openTeacherLoginModal() {
+    function openUdiseLoginModal(intendedRole) {
       playTone("pop");
-      var existing = document.getElementById("teacher-login-modal");
+      var existing = document.getElementById("udise-login-modal");
       if (existing) existing.remove();
+      var oldT = document.getElementById("teacher-login-modal");
+      if (oldT) oldT.remove();
+      var oldP = document.getElementById("principal-login-modal");
+      if (oldP) oldP.remove();
 
+      var isPrincipal = (intendedRole === "principal");
+      var roleTitle = isPrincipal ? "Principal Supervision Desk" : "Faculty & Teacher Portal";
+      var roleEmoji = isPrincipal ? "🛡️" : "👩‍🏫";
+      var roleColor = isPrincipal ? "#4527A0" : "#D84315";
+      var btnBg = isPrincipal ? "#673AB7" : "#E65100";
       var school = getActiveSchool();
+
       var modal = document.createElement("div");
-      modal.id = "teacher-login-modal";
+      modal.id = isPrincipal ? "principal-login-modal" : "teacher-login-modal";
       modal.className = "modal-overlay";
-      modal.innerHTML = '<div class="modal-card" style="max-width: 380px;">' +
-        '  <div style="font-size: 44px; margin-bottom: 6px;">👩‍🏫</div>' +
-        '  <h2 style="font-size: 20px; font-weight: 900; color: #D84315; margin-bottom: 4px;">Faculty &amp; Teacher Portal</h2>' +
-        '  <div style="font-size: 12px; color: #546E7A; font-weight: 700; margin-bottom: 14px;">Campus: <strong>' + escapeHtml(school.name) + '</strong></div>' +
-        '  <div style="text-align: left; margin-bottom: 8px;">' +
-        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Registered Mobile Number or Employee Code:</label>' +
-        '    <input type="text" id="teacher-id-input" class="input-field" placeholder="Enter Mobile No. or Emp Code" style="margin-top: 4px;" autocomplete="off" />' +
+      modal.innerHTML = '<div class="modal-card" style="max-width: 400px; text-align: left;">' +
+        '  <div style="text-align: center; font-size: 42px; margin-bottom: 4px;">' + roleEmoji + '</div>' +
+        '  <h2 style="font-size: 20px; font-weight: 900; color: ' + roleColor + '; margin: 0 0 4px 0; text-align: center;">' + roleTitle + '</h2>' +
+        '  <div style="font-size: 12px; color: #546E7A; font-weight: 700; margin-bottom: 12px; text-align: center;">Campus: <strong>' + escapeHtml(school.name) + '</strong> • Supabase Auth</div>' +
+
+        '  <div style="background: #E8F5E9; border: 1.5px solid #A5D6A7; border-radius: 12px; padding: 10px 12px; margin-bottom: 14px; font-size: 11px; color: #1B5E20; font-weight: 700; line-height: 1.4;">' +
+        '    🔐 <strong>Pre-Authorized Staff Login:</strong><br/>Enter your School UDISE Code and Registered 10-Digit Mobile. If logging in for the first time, you will set your personal password!' +
         '  </div>' +
-        '  <div style="text-align: left; margin-bottom: 12px;">' +
-        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">4-Digit Security PIN:</label>' +
-        '    <input type="password" id="teacher-pin-input" class="input-field" placeholder="••••" maxlength="6" value="1234" style="margin-top: 4px; font-size: 18px; letter-spacing: 4px; text-align: center;" autocomplete="off" />' +
+
+        '  <div style="margin-bottom: 10px;">' +
+        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">School UDISE Code:</label>' +
+        '    <input type="text" id="teacher-id-input" class="input-field" placeholder="Enter School UDISE Code (e.g. 08150803534)" style="margin-top: 4px; font-size: 14px; font-weight: 800;" autocomplete="off" />' +
         '  </div>' +
-        '  <button class="btn-action-primary" onclick="safeAction(submitTeacherModalLogin)">' +
+
+        '  <div style="margin-bottom: 10px;">' +
+        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Registered Mobile Number:</label>' +
+        '    <input type="tel" id="teacher-mobile-input" class="input-field" placeholder="Enter 10-Digit Mobile (e.g. 9829011111)" maxlength="10" style="margin-top: 4px; font-size: 14px; font-weight: 800;" autocomplete="tel" />' +
+        '  </div>' +
+
+        '  <div style="margin-bottom: 14px;">' +
+        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Password (leave blank on first login to set password):</label>' +
+        '    <input type="password" id="teacher-pin-input" class="input-field" placeholder="••••••••" style="margin-top: 4px; font-size: 16px; letter-spacing: 2px;" autocomplete="off" />' +
+        '  </div>' +
+
+        '  <button class="btn-action-primary" style="background:' + btnBg + ';" onclick="safeAction(function(){ submitUdiseLogin(\'' + intendedRole + '\'); })">' +
         '    Verify &amp; Enter Dashboard 🚀' +
         '  </button>' +
-        '  <button style="margin-top: 14px; background: none; border: none; font-size: 12px; font-weight: 800; color: #78909C; cursor: pointer;" onclick="document.getElementById(\'teacher-login-modal\').remove()">' +
-        '    Cancel ✕' +
-        '  </button>' +
+        '  <div style="text-align: center; margin-top: 12px;">' +
+        '    <button style="background: none; border: none; font-size: 12px; font-weight: 800; color: #78909C; cursor: pointer;" onclick="var m=document.getElementById(\'' + modal.id + '\'); if(m) m.remove();">' +
+        '      Cancel ✕' +
+        '    </button>' +
+        '  </div>' +
         '</div>';
       document.body.appendChild(modal);
-      speak("Enter your registered teacher mobile number or employee code.", "en-IN");
+      speak("Enter your registered school UDISE code and mobile number to authenticate.", "en-IN");
     }
 
-    async function submitTeacherModalLogin() {
-      var idInput = document.getElementById("teacher-id-input");
-      var pinInput = document.getElementById("teacher-pin-input");
+    async function submitUdiseLogin(intendedRole) {
+      var idInput = document.getElementById("teacher-id-input") || document.getElementById("udise-code-input") || document.getElementById("principal-pin-input");
+      var mobileInput = document.getElementById("teacher-mobile-input");
+      var pinInput = document.getElementById("teacher-pin-input") || document.getElementById("udise-password-input");
       var ident = idInput ? idInput.value.trim() : "";
-      var pin = pinInput ? pinInput.value.trim() : "";
-      var schoolId = getActiveSchoolId();
+      var mobile = mobileInput ? mobileInput.value.trim().replace(/\D/g, "") : "";
+      var pass = pinInput ? pinInput.value.trim() : "";
       var school = getActiveSchool();
 
       if (!ident) {
-        showToast("Please enter Teacher Mobile or Emp Code", "wrong");
-        speak("Please enter your mobile number or employee code.", "en-IN");
+        showToast("Please enter your School UDISE Code", "wrong");
+        speak("Please enter your school UDISE code.", "en-IN");
         return;
       }
 
-      showToast("Verifying Class-Teacher Authorization...", "success");
-
-      // 1. Try Supabase RPC live check
-      try {
-        var res = await supabaseRest("/rpc/kids_verify_teacher_v2", {
-          method: "POST",
-          body: { p_school_id: schoolId, p_identifier: ident, p_pin: pin }
-        });
-        if (res && res.success && res.teacher) {
-          activateTeacherSession(res.teacher);
-          var m = document.getElementById("teacher-login-modal");
-          if (m) m.remove();
-          return;
-        } else if (res && res.unassigned) {
-          showToast(res.message, "wrong");
-          speak("Access restricted. You are not assigned as an active class teacher for this school.", "en-IN");
-          return;
-        }
-      } catch(err) {
-        console.log("Supabase RPC teacher verify check:", err.message || err);
+      if (!mobile || mobile.length !== 10) {
+        showToast("Please enter your valid 10-digit registered mobile number", "wrong");
+        speak("Please enter your 10-digit registered mobile number.", "en-IN");
+        if (mobileInput) mobileInput.focus();
+        return;
       }
 
-      // 2. Local Registry Verification against kids_class_teachers
-      var cleanIdent = ident.toUpperCase();
-      var teachers = getAllClassTeachers(schoolId);
-      var found = teachers.find(function(t) {
-        return (t.teacher_mobile === ident || (t.emp_code && t.emp_code.toUpperCase() === cleanIdent) || t.id.toUpperCase() === cleanIdent) &&
-               t.is_active &&
-               (pin === "" || t.pin === pin || pin === "1234" || pin === "admin");
-      });
+      showToast("Verifying Pre-Authorized Authorization in Supabase...", "info");
 
-      if (found) {
-        activateTeacherSession(found);
-        var modal = document.getElementById("teacher-login-modal");
-        if (modal) modal.remove();
-      } else {
-        // Strict Access Control Warning
-        var msg = "Access Restricted: Mobile/Emp Code is not assigned as an active Class Teacher for " + school.name + "! Only assigned teachers for Nursery, LKG, or UKG can access.";
+      // 1. Query Supabase public.udise_accounts using BOTH udise_code AND mobile
+      var account = await getUdiseAccount(ident, mobile);
+
+      if (!account) {
+        var msg = "Access Restricted: No authorized staff account found for UDISE " + ident + " and Mobile " + mobile + ". Please contact the Principal.";
         showToast(msg, "wrong");
-        speak("Access Restricted. You are not assigned as an active class teacher for " + school.name + ". Please contact the Principal.", "en-IN");
+        speak("Access Restricted. Account not found. Please contact the Principal.", "en-IN");
+        return;
       }
+
+      // Validate strict role
+      if (intendedRole === "principal" && account.role !== "principal") {
+        showToast("Access Restricted: This account is registered as a Teacher. Please use the Teacher Portal.", "wrong");
+        speak("Access Restricted. Principal privileges required.", "en-IN");
+        return;
+      }
+      if (intendedRole === "teacher" && account.role !== "teacher" && account.role !== "principal") {
+        showToast("Access Restricted: Invalid role for Teacher Portal.", "wrong");
+        return;
+      }
+
+      // 2. Remote School Subscription Check
+      var sub = await fetchSchoolSubscription(account.udise_code);
+      var subStatus = isSubscriptionValid(sub);
+      if (!subStatus.valid) {
+        var m1 = document.getElementById("teacher-login-modal");
+        if (m1) m1.remove();
+        var m2 = document.getElementById("principal-login-modal");
+        if (m2) m2.remove();
+        renderSubscriptionExpiredScreen(sub, account.udise_code);
+        return;
+      }
+      appSession.subscription = sub;
+
+      // First-time login: Password not set yet -> Open "Set Your Password" screen
+      if (!account.is_password_set || !account.password_hash) {
+        var m1 = document.getElementById("teacher-login-modal");
+        if (m1) m1.remove();
+        var m2 = document.getElementById("principal-login-modal");
+        if (m2) m2.remove();
+        showToast("First-time login detected! Please set your personal password 🔐", "success");
+        speak("First time login! Please set your personal password.", "en-IN");
+        openSetPasswordModal(account);
+        return;
+      }
+
+      // Subsequent login: Authenticate directly using UDISE Code + Mobile + self-set Password
+      if (!pass) {
+        showToast("Please enter your password for account " + account.user_name, "wrong");
+        speak("Please enter your password.", "en-IN");
+        if (pinInput) pinInput.focus();
+        return;
+      }
+
+      var hash = await hashPassword(pass);
+      var isMatch = (account.password_hash === hash) || (account.password_hash === pass);
+
+      if (isMatch) {
+        var mClose1 = document.getElementById("teacher-login-modal");
+        if (mClose1) mClose1.remove();
+        var mClose2 = document.getElementById("principal-login-modal");
+        if (mClose2) mClose2.remove();
+
+        playTone("fanfare");
+        showToast("Login Successful! Welcome " + account.user_name + " 🚀", "success");
+        speak("Welcome " + account.user_name + "! Access granted.", "en-IN");
+        activateUdiseSession(account);
+      } else {
+        showToast("Invalid Password! Please re-enter your password.", "wrong");
+        speak("Invalid password. Please try again.", "en-IN");
+      }
+    }
+
+    function openSetPasswordModal(account) {
+      playTone("pop");
+      var existing = document.getElementById("set-password-modal");
+      if (existing) existing.remove();
+
+      var modal = document.createElement("div");
+      modal.id = "set-password-modal";
+      modal.className = "modal-overlay";
+      modal.innerHTML = '<div class="modal-card" style="max-width: 420px; text-align: left;">' +
+        '  <div style="text-align:center; font-size:42px; margin-bottom:4px;">🔐</div>' +
+        '  <h2 style="font-size:20px; font-weight:900; color:#2E7D32; margin:0 0 4px 0; text-align:center;">Set Your Password</h2>' +
+        '  <div style="font-size:12px; color:#546E7A; font-weight:700; margin-bottom:12px; text-align:center;">First-Time Setup • <strong>' + escapeHtml(account.school_name) + '</strong></div>' +
+
+        '  <div style="background:#F1F8E9; border:1.5px solid #C8E6C9; border-radius:12px; padding:10px 14px; margin-bottom:14px;">' +
+        '    <div style="font-size:12px; color:#1B5E20; font-weight:800;">UDISE: <strong>' + escapeHtml(account.udise_code) + '</strong> • Mobile: <strong>' + escapeHtml(account.mobile || "") + '</strong></div>' +
+        '    <div style="font-size:12px; color:#2E7D32; font-weight:700;">Role: <strong>' + escapeHtml(account.role.toUpperCase()) + '</strong> • Name: ' + escapeHtml(account.user_name) + '</div>' +
+        '  </div>' +
+
+        '  <div style="margin-bottom:12px;">' +
+        '    <label style="font-size:11px; font-weight:800; color:#37474F;">Create New Password (min 4 characters):</label>' +
+        '    <input type="password" id="set-new-pass" class="input-field" placeholder="Enter new password" style="margin-top:4px; font-size:15px;" autocomplete="new-password" />' +
+        '  </div>' +
+
+        '  <div style="margin-bottom:16px;">' +
+        '    <label style="font-size:11px; font-weight:800; color:#37474F;">Confirm Password:</label>' +
+        '    <input type="password" id="set-confirm-pass" class="input-field" placeholder="Re-enter new password" style="margin-top:4px; font-size:15px;" autocomplete="new-password" />' +
+        '  </div>' +
+
+        '  <button class="btn-action-primary" style="background:#2E7D32;" onclick="safeAction(function(){ submitSetPassword(\'' + account.udise_code + '\', \'' + (account.mobile || '') + '\'); })">' +
+        '    Save Password &amp; Login 🚀' +
+        '  </button>' +
+        '  <div style="text-align: center; margin-top: 12px;">' +
+        '    <button style="background: none; border: none; font-size: 12px; font-weight: 800; color: #78909C; cursor: pointer;" onclick="document.getElementById(\'set-password-modal\').remove()">' +
+        '      Cancel ✕' +
+        '    </button>' +
+        '  </div>' +
+        '</div>';
+      document.body.appendChild(modal);
+    }
+
+    async function submitSetPassword(udiseCode, mobile) {
+      var p1 = document.getElementById("set-new-pass") ? document.getElementById("set-new-pass").value : "";
+      var p2 = document.getElementById("set-confirm-pass") ? document.getElementById("set-confirm-pass").value : "";
+
+      if (!p1 || p1.length < 4) {
+        showToast("Password must be at least 4 characters long", "wrong");
+        speak("Password must be at least 4 characters long.", "en-IN");
+        return;
+      }
+
+      if (p1 !== p2) {
+        showToast("Passwords do not match! Please re-type carefully.", "wrong");
+        speak("Passwords do not match. Please re-enter.", "en-IN");
+        return;
+      }
+
+      showToast("Saving your self-set password to Supabase...", "success");
+      var sub = await fetchSchoolSubscription(udiseCode);
+      var subStatus = isSubscriptionValid(sub);
+      if (!subStatus.valid) {
+        var modal = document.getElementById("set-password-modal");
+        if (modal) modal.remove();
+        renderSubscriptionExpiredScreen(sub, udiseCode);
+        return;
+      }
+      appSession.subscription = sub;
+
+      var hash = await saveUdisePassword(udiseCode, mobile, p1);
+      var account = await getUdiseAccount(udiseCode, mobile);
+      if (!account) {
+        account = { udise_code: udiseCode, mobile: mobile, role: "teacher", school_id: "the-abacus-academy", school_name: "The Abacus Academy", user_name: "Faculty Teacher" };
+      }
+      account.is_password_set = true;
+      account.password_hash = hash;
+
+      var modal = document.getElementById("set-password-modal");
+      if (modal) modal.remove();
+
+      playTone("fanfare");
+      triggerConfetti();
+      showToast("Password saved successfully! Logging in... 🚀", "success");
+      speak("Password set successfully! Welcome to your dashboard.", "en-IN");
+      activateUdiseSession(account);
+    }
+
+    function activateUdiseSession(account) {
+      // 1. Auto-resolve school identity from UDISE code (No manual school selector)
+      if (account.school_id) {
+        setActiveSchoolId(account.school_id, true);
+      }
+
+      if (account.role === "principal") {
+        appSession.type = "principal";
+        appSession.principalObj = account;
+        appSession.principalTab = "teachers";
+        localStorage.setItem("taa_kids_principal_session", JSON.stringify(account));
+        openPrincipalPanel();
+      } else {
+        // Teacher
+        appSession.type = "teacher";
+        appSession.teacherObj = Object.assign({}, account, {
+          teacher_name: account.user_name || "Faculty Teacher",
+          class_name: account.class_name || appSession.parentClass || "Nursery",
+          teacher_mobile: account.mobile || account.udise_code
+        });
+        appSession.teacherClass = appSession.parentClass || "Nursery";
+        appSession.teacherTab = "send";
+        localStorage.setItem("taa_kids_teacher_session", JSON.stringify(appSession.teacherObj));
+        openTeacherPanel();
+      }
+      renderHeaderStatus();
+    }
+
+    function openTeacherLoginModal() {
+      openUdiseLoginModal("teacher");
+    }
+
+    async function submitTeacherModalLogin() {
+      await submitUdiseLogin("teacher");
     }
 
     function activateTeacherSession(teacher) {
       appSession.type = "teacher";
       appSession.teacherObj = teacher;
-      appSession.teacherClass = teacher.class_name; // STRICT LOCK: Locked to assigned class!
+      appSession.teacherClass = teacher.class_name; // Class lock enforcement
       appSession.teacherTab = "send";
       appSession.schoolId = teacher.school_id || getActiveSchoolId();
       localStorage.setItem("taa_kids_teacher_session", JSON.stringify(teacher));
@@ -3403,11 +4763,17 @@
       renderTeacherPanelView();
     }
 
+    function switchTeacherClass(cls) {
+      appSession.teacherClass = cls;
+      playTone("pop");
+      renderTeacherPanelView();
+    }
+
     function renderTeacherPanelView() {
       var view = document.getElementById("main-view");
       var school = getActiveSchool();
-      var teacher = appSession.teacherObj || { teacher_name: "Class Teacher", class_name: appSession.teacherClass || "UKG" };
-      var cls = appSession.teacherClass; // STRICTLY LOCKED
+      var teacher = appSession.teacherObj || { teacher_name: "Class Teacher", class_name: appSession.teacherClass || "Nursery" };
+      var cls = appSession.teacherClass || "Nursery";
 
       var html = '<div class="teacher-panel-wrap">';
 
@@ -3415,7 +4781,7 @@
       html += '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
       html += '  <div>';
       html += '    <h2 style="font-size: 19px; font-weight: 900; color: #D84315; margin: 0;">👩‍🏫 Class Teacher Portal</h2>';
-      html += '    <div style="font-size: 11px; color: #546E7A; font-weight: 700;">' + escapeHtml(school.name) + ' • Teacher: <strong>' + escapeHtml(teacher.teacher_name) + '</strong></div>';
+      html += '    <div style="font-size: 11px; color: #546E7A; font-weight: 700;">' + escapeHtml(school.name) + ' • Teacher: <strong>' + escapeHtml(teacher.teacher_name || teacher.user_name) + '</strong></div>';
       html += '  </div>';
       html += '  <div style="display: flex; gap: 6px; align-items: center;">';
       html += '    <button class="nav-icon-btn" style="font-size: 11px; padding: 6px 10px;" onclick="safeAction(goHome)">Home 🏠</button>';
@@ -3423,13 +4789,18 @@
       html += '  </div>';
       html += '</div>';
 
-      // Strict Class Assignment Banner (No free class hopper)
-      html += '<div style="background: #E8F5E9; border: 2px solid #81C784; border-radius: 14px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;">';
+      // Full Class Access Banner & Class Switcher (Nursery, LKG, UKG)
+      html += '<div style="background: #E8F5E9; border: 2px solid #81C784; border-radius: 14px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
       html += '  <div>';
-      html += '    <span style="font-size: 10px; font-weight: 900; background: #2E7D32; color: #FFF; padding: 2px 6px; border-radius: 6px;">STRICT CLASS ACCESS</span>';
-      html += '    <div style="font-size: 14px; font-weight: 900; color: #1B5E20; margin-top: 3px;">Assigned Class: ' + cls + ' Class</div>';
+      html += '    <span style="font-size: 10px; font-weight: 900; background: #2E7D32; color: #FFF; padding: 2px 6px; border-radius: 6px;">FULL CLASS ACCESS</span>';
+      html += '    <div style="font-size: 14px; font-weight: 900; color: #1B5E20; margin-top: 3px;">Active Class: <strong>' + cls + '</strong> (Manage &amp; Publish)</div>';
       html += '  </div>';
-      html += '  <div style="font-size: 11px; color: #388E3C; font-weight: 700;">Authorized publisher for ' + cls + ' only</div>';
+      html += '  <div style="display: flex; gap: 6px;">';
+      ["Nursery", "LKG", "UKG"].forEach(function(c) {
+        var isAct = (c === cls);
+        html += '<button onclick="safeAction(function(){ switchTeacherClass(\'' + c + '\'); })" style="padding:6px 12px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer; border:2px solid ' + (isAct ? '#2E7D32' : '#CFD8DC') + '; background:' + (isAct ? '#2E7D32' : '#FFF') + '; color:' + (isAct ? '#FFF' : '#37474F') + ';">' + (c === 'Nursery' ? '🧸 ' : (c === 'LKG' ? '🚂 ' : '🚀 ')) + c + '</button>';
+      });
+      html += '  </div>';
       html += '</div>';
 
       // 3 Main Navigation Tabs
@@ -3583,7 +4954,7 @@
     async function handleAssignHomeworkSubmit() {
       var cls = appSession.teacherClass;
       var schoolId = getActiveSchoolId();
-      var teacher = appSession.teacherObj || { teacher_name: "Class Teacher", teacher_mobile: "9829011111" };
+      var teacher = appSession.teacherObj || { teacher_name: "Teacher", teacher_mobile: "" };
 
       var subSelect = document.getElementById("teacher-hw-subject");
       var typeSelect = document.getElementById("teacher-hw-type");
@@ -3623,8 +4994,8 @@
         due_date: dueDate,
         due_time: dueTime,
         attachment_url: attachmentUrl,
-        assigned_by: teacher.teacher_name,
-        teacher_mobile: teacher.teacher_mobile,
+        assigned_by: teacher.teacher_name || teacher.user_name || "Teacher",
+        teacher_mobile: teacher.teacher_mobile || teacher.mobile || "",
         created_at: new Date().toISOString()
       };
 
@@ -3790,52 +5161,34 @@
     // ROLE 3: PRINCIPAL SUPERVISION PANEL (Both Schools)
     // =========================================================================
     function openPrincipalLoginModal() {
-      playTone("pop");
-      var existing = document.getElementById("principal-login-modal");
-      if (existing) existing.remove();
-
-      var school = getActiveSchool();
-      var modal = document.createElement("div");
-      modal.id = "principal-login-modal";
-      modal.className = "modal-overlay";
-      modal.innerHTML = '<div class="modal-card" style="max-width: 380px;">' +
-        '  <div style="font-size: 44px; margin-bottom: 6px;">🛡️</div>' +
-        '  <h2 style="font-size: 20px; font-weight: 900; color: #4527A0; margin-bottom: 4px;">Principal Supervision Desk</h2>' +
-        '  <div style="font-size: 12px; color: #546E7A; font-weight: 700; margin-bottom: 14px;">Campus: <strong>' + escapeHtml(school.name) + '</strong></div>' +
-        '  <div style="text-align: left; margin-bottom: 12px;">' +
-        '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Admin Security PIN / Password:</label>' +
-        '    <input type="password" id="principal-pin-input" class="input-field" placeholder="••••" maxlength="8" value="1234" style="margin-top: 4px; font-size: 18px; letter-spacing: 4px; text-align: center;" autocomplete="off" />' +
-        '  </div>' +
-        '  <button class="btn-action-primary" style="background:#673AB7;" onclick="safeAction(submitPrincipalLogin)">' +
-        '    Verify &amp; Enter Supervision Desk 🛡️' +
-        '  </button>' +
-        '  <button style="margin-top: 14px; background: none; border: none; font-size: 12px; font-weight: 800; color: #78909C; cursor: pointer;" onclick="document.getElementById(\'principal-login-modal\').remove()">' +
-        '    Cancel ✕' +
-        '  </button>' +
-        '</div>';
-      document.body.appendChild(modal);
-      speak("Enter Principal security PIN to access the supervision panel.", "en-IN");
+      if (appSession.type === "principal" && appSession.principalObj) {
+        openPrincipalPanel();
+        return;
+      }
+      openUdiseLoginModal("principal");
     }
 
     function submitPrincipalLogin() {
-      var pinInput = document.getElementById("principal-pin-input");
-      var pin = pinInput ? pinInput.value.trim() : "";
-      var school = getActiveSchool();
+      submitUdiseLogin("principal");
+    }
 
-      if (pin === "1234" || pin === "admin" || pin === school.defaultPin || pin === "TAA2026" || pin === "GR2026") {
-        appSession.type = "principal";
-        appSession.principalTab = "teachers";
-        localStorage.setItem("taa_kids_principal_session", "active");
-        var m = document.getElementById("principal-login-modal");
-        if (m) m.remove();
-        playTone("fanfare");
-        showToast("Principal Verification Successful! 🛡️", "success");
-        speak("Welcome Principal! Supervision panel is ready.", "en-IN");
-        openPrincipalPanel();
-      } else {
-        showToast("Invalid Admin PIN!", "wrong");
-        speak("Invalid Admin PIN. Access denied.", "en-IN");
-      }
+    function openPrincipalShowcaseMode() {
+      appSession.principalShowcaseMode = true;
+      appSession.focusedHomeworkQuiz = null;
+      appSession.parentTab = "learning";
+      appState.section = "home";
+      var hNav = document.getElementById("btn-home-nav");
+      if (hNav) hNav.style.display = "flex";
+      var subBar = document.getElementById("subtabs-bar");
+      if (subBar) subBar.style.display = "none";
+      var filBar = document.getElementById("filter-pills-bar");
+      if (filBar) filBar.style.display = "none";
+      renderHeaderStatus();
+      renderHome();
+      setTimeout(function() {
+        var hub = document.getElementById("parent-student-hub");
+        if (hub) hub.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
     }
 
     function openPrincipalPanel() {
@@ -3845,6 +5198,11 @@
       document.getElementById("filter-pills-bar").style.display = "none";
       renderHeaderStatus();
       renderPrincipalPanelView();
+      syncUdiseAccountsFromSupabase().then(function() {
+        if (appState.section === "principal" && appSession.principalTab === "teachers") {
+          renderPrincipalPanelView();
+        }
+      });
     }
 
     function switchPrincipalTab(tab) {
@@ -3873,14 +5231,18 @@
       html += '  </div>';
       html += '</div>';
 
-      // Campus Switcher Segment inside Principal Panel
-      html += '<div class="school-switcher-bar">';
-      Object.keys(SCHOOLS_CONFIG).forEach(function(sKey) {
-        var sObj = SCHOOLS_CONFIG[sKey];
-        var isAct = (sKey === schoolId);
-        var extraClass = (sKey === "gr-children-academy") ? "school-gr" : "";
-        html += '<button class="school-switcher-btn ' + (isAct ? ("active " + extraClass) : "") + '" onclick="safeAction(function(){ setActiveSchoolId(\'' + sKey + '\'); })">' + sObj.emoji + ' ' + sObj.shortName + '</button>';
-      });
+      // Campus Info Banner (School identity auto-resolved from UDISE)
+      var pSub = appSession.subscription || { plan_name: "Owner Lifetime Free", valid_until: "2099-12-31" };
+      var subBadge = (pSub.valid_until === "2099-12-31" || (pSub.plan_name && pSub.plan_name.toLowerCase().indexOf("lifetime") !== -1))
+        ? '<span style="font-size:11px; font-weight:800; background:#E8F5E9; color:#2E7D32; padding:3px 8px; border-radius:8px;">🌟 Owner Lifetime Free</span>'
+        : '<span style="font-size:11px; font-weight:800; background:#E3F2FD; color:#1565C0; padding:3px 8px; border-radius:8px;">Plan: ' + escapeHtml(pSub.plan_name || 'Standard') + ' • Valid until: ' + escapeHtml(pSub.valid_until || 'Active') + '</span>';
+
+      html += '<div style="background: #EDE7F6; border: 1.5px solid #D1C4E9; border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
+      html += '  <div style="font-size: 12px; color: #4527A0; font-weight: 800; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">';
+      html += '    <span>🏫 Campus: <strong>' + escapeHtml(school.fullName) + '</strong></span>';
+      html += '    ' + subBadge;
+      html += '  </div>';
+      html += '  <button onclick="safeAction(openPrincipalShowcaseMode)" style="background: #673AB7; color: #FFF; border: none; padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(103,58,183,0.3);">📱 Preview All Classes &amp; Content (Showcase Mode)</button>';
       html += '</div>';
 
       // Navigation Tabs
@@ -3907,9 +5269,47 @@
       view.innerHTML = html;
     }
 
-    // Principal Tab 1: Class Teachers Registry Management (kids_class_teachers)
+    // Principal Tab 1: Manage Teachers (public.udise_accounts) & Class Teacher Assignment (kids_class_teachers)
     function renderPrincipalTeachersTab(schoolId) {
-      var html = '<div class="principal-card">';
+      var principal = appSession.principalObj || {};
+      var udiseCode = principal.udise_code || "08150803534";
+      var accounts = getLocalUdiseAccounts();
+      var teachers = accounts.filter(function(a) {
+        return a.role === "teacher" && (!udiseCode || a.udise_code === udiseCode);
+      });
+
+      // SECTION 1: MANAGE TEACHERS (Add / Remove via Supabase public.udise_accounts)
+      var html = '<div class="principal-card" style="margin-bottom:16px;">';
+      html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">';
+      html += '    <div>';
+      html += '      <h3 style="font-size:16px; font-weight:900; color:#4527A0; margin:0;">👥 Manage School Teachers</h3>';
+      html += '      <div style="font-size:11px; color:#546E7A; font-weight:700;">School UDISE: <strong>' + escapeHtml(udiseCode) + '</strong> • Supabase Staff Roster</div>';
+      html += '    </div>';
+      html += '    <button class="btn-assign-action" style="background:#673AB7; color:#FFF; font-size:12px; padding:6px 12px; cursor:pointer;" onclick="safeAction(openAddTeacherModal)">➕ Add Teacher</button>';
+      html += '  </div>';
+
+      if (teachers.length === 0) {
+        html += '<div style="background:#F5F5F5; border:1px dashed #BDBDBD; border-radius:12px; padding:16px; text-align:center; color:#78909C; font-size:12px; font-weight:700;">';
+        html += '  No teachers added yet. Tap <strong>"➕ Add Teacher"</strong> to authorize teachers with their 10-digit mobile number!';
+        html += '</div>';
+      } else {
+        html += '<div style="display:flex; flex-direction:column; gap:8px;">';
+        teachers.forEach(function(t) {
+          var isPassSet = t.is_password_set;
+          html += '<div style="display:flex; justify-content:space-between; align-items:center; background:#FAFAFA; border:1.5px solid #E0E0E0; border-radius:12px; padding:10px 14px;">';
+          html += '  <div>';
+          html += '    <div style="font-size:14px; font-weight:900; color:#263238;">👩‍🏫 ' + escapeHtml(t.user_name) + '</div>';
+          html += '    <div style="font-size:11px; color:#546E7A; font-weight:700;">Mobile: <strong>' + escapeHtml(t.mobile) + '</strong> • ' + (isPassSet ? '<span style="color:#2E7D32;">Password Set ✅</span>' : '<span style="color:#E65100;">Password Pending ⏳</span>') + '</div>';
+          html += '  </div>';
+          html += '  <button onclick="safeAction(function(){ handleRemoveTeacherPrompt(\'' + escapeHtml(t.udise_code) + '\', \'' + escapeHtml(t.mobile) + '\', \'' + escapeHtml(t.user_name) + '\'); })" style="background:#FFEBEE; color:#C62828; border:1px solid #FFCDD2; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">Remove 🗑️</button>';
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+      html += '</div>';
+
+      // SECTION 2: CLASS TEACHER ASSIGNMENT FOR NURSERY, LKG, UKG
+      html += '<div class="principal-card">';
       html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">';
       html += '    <h3 style="font-size:16px; font-weight:900; color:#4527A0; margin:0;">👩‍🏫 Class Teacher Assignment (kids_class_teachers)</h3>';
       html += '    <span style="font-size:11px; font-weight:800; background:#EDE7F6; color:#4527A0; padding:3px 8px; border-radius:8px;">Strict 1-Teacher / Class</span>';
@@ -3945,6 +5345,124 @@
       return html;
     }
 
+    function openAddTeacherModal() {
+      playTone("pop");
+      var existing = document.getElementById("add-teacher-modal");
+      if (existing) existing.remove();
+
+      var principal = appSession.principalObj || {};
+
+      var modal = document.createElement("div");
+      modal.id = "add-teacher-modal";
+      modal.className = "modal-overlay";
+      modal.innerHTML = '<div class="modal-card" style="max-width:400px; text-align:left;">' +
+        '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">' +
+        '    <h3 style="font-size:18px; font-weight:900; color:#4527A0; margin:0;">➕ Add School Teacher</h3>' +
+        '    <button onclick="document.getElementById(\'add-teacher-modal\').remove()" style="background:none; border:none; font-size:18px; cursor:pointer; font-weight:900;">✕</button>' +
+        '  </div>' +
+        '  <div style="background:#EDE7F6; border-radius:10px; padding:10px 12px; margin-bottom:12px; font-size:11px; color:#4527A0; font-weight:700;">' +
+        '    School UDISE: <strong>' + escapeHtml(principal.udise_code || "08150803534") + '</strong><br/>' +
+        '    The teacher will use this UDISE Code and their mobile number to log in and set their password.' +
+        '  </div>' +
+        '  <div style="margin-bottom:10px;">' +
+        '    <label style="font-size:11px; font-weight:800; color:#37474F;">Teacher Full Name:</label>' +
+        '    <input type="text" id="add-teacher-name" class="input-field" placeholder="Enter Teacher Name" style="margin-top:4px;" />' +
+        '  </div>' +
+        '  <div style="margin-bottom:16px;">' +
+        '    <label style="font-size:11px; font-weight:800; color:#37474F;">10-Digit Mobile Number:</label>' +
+        '    <input type="tel" id="add-teacher-mobile" class="input-field" placeholder="e.g. 9829011111" maxlength="10" style="margin-top:4px;" />' +
+        '  </div>' +
+        '  <button class="btn-action-primary" style="background:#673AB7;" onclick="safeAction(submitAddTeacherForm)">' +
+        '    Authorize &amp; Add Teacher ✅' +
+        '  </button>' +
+        '</div>';
+      document.body.appendChild(modal);
+    }
+
+    async function submitAddTeacherForm() {
+      var nameIn = document.getElementById("add-teacher-name");
+      var mobileIn = document.getElementById("add-teacher-mobile");
+      if (!nameIn || !mobileIn) return;
+
+      var name = nameIn.value.trim();
+      var mobile = mobileIn.value.trim().replace(/\D/g, "");
+
+      if (!name) {
+        showToast("Please enter teacher name", "wrong");
+        return;
+      }
+      if (!mobile || mobile.length !== 10) {
+        showToast("Please enter a valid 10-digit mobile number", "wrong");
+        return;
+      }
+
+      var principal = appSession.principalObj || {};
+      var schoolId = principal.school_id || getActiveSchoolId();
+      var school = getActiveSchool();
+      var udiseCode = principal.udise_code || "08150803534";
+
+      showToast("Adding teacher to Supabase...", "info");
+
+      var newTeacherRow = {
+        udise_code: udiseCode,
+        mobile: mobile,
+        school_id: schoolId,
+        school_name: school.name,
+        role: "teacher",
+        user_name: name,
+        is_password_set: false,
+        password_hash: null
+      };
+
+      // 1. Supabase POST
+      try {
+        await supabaseRest("/udise_accounts", {
+          method: "POST",
+          body: newTeacherRow
+        });
+      } catch(err) {
+        console.log("Supabase add teacher note:", err.message || err);
+      }
+
+      // 2. Local cache update
+      updateLocalUdiseAccount(udiseCode, mobile, newTeacherRow);
+
+      var modal = document.getElementById("add-teacher-modal");
+      if (modal) modal.remove();
+
+      playTone("fanfare");
+      showToast("Teacher " + name + " authorized successfully! 👩‍🏫", "success");
+      speak("Teacher " + name + " authorized successfully.", "en-IN");
+      renderPrincipalPanelView();
+    }
+
+    async function handleRemoveTeacherPrompt(udiseCode, mobile, teacherName) {
+      var confirmed = confirm("Are you sure you want to remove teacher " + teacherName + " (" + mobile + ")?");
+      if (!confirmed) return;
+
+      showToast("Removing teacher...", "info");
+
+      // 1. Delete from Supabase
+      try {
+        await supabaseRest("/udise_accounts?udise_code=eq." + encodeURIComponent(udiseCode) + "&mobile=eq." + encodeURIComponent(mobile), {
+          method: "DELETE"
+        });
+      } catch(e) {}
+
+      // 2. Remove from local cache
+      var accounts = getLocalUdiseAccounts();
+      var filtered = accounts.filter(function(a) {
+        return !(String(a.udise_code).trim() === String(udiseCode).trim() && String(a.mobile || "").trim() === String(mobile).trim());
+      });
+      try {
+        localStorage.setItem("taa_udise_accounts_cache", JSON.stringify(filtered));
+      } catch(e) {}
+
+      showToast("Teacher removed successfully 🗑️", "success");
+      speak("Teacher removed.", "en-IN");
+      renderPrincipalPanelView();
+    }
+
     function openAssignTeacherModal(cls) {
       playTone("pop");
       var schoolId = getActiveSchoolId();
@@ -3963,7 +5481,7 @@
       html += '  </div>';
       html += '  <div style="margin-bottom:8px;">';
       html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Teacher Full Name:</label>';
-      html += '    <input type="text" id="assign-teacher-name" value="' + escapeHtml(existingTeacher ? existingTeacher.teacher_name : '') + '" placeholder="e.g. Sunita Sharma" class="input-field" style="margin-top:4px;" />';
+      html += '    <input type="text" id="assign-teacher-name" value="' + escapeHtml(existingTeacher ? existingTeacher.teacher_name : '') + '" placeholder="Enter Teacher Name" class="input-field" style="margin-top:4px;" />';
       html += '  </div>';
       html += '  <div style="margin-bottom:8px;">';
       html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Registered Mobile Number:</label>';
@@ -3971,7 +5489,7 @@
       html += '  </div>';
       html += '  <div style="margin-bottom:8px;">';
       html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Employee Code:</label>';
-      html += '    <input type="text" id="assign-teacher-emp" value="' + escapeHtml(existingTeacher ? existingTeacher.emp_code : '') + '" placeholder="e.g. EMP-AA-01" class="input-field" style="margin-top:4px;" />';
+      html += '    <input type="text" id="assign-teacher-emp" value="' + escapeHtml(existingTeacher ? existingTeacher.emp_code : '') + '" placeholder="e.g. EMP-01" class="input-field" style="margin-top:4px;" />';
       html += '  </div>';
       html += '  <div style="margin-bottom:14px;">';
       html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Security PIN (4-digit):</label>';
@@ -3988,6 +5506,9 @@
 
     async function submitAssignTeacherForm(cls) {
       var schoolId = getActiveSchoolId();
+      var school = getActiveSchool();
+      var principal = appSession.principalObj || {};
+      var udiseCode = principal.udise_code || "08150803534";
       var name = document.getElementById("assign-teacher-name").value.trim();
       var mobile = document.getElementById("assign-teacher-mobile").value.trim();
       var emp = document.getElementById("assign-teacher-emp").value.trim();
@@ -3999,6 +5520,17 @@
       }
 
       await assignOrUpdateClassTeacher(schoolId, cls, name, mobile, emp, pin);
+      // Auto-register in udise_accounts as well
+      updateLocalUdiseAccount(udiseCode, mobile, {
+        udise_code: udiseCode,
+        mobile: mobile,
+        school_id: schoolId,
+        school_name: school.name,
+        role: "teacher",
+        user_name: name,
+        is_password_set: false
+      });
+
       var modal = document.getElementById("assign-teacher-modal");
       if (modal) modal.remove();
 
@@ -4284,7 +5816,7 @@
       return hrs + "h ago";
     }
 
-    // Launch Homework with Interactive Module
+    // Launch Homework with Interactive Module (Focused Practice Quiz Mode)
     function startAssignedHomework(hwId) {
       var schoolId = getActiveSchoolId();
       var hw = hwId ? getAllHomeworkList(schoolId).find(function(h) { return h.id === hwId; }) : getTodayActiveHomework(appSession.parentClass, schoolId);
@@ -4292,6 +5824,21 @@
         showToast("No homework active!", "wrong");
         return;
       }
+
+      // Lock session to focused homework quiz matching this specific teacher-assigned homework
+      appSession.focusedHomeworkQuiz = hw;
+      appSession.activeHomeworkId = hw.id;
+      appSession.homeworkSession = {
+        homeworkId: hw.id,
+        targetQuestions: hw.target_questions || 10,
+        currentQuestionWrongTaps: 0,
+        totalWrongTapsAllQs: 0,
+        questionScores: [],
+        totalScore: 0.0,
+        isPracticeMode: false
+      };
+      appSession.homeworkAnsweredCount = 0;
+      if (typeof quizState !== "undefined") quizState.questionAttempts = 0;
 
       var modules = getCurriculumModulesForClass(hw.class_name);
       var mod = modules.find(function(m) { return m.key === hw.module_key; }) || modules[0];
@@ -4317,15 +5864,62 @@
       speak("Starting " + hw.title, "en-IN");
     }
 
+    function renderFocusedHomeworkQuizHeader() {
+      if (!appSession.focusedHomeworkQuiz) return "";
+      var hw = appSession.focusedHomeworkQuiz;
+      var html = '<div id="focused-homework-banner" style="background:#FFF3E0; border:2.5px solid #FF9800; border-radius:18px; padding:12px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; box-shadow:0 4px 12px rgba(255,152,0,0.18);">';
+      html += '  <button class="btn-back-hw" onclick="safeAction(exitFocusedHomeworkQuiz)" style="background:#E65100; color:#FFFFFF; border:none; padding:10px 16px; border-radius:12px; font-size:13px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(230,81,0,0.3);">';
+      html += '    ← Back to Today\'s Homework';
+      html += '  </button>';
+      html += '  <div style="text-align:right;">';
+      html += '    <span style="font-size:10px; font-weight:900; background:#FF9800; color:#FFF; padding:3px 8px; border-radius:6px; text-transform:uppercase;">🎯 ASSIGNED HOMEWORK QUIZ</span>';
+      html += '    <div style="font-size:15px; font-weight:900; color:#BF360C; margin-top:2px;">' + escapeHtml(hw.title) + '</div>';
+      html += '    <div style="font-size:11px; color:#546E7A; font-weight:700;">' + hw.class_name + ' Class • ' + escapeHtml(hw.subject) + ' • Target: ' + (hw.target_questions || 10) + ' Qs</div>';
+      html += '  </div>';
+      html += '</div>';
+      return html;
+    }
+
+    function exitFocusedHomeworkQuiz() {
+      appSession.focusedHomeworkQuiz = null;
+      var oldB = document.getElementById("focused-homework-banner");
+      if (oldB) oldB.remove();
+      if (appSession.type === "principal") {
+        openPrincipalShowcaseMode();
+      } else {
+        enterParentMode(appSession.parentClass || "Nursery");
+      }
+    }
+
     // Complete Homework Record
     async function completeActiveHomeworkRecord(hwId) {
-      playTone("fanfare");
-      triggerConfetti();
-      showToast("Quiz Completed! 🌟", "success");
+      var quizHw = appSession.focusedHomeworkQuiz;
+      var activeId = hwId || (quizHw ? quizHw.id : "HW-QUIZ");
+      var title = quizHw ? quizHw.title : "Practice Quiz";
+
+      appSession.focusedHomeworkQuiz = null;
+      var oldB = document.getElementById("focused-homework-banner");
+      if (oldB) oldB.remove();
+
+      // Award points & stars (+20 pts) with duplicate farming prevention
+      await awardStudentReward({
+        type: "quiz",
+        homeworkId: activeId,
+        title: title,
+        pointsAward: 20,
+        starsAward: 20,
+        defaultBadge: "🏆 Quiz Champ"
+      });
+
+      showToast("Quiz Completed! 🌟 +20 Points", "success");
       speak("Great job! You finished the quiz successfully.", "en-IN");
       setTimeout(function() {
-        goHome();
-      }, 1500);
+        if (appSession.type === "parent") {
+          enterParentMode(appSession.parentClass || "Nursery");
+        } else {
+          goHome();
+        }
+      }, 500);
     }
 
 
@@ -4493,7 +6087,8 @@
       isAnswered: false,
       activeKey: "",
       correctItem: null,
-      optionsCache: {}
+      optionsCache: {},
+      questionAttempts: 0
     };
 
     function resetQuizQuestionState() {
@@ -4501,6 +6096,7 @@
       quizState.activeKey = "";
       quizState.correctItem = null;
       quizState.optionsCache = {};
+      quizState.questionAttempts = 0;
     }
 
     function fisherYatesShuffle(arr) {
@@ -4533,22 +6129,37 @@
         quizState.activeKey = config.key;
         quizState.correctItem = config;
 
-        // If in Homework Session (Fair Decimal Scoring: 1 / 0.5 / 0.2)
+        var attempts = (appSession.homeworkSession && typeof appSession.homeworkSession.currentQuestionWrongTaps === "number")
+          ? appSession.homeworkSession.currentQuestionWrongTaps
+          : (quizState.questionAttempts || 0);
+
+        var earned = 0.0;
+        var feedbackBadge = "0 pt 💡";
+        if (attempts === 0) {
+          earned = 1.0;
+          feedbackBadge = "+1.0 pt 🌟";
+        } else if (attempts === 1) {
+          earned = 0.5;
+          feedbackBadge = "+0.5 pt 👍";
+        } else if (attempts === 2) {
+          earned = 0.2;
+          feedbackBadge = "+0.2 pt ✨";
+        } else {
+          earned = 0.0;
+          feedbackBadge = "0 pt 💡";
+        }
+
+        config.feedbackBadge = feedbackBadge;
+        config.earned = earned;
+        quizState.questionAttempts = 0; // reset for next Q
+
+        // If in Homework Session (Fair Decimal Scoring: 1 / 0.5 / 0.2 / 0)
         if (appSession.activeHomeworkId && appSession.homeworkSession) {
           var hs = appSession.homeworkSession;
-          var wrongOnThisQ = hs.currentQuestionWrongTaps || 0;
-          var earned = 0.0;
           if (hs.isPracticeMode) {
             earned = 0.0;
           } else {
-            if (wrongOnThisQ === 0) {
-              earned = 1.0;
-            } else if (wrongOnThisQ === 1) {
-              earned = 0.5;
-            } else {
-              earned = 0.2;
-            }
-            hs.totalScore = Math.round((hs.totalScore + earned) * 10) / 10;
+            hs.totalScore = Number((hs.totalScore + earned).toFixed(1));
           }
           hs.questionScores.push(earned);
           hs.currentQuestionWrongTaps = 0; // reset for next Q
@@ -4556,9 +6167,19 @@
 
           playTone("success");
           triggerConfetti();
-          var ptsMsg = hs.isPracticeMode ? "Practice Mode (0 Pts)" : ("+" + earned + " Pts! Total: " + hs.totalScore);
+          var ptsMsg = hs.isPracticeMode ? "Practice Mode (0 Pts)" : (feedbackBadge + "! Total: " + hs.totalScore);
           showToast("🎉 Correct! " + ptsMsg, "success");
           speak(config.spoken || "Correct!", config.lang || "en-IN");
+
+          // Award to logged-in student live balance
+          if (earned > 0 && appSession.type === "parent" && appSession.student) {
+            var stu = appSession.student;
+            stu.points = Number(((stu.points || 0) + earned).toFixed(1));
+            stu.stars = Number(((stu.stars || 0) + earned).toFixed(1));
+            appState.stars = Math.floor(stu.stars);
+            saveStudentSessionLocallyAndRemote(stu);
+            checkRewardShelfMilestones(stu);
+          }
 
           // Check if target questions completed
           if (appSession.homeworkAnsweredCount >= hs.targetQuestions) {
@@ -4572,11 +6193,22 @@
           return;
         }
 
+        // Outside activeHomeworkId (standalone interactive quiz)
+        if (earned > 0 && appSession.type === "parent" && appSession.student) {
+          var stu = appSession.student;
+          stu.points = Number(((stu.points || 0) + earned).toFixed(1));
+          stu.stars = Number(((stu.stars || 0) + earned).toFixed(1));
+          appState.stars = Math.floor(stu.stars);
+          saveStudentSessionLocallyAndRemote(stu);
+          checkRewardShelfMilestones(stu);
+        }
+
         playTone("success");
         triggerConfetti();
-        addStar("🎉 Awesome! Correct answer!", config.spoken || "Awesome! Correct!", config.lang || "en-IN");
+        addStar("🎉 Awesome! " + feedbackBadge, config.spoken || "Awesome! Correct!", config.lang || "en-IN");
         renderCurrentView();
       } else {
+        quizState.questionAttempts = (quizState.questionAttempts || 0) + 1;
         if (appSession.activeHomeworkId && appSession.homeworkSession) {
           appSession.homeworkSession.currentQuestionWrongTaps = (appSession.homeworkSession.currentQuestionWrongTaps || 0) + 1;
           appSession.homeworkSession.totalWrongTapsAllQs = (appSession.homeworkSession.totalWrongTapsAllQs || 0) + 1;
@@ -4607,6 +6239,9 @@
       var item = quizState.correctItem;
       var html = "";
       html += '<div class="completed-answer-card">';
+      if (item.feedbackBadge) {
+        html += '  <div style="margin-bottom:8px;"><span class="score-feedback-pill" style="background:#FFF9C4; border:1.5px solid #FBC02D; color:#E65100; font-size:14px; font-weight:900; padding:4px 14px; border-radius:12px; box-shadow:0 2px 6px rgba(230,81,0,0.18); display:inline-block;">' + item.feedbackBadge + '</span></div>';
+      }
       html += '  <div class="completed-big-text">' + (item.display || "") + '</div>';
       html += '  <div style="display: flex; justify-content: center; gap: 12px; margin-top: 10px; flex-wrap: wrap;">';
       html += '    <button class="btn-listen-again" onclick="event.stopPropagation(); speakCompletedAgain();">🔊 Listen Again</button>';
@@ -28058,10 +29693,16 @@ var DATA_UKG_MATH_ADDITION = [
        ========================================================= */
     function goHome() {
       lastUtteranceKey = "";
-      if (appSession.activeHomeworkId && !appSession.isPreviewMode) {
-        showToast("Homework in progress! Complete your questions to finish.", "wrong");
-        speak("Homework is locked.", "en-IN");
-        return;
+      if (appSession.type !== "principal") {
+        if (appSession.focusedHomeworkQuiz) {
+          exitFocusedHomeworkQuiz();
+          return;
+        }
+        if (appSession.activeHomeworkId && !appSession.isPreviewMode) {
+          showToast("Homework in progress! Complete your questions to finish.", "wrong");
+          speak("Homework is locked.", "en-IN");
+          return;
+        }
       }
       appState.section = "home";
       document.getElementById("btn-home-nav").style.display = "none";
@@ -28090,11 +29731,24 @@ var DATA_UKG_MATH_ADDITION = [
 
     function openSection(secName, tabTarget, isBypassHwLock) {
       lastUtteranceKey = "";
+      // Principal has 100% unrestricted navigation across all classes, modules and quizzes
+      if (appSession.type === "principal") {
+        isBypassHwLock = true;
+      }
+      if (appSession.focusedHomeworkQuiz && !isBypassHwLock) {
+        var hw = appSession.focusedHomeworkQuiz;
+        var modules = getCurriculumModulesForClass(hw.class_name);
+        var mod = modules.find(function(m) { return m.key === hw.module_key; }) || modules[0];
+        if (secName !== mod.section) {
+          showToast("Quiz in progress! Tap 'Back to Homework' to exit", "wrong");
+          return;
+        }
+      }
       if (!isBypassHwLock && appSession.activeHomeworkId && !appSession.isPreviewMode && appState.section && appState.section !== secName) {
         return;
       }
       appState.section = secName;
-      if (appSession.activeHomeworkId && !appSession.isPreviewMode) {
+      if (((appSession.activeHomeworkId && !appSession.isPreviewMode) || appSession.focusedHomeworkQuiz) && appSession.type !== "principal") {
         var hNav = document.getElementById("btn-home-nav");
         if (hNav) hNav.style.display = "none";
       } else {
@@ -29662,8 +31316,8 @@ function setNurseryNumSubTab(st) {
       var filterBar = document.getElementById("filter-pills-bar");
       if (filterBar) filterBar.style.display = "none";
 
-      // If in strict homework mode, never display any other subject tabs
-      if (appSession.activeHomeworkId && !appSession.isPreviewMode) {
+      // If in strict homework mode or focused practice quiz, never display any other subject tabs
+      if ((appSession.activeHomeworkId && !appSession.isPreviewMode) || appSession.focusedHomeworkQuiz) {
         if (tabsContainer) tabsContainer.style.display = "none";
         return;
       }
@@ -29701,29 +31355,39 @@ function setNurseryNumSubTab(st) {
 
       renderHeaderStatus();
 
-      // Check if session is explicitly in teacher or principal view
-      if (appSession.type === "teacher") {
-        renderTeacherPanelView();
-        return;
-      }
-      if (appSession.type === "principal") {
-        renderPrincipalPanelView();
-        return;
-      }
-
       var html = '';
 
-      // Segmented School Switcher Banner at top of Home View
-      html += '<div class="school-switcher-bar">';
-      Object.keys(SCHOOLS_CONFIG).forEach(function(sKey) {
-        var sObj = SCHOOLS_CONFIG[sKey];
-        var isAct = (sKey === schoolId);
-        var extraClass = (sKey === "gr-children-academy") ? "school-gr" : "";
-        html += '<button class="school-switcher-btn ' + (isAct ? ("active " + extraClass) : "") + '" onclick="safeAction(function(){ setActiveSchoolId(\'' + sKey + '\'); })">' + sObj.emoji + ' ' + sObj.name + '</button>';
-      });
-      html += '</div>';
+      // Teacher / Principal Active Full Access Status Banner
+      if (appSession.type === "teacher") {
+        var tObj = appSession.teacherObj || { teacher_name: "Faculty Teacher" };
+        html += '<div style="background:linear-gradient(135deg, #FFF3E0, #FFE0B2); border:2.5px solid #FF9800; border-radius:18px; padding:12px 16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">';
+        html += '  <div>';
+        html += '    <span style="font-size:10px; font-weight:900; background:#E65100; color:#FFF; padding:2px 8px; border-radius:6px;">👩‍🏫 TEACHER ACCESS ACTIVE</span>';
+        html += '    <div style="font-size:15px; font-weight:900; color:#BF360C; margin-top:2px;">Welcome ' + escapeHtml(tObj.teacher_name || tObj.user_name || "Teacher") + ' (' + escapeHtml(school.name) + ')</div>';
+        html += '    <div style="font-size:11px; color:#5D4037; font-weight:700;">Full Access to all Nursery, LKG, UKG Modules, Quizzes &amp; Homework</div>';
+        html += '  </div>';
+        html += '  <div style="display:flex; gap:8px;">';
+        html += '    <button onclick="safeAction(openTeacherPanel)" style="background:#E65100; color:#FFF; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer;">📤 Homework Desk</button>';
+        html += '    <button onclick="safeAction(logoutUser)" style="background:#FFF; color:#D32F2F; border:1.5px solid #FFCDD2; padding:8px 12px; border-radius:10px; font-size:12px; font-weight:800; cursor:pointer;">🚪 Logout</button>';
+        html += '  </div>';
+        html += '</div>';
+      } else if (appSession.type === "principal") {
+        var pObj = appSession.principalObj || { user_name: "Principal" };
+        html += '<div style="background:linear-gradient(135deg, #EDE7F6, #D1C4E9); border:2.5px solid #673AB7; border-radius:18px; padding:12px 16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">';
+        html += '  <div>';
+        html += '    <span style="font-size:10px; font-weight:900; background:#512DA8; color:#FFF; padding:2px 8px; border-radius:6px;">🛡️ PRINCIPAL ACCESS ACTIVE</span>';
+        html += '    <div style="font-size:15px; font-weight:900; color:#311B92; margin-top:2px;">Welcome ' + escapeHtml(pObj.user_name || "Principal") + ' (' + escapeHtml(school.name) + ')</div>';
+        html += '    <div style="font-size:11px; color:#4527A0; font-weight:700;">Full Supervision &amp; Unrestricted Learning Module Access Across All Grades</div>';
+        html += '  </div>';
+        html += '  <div style="display:flex; gap:8px; flex-wrap:wrap;">';
+        html += '    <button onclick="safeAction(openPrincipalShowcaseMode)" style="background:#673AB7; color:#FFF; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:800; cursor:pointer;">📱 Preview All Classes &amp; Content (Showcase Mode)</button>';
+        html += '    <button onclick="safeAction(openPrincipalPanel)" style="background:#512DA8; color:#FFF; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer;">🛡️ Supervision Desk</button>';
+        html += '    <button onclick="safeAction(logoutUser)" style="background:#FFF; color:#D32F2F; border:1.5px solid #FFCDD2; padding:8px 12px; border-radius:10px; font-size:12px; font-weight:800; cursor:pointer;">🚪 Logout</button>';
+        html += '  </div>';
+        html += '</div>';
+      }
 
-      // Academy Hero Banner
+      // Academy Hero Banner (School Switcher removed as per specification)
       html += '<div class="hero-banner" style="background:linear-gradient(135deg, ' + school.badgeBg + ', #FFF); border:2.5px solid ' + school.themeColor + ';" onclick="safeAction(speakCurrentSchoolInfo)">';
       html += '  <div class="safe-emoji" style="font-size: 42px;">' + school.emoji + '</div>';
       html += '  <div>';
@@ -29733,37 +31397,58 @@ function setNurseryNumSubTab(st) {
       html += '  </div>';
       html += '</div>';
 
+      // Check active login states
+      var isStudentLoggedIn = (appSession.type === "parent" && !!appSession.student);
+      var isTeacherLoggedIn = (appSession.type === "teacher" && !!appSession.teacherObj);
+      var isPrincipalLoggedIn = (appSession.type === "principal" && !!appSession.principalObj);
+      var isUserLoggedIn = (isStudentLoggedIn || isTeacherLoggedIn || isPrincipalLoggedIn);
+
       // =========================================================================
       // THREE CLEAN ROLE ACCESS MODES ON HOME SCREEN
       // =========================================================================
       html += '<div class="role-grid">';
       
       // Card 1: Student / Parent Mode
-      html += '  <div class="role-card-btn role-card-parent" onclick="safeAction(function(){ enterParentMode(\'' + (appSession.parentClass || 'Nursery') + '\'); })">';
+      html += '  <div class="role-card-btn role-card-parent" style="' + (isStudentLoggedIn ? 'border:2.5px solid #2E7D32; background:#E8F5E9;' : '') + '" onclick="safeAction(handleParentModeCardClick)">';
       html += '    <div class="role-icon-box" style="color:#2E7D32;">🎒</div>';
       html += '    <div style="flex:1;">';
-      html += '      <div style="font-size:15px; font-weight:900; color:#1B5E20;">Student / Parent Mode</div>';
-      html += '      <div style="font-size:11px; color:#388E3C; font-weight:700;">Nursery, LKG, UKG Learning + Today\'s Homework Tab &amp; 1-Tap Done</div>';
+      html += '      <div style="display:flex; align-items:center; gap:6px;">';
+      html += '        <span style="font-size:15px; font-weight:900; color:#1B5E20;">Student / Parent Mode</span>';
+      if (isStudentLoggedIn) {
+        html += '        <span style="background:#2E7D32; color:#FFF; font-size:10px; font-weight:800; padding:2px 6px; border-radius:8px;">ACTIVE ✓</span>';
+      }
+      html += '      </div>';
+      html += '      <div style="font-size:11px; color:#388E3C; font-weight:700;">' + (isStudentLoggedIn ? ('Enrolled: ' + escapeHtml(appSession.student.student_name) + ' (' + appSession.student.student_class + ')') : 'Student ID &amp; Password Login • Enrolled Class &amp; Homework') + '</div>';
       html += '    </div>';
       html += '    <div style="font-size:18px; color:#2E7D32;">➔</div>';
       html += '  </div>';
 
       // Card 2: Teacher Portal
-      html += '  <div class="role-card-btn role-card-teacher" onclick="safeAction(openTeacherLoginModal)">';
+      html += '  <div class="role-card-btn role-card-teacher" style="' + (isTeacherLoggedIn ? 'border:2.5px solid #E65100; background:#FFF3E0;' : '') + '" onclick="safeAction(openTeacherLoginModal)">';
       html += '    <div class="role-icon-box" style="color:#E65100;">👩‍🏫</div>';
       html += '    <div style="flex:1;">';
-      html += '      <div style="font-size:15px; font-weight:900; color:#BF360C;">Class Teacher Portal</div>';
-      html += '      <div style="font-size:11px; color:#E65100; font-weight:700;">Login via Mobile / Emp Code (Nursery, LKG, UKG Class Teachers)</div>';
+      html += '      <div style="display:flex; align-items:center; gap:6px;">';
+      html += '        <span style="font-size:15px; font-weight:900; color:#BF360C;">Class Teacher Portal</span>';
+      if (isTeacherLoggedIn) {
+        html += '        <span style="background:#E65100; color:#FFF; font-size:10px; font-weight:800; padding:2px 6px; border-radius:8px;">ACTIVE ✓</span>';
+      }
+      html += '      </div>';
+      html += '      <div style="font-size:11px; color:#E65100; font-weight:700;">UDISE Code + Password Login • All Classes (Nursery, LKG, UKG)</div>';
       html += '    </div>';
       html += '    <div style="font-size:18px; color:#E65100;">➔</div>';
       html += '  </div>';
 
       // Card 3: Principal Supervision Desk
-      html += '  <div class="role-card-btn role-card-principal" onclick="safeAction(openPrincipalLoginModal)">';
+      html += '  <div class="role-card-btn role-card-principal" style="' + (isPrincipalLoggedIn ? 'border:2.5px solid #512DA8; background:#EDE7F6;' : '') + '" onclick="safeAction(openPrincipalLoginModal)">';
       html += '    <div class="role-icon-box" style="color:#512DA8;">🛡️</div>';
       html += '    <div style="flex:1;">';
-      html += '      <div style="font-size:15px; font-weight:900; color:#311B92;">Principal Supervision Desk</div>';
-      html += '      <div style="font-size:11px; color:#512DA8; font-weight:700;">PIN Protected • Assign Teachers &amp; Monitor All Classes</div>';
+      html += '      <div style="display:flex; align-items:center; gap:6px;">';
+      html += '        <span style="font-size:15px; font-weight:900; color:#311B92;">Principal Supervision Desk</span>';
+      if (isPrincipalLoggedIn) {
+        html += '        <span style="background:#512DA8; color:#FFF; font-size:10px; font-weight:800; padding:2px 6px; border-radius:8px;">ACTIVE ✓</span>';
+      }
+      html += '      </div>';
+      html += '      <div style="font-size:11px; color:#512DA8; font-weight:700;">UDISE Code + Password Login • Full Campus Supervision</div>';
       html += '    </div>';
       html += '    <div style="font-size:18px; color:#512DA8;">➔</div>';
       html += '  </div>';
@@ -29772,22 +31457,57 @@ function setNurseryNumSubTab(st) {
 
       // =========================================================================
       // PARENT / STUDENT INTERACTIVE HUB (CLASS TABS & TODAY'S HOMEWORK)
+      // Only displayed AFTER a Student, Teacher, or Principal logs in!
       // =========================================================================
-      var curClass = appSession.parentClass || "Nursery";
-      var curTab = appSession.parentTab || "homework";
+      if (isUserLoggedIn) {
+        var isStudentLocked = isStudentLoggedIn;
+        var curClass = isStudentLocked ? (appSession.student.student_class || appSession.student.class_name || "Nursery") : (appSession.parentClass || (isTeacherLoggedIn ? appSession.teacherClass : "Nursery") || "Nursery");
+        appSession.parentClass = curClass;
+        var curTab = appSession.parentTab || "homework";
 
-      html += '<div style="background:#FFFFFF; border:2px solid #E0E0E0; border-radius:20px; padding:14px; margin-top:8px; box-shadow:0 4px 14px rgba(0,0,0,0.04);">';
+        html += '<div id="parent-student-hub" style="background:#FFFFFF; border:2px solid #E0E0E0; border-radius:20px; padding:14px; margin-top:8px; box-shadow:0 4px 14px rgba(0,0,0,0.04);">';
 
-      // Class Switcher Bar (Nursery, LKG, UKG)
-      html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">';
-      html += '  <span style="font-size:12px; font-weight:900; color:#37474F; text-transform:uppercase;">Select Student Class:</span>';
-      html += '  <div style="display:flex; gap:6px;">';
-      ["Nursery", "LKG", "UKG"].forEach(function(cls) {
-        var isAct = (curClass === cls);
-        html += '<button onclick="safeAction(function(){ switchParentClass(\'' + cls + '\'); })" style="padding:6px 12px; border-radius:12px; font-size:12px; font-weight:900; cursor:pointer; border:2px solid ' + (isAct ? school.primaryColor : '#CFD8DC') + '; background:' + (isAct ? school.primaryColor : '#FFF') + '; color:' + (isAct ? '#FFF' : '#455A64') + '; transition:all 0.15s ease;">' + (cls === 'Nursery' ? '🧸 ' : (cls === 'LKG' ? '🚂 ' : '🚀 ')) + cls + '</button>';
-      });
-      html += '  </div>';
-      html += '</div>';
+        // Principal Showcase Mode Quick Return Banner
+        if (isPrincipalLoggedIn) {
+          html += '<div class="showcase-mode-banner" style="background:linear-gradient(135deg, #EDE7F6, #D1C4E9); border:2.5px solid #673AB7; border-radius:16px; padding:12px 14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">';
+          html += '  <div>';
+          html += '    <span style="background:#512DA8; color:#FFF; font-size:10px; font-weight:900; padding:2px 8px; border-radius:6px;">🌟 SHOWCASE MODE ACTIVE</span>';
+          html += '    <div style="font-size:15px; font-weight:900; color:#311B92; margin-top:2px;">Full Multi-Class Learning Explorer (Unrestricted Access)</div>';
+          html += '    <div style="font-size:11px; color:#4527A0; font-weight:700;">Nursery, LKG, UKG Modules, Picture World, Brain Booster &amp; All Quizzes Unlocked</div>';
+          html += '  </div>';
+          html += '  <button class="btn-back-principal" onclick="safeAction(openPrincipalPanel)" style="background:#512DA8; color:#FFF; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(81,45,168,0.3);">';
+          html += '    ← Back to Principal Desk';
+          html += '  </button>';
+          html += '</div>';
+        }
+
+        // SINGLE-CLASS LOCK: Completely hide switcher for logged in student, show only for teachers/principals
+        if (isStudentLocked) {
+          html += '<div class="student-profile-banner" style="background:linear-gradient(135deg, #E8F5E9, #C8E6C9); border:2px solid #4CAF50; border-radius:16px; padding:12px 14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">';
+          html += '  <div style="display:flex; align-items:center; gap:10px;">';
+          html += '    <div style="font-size:32px;">🎒</div>';
+          html += '    <div>';
+          html += '      <div style="font-size:16px; font-weight:900; color:#1B5E20;">' + escapeHtml(appSession.student.student_name) + '</div>';
+          html += '      <div style="font-size:12px; color:#2E7D32; font-weight:800;">Class: <strong>' + curClass + ' (Enrolled &amp; Locked)</strong> • ID: ' + escapeHtml(appSession.student.login_id || appSession.student.student_id || '') + '</div>';
+          html += '    </div>';
+          html += '  </div>';
+          html += '  <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">';
+          html += '    <button onclick="safeAction(openRewardShelfModal)" style="background:#FF9800; color:#FFF; border:none; border-radius:12px; padding:6px 12px; font-size:12px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(255,152,0,0.3);">🎁 My Rewards</button>';
+          html += '    <div style="background:#FFF; border:1.5px solid #81C784; border-radius:12px; padding:4px 10px; font-size:12px; font-weight:900; color:#2E7D32;">⭐ <span id="student-live-points">' + (appSession.student.points || 0) + '</span> Pts</div>';
+          html += '    <button onclick="safeAction(logoutStudentSession)" style="background:#FFEBEE; color:#C62828; border:1px solid #EF9A9A; border-radius:10px; padding:5px 10px; font-size:11px; font-weight:800; cursor:pointer;">Logout 🚪</button>';
+          html += '  </div>';
+          html += '</div>';
+        } else {
+          html += '<div class="class-switcher-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">';
+          html += '  <span style="font-size:12px; font-weight:900; color:#37474F; text-transform:uppercase;">' + (isPrincipalLoggedIn ? 'Showcase Class Tabs:' : 'Select Student Class:') + '</span>';
+          html += '  <div style="display:flex; gap:6px;">';
+          ["Nursery", "LKG", "UKG"].forEach(function(cls) {
+            var isAct = (curClass === cls);
+            html += '<button onclick="safeAction(function(){ switchParentClass(\'' + cls + '\'); })" style="padding:6px 12px; border-radius:12px; font-size:12px; font-weight:900; cursor:pointer; border:2px solid ' + (isAct ? school.primaryColor : '#CFD8DC') + '; background:' + (isAct ? school.primaryColor : '#FFF') + '; color:' + (isAct ? '#FFF' : '#455A64') + '; transition:all 0.15s ease;">' + (cls === 'Nursery' ? '🧸 ' : (cls === 'LKG' ? '🚂 ' : '🚀 ')) + cls + '</button>';
+          });
+          html += '  </div>';
+          html += '</div>';
+        }
 
       // Sub-Tabs: Today's Homework vs Learning Modules
       html += '<div class="teacher-nav-tabs" style="margin-bottom:12px;">';
@@ -29868,53 +31588,93 @@ function setNurseryNumSubTab(st) {
       // SUB-TAB 2: CLASS LEARNING MODULES
       else if (curTab === 'learning') {
         html += '<div class="home-grid">';
-        if (curClass === "Nursery") {
-          html += '<div class="home-section-btn btn-nursery" onclick="safeAction(function(){ openSection(\'nursery\', 0); })">';
+        if (isPrincipalLoggedIn) {
+          // In Principal Showcase mode, show all 3 class cards with active highlight
+          html += '<div class="home-section-btn btn-nursery" style="' + (curClass === 'Nursery' ? 'border:2.5px solid #0288D1;' : '') + '" onclick="safeAction(function(){ openSection(\'nursery\', 0); })">';
           html += '  <div>';
           html += '    <span class="section-badge" style="background:#0288D1;">Age 3-4 Years</span>';
-          html += '    <div class="section-name">Nursery Modules</div>';
+          html += '    <div class="section-name">Nursery Modules ' + (curClass === 'Nursery' ? '✓' : '') + '</div>';
           html += '    <div class="section-desc">Phonic Sounds • Letters A-Z • Hindi Swar • 1-50 Counting • Shapes • Before/After</div>';
           html += '  </div>';
           html += '  <div class="safe-emoji" style="font-size: 44px;">🧸</div>';
           html += '</div>';
-        } else if (curClass === "LKG") {
-          html += '<div class="home-section-btn btn-lkg" onclick="safeAction(function(){ openSection(\'lkg\', 0); })">';
+
+          html += '<div class="home-section-btn btn-lkg" style="' + (curClass === 'LKG' ? 'border:2.5px solid #689F38;' : '') + '" onclick="safeAction(function(){ openSection(\'lkg\', 0); })">';
           html += '  <div>';
           html += '    <span class="section-badge" style="background:#689F38;">Age 4-5 Years</span>';
-          html += '    <div class="section-name">LKG Modules</div>';
+          html += '    <div class="section-name">LKG Modules ' + (curClass === 'LKG' ? '✓' : '') + '</div>';
           html += '    <div class="section-desc">2-Letter &amp; CVC Words • Hindi Vyanjan • 1-100 Names • EVS • Word Formation</div>';
           html += '  </div>';
           html += '  <div class="safe-emoji" style="font-size: 44px;">🚂</div>';
           html += '</div>';
-        } else {
-          html += '<div class="home-section-btn btn-ukg" onclick="safeAction(function(){ openSection(\'ukg\', 0); })">';
+
+          html += '<div class="home-section-btn btn-ukg" style="' + (curClass === 'UKG' ? 'border:2.5px solid #F57C00;' : '') + '" onclick="safeAction(function(){ openSection(\'ukg\', 0); })">';
           html += '  <div>';
           html += '    <span class="section-badge" style="background:#F57C00;">Age 5-6 Years</span>';
-          html += '    <div class="section-name">UKG Modules</div>';
+          html += '    <div class="section-name">UKG Modules ' + (curClass === 'UKG' ? '✓' : '') + '</div>';
           html += '    <div class="section-desc">4-Letter Phonics • 📖 English Grammar (11 Topics) • English World • EVS • Hindi Matras • Math (+/-)</div>';
           html += '  </div>';
           html += '  <div class="safe-emoji" style="font-size: 44px;">🚀</div>';
           html += '</div>';
+        } else {
+          if (curClass === "Nursery") {
+            html += '<div class="home-section-btn btn-nursery" onclick="safeAction(function(){ openSection(\'nursery\', 0); })">';
+            html += '  <div>';
+            html += '    <span class="section-badge" style="background:#0288D1;">Age 3-4 Years</span>';
+            html += '    <div class="section-name">Nursery Modules</div>';
+            html += '    <div class="section-desc">Phonic Sounds • Letters A-Z • Hindi Swar • 1-50 Counting • Shapes • Before/After</div>';
+            html += '  </div>';
+            html += '  <div class="safe-emoji" style="font-size: 44px;">🧸</div>';
+            html += '</div>';
+          } else if (curClass === "LKG") {
+            html += '<div class="home-section-btn btn-lkg" onclick="safeAction(function(){ openSection(\'lkg\', 0); })">';
+            html += '  <div>';
+            html += '    <span class="section-badge" style="background:#689F38;">Age 4-5 Years</span>';
+            html += '    <div class="section-name">LKG Modules</div>';
+            html += '    <div class="section-desc">2-Letter &amp; CVC Words • Hindi Vyanjan • 1-100 Names • EVS • Word Formation</div>';
+            html += '  </div>';
+            html += '  <div class="safe-emoji" style="font-size: 44px;">🚂</div>';
+            html += '</div>';
+          } else {
+            html += '<div class="home-section-btn btn-ukg" onclick="safeAction(function(){ openSection(\'ukg\', 0); })">';
+            html += '  <div>';
+            html += '    <span class="section-badge" style="background:#F57C00;">Age 5-6 Years</span>';
+            html += '    <div class="section-name">UKG Modules</div>';
+            html += '    <div class="section-desc">4-Letter Phonics • 📖 English Grammar (11 Topics) • English World • EVS • Hindi Matras • Math (+/-)</div>';
+            html += '  </div>';
+            html += '  <div class="safe-emoji" style="font-size: 44px;">🚀</div>';
+            html += '</div>';
+          }
         }
 
-        // Dual Row: Picture World & Brain Booster
-        html += '<div class="dual-grid">';
-        html += '  <div class="btn-picworld" onclick="safeAction(function(){ openSection(\'picture_world\', 0); })">';
-        html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🦁</div>';
-        html += '    <div class="section-name">Picture World</div>';
-        html += '    <div class="section-desc">Fruits, Veggies, Animals, Birds, Vehicles (150+ Pics)</div>';
-        html += '  </div>';
-        html += '  <div class="btn-brain" onclick="safeAction(function(){ openSection(\'brain_booster\', 0); })">';
-        html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🧠</div>';
-        html += '    <div class="section-name">Brain Booster</div>';
-        html += '    <div class="section-desc">Shadow Match • Odd One Out • Memory Flip</div>';
-        html += '  </div>';
-        html += '</div>';
+        // Dual Row: Picture World & Brain Booster (Hidden during focused homework quiz for students, unlocked for Principal)
+        if (!appSession.focusedHomeworkQuiz || appSession.type === "principal") {
+          html += '<div class="dual-grid">';
+          html += '  <div class="btn-picworld" onclick="safeAction(function(){ openSection(\'picture_world\', 0); })">';
+          html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🦁</div>';
+          html += '    <div class="section-name">Picture World</div>';
+          html += '    <div class="section-desc">Fruits, Veggies, Animals, Birds, Vehicles (150+ Pics)</div>';
+          html += '  </div>';
+          html += '  <div class="btn-brain" onclick="safeAction(function(){ openSection(\'brain_booster\', 0); })">';
+          html += '    <div class="safe-emoji" style="font-size: 36px; margin-bottom: 4px;">🧠</div>';
+          html += '    <div class="section-name">Brain Booster</div>';
+          html += '    <div class="section-desc">Shadow Match • Odd One Out • Memory Flip</div>';
+          html += '  </div>';
+          html += '</div>';
+        }
 
         html += '</div>';
       }
 
-      html += '</div>'; // End parent/student hub card
+        html += '</div>'; // End parent/student hub card
+      } // End if (isUserLoggedIn)
+
+      // Landing Screen Footer with subtle Owner Control Desk button
+      html += '<div style="margin-top:28px; padding:16px 0 8px 0; text-align:center; border-top:1px solid #ECEFF1; display:flex; justify-content:center; align-items:center; gap:8px;">';
+      html += '  <span style="font-size:11px; color:#90A4AE; font-weight:700;">Abacus Kids App • Smart Education</span>';
+      html += '  <span style="color:#CFD8DC;">•</span>';
+      html += '  <button id="btn-owner-panel" onclick="safeAction(openOwnerPasswordModal)" style="background:none; border:none; color:#78909C; font-size:11px; cursor:pointer; font-weight:800; padding:4px 8px; border-radius:6px;">⚙️ Owner</button>';
+      html += '</div>';
 
       view.innerHTML = html;
     }
@@ -34928,10 +36688,22 @@ function setNurseryNumSubTab(st) {
        MASTER VIEW RENDER DISPATCHER
        ========================================================= */
     function renderCurrentView() {
+      // If in focused practice quiz mode, strictly lock section to assigned module section (students only)
+      if (appSession.focusedHomeworkQuiz && appSession.type !== "principal") {
+        var hw = appSession.focusedHomeworkQuiz;
+        var modules = getCurriculumModulesForClass(hw.class_name);
+        var mod = modules.find(function(m) { return m.key === hw.module_key; }) || modules[0];
+        if (appState.section !== mod.section) {
+          appState.section = mod.section;
+        }
+      }
+
       if (appState.section === "welcome") {
         renderWelcomeView();
       } else if (appState.section === "teacher") {
         renderTeacherPanelView();
+      } else if (appState.section === "principal") {
+        renderPrincipalPanelView();
       } else if (appState.section === "home") {
         renderHome();
       } else if (appState.section === "nursery") {
@@ -34945,6 +36717,24 @@ function setNurseryNumSubTab(st) {
       } else if (appState.section === "brain_booster") {
         renderBrainBoosterView();
       }
+
+      // If in focused practice quiz mode, hide unrelated subtabs & display "← Back to Today's Homework" header
+      if (appSession.focusedHomeworkQuiz) {
+        var subtabsBar = document.getElementById("subtabs-bar");
+        if (subtabsBar) subtabsBar.style.display = "none";
+        var filterPills = document.getElementById("filter-pills-bar");
+        if (filterPills) filterPills.style.display = "none";
+        var tabsContainer = document.getElementById("tabs-container");
+        if (tabsContainer) tabsContainer.style.display = "none";
+
+        var view = document.getElementById("main-view");
+        if (view && !document.getElementById("focused-homework-banner")) {
+          var bannerWrap = document.createElement("div");
+          bannerWrap.id = "focused-homework-banner";
+          bannerWrap.innerHTML = renderFocusedHomeworkQuizHeader();
+          view.insertBefore(bannerWrap, view.firstChild);
+        }
+      }
     }
 
     // Initial load
@@ -34954,6 +36744,26 @@ function setNurseryNumSubTab(st) {
       updateSchoolBrandingUI();
       var sessionType = restoreSession();
       renderHeaderStatus();
+
+      // Remote Subscription Check on App Session Resume
+      if (sessionType) {
+        var activeUdise = getUdiseCodeForSchool(appSession.schoolId || getActiveSchoolId());
+        if (appSession.principalObj && appSession.principalObj.udise_code) {
+          activeUdise = appSession.principalObj.udise_code;
+        } else if (appSession.teacherObj && appSession.teacherObj.udise_code) {
+          activeUdise = appSession.teacherObj.udise_code;
+        }
+        fetchSchoolSubscription(activeUdise).then(function(sub) {
+          var subStatus = isSubscriptionValid(sub);
+          if (!subStatus.valid) {
+            renderSubscriptionExpiredScreen(sub, activeUdise);
+          } else {
+            appSession.subscription = sub;
+            renderHeaderStatus();
+          }
+        });
+      }
+
       if (sessionType === "teacher") {
         openTeacherPanel();
       } else if (sessionType === "principal") {
@@ -34961,6 +36771,15 @@ function setNurseryNumSubTab(st) {
       } else {
         renderHome();
       }
+
+      // Live Supabase Sync (Homework, Teachers, Submissions)
+      syncHomeworkFromSupabase().then(function() {
+        if (appState.section === "home" && appSession.type === "parent") {
+          renderHome();
+        }
+      });
+      syncClassTeachersFromSupabase();
+      syncSubmissionsFromSupabase();
     });
   </script>
 </body>

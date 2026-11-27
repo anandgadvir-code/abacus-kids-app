@@ -229,31 +229,7 @@ $$;
 GRANT EXECUTE ON FUNCTION public.kids_remove_class_teacher(TEXT, TEXT) TO anon, authenticated;
 
 -- ----------------------------------------------------------------------------
--- 8. DEFAULT SEED DATA FOR BOTH SCHOOLS (NURSERY, LKG, UKG)
+-- 8. PRODUCTION ENVIRONMENT (Clean state: no demo teachers or homework)
+-- Real teachers and homework are assigned and published dynamically via the app.
 -- ----------------------------------------------------------------------------
--- The Abacus Academy (the-abacus-academy)
-INSERT INTO public.kids_class_teachers (id, school_id, class_name, teacher_name, teacher_mobile, emp_code, pin, is_active)
-VALUES 
-    ('TCH-AA-01', 'the-abacus-academy', 'Nursery', 'Sunita Sharma', '9829011111', 'EMP-AA-01', '1234', true),
-    ('TCH-AA-02', 'the-abacus-academy', 'LKG', 'Pooja Mehta', '9829022222', 'EMP-AA-02', '1234', true),
-    ('TCH-AA-03', 'the-abacus-academy', 'UKG', 'Kavita Dave', '9829033333', 'EMP-AA-03', '1234', true)
-ON CONFLICT (id) DO NOTHING;
-
--- GR Children Academy (gr-children-academy)
-INSERT INTO public.kids_class_teachers (id, school_id, class_name, teacher_name, teacher_mobile, emp_code, pin, is_active)
-VALUES 
-    ('TCH-GR-01', 'gr-children-academy', 'Nursery', 'Rekha Sharma', '9829111111', 'EMP-GR-01', '1234', true),
-    ('TCH-GR-02', 'gr-children-academy', 'LKG', 'Meena Verma', '9829222222', 'EMP-GR-02', '1234', true),
-    ('TCH-GR-03', 'gr-children-academy', 'UKG', 'Anita Chouhan', '9829333333', 'EMP-GR-03', '1234', true)
-ON CONFLICT (id) DO NOTHING;
-
--- Seed Sample Homework
-INSERT INTO public.kids_homework (id, school_id, class_name, subject, activity_type, title, instructions, module_key, target_questions, due_date, due_time, assigned_by, teacher_mobile)
-VALUES
-    ('HW-AA-NUR-01', 'the-abacus-academy', 'Nursery', 'English', 'Worksheet', 'Trace Capital Letters A to E', 'Practice writing letters A, B, C, D, E in your 4-line notebook. Trace dotted lines carefully.', 'nursery_abc_choose_letter', 5, CURRENT_DATE, '18:00', 'Sunita Sharma', '9829011111'),
-    ('HW-AA-LKG-01', 'the-abacus-academy', 'LKG', 'English', 'Homework', '3-Letter CVC Short "a" Words (CAT, BAT)', 'Read and write 5 CVC words with short vowel "a". Complete worksheet page 8.', 'lkg_phonics_cvc_a', 10, CURRENT_DATE, '18:30', 'Pooja Mehta', '9829022222'),
-    ('HW-AA-UKG-01', 'the-abacus-academy', 'UKG', 'English Grammar', 'Activity', 'Use of Is / Am / Are Sentences', 'Solve the 10 sentence questions on Is/Am/Are. Remember: He/She/It uses IS, I uses AM, We/They uses ARE.', 'ukg_gram_is_am_are', 10, CURRENT_DATE, '19:00', 'Kavita Dave', '9829033333'),
-    ('HW-GR-NUR-01', 'gr-children-academy', 'Nursery', 'Mathematics', 'Worksheet', 'Counting 1 to 10 with Shapes', 'Count and circle the correct number of circles and triangles in your activity book.', 'nursery_num_count_tap_10', 5, CURRENT_DATE, '18:00', 'Rekha Sharma', '9829111111'),
-    ('HW-GR-LKG-01', 'gr-children-academy', 'LKG', 'Mathematics', 'Homework', 'Before & After Numbers 1 to 20', 'Write the numbers that come just before and just after the given numbers in notebook.', 'lkg_math_before_after', 10, CURRENT_DATE, '18:30', 'Meena Verma', '9829222222'),
-    ('HW-GR-UKG-01', 'gr-children-academy', 'UKG', 'English Grammar', 'Homework', 'Use of This / That and These / Those', 'Complete the sentence worksheet with near and far arrow pointing exercise.', 'ukg_gram_this_that', 10, CURRENT_DATE, '19:00', 'Anita Chouhan', '9829333333')
-ON CONFLICT (id) DO NOTHING;
+-- End of Schema Definition
