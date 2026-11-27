@@ -524,6 +524,28 @@ runTest('Student Login for Short Admission Numbers (e.g. 294, 1067) with School 
   assert.strictEqual(matched.student_class, 'Nursery');
 });
 
+// TEST 30: Clean Student Dashboard (Hide Portal Cards, Intro Banner, Other Classes & Owner Button)
+runTest('Clean Student Dashboard hides role cards, intro banner, other class buttons and Owner button', () => {
+  // 1. CSS rules for student logged-in state
+  assert(html.includes('body.student-logged-in #btn-owner-panel'), 'CSS rule for hiding #btn-owner-panel for logged-in students missing');
+  assert(html.includes('body.student-logged-in .hero-banner'), 'CSS rule for hiding .hero-banner for logged-in students missing');
+  assert(html.includes('body.student-logged-in .role-grid'), 'CSS rule for hiding .role-grid for logged-in students missing');
+
+  // 2. JS conditional guards in renderHome
+  assert(html.includes('var isStudentLoggedIn = ((appSession.type === "parent" || appSession.role === "student") && !!appSession.student);'), 'isStudentLoggedIn check missing in renderHome');
+  assert(html.includes('!isStudentLoggedIn') && html.includes('getActiveUdiseCode()'), 'hero-banner not guarded against student logged in');
+  assert(html.includes("!isStudentLoggedIn") && html.includes("role-grid"), 'role-grid not guarded against student logged in');
+  assert(html.includes('if (!isStudentLoggedIn) {\n        html += \'  <span style="color:#CFD8DC;">•</span>\';') || html.includes('if (!isStudentLoggedIn) {\r\n        html += \'  <span style="color:#CFD8DC;">•</span>\';'), 'btn-owner-panel footer not guarded against student logged in');
+
+  // 3. Strict single-class lock and duplicate removal in parent-student-hub
+  assert(html.includes("🎒 ' + curClass + ' Class • (Enrolled &amp; Locked)"), 'Clean enrolled locked badge missing in parent-student-hub');
+  assert(!html.includes('Logout 🚪</button>\' +\n          \'  </div>\' +\n          \'</div>\';\n        } else if (isTeacherSingleLocked)') && !html.includes('Logout 🚪</button>\' +\r\n          \'  </div>\' +\r\n          \'</div>\';\r\n        } else if (isTeacherSingleLocked)'), 'Duplicate student logout box must be removed from parent-student-hub');
+
+  // 4. student-logged-in body class management
+  assert(html.includes('document.body.classList.add("student-logged-in");'), 'Adding student-logged-in class missing');
+  assert(html.includes('document.body.classList.remove("student-logged-in");'), 'Removing student-logged-in class missing');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');

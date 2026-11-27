@@ -1042,6 +1042,11 @@
     body.user-logged-in #btn-app-logout {
       display: none !important;
     }
+    body.student-logged-in #btn-owner-panel,
+    body.student-logged-in .hero-banner,
+    body.student-logged-in .role-grid {
+      display: none !important;
+    }
     .student-pass-banner .pass-badge {
       background: #C8E6C9;
       color: #1B5E20;
@@ -3498,13 +3503,14 @@
       var bTeacherBtn = document.getElementById("btn-teacher-portal");
       var bPrincipalBtn = document.getElementById("btn-principal-desk");
 
-      var isStudentLoggedIn = (appSession.type === "parent" && !!appSession.student);
+      var isStudentLoggedIn = ((appSession.type === "parent" || appSession.role === "student") && !!appSession.student);
       var isTeacherLoggedIn = (appSession.type === "teacher" && !!appSession.teacherObj);
       var isPrincipalLoggedIn = (appSession.type === "principal" && !!appSession.principalObj);
       var isUserLoggedIn = (isStudentLoggedIn || isTeacherLoggedIn || isPrincipalLoggedIn);
 
       if (!isUserLoggedIn) {
         document.body.classList.remove("user-logged-in");
+        document.body.classList.remove("student-logged-in");
         // NEUTRAL LANDING SCREEN (WHEN LOGGED OUT)
         if (bSchoolLogo) {
           bSchoolLogo.style.display = "none";
@@ -3526,6 +3532,11 @@
       }
 
       document.body.classList.add("user-logged-in");
+      if (isStudentLoggedIn) {
+        document.body.classList.add("student-logged-in");
+      } else {
+        document.body.classList.remove("student-logged-in");
+      }
       if (bSchoolSwitcher) bSchoolSwitcher.style.setProperty("display", "none", "important");
       if (bTeacherBtn) bTeacherBtn.style.setProperty("display", "none", "important");
       if (bPrincipalBtn) bPrincipalBtn.style.setProperty("display", "none", "important");
@@ -3909,6 +3920,7 @@
         try {
           appSession.student = JSON.parse(studentSession);
           appSession.type = "parent";
+          appSession.role = "student";
           appSession.parentClass = appSession.student.student_class || appSession.student.class_name || "Nursery";
           appState.stars = Math.floor(appSession.student.stars || appSession.student.points || appSession.student.total_points || 0);
           if (appSession.student.school_id) {
@@ -3970,7 +3982,7 @@
         if (banner) {
           banner.style.display = "flex";
           banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px; flex-wrap:wrap;">' +
-            '<div><span class="pass-badge" style="background:#E8F5E9; color:#2E7D32;">🎒 ' + escapeHtml(appSession.student.student_name) + '</span> <strong>' + appSession.parentClass + ' Class</strong> • ⭐ <strong><span id="header-student-points">' + (appSession.student.points || 0) + '</span> Pts</strong></div>' +
+            '<div><span class="pass-badge" style="background:#E8F5E9; color:#2E7D32;">🎒 ' + escapeHtml(appSession.student.student_name) + '</span> <strong>' + appSession.parentClass + ' Class</strong> • ⭐ <strong><span id="student-live-points">' + (appSession.student.points || 0) + '</span> Pts</strong><span id="header-student-points" style="display:none;"></span></div>' +
             '<div style="display:flex; align-items:center; gap:6px;">' +
             '  <button class="btn-reward-shelf" onclick="safeAction(openRewardShelfModal)" style="background:#FF9800; color:#FFF; border:none; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(255,152,0,0.3);">🎁 My Rewards</button>' +
             '  <button class="btn-logout" style="padding:4px 10px; font-size:11px; font-weight:800; background:#FFF; color:#D32F2F; border:1.5px solid #FFCDD2; border-radius:8px; cursor:pointer;" onclick="safeAction(logoutStudentSession)">🚪 Logout</button>' +
@@ -3992,11 +4004,14 @@
 
     function logoutUser() {
       document.body.classList.remove("homework-locked");
+      document.body.classList.remove("user-logged-in");
+      document.body.classList.remove("student-logged-in");
       localStorage.removeItem("taa_kids_student_session");
       localStorage.removeItem("taa_kids_teacher_session");
       localStorage.removeItem("taa_kids_principal_session");
       localStorage.removeItem("taa_kids_parent_session");
       appSession.type = null;
+      appSession.role = null;
       appSession.student = null;
       appSession.teacherObj = null;
       appSession.principalObj = null;
@@ -4146,6 +4161,7 @@
       account.class_name = studentClass;
 
       appSession.type = "parent";
+      appSession.role = "student";
       appSession.student = account;
       appSession.parentClass = studentClass;
       appSession.schoolId = account.school_id || (studentUdise === "08150803535" ? "gr-children-academy" : "the-abacus-academy");
@@ -4174,9 +4190,12 @@
     }
 
     function logoutStudentSession() {
+      document.body.classList.remove("user-logged-in");
+      document.body.classList.remove("student-logged-in");
       localStorage.removeItem("taa_kids_student_session");
       localStorage.removeItem("taa_kids_parent_session");
       appSession.type = null;
+      appSession.role = null;
       appSession.student = null;
       appSession.focusedHomeworkQuiz = null;
       showToast("Student logged out 👋", "info");
@@ -4191,6 +4210,7 @@
         return;
       }
       appSession.type = "parent";
+      appSession.role = "student";
       appSession.parentClass = appSession.student.student_class || appSession.student.class_name || targetClass || "Nursery";
       appSession.parentTab = "homework";
       localStorage.setItem("taa_kids_parent_session", "active");
@@ -31872,12 +31892,12 @@ function setNurseryNumSubTab(st) {
       }
 
       // Check active login states
-      var isStudentLoggedIn = (appSession.type === "parent" && !!appSession.student);
+      var isStudentLoggedIn = ((appSession.type === "parent" || appSession.role === "student") && !!appSession.student);
       var isTeacherLoggedIn = (appSession.type === "teacher" && !!appSession.teacherObj);
       var isPrincipalLoggedIn = (appSession.type === "principal" && !!appSession.principalObj);
       var isUserLoggedIn = (isStudentLoggedIn || isTeacherLoggedIn || isPrincipalLoggedIn);
 
-      // Hero Banner: Clean Neutral Landing Screen when logged out; Dynamic School Banner post-login
+      // Hero Banner: Clean Neutral Landing Screen when logged out; Dynamic School Banner post-login for staff; HELD HIDDEN for students
       if (!isUserLoggedIn) {
         html += '<div class="neutral-landing-hero" style="text-align:center; padding:24px 16px 20px 16px; margin-bottom:16px; background:linear-gradient(135deg, #F3E5F5, #EDE7F6); border:2px solid #D1C4E9; border-radius:20px; box-shadow:0 4px 12px rgba(103,58,183,0.06);">';
         html += '  <div style="font-size:46px; margin-bottom:6px;">🧮</div>';
@@ -31885,7 +31905,7 @@ function setNurseryNumSubTab(st) {
         html += '  <div style="font-size:13px; font-weight:800; color:#5E35B1;">Smart Early Learning Platform</div>';
         html += '  <div style="font-size:11px; color:#546E7A; font-weight:600; margin-top:4px;">Nursery, LKG &amp; UKG • Multi-School Digital Campus</div>';
         html += '</div>';
-      } else {
+      } else if (!isStudentLoggedIn) {
         var activeUdise = getActiveUdiseCode();
         var schoolLogo = getSchoolLogo(activeUdise);
         html += '<div class="hero-banner" style="background:linear-gradient(135deg, ' + school.badgeBg + ', #FFF); border:2.5px solid ' + school.themeColor + ';" onclick="safeAction(speakCurrentSchoolInfo)">';
@@ -31904,55 +31924,58 @@ function setNurseryNumSubTab(st) {
 
       // =========================================================================
       // THREE CLEAN ROLE ACCESS MODES ON HOME SCREEN
+      // Completely hidden when a student is logged in so they land directly on their class dashboard
       // =========================================================================
-      html += '<div class="role-grid">';
-      
-      // Card 1: Student / Parent Mode
-      html += '  <div class="role-card-btn role-card-parent" style="' + (isStudentLoggedIn ? 'border:2.5px solid #2E7D32; background:#E8F5E9;' : '') + '" onclick="safeAction(handleParentModeCardClick)">';
-      html += '    <div class="role-icon-box" style="color:#2E7D32;">🎒</div>';
-      html += '    <div style="flex:1;">';
-      html += '      <div style="display:flex; align-items:center; gap:6px;">';
-      html += '        <span style="font-size:15px; font-weight:900; color:#1B5E20;">Student / Parent Mode</span>';
-      if (isStudentLoggedIn) {
-        html += '        <span style="background:#2E7D32; color:#FFF; font-size:10px; font-weight:800; padding:2px 6px; border-radius:8px;">ACTIVE ✓</span>';
-      }
-      html += '      </div>';
-      html += '      <div style="font-size:11px; color:#388E3C; font-weight:700;">' + (isStudentLoggedIn ? ('Enrolled: ' + escapeHtml(appSession.student.student_name) + ' (' + appSession.student.student_class + ')') : 'School UDISE + Student ID Login • Enrolled Class Access') + '</div>';
-      html += '    </div>';
-      html += '    <div style="font-size:18px; color:#2E7D32;">➔</div>';
-      html += '  </div>';
+      if (!isStudentLoggedIn) {
+        html += '<div class="role-grid">';
+        
+        // Card 1: Student / Parent Mode
+        html += '  <div class="role-card-btn role-card-parent" style="' + (isStudentLoggedIn ? 'border:2.5px solid #2E7D32; background:#E8F5E9;' : '') + '" onclick="safeAction(handleParentModeCardClick)">';
+        html += '    <div class="role-icon-box" style="color:#2E7D32;">🎒</div>';
+        html += '    <div style="flex:1;">';
+        html += '      <div style="display:flex; align-items:center; gap:6px;">';
+        html += '        <span style="font-size:15px; font-weight:900; color:#1B5E20;">Student / Parent Mode</span>';
+        if (isStudentLoggedIn) {
+          html += '        <span style="background:#2E7D32; color:#FFF; font-size:10px; font-weight:800; padding:2px 6px; border-radius:8px;">ACTIVE ✓</span>';
+        }
+        html += '      </div>';
+        html += '      <div style="font-size:11px; color:#388E3C; font-weight:700;">' + (isStudentLoggedIn ? ('Enrolled: ' + escapeHtml(appSession.student.student_name) + ' (' + appSession.student.student_class + ')') : 'School UDISE + Student ID Login • Enrolled Class Access') + '</div>';
+        html += '    </div>';
+        html += '    <div style="font-size:18px; color:#2E7D32;">➔</div>';
+        html += '  </div>';
 
-      // Card 2: Teacher Portal
-      html += '  <div class="role-card-btn role-card-teacher" style="' + (isTeacherLoggedIn ? 'border:2.5px solid #E65100; background:#FFF3E0;' : '') + '" onclick="safeAction(openTeacherLoginModal)">';
-      html += '    <div class="role-icon-box" style="color:#E65100;">👩‍🏫</div>';
-      html += '    <div style="flex:1;">';
-      html += '      <div style="display:flex; align-items:center; gap:6px;">';
-      html += '        <span style="font-size:15px; font-weight:900; color:#BF360C;">Class Teacher Portal</span>';
-      if (isTeacherLoggedIn) {
-        html += '        <span style="background:#E65100; color:#FFF; font-size:10px; font-weight:800; padding:2px 6px; border-radius:8px;">ACTIVE ✓</span>';
-      }
-      html += '      </div>';
-      html += '      <div style="font-size:11px; color:#E65100; font-weight:700;">UDISE Code + Password Login • All Classes (Nursery, LKG, UKG)</div>';
-      html += '    </div>';
-      html += '    <div style="font-size:18px; color:#E65100;">➔</div>';
-      html += '  </div>';
+        // Card 2: Teacher Portal
+        html += '  <div class="role-card-btn role-card-teacher" style="' + (isTeacherLoggedIn ? 'border:2.5px solid #E65100; background:#FFF3E0;' : '') + '" onclick="safeAction(openTeacherLoginModal)">';
+        html += '    <div class="role-icon-box" style="color:#E65100;">👩‍🏫</div>';
+        html += '    <div style="flex:1;">';
+        html += '      <div style="display:flex; align-items:center; gap:6px;">';
+        html += '        <span style="font-size:15px; font-weight:900; color:#BF360C;">Class Teacher Portal</span>';
+        if (isTeacherLoggedIn) {
+          html += '        <span style="background:#E65100; color:#FFF; font-size:10px; font-weight:800; padding:2px 6px; border-radius:8px;">ACTIVE ✓</span>';
+        }
+        html += '      </div>';
+        html += '      <div style="font-size:11px; color:#E65100; font-weight:700;">UDISE Code + Password Login • All Classes (Nursery, LKG, UKG)</div>';
+        html += '    </div>';
+        html += '    <div style="font-size:18px; color:#E65100;">➔</div>';
+        html += '  </div>';
 
-      // Card 3: Principal Supervision Desk
-      html += '  <div class="role-card-btn role-card-principal" style="' + (isPrincipalLoggedIn ? 'border:2.5px solid #512DA8; background:#EDE7F6;' : '') + '" onclick="safeAction(openPrincipalLoginModal)">';
-      html += '    <div class="role-icon-box" style="color:#512DA8;">🛡️</div>';
-      html += '    <div style="flex:1;">';
-      html += '      <div style="display:flex; align-items:center; gap:6px;">';
-      html += '        <span style="font-size:15px; font-weight:900; color:#311B92;">Principal Supervision Desk</span>';
-      if (isPrincipalLoggedIn) {
-        html += '        <span style="background:#512DA8; color:#FFF; font-size:10px; font-weight:800; padding:2px 6px; border-radius:8px;">ACTIVE ✓</span>';
-      }
-      html += '      </div>';
-      html += '      <div style="font-size:11px; color:#512DA8; font-weight:700;">UDISE Code + Password Login • Full Campus Supervision</div>';
-      html += '    </div>';
-      html += '    <div style="font-size:18px; color:#512DA8;">➔</div>';
-      html += '  </div>';
+        // Card 3: Principal Supervision Desk
+        html += '  <div class="role-card-btn role-card-principal" style="' + (isPrincipalLoggedIn ? 'border:2.5px solid #512DA8; background:#EDE7F6;' : '') + '" onclick="safeAction(openPrincipalLoginModal)">';
+        html += '    <div class="role-icon-box" style="color:#512DA8;">🛡️</div>';
+        html += '    <div style="flex:1;">';
+        html += '      <div style="display:flex; align-items:center; gap:6px;">';
+        html += '        <span style="font-size:15px; font-weight:900; color:#311B92;">Principal Supervision Desk</span>';
+        if (isPrincipalLoggedIn) {
+          html += '        <span style="background:#512DA8; color:#FFF; font-size:10px; font-weight:800; padding:2px 6px; border-radius:8px;">ACTIVE ✓</span>';
+        }
+        html += '      </div>';
+        html += '      <div style="font-size:11px; color:#512DA8; font-weight:700;">UDISE Code + Password Login • Full Campus Supervision</div>';
+        html += '    </div>';
+        html += '    <div style="font-size:18px; color:#512DA8;">➔</div>';
+        html += '  </div>';
 
-      html += '</div>'; // End role-grid
+        html += '</div>'; // End role-grid
+      }
 
       // =========================================================================
       // PARENT / STUDENT INTERACTIVE HUB (CLASS TABS & TODAY'S HOMEWORK)
@@ -31995,18 +32018,9 @@ function setNurseryNumSubTab(st) {
 
         // SINGLE-CLASS LOCK: Completely hide switcher for logged in student or single-class teacher
         if (isStudentLocked) {
-          html += '<div class="student-profile-banner" style="background:linear-gradient(135deg, #E8F5E9, #C8E6C9); border:2px solid #4CAF50; border-radius:16px; padding:12px 14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">';
-          html += '  <div style="display:flex; align-items:center; gap:10px;">';
-          html += '    <div style="font-size:32px;">🎒</div>';
-          html += '    <div>';
-          html += '      <div style="font-size:16px; font-weight:900; color:#1B5E20;">' + escapeHtml(appSession.student.student_name) + '</div>';
-          html += '      <div style="font-size:12px; color:#2E7D32; font-weight:800;">Class: <strong>' + curClass + ' (Enrolled &amp; Locked)</strong> • ID: ' + escapeHtml(appSession.student.login_id || appSession.student.student_id || '') + '</div>';
-          html += '    </div>';
-          html += '  </div>';
-          html += '  <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">';
-          html += '    <button onclick="safeAction(openRewardShelfModal)" style="background:#FF9800; color:#FFF; border:none; border-radius:12px; padding:6px 12px; font-size:12px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(255,152,0,0.3);">🎁 My Rewards</button>';
-          html += '    <div style="background:#FFF; border:1.5px solid #81C784; border-radius:12px; padding:4px 10px; font-size:12px; font-weight:900; color:#2E7D32;">⭐ <span id="student-live-points">' + (appSession.student.points || 0) + '</span> Pts</div>';
-          html += '    <button onclick="safeAction(logoutStudentSession)" style="background:#FFEBEE; color:#C62828; border:1px solid #EF9A9A; border-radius:10px; padding:5px 10px; font-size:11px; font-weight:800; cursor:pointer;">Logout 🚪</button>';
+          html += '<div class="student-profile-banner class-switcher-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">';
+          html += '  <div style="display:flex; align-items:center; gap:8px;">';
+          html += '    <span style="font-size:13px; font-weight:900; background:#E8F5E9; color:#1B5E20; border:2px solid #81C784; padding:6px 14px; border-radius:12px; display:inline-flex; align-items:center; gap:6px;">🎒 ' + curClass + ' Class • (Enrolled &amp; Locked)</span>';
           html += '  </div>';
           html += '</div>';
         } else if (isTeacherSingleLocked) {
@@ -32027,22 +32041,12 @@ function setNurseryNumSubTab(st) {
           html += '  </div>';
           html += '</div>';
         }
-          html += '<div class="class-switcher-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">';
-          html += '  <span style="font-size:12px; font-weight:900; color:#37474F; text-transform:uppercase;">' + (isPrincipalLoggedIn ? 'Showcase Class Tabs:' : 'Select Student Class:') + '</span>';
-          html += '  <div style="display:flex; gap:6px;">';
-          ["Nursery", "LKG", "UKG"].forEach(function(cls) {
-            var isAct = (curClass === cls);
-            html += '<button onclick="safeAction(function(){ switchParentClass(\'' + cls + '\'); })" style="padding:6px 12px; border-radius:12px; font-size:12px; font-weight:900; cursor:pointer; border:2px solid ' + (isAct ? school.primaryColor : '#CFD8DC') + '; background:' + (isAct ? school.primaryColor : '#FFF') + '; color:' + (isAct ? '#FFF' : '#455A64') + '; transition:all 0.15s ease;">' + (cls === 'Nursery' ? '🧸 ' : (cls === 'LKG' ? '🚂 ' : '🚀 ')) + cls + '</button>';
-          });
-          html += '  </div>';
-          html += '</div>';
-        }
 
-      // Sub-Tabs: Today's Homework vs Learning Modules
-      html += '<div class="teacher-nav-tabs" style="margin-bottom:12px;">';
-      html += '  <button class="teacher-tab-btn ' + (curTab === 'homework' ? 'active' : '') + '" onclick="safeAction(function(){ switchParentTab(\'homework\'); })">📋 Today\'s Homework &amp; Activities</button>';
-      html += '  <button class="teacher-tab-btn ' + (curTab === 'learning' ? 'active' : '') + '" onclick="safeAction(function(){ switchParentTab(\'learning\'); })">📚 Class Learning Modules</button>';
-      html += '</div>';
+        // Sub-Tabs: Today's Homework vs Learning Modules
+        html += '<div class="teacher-nav-tabs" style="margin-bottom:12px;">';
+        html += '  <button class="teacher-tab-btn ' + (curTab === 'homework' ? 'active' : '') + '" onclick="safeAction(function(){ switchParentTab(\'homework\'); })">📋 Today\'s Homework &amp; Activities</button>';
+        html += '  <button class="teacher-tab-btn ' + (curTab === 'learning' ? 'active' : '') + '" onclick="safeAction(function(){ switchParentTab(\'learning\'); })">📚 Class Learning Modules</button>';
+        html += '</div>';
 
       // SUB-TAB 1: TODAY'S HOMEWORK
       if (curTab === 'homework') {
@@ -32191,15 +32195,18 @@ function setNurseryNumSubTab(st) {
           html += '  </div>';
           html += '</div>';
         }
+      } // End if (curTab === 'learning')
 
-        html += '</div>'; // End parent/student hub card
-      } // End if (isUserLoggedIn)
+      html += '</div>'; // End parent/student hub card
+    } // End if (isUserLoggedIn)
 
-      // Landing Screen Footer with subtle Owner Control Desk button
+      // Landing Screen Footer with subtle Owner Control Desk button (hidden when student is logged in)
       html += '<div style="margin-top:28px; padding:16px 0 8px 0; text-align:center; border-top:1px solid #ECEFF1; display:flex; justify-content:center; align-items:center; gap:8px;">';
       html += '  <span style="font-size:11px; color:#90A4AE; font-weight:700;">Abacus Kids App • Smart Education</span>';
-      html += '  <span style="color:#CFD8DC;">•</span>';
-      html += '  <button id="btn-owner-panel" onclick="safeAction(openOwnerPasswordModal)" style="background:none; border:none; color:#78909C; font-size:11px; cursor:pointer; font-weight:800; padding:4px 8px; border-radius:6px;">⚙️ Owner</button>';
+      if (!isStudentLoggedIn) {
+        html += '  <span style="color:#CFD8DC;">•</span>';
+        html += '  <button id="btn-owner-panel" onclick="safeAction(openOwnerPasswordModal)" style="background:none; border:none; color:#78909C; font-size:11px; cursor:pointer; font-weight:800; padding:4px 8px; border-radius:6px;">⚙️ Owner</button>';
+      }
       html += '</div>';
 
       view.innerHTML = html;
