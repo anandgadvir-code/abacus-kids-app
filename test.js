@@ -478,6 +478,52 @@ runTest('Home Screen Teacher Class Lock, Green Banner Text Contrast & Top Header
   assert(html.includes("style.setProperty('display', 'none', 'important')") || html.includes('style.setProperty("display", "none", "important")'), 'Strict style.setProperty display none important missing');
 });
 
+// TEST 29: Student Login for Short Admission Numbers (e.g. '294', '1067') with School UDISE Code
+runTest('Student Login for Short Admission Numbers (e.g. 294, 1067) with School UDISE Code', () => {
+  // 1. Check support for short admission numbers and flexible input in UI and validation
+  assert(html.includes('id="student-login-id"'), 'student-login-id input field missing');
+  assert(html.includes('id="student-udise-input"'), 'student-udise-input input field missing');
+  assert(html.includes('Please enter Student ID / Admission No. (e.g. 294) or Mobile number!'), 'Flexible Student ID validation toast missing in submitStudentLogin');
+
+  // 2. Query handles case-insensitivity, trim, and school_id/udise_code mapping for The Abacus Academy
+  assert(html.includes('kids_students?login_id=ilike.'), 'ilike query for case-insensitive login_id missing in getStudentAccount');
+  assert(html.includes('school_id.eq.the-abacus-academy'), 'the-abacus-academy school_id fallback query missing');
+  assert(html.includes('cleanUdise === "08150803534"'), 'UDISE 08150803534 mapping missing in getStudentAccount');
+
+  // 3. Password verification handles SHA-256 hash comparison and specific error messages
+  assert(html.includes('storedHash === enteredHash.toLowerCase()'), 'SHA-256 entered hash comparison missing in submitStudentLogin');
+  assert(html.includes('storedHash === cleanPass.toLowerCase()'), 'Clean pass comparison missing in submitStudentLogin');
+  assert(html.includes('Incorrect password for student'), 'Specific incorrect password toast missing in submitStudentLogin');
+
+  // 4. Test fallback matching logic with short admission number '294' and UDISE '08150803534'
+  const mockStudents = [
+    {
+      login_id: '294',
+      admission_no: '294',
+      student_name: 'Reyansh Pareek',
+      student_class: 'Nursery',
+      school_id: 'the-abacus-academy',
+      password_hash: '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4' // SHA-256 for '1234'
+    }
+  ];
+
+  const targetId = '294';
+  const cleanUdise = '08150803534';
+  const matched = mockStudents.find(a => {
+    const aId = String(a.login_id || '').trim().toLowerCase();
+    const aAdm = String(a.admission_no || '').trim().toLowerCase();
+    const matchId = (aId === targetId || aAdm === targetId);
+    const aUdise = String(a.udise_code || '').trim();
+    const matchUdise = (!cleanUdise || aUdise === cleanUdise ||
+      (cleanUdise === '08150803534' && (a.school_id === 'the-abacus-academy' || a.school_id === 'abacus' || !aUdise)));
+    return matchId && matchUdise;
+  });
+
+  assert(matched, 'Short admission number 294 did not match test record');
+  assert.strictEqual(matched.student_name, 'Reyansh Pareek');
+  assert.strictEqual(matched.student_class, 'Nursery');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');

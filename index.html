@@ -3350,19 +3350,46 @@
       var cleanId = String(loginId || "").trim();
       if (!cleanId) return null;
 
-      // 1. Supabase REST query with strict School UDISE code isolation
+      // 1. Supabase REST query with strict School UDISE code / school_id isolation
       try {
-        var query = "/kids_students?login_id=eq." + encodeURIComponent(cleanId);
+        var query = "/kids_students?login_id=ilike." + encodeURIComponent(cleanId);
         if (cleanUdise) {
-          query += "&udise_code=eq." + encodeURIComponent(cleanUdise);
+          if (cleanUdise === "08150803534") {
+            query += "&or=(udise_code.eq." + encodeURIComponent(cleanUdise) + ",school_id.eq.the-abacus-academy,school_id.eq.abacus)";
+          } else if (cleanUdise === "08150803535") {
+            query += "&or=(udise_code.eq." + encodeURIComponent(cleanUdise) + ",school_id.eq.gr-children-academy,school_id.eq.gr_academy)";
+          } else {
+            query += "&udise_code=eq." + encodeURIComponent(cleanUdise);
+          }
         }
         var res = await supabaseRest(query);
         if (Array.isArray(res) && res.length > 0) {
           var acc = res[0];
           if (acc.school_id === "abacus") acc.school_id = "the-abacus-academy";
           if (acc.school_id === "gr_academy") acc.school_id = "gr-children-academy";
+          if (!acc.udise_code && cleanUdise) acc.udise_code = cleanUdise;
           updateLocalStudentAccount(cleanId, acc);
           return acc;
+        }
+
+        // Secondary query by login_id directly if or filter didn't match (e.g. udise_code is null in DB)
+        var resIdOnly = await supabaseRest("/kids_students?login_id=ilike." + encodeURIComponent(cleanId));
+        if (Array.isArray(resIdOnly) && resIdOnly.length > 0) {
+          var matchedAcc = resIdOnly.find(function(a) {
+            var accUdise = String(a.udise_code || "").trim();
+            if (!cleanUdise) return true;
+            if (accUdise === cleanUdise) return true;
+            if (cleanUdise === "08150803534" && (a.school_id === "the-abacus-academy" || a.school_id === "abacus" || !accUdise)) return true;
+            if (cleanUdise === "08150803535" && (a.school_id === "gr-children-academy" || a.school_id === "gr_academy")) return true;
+            return false;
+          });
+          if (matchedAcc) {
+            if (matchedAcc.school_id === "abacus") matchedAcc.school_id = "the-abacus-academy";
+            if (matchedAcc.school_id === "gr_academy") matchedAcc.school_id = "gr-children-academy";
+            if (!matchedAcc.udise_code && cleanUdise) matchedAcc.udise_code = cleanUdise;
+            updateLocalStudentAccount(cleanId, matchedAcc);
+            return matchedAcc;
+          }
         }
       } catch(e) {
         console.log("Supabase kids_students query note:", e.message || e);
@@ -3371,8 +3398,17 @@
       // 2. Local fallback matching BOTH udise_code AND login_id
       var accounts = getLocalStudentAccounts();
       var found = accounts.find(function(a) {
-        var matchId = (String(a.login_id).trim() === cleanId || String(a.mobile || "").trim() === cleanId || String(a.student_id || "").trim() === cleanId);
-        var matchUdise = (!cleanUdise || String(a.udise_code || "").trim() === cleanUdise);
+        var aId = String(a.login_id || "").trim().toLowerCase();
+        var aStuId = String(a.student_id || "").trim().toLowerCase();
+        var aAdm = String(a.admission_no || "").trim().toLowerCase();
+        var aMob = String(a.mobile || "").trim().toLowerCase();
+        var targetId = cleanId.toLowerCase();
+        var matchId = (aId === targetId || aStuId === targetId || aAdm === targetId || aMob === targetId);
+
+        var aUdise = String(a.udise_code || "").trim();
+        var matchUdise = (!cleanUdise || aUdise === cleanUdise ||
+                          (cleanUdise === "08150803534" && (a.school_id === "the-abacus-academy" || a.school_id === "abacus" || !aUdise)) ||
+                          (cleanUdise === "08150803535" && (a.school_id === "gr-children-academy" || a.school_id === "gr_academy")));
         return matchId && matchUdise;
       });
       return found || null;
@@ -4026,15 +4062,13 @@
         '  </div>' +
 
         '  <div style="margin-bottom:12px;">' +
-        '    <label style="font-size:11px; font-weight:800; color:#37474F;">Student ID or Parent Mobile:</label>' +
-        '    <input type="text" id="student-login-id" class="input-field" placeholder="Enter Student ID or Mobile Number" style="margin-top:4px; font-size:14px; font-weight:800;" autocomplete="username" />' +
+        '    <label style="font-size:11px; font-weight:800; color:#37474F;">Admission No. / Student ID / Mobile:</label>' +
+        '    <input type="text" id="student-login-id" class="input-field" placeholder="Enter Admission No. (e.g. 294) or Mobile Number" style="margin-top:4px; font-size:14px; font-weight:800;" autocomplete="username" />' +
         '  </div>' +
-
         '  <div style="margin-bottom:14px;">' +
         '    <label style="font-size:11px; font-weight:800; color:#37474F;">Password:</label>' +
         '    <input type="password" id="student-login-pass" class="input-field" placeholder="Enter Password" style="margin-top:4px; font-size:14px; font-weight:800;" autocomplete="current-password" />' +
         '  </div>' +
-
         '  <button class="btn-action-primary" style="background:#2E7D32; box-shadow:0 4px 10px rgba(46,125,50,0.3); font-size:14px; margin-bottom:12px;" onclick="safeAction(submitStudentLogin)">' +
         '    Sign In to Student Dashboard 🚀' +
         '  </button>' +
@@ -4060,7 +4094,7 @@
         return;
       }
       if (!loginId) {
-        showToast("Please enter Student ID or Mobile number!", "wrong");
+        showToast("Please enter Student ID / Admission No. (e.g. 294) or Mobile number!", "wrong");
         if (idIn) idIn.focus();
         return;
       }
@@ -4079,9 +4113,15 @@
       }
 
       var enteredHash = await hashPassword(pass);
-      var validPass = (account.password_hash === pass || account.password_hash === enteredHash || (!account.password_hash && pass === "1234"));
+      var storedHash = String(account.password_hash || "").trim().toLowerCase();
+      var cleanPass = String(pass || "").trim();
+      var validPass = (
+        storedHash === cleanPass.toLowerCase() ||
+        storedHash === enteredHash.toLowerCase() ||
+        (!storedHash && cleanPass === "1234")
+      );
       if (!validPass) {
-        showToast("Invalid password! Please check your credentials.", "wrong");
+        showToast("Incorrect password for student " + (account.student_name || loginId) + "! Please re-enter your password.", "wrong");
         speak("Incorrect password.", "en-IN");
         return;
       }
@@ -4100,9 +4140,14 @@
 
       // Success: Save student session
       account.udise_code = studentUdise;
+      var studentClass = normalizeAssignedClass(account.student_class || account.class_name);
+      if (studentClass === "ALL" || !studentClass) studentClass = "Nursery";
+      account.student_class = studentClass;
+      account.class_name = studentClass;
+
       appSession.type = "parent";
       appSession.student = account;
-      appSession.parentClass = account.student_class || account.class_name || "Nursery";
+      appSession.parentClass = studentClass;
       appSession.schoolId = account.school_id || (studentUdise === "08150803535" ? "gr-children-academy" : "the-abacus-academy");
       appSession.parentTab = "homework";
       appState.stars = Math.floor(account.stars || account.points || account.total_points || 0);
