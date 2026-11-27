@@ -6,6 +6,7 @@
 
 CREATE TABLE IF NOT EXISTS public.kids_students (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    udise_code TEXT NOT NULL DEFAULT '08150803534', -- School UDISE Code for strict isolation
     login_id TEXT UNIQUE NOT NULL, -- Student ID or Parent Mobile
     password_hash TEXT NOT NULL, -- SHA-256 hash or plain text for initial setup
     student_name TEXT NOT NULL,
@@ -20,8 +21,9 @@ CREATE TABLE IF NOT EXISTS public.kids_students (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Index for fast lookup on login_id
+-- Index for fast lookup on login_id and udise_code
 CREATE INDEX IF NOT EXISTS idx_kids_students_login_id ON public.kids_students(login_id);
+CREATE INDEX IF NOT EXISTS idx_kids_students_udise_login ON public.kids_students(udise_code, login_id);
 CREATE INDEX IF NOT EXISTS idx_kids_students_school_class ON public.kids_students(school_id, student_class);
 
 -- Enable RLS

@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS public.udise_accounts (
     user_name TEXT NOT NULL,
     password_hash TEXT,
     is_password_set BOOLEAN NOT NULL DEFAULT false,
+    school_logo TEXT,
     created_at TIMESTAMPTZ DEFAULT TIMEZONE('utc', NOW()),
     updated_at TIMESTAMPTZ DEFAULT TIMEZONE('utc', NOW()),
     CONSTRAINT uq_udise_mobile UNIQUE (udise_code, mobile)

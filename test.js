@@ -346,7 +346,7 @@ runTest('Remote school subscription lock, owner super admin desk & live update c
 
   // 2. Capacitor Config Live Auto-Update
   assert(fs.existsSync('capacitor.config.json'), 'capacitor.config.json missing');
-  const capConfig = JSON.parse(fs.readFileSync('capacitor.config.json', 'utf8'));
+  const capConfig = JSON.parse(fs.readFileSync('capacitor.config.json', 'utf8').replace(/^\uFEFF/, ''));
   assert(capConfig.server, 'Capacitor config server block missing');
   assert.strictEqual(capConfig.server.cleartext, false, 'cleartext must be false in server config');
   assert.strictEqual(capConfig.server.androidScheme, 'https', 'androidScheme must be https');
@@ -374,6 +374,48 @@ runTest('Remote school subscription lock, owner super admin desk & live update c
   assert(html.includes('btn-owner-panel'), 'btn-owner-panel ID missing in HTML footer');
   assert(html.includes('⚙️ Owner'), 'Owner button text missing in landing screen footer');
   assert(html.includes('Owner Lifetime Free'), 'Owner Lifetime Free badge missing');
+});
+
+// TEST 25: Neutral Landing Screen, Dynamic Post-Login School Branding, Principal Logo Upload & Strict Cross-School Isolation
+runTest('Neutral landing screen, dynamic post-login branding, principal logo upload & strict school isolation', () => {
+  // 1. Clean Neutral Landing Screen (when logged out)
+  assert(html.includes('id="header-school-logo" src="logo.jpeg" alt="Logo" class="logo-img" style="display:none;"'), 'Header school logo must be hidden by default on initial load');
+  assert(html.includes('id="header-academy-badge" class="academy-badge" style="display:none;"'), 'Header academy badge must be hidden by default on initial load');
+  assert(html.includes('id="btn-teacher-portal" class="nav-icon-btn teacher-badge-btn" onclick="safeAction(openTeacherLoginModal)" title="Teacher Portal" style="display:none;"'), 'Header teacher button must be hidden when logged out');
+  assert(html.includes('id="btn-principal-desk" class="nav-icon-btn principal-badge-btn" onclick="safeAction(openPrincipalLoginModal)" title="Principal Supervision Desk" style="display:none;"'), 'Header principal button must be hidden when logged out');
+  assert(html.includes('neutral-landing-hero'), 'neutral-landing-hero must be present in index.html');
+  assert(html.includes('Smart Early Learning Platform'), 'Neutral tagline Smart Early Learning Platform missing');
+  assert(html.includes('if (!isUserLoggedIn)'), 'renderHome must distinguish logged out vs logged in states');
+
+  // 2. Dynamic Post-Login School Branding & Logo
+  assert(html.includes('getSchoolLogo'), 'getSchoolLogo function missing in index.html');
+  assert(html.includes('getActiveUdiseCode'), 'getActiveUdiseCode function missing in index.html');
+  assert(html.includes('taa_school_logo_'), 'LocalStorage key for school logo caching missing');
+  assert(html.includes('updateSchoolBrandingUI'), 'updateSchoolBrandingUI function missing');
+
+  // 3. Principal "Change School Logo" Feature & Canvas Compression
+  assert(html.includes('school-branding-card'), 'school-branding-card missing in Principal Desk');
+  assert(html.includes('principal-logo-preview'), 'principal-logo-preview element missing');
+  assert(html.includes('principal-logo-file'), 'principal-logo-file input missing');
+  assert(html.includes('handlePrincipalLogoUpload'), 'handlePrincipalLogoUpload function missing');
+  assert(html.includes('handlePrincipalLogoReset'), 'handlePrincipalLogoReset function missing');
+  assert(html.includes('maxDim = 256'), 'Canvas 256x256 max dimension compression missing');
+  assert(html.includes('toDataURL("image/png")'), 'Canvas Base64 export missing');
+  assert(html.includes('PATCH'), 'PATCH request for logo update missing');
+
+  // 4. Supabase SQL Schemas for Logo & Strict Student UDISE Isolation
+  const sqlUdise = fs.readFileSync('supabase_udise_accounts.sql', 'utf8');
+  assert(sqlUdise.includes('school_logo TEXT'), 'school_logo column missing in supabase_udise_accounts.sql');
+
+  const sqlStudent = fs.readFileSync('supabase_student_accounts.sql', 'utf8');
+  assert(sqlStudent.includes('udise_code TEXT'), 'udise_code column missing in supabase_student_accounts.sql');
+  assert(sqlStudent.includes('idx_kids_students_udise_login'), 'idx_kids_students_udise_login index missing in supabase_student_accounts.sql');
+
+  // 5. Strict Cross-School Isolation on Student / Parent Login
+  assert(html.includes('id="student-udise-input"'), 'student-udise-input field missing in student login modal');
+  assert(html.includes('Please enter your School UDISE Code!'), 'UDISE code validation prompt missing in submitStudentLogin');
+  assert(html.includes('getStudentAccount(udiseCode, loginId)'), 'getStudentAccount must accept udiseCode and loginId for strict isolation');
+  assert(html.includes('&udise_code=eq.'), 'Supabase query must filter by udise_code');
 });
 
 console.log('\n----------------------------------------------------------------');

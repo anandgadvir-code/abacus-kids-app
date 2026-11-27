@@ -2138,9 +2138,9 @@
     <!-- Top Sticky Header -->
     <header class="app-header">
       <div class="header-left" onclick="safeAction(speakCurrentSchoolInfo)">
-        <img id="header-school-logo" src="logo.jpeg" alt="Logo" class="logo-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23FF9800\'/><text x=\'50\' y=\'62\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-weight=\'bold\'>A</text></svg>';" />
+        <img id="header-school-logo" src="logo.jpeg" alt="Logo" class="logo-img" style="display:none;" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'46\' fill=\'%23FF9800\'/><text x=\'50\' y=\'62\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'sans-serif\' font-weight=\'bold\'>A</text></svg>';" />
         <div>
-          <div id="header-academy-badge" class="academy-badge">The Abacus Academy, Jodhpur</div>
+          <div id="header-academy-badge" class="academy-badge" style="display:none;"></div>
           <div id="header-app-title" class="app-title">Abacus Kids</div>
         </div>
       </div>
@@ -2150,14 +2150,14 @@
           <span id="header-school-icon">🧮</span> <span id="header-school-name">Abacus</span> <span style="font-size:9px; opacity:0.8;">▼</span>
         </button>
         <!-- Teacher Portal Button -->
-        <button id="btn-teacher-portal" class="nav-icon-btn teacher-badge-btn" onclick="safeAction(openTeacherLoginModal)" title="Teacher Portal">
+        <button id="btn-teacher-portal" class="nav-icon-btn teacher-badge-btn" onclick="safeAction(openTeacherLoginModal)" title="Teacher Portal" style="display:none;">
           <span class="safe-emoji">👩‍🏫</span> <span class="teacher-btn-label">Teacher</span>
         </button>
         <!-- Principal Supervision Desk Button -->
-        <button id="btn-principal-desk" class="nav-icon-btn principal-badge-btn" onclick="safeAction(openPrincipalLoginModal)" title="Principal Supervision Desk">
+        <button id="btn-principal-desk" class="nav-icon-btn principal-badge-btn" onclick="safeAction(openPrincipalLoginModal)" title="Principal Supervision Desk" style="display:none;">
           <span class="safe-emoji">🛡️</span> <span class="principal-btn-label">Principal</span>
         </button>
-        <div class="star-counter" id="star-badge" onclick="safeAction(function() { speak(appState.stars + ' Stars! Great job!', 'en-IN'); })" title="Earned Stars">
+        <div class="star-counter" id="star-badge" onclick="safeAction(function() { speak(appState.stars + ' Stars! Great job!', 'en-IN'); })" title="Earned Stars" style="display:none;">
           <span class="safe-emoji">⭐</span> <span id="star-count">0</span>
         </div>
         <button id="btn-sound-toggle" class="nav-icon-btn" onclick="safeAction(toggleSound)" title="Sound On/Off">
@@ -2599,6 +2599,114 @@
       if (schoolId === "the-abacus-academy" || schoolId === "abacus") return "08150803534";
       if (schoolId === "gr-children-academy" || schoolId === "gr_academy") return "08150803535";
       return "08150803534";
+    }
+
+    function getActiveUdiseCode() {
+      if (appSession.principalObj && appSession.principalObj.udise_code) return appSession.principalObj.udise_code;
+      if (appSession.teacherObj && appSession.teacherObj.udise_code) return appSession.teacherObj.udise_code;
+      if (appSession.student && appSession.student.udise_code) return appSession.student.udise_code;
+      return getUdiseCodeForSchool(appSession.schoolId || getActiveSchoolId());
+    }
+
+    function getSchoolLogo(udiseCode) {
+      var code = String(udiseCode || getActiveUdiseCode() || "").trim();
+      if (code) {
+        var cached = localStorage.getItem("taa_school_logo_" + code);
+        if (cached) return cached;
+      }
+      if (appSession.principalObj && appSession.principalObj.school_logo) {
+        return appSession.principalObj.school_logo;
+      }
+      if (appSession.teacherObj && appSession.teacherObj.school_logo) {
+        return appSession.teacherObj.school_logo;
+      }
+      if (appSession.student && appSession.student.school_logo) {
+        return appSession.student.school_logo;
+      }
+      if (appSession.subscription && appSession.subscription.school_logo) {
+        return appSession.subscription.school_logo;
+      }
+      return null;
+    }
+
+    function handlePrincipalLogoUpload(event) {
+      var file = event.target.files && event.target.files[0];
+      if (!file) return;
+      if (!file.type || !file.type.startsWith("image/")) {
+        showToast("Please select a valid image file", "wrong");
+        return;
+      }
+      var udiseCode = (appSession.principalObj && appSession.principalObj.udise_code) || getActiveUdiseCode();
+      showToast("Compressing & uploading school logo...", "info");
+
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var img = new Image();
+        img.onload = function() {
+          var maxDim = 256;
+          var width = img.width;
+          var height = img.height;
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+          var canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+          var compressedDataUrl = canvas.toDataURL("image/png");
+
+          // 1. Cache in localStorage
+          localStorage.setItem("taa_school_logo_" + udiseCode, compressedDataUrl);
+          if (appSession.principalObj) appSession.principalObj.school_logo = compressedDataUrl;
+
+          // 2. Patch to Supabase public.udise_accounts
+          supabaseRest("/udise_accounts?udise_code=eq." + encodeURIComponent(udiseCode), {
+            method: "PATCH",
+            body: { school_logo: compressedDataUrl }
+          }).catch(function(err) {
+            console.log("Logo sync Supabase note:", err.message || err);
+          });
+
+          // 3. Update preview and live header immediately
+          var preview = document.getElementById("principal-logo-preview");
+          if (preview) preview.src = compressedDataUrl;
+          updateSchoolBrandingUI();
+          renderHeaderStatus();
+
+          playTone("fanfare");
+          triggerConfetti();
+          showToast("School logo updated successfully! 🖼️✨", "success");
+          speak("School logo updated successfully.", "en-IN");
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handlePrincipalLogoReset() {
+      var udiseCode = (appSession.principalObj && appSession.principalObj.udise_code) || getActiveUdiseCode();
+      localStorage.removeItem("taa_school_logo_" + udiseCode);
+      if (appSession.principalObj) appSession.principalObj.school_logo = null;
+
+      supabaseRest("/udise_accounts?udise_code=eq." + encodeURIComponent(udiseCode), {
+        method: "PATCH",
+        body: { school_logo: null }
+      }).catch(function() {});
+
+      var preview = document.getElementById("principal-logo-preview");
+      if (preview) preview.src = "logo.jpeg";
+      updateSchoolBrandingUI();
+      renderHeaderStatus();
+
+      showToast("School logo reset to default 🔄", "info");
+      speak("School logo reset to default.", "en-IN");
     }
 
     function renderSubscriptionExpiredScreen(sub, udiseCode) {
@@ -3213,13 +3321,22 @@
       return accounts;
     }
 
-    async function getStudentAccount(loginId) {
+    async function getStudentAccount(udiseCode, loginId) {
+      if (arguments.length === 1) {
+        loginId = udiseCode;
+        udiseCode = "";
+      }
+      var cleanUdise = String(udiseCode || "").trim().replace(/\D/g, "");
       var cleanId = String(loginId || "").trim();
       if (!cleanId) return null;
 
-      // 1. Supabase REST query
+      // 1. Supabase REST query with strict School UDISE code isolation
       try {
-        var res = await supabaseRest("/kids_students?login_id=eq." + encodeURIComponent(cleanId));
+        var query = "/kids_students?login_id=eq." + encodeURIComponent(cleanId);
+        if (cleanUdise) {
+          query += "&udise_code=eq." + encodeURIComponent(cleanUdise);
+        }
+        var res = await supabaseRest(query);
         if (Array.isArray(res) && res.length > 0) {
           var acc = res[0];
           if (acc.school_id === "abacus") acc.school_id = "the-abacus-academy";
@@ -3231,10 +3348,12 @@
         console.log("Supabase kids_students query note:", e.message || e);
       }
 
-      // 2. Local fallback
+      // 2. Local fallback matching BOTH udise_code AND login_id
       var accounts = getLocalStudentAccounts();
       var found = accounts.find(function(a) {
-        return String(a.login_id).trim() === cleanId || String(a.mobile).trim() === cleanId || String(a.student_id || "").trim() === cleanId;
+        var matchId = (String(a.login_id).trim() === cleanId || String(a.mobile || "").trim() === cleanId || String(a.student_id || "").trim() === cleanId);
+        var matchUdise = (!cleanUdise || String(a.udise_code || "").trim() === cleanUdise);
+        return matchId && matchUdise;
       });
       return found || null;
     }
@@ -3314,28 +3433,89 @@
     }
 
     function updateSchoolBrandingUI() {
-      var school = getActiveSchool();
+      var bSchoolLogo = document.getElementById("header-school-logo");
       var bSchoolName = document.getElementById("header-school-name");
       var bSchoolIcon = document.getElementById("header-school-icon");
       var bAcademyBadge = document.getElementById("header-academy-badge");
       var bAppTitle = document.getElementById("header-app-title");
       var bSchoolSwitcher = document.getElementById("btn-school-switcher");
+      var bTeacherBtn = document.getElementById("btn-teacher-portal");
+      var bPrincipalBtn = document.getElementById("btn-principal-desk");
 
+      var isStudentLoggedIn = (appSession.type === "parent" && !!appSession.student);
+      var isTeacherLoggedIn = (appSession.type === "teacher" && !!appSession.teacherObj);
+      var isPrincipalLoggedIn = (appSession.type === "principal" && !!appSession.principalObj);
+      var isUserLoggedIn = (isStudentLoggedIn || isTeacherLoggedIn || isPrincipalLoggedIn);
+
+      if (!isUserLoggedIn) {
+        // NEUTRAL LANDING SCREEN (WHEN LOGGED OUT)
+        if (bSchoolLogo) {
+          bSchoolLogo.style.display = "none";
+          bSchoolLogo.src = "";
+        }
+        if (bAcademyBadge) {
+          bAcademyBadge.style.display = "none";
+          bAcademyBadge.textContent = "";
+        }
+        if (bAppTitle) {
+          bAppTitle.textContent = "Abacus Kids";
+          bAppTitle.style.color = "#FF9800";
+        }
+        if (bSchoolSwitcher) bSchoolSwitcher.style.display = "none";
+        if (bTeacherBtn) bTeacherBtn.style.display = "none";
+        if (bPrincipalBtn) bPrincipalBtn.style.display = "none";
+        document.title = "Abacus Kids - Smart Early Learning Platform";
+        return;
+      }
+
+      // DYNAMIC POST-LOGIN BRANDING
+      var activeUdise = getActiveUdiseCode();
+      var school = getActiveSchool();
+      var schoolFullName = school.fullName;
+      if (appSession.principalObj && appSession.principalObj.school_name) {
+        schoolFullName = appSession.principalObj.school_name;
+      } else if (appSession.teacherObj && appSession.teacherObj.school_name) {
+        schoolFullName = appSession.teacherObj.school_name;
+      } else if (appSession.student && appSession.student.school_name) {
+        schoolFullName = appSession.student.school_name;
+      } else if (appSession.subscription && appSession.subscription.school_name) {
+        schoolFullName = appSession.subscription.school_name;
+      }
+
+      var logoData = getSchoolLogo(activeUdise);
+      if (bSchoolLogo) {
+        bSchoolLogo.style.display = "inline-block";
+        bSchoolLogo.src = logoData || "logo.jpeg";
+      }
+      if (bAcademyBadge) {
+        bAcademyBadge.style.display = "block";
+        bAcademyBadge.textContent = schoolFullName;
+        bAcademyBadge.style.color = school.primaryColor;
+      }
+      if (bAppTitle) {
+        bAppTitle.textContent = school.shortName || "Abacus Kids";
+        bAppTitle.style.color = school.primaryColor;
+      }
       if (bSchoolName) bSchoolName.textContent = school.shortName;
       if (bSchoolIcon) bSchoolIcon.textContent = school.emoji;
-      if (bAcademyBadge) bAcademyBadge.textContent = school.fullName;
-      if (bAppTitle) bAppTitle.textContent = (school.id === "gr-children-academy") ? "GR Kids Academy" : "Abacus Kids";
       if (bSchoolSwitcher) {
         bSchoolSwitcher.style.background = school.badgeBg;
         bSchoolSwitcher.style.borderColor = school.themeColor;
         bSchoolSwitcher.style.color = school.primaryColor;
       }
-      document.title = school.fullName + " - Smart Kids Learning";
+      document.title = schoolFullName + " - Abacus Kids";
     }
 
     function speakCurrentSchoolInfo() {
-      var s = getActiveSchool();
-      speak(s.fullName + ". " + s.tagline, "en-IN");
+      var isUserLoggedIn = (appSession.type === "parent" && !!appSession.student) ||
+                            (appSession.type === "teacher" && !!appSession.teacherObj) ||
+                            (appSession.type === "principal" && !!appSession.principalObj);
+      if (isUserLoggedIn) {
+        var s = getActiveSchool();
+        speak(s.fullName + ". " + s.tagline, "en-IN");
+      } else {
+        speak("Abacus Kids. Smart Early Learning Platform.", "en-IN");
+      }
     }
 
     function openSchoolSelectModal() {
@@ -3699,8 +3879,8 @@
         }
         if (btnLogout) btnLogout.style.display = "inline-flex";
         if (btnTeacherPortal) btnTeacherPortal.style.display = "inline-flex";
-        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "inline-flex";
-        if (starBadge) starBadge.style.display = "flex";
+        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
+        if (starBadge) starBadge.style.display = "none";
       } else if (appSession.type === "principal" && appSession.principalObj) {
         if (banner) {
           banner.style.display = "flex";
@@ -3714,9 +3894,9 @@
             '</div>';
         }
         if (btnLogout) btnLogout.style.display = "inline-flex";
-        if (btnTeacherPortal) btnTeacherPortal.style.display = "inline-flex";
+        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
         if (btnPrincipalDesk) btnPrincipalDesk.style.display = "inline-flex";
-        if (starBadge) starBadge.style.display = "flex";
+        if (starBadge) starBadge.style.display = "none";
       } else if (appSession.type === "parent" && appSession.student) {
         if (banner) {
           banner.style.display = "flex";
@@ -3729,14 +3909,14 @@
             '</div>';
         }
         if (btnLogout) btnLogout.style.display = "inline-flex";
-        if (btnTeacherPortal) btnTeacherPortal.style.display = "inline-flex";
-        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "inline-flex";
+        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
+        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
         if (starBadge) starBadge.style.display = "flex";
       } else {
         if (banner) banner.style.display = "none";
         if (btnLogout) btnLogout.style.display = "none";
-        if (btnTeacherPortal) btnTeacherPortal.style.display = "inline-flex";
-        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "inline-flex";
+        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
+        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
         if (starBadge) starBadge.style.display = "none";
       }
     }
@@ -3788,7 +3968,6 @@
       var existing = document.getElementById("student-login-modal");
       if (existing) existing.remove();
 
-      var school = getActiveSchool();
       var modal = document.createElement("div");
       modal.id = "student-login-modal";
       modal.className = "modal-overlay";
@@ -3798,24 +3977,29 @@
         '      <span style="font-size:28px;">🎒</span>' +
         '      <div>' +
         '        <h3 style="font-size:18px; font-weight:900; color:#1B5E20; margin:0;">Student &amp; Parent Login</h3>' +
-        '        <div style="font-size:11px; color:#546E7A; font-weight:700;">' + escapeHtml(school.name) + ' • Class Locked Access</div>' +
+        '        <div style="font-size:11px; color:#546E7A; font-weight:700;">School UDISE Code &amp; Class-Locked Access</div>' +
         '      </div>' +
         '    </div>' +
         '    <button onclick="document.getElementById(\'student-login-modal\').remove()" style="background:none; border:none; font-size:18px; cursor:pointer; font-weight:900; color:#546E7A;">✕</button>' +
         '  </div>' +
 
         '  <div style="background:#E8F5E9; border:1.5px solid #A5D6A7; border-radius:12px; padding:10px 12px; margin:10px 0 14px 0; font-size:11px; color:#1B5E20; font-weight:700; line-height:1.4;">' +
-        '    🔐 <strong>Secure Single-Class Access:</strong><br/>Enter your registered Student ID or Parent Mobile number &amp; password. Your dashboard will automatically lock to your enrolled class!' +
+        '    🔐 <strong>Strict Cross-School Isolation:</strong><br/>Enter your School UDISE Code, Student ID / Parent Mobile, and Password to access your assigned class dashboard!' +
+        '  </div>' +
+
+        '  <div style="margin-bottom:12px;">' +
+        '    <label style="font-size:11px; font-weight:800; color:#37474F;">School UDISE Code:</label>' +
+        '    <input type="text" id="student-udise-input" class="input-field" placeholder="Enter 11-Digit School UDISE (e.g. 08150803534)" style="margin-top:4px; font-size:14px; font-weight:800;" autocomplete="off" />' +
         '  </div>' +
 
         '  <div style="margin-bottom:12px;">' +
         '    <label style="font-size:11px; font-weight:800; color:#37474F;">Student ID or Parent Mobile:</label>' +
-        '    <input type="text" id="student-login-id" class="input-field" placeholder="Enter Student ID or Mobile Number" style="margin-top:4px; font-size:14px; font-weight:800;" />' +
+        '    <input type="text" id="student-login-id" class="input-field" placeholder="Enter Student ID or Mobile Number" style="margin-top:4px; font-size:14px; font-weight:800;" autocomplete="username" />' +
         '  </div>' +
 
         '  <div style="margin-bottom:14px;">' +
         '    <label style="font-size:11px; font-weight:800; color:#37474F;">Password:</label>' +
-        '    <input type="password" id="student-login-pass" class="input-field" placeholder="Enter Password" style="margin-top:4px; font-size:14px; font-weight:800;" />' +
+        '    <input type="password" id="student-login-pass" class="input-field" placeholder="Enter Password" style="margin-top:4px; font-size:14px; font-weight:800;" autocomplete="current-password" />' +
         '  </div>' +
 
         '  <button class="btn-action-primary" style="background:#2E7D32; box-shadow:0 4px 10px rgba(46,125,50,0.3); font-size:14px; margin-bottom:12px;" onclick="safeAction(submitStudentLogin)">' +
@@ -3827,27 +4011,37 @@
     }
 
     async function submitStudentLogin() {
+      var udiseIn = document.getElementById("student-udise-input");
       var idIn = document.getElementById("student-login-id");
       var passIn = document.getElementById("student-login-pass");
       if (!idIn || !passIn) return;
 
+      var udiseCode = udiseIn ? udiseIn.value.trim().replace(/\D/g, "") : "";
       var loginId = idIn.value.trim();
       var pass = passIn.value.trim();
 
+      if (!udiseCode) {
+        showToast("Please enter your School UDISE Code!", "wrong");
+        speak("Please enter your school UDISE code.", "en-IN");
+        if (udiseIn) udiseIn.focus();
+        return;
+      }
       if (!loginId) {
         showToast("Please enter Student ID or Mobile number!", "wrong");
+        if (idIn) idIn.focus();
         return;
       }
       if (!pass) {
         showToast("Please enter your password!", "wrong");
+        if (passIn) passIn.focus();
         return;
       }
 
-      showToast("Verifying credentials...", "info");
-      var account = await getStudentAccount(loginId);
+      showToast("Verifying student credentials...", "info");
+      var account = await getStudentAccount(udiseCode, loginId);
       if (!account) {
-        showToast("Student account not found! Check your ID or Mobile.", "wrong");
-        speak("Account not found. Please check your Student ID.", "en-IN");
+        showToast("Student account not found for School UDISE " + udiseCode + "!", "wrong");
+        speak("Student account not found for this school UDISE code.", "en-IN");
         return;
       }
 
@@ -3860,7 +4054,7 @@
       }
 
       // Remote School Subscription Check
-      var studentUdise = getUdiseCodeForSchool(account.school_id || getActiveSchoolId());
+      var studentUdise = account.udise_code || udiseCode || getUdiseCodeForSchool(account.school_id || getActiveSchoolId());
       var sub = await fetchSchoolSubscription(studentUdise);
       var subStatus = isSubscriptionValid(sub);
       if (!subStatus.valid) {
@@ -3872,10 +4066,11 @@
       appSession.subscription = sub;
 
       // Success: Save student session
+      account.udise_code = studentUdise;
       appSession.type = "parent";
       appSession.student = account;
       appSession.parentClass = account.student_class || account.class_name || "Nursery";
-      appSession.schoolId = account.school_id || getActiveSchoolId();
+      appSession.schoolId = account.school_id || (studentUdise === "08150803535" ? "gr-children-academy" : "the-abacus-academy");
       appSession.parentTab = "homework";
       appState.stars = Math.floor(account.stars || account.points || account.total_points || 0);
 
@@ -4483,7 +4678,7 @@
       modal.innerHTML = '<div class="modal-card" style="max-width: 400px; text-align: left;">' +
         '  <div style="text-align: center; font-size: 42px; margin-bottom: 4px;">' + roleEmoji + '</div>' +
         '  <h2 style="font-size: 20px; font-weight: 900; color: ' + roleColor + '; margin: 0 0 4px 0; text-align: center;">' + roleTitle + '</h2>' +
-        '  <div style="font-size: 12px; color: #546E7A; font-weight: 700; margin-bottom: 12px; text-align: center;">Campus: <strong>' + escapeHtml(school.name) + '</strong> • Supabase Auth</div>' +
+        '  <div style="font-size: 12px; color: #546E7A; font-weight: 700; margin-bottom: 12px; text-align: center;">Pre-Authorized Staff Portal • Supabase Auth</div>' +
 
         '  <div style="background: #E8F5E9; border: 1.5px solid #A5D6A7; border-radius: 12px; padding: 10px 12px; margin-bottom: 14px; font-size: 11px; color: #1B5E20; font-weight: 700; line-height: 1.4;">' +
         '    🔐 <strong>Pre-Authorized Staff Login:</strong><br/>Enter your School UDISE Code and Registered 10-Digit Mobile. If logging in for the first time, you will set your personal password!' +
@@ -5243,6 +5438,29 @@
       html += '    ' + subBadge;
       html += '  </div>';
       html += '  <button onclick="safeAction(openPrincipalShowcaseMode)" style="background: #673AB7; color: #FFF; border: none; padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(103,58,183,0.3);">📱 Preview All Classes &amp; Content (Showcase Mode)</button>';
+      html += '</div>';
+
+      // School Branding & Logo Management Card (Principal Only)
+      var currentLogo = getSchoolLogo(pSub.udise_code || getActiveUdiseCode()) || "logo.jpeg";
+      html += '<div class="school-branding-card" style="background:#FFFFFF; border:2px solid #D1C4E9; border-radius:14px; padding:12px 14px; margin-bottom:12px; box-shadow:0 2px 8px rgba(103,58,183,0.06); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">';
+      html += '  <div style="display:flex; align-items:center; gap:12px;">';
+      html += '    <div style="width:48px; height:48px; border-radius:12px; border:2px solid #B39DDB; overflow:hidden; background:#F5F5F5; display:flex; align-items:center; justify-content:center; flex-shrink:0;">';
+      html += '      <img id="principal-logo-preview" src="' + currentLogo + '" alt="School Logo" style="width:100%; height:100%; object-fit:contain;" onerror="this.src=\'logo.jpeg\';" />';
+      html += '    </div>';
+      html += '    <div>';
+      html += '      <div style="font-size:13px; font-weight:900; color:#4527A0;">🖼️ School Branding &amp; Logo</div>';
+      html += '      <div style="font-size:11px; color:#546E7A; font-weight:700;">Custom logo for <strong>' + escapeHtml(school.name) + '</strong> (Max 256x256, auto-compressed)</div>';
+      html += '    </div>';
+      html += '  </div>';
+      html += '  <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">';
+      html += '    <label class="btn-upload-logo" style="background:#673AB7; color:#FFF; padding:7px 12px; border-radius:10px; font-size:11px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(103,58,183,0.3);">';
+      html += '      📤 Change School Logo';
+      html += '      <input type="file" id="principal-logo-file" accept="image/*" style="display:none;" onchange="handlePrincipalLogoUpload(event)" />';
+      html += '    </label>';
+      html += '    <button onclick="safeAction(handlePrincipalLogoReset)" style="background:#ECEFF1; color:#546E7A; border:1px solid #CFD8DC; padding:7px 10px; border-radius:10px; font-size:11px; font-weight:800; cursor:pointer;">';
+      html += '      🔄 Reset Logo';
+      html += '    </button>';
+      html += '  </div>';
       html += '</div>';
 
       // Navigation Tabs
@@ -31387,21 +31605,36 @@ function setNurseryNumSubTab(st) {
         html += '</div>';
       }
 
-      // Academy Hero Banner (School Switcher removed as per specification)
-      html += '<div class="hero-banner" style="background:linear-gradient(135deg, ' + school.badgeBg + ', #FFF); border:2.5px solid ' + school.themeColor + ';" onclick="safeAction(speakCurrentSchoolInfo)">';
-      html += '  <div class="safe-emoji" style="font-size: 42px;">' + school.emoji + '</div>';
-      html += '  <div>';
-      html += '    <div class="academy-badge" style="color:' + school.primaryColor + ';">' + escapeHtml(school.fullName) + '</div>';
-      html += '    <div style="font-size: 19px; font-weight: 900; color:' + school.primaryColor + ';">' + escapeHtml(school.name) + '</div>';
-      html += '    <div style="font-size: 11px; color: #5D4037; font-weight: 700;">' + escapeHtml(school.tagline) + '</div>';
-      html += '  </div>';
-      html += '</div>';
-
       // Check active login states
       var isStudentLoggedIn = (appSession.type === "parent" && !!appSession.student);
       var isTeacherLoggedIn = (appSession.type === "teacher" && !!appSession.teacherObj);
       var isPrincipalLoggedIn = (appSession.type === "principal" && !!appSession.principalObj);
       var isUserLoggedIn = (isStudentLoggedIn || isTeacherLoggedIn || isPrincipalLoggedIn);
+
+      // Hero Banner: Clean Neutral Landing Screen when logged out; Dynamic School Banner post-login
+      if (!isUserLoggedIn) {
+        html += '<div class="neutral-landing-hero" style="text-align:center; padding:24px 16px 20px 16px; margin-bottom:16px; background:linear-gradient(135deg, #F3E5F5, #EDE7F6); border:2px solid #D1C4E9; border-radius:20px; box-shadow:0 4px 12px rgba(103,58,183,0.06);">';
+        html += '  <div style="font-size:46px; margin-bottom:6px;">🧮</div>';
+        html += '  <h1 style="font-size:26px; font-weight:900; color:#311B92; margin:0 0 6px 0; letter-spacing:-0.5px;">Abacus Kids</h1>';
+        html += '  <div style="font-size:13px; font-weight:800; color:#5E35B1;">Smart Early Learning Platform</div>';
+        html += '  <div style="font-size:11px; color:#546E7A; font-weight:600; margin-top:4px;">Nursery, LKG &amp; UKG • Multi-School Digital Campus</div>';
+        html += '</div>';
+      } else {
+        var activeUdise = getActiveUdiseCode();
+        var schoolLogo = getSchoolLogo(activeUdise);
+        html += '<div class="hero-banner" style="background:linear-gradient(135deg, ' + school.badgeBg + ', #FFF); border:2.5px solid ' + school.themeColor + ';" onclick="safeAction(speakCurrentSchoolInfo)">';
+        if (schoolLogo) {
+          html += '  <img src="' + schoolLogo + '" alt="Logo" style="width:52px; height:52px; object-fit:contain; border-radius:12px; border:2px solid ' + school.themeColor + '; margin-right:4px;" onerror="this.src=\'logo.jpeg\';" />';
+        } else {
+          html += '  <div class="safe-emoji" style="font-size: 42px;">' + school.emoji + '</div>';
+        }
+        html += '  <div>';
+        html += '    <div class="academy-badge" style="color:' + school.primaryColor + ';">' + escapeHtml(school.fullName) + '</div>';
+        html += '    <div style="font-size: 19px; font-weight: 900; color:' + school.primaryColor + ';">' + escapeHtml(school.name) + '</div>';
+        html += '    <div style="font-size: 11px; color: #5D4037; font-weight: 700;">' + escapeHtml(school.tagline) + '</div>';
+        html += '  </div>';
+        html += '</div>';
+      }
 
       // =========================================================================
       // THREE CLEAN ROLE ACCESS MODES ON HOME SCREEN
@@ -31418,7 +31651,7 @@ function setNurseryNumSubTab(st) {
         html += '        <span style="background:#2E7D32; color:#FFF; font-size:10px; font-weight:800; padding:2px 6px; border-radius:8px;">ACTIVE ✓</span>';
       }
       html += '      </div>';
-      html += '      <div style="font-size:11px; color:#388E3C; font-weight:700;">' + (isStudentLoggedIn ? ('Enrolled: ' + escapeHtml(appSession.student.student_name) + ' (' + appSession.student.student_class + ')') : 'Student ID &amp; Password Login • Enrolled Class &amp; Homework') + '</div>';
+      html += '      <div style="font-size:11px; color:#388E3C; font-weight:700;">' + (isStudentLoggedIn ? ('Enrolled: ' + escapeHtml(appSession.student.student_name) + ' (' + appSession.student.student_class + ')') : 'School UDISE + Student ID Login • Enrolled Class Access') + '</div>';
       html += '    </div>';
       html += '    <div style="font-size:18px; color:#2E7D32;">➔</div>';
       html += '  </div>';
