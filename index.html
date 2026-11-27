@@ -3838,7 +3838,8 @@
           var tObj = JSON.parse(teacherSession);
           appSession.type = "teacher";
           appSession.teacherObj = tObj;
-          appSession.teacherClass = tObj.class_name || "Nursery";
+          var assignedClass = tObj.assigned_class || "ALL";
+          appSession.teacherClass = (assignedClass && assignedClass !== "ALL") ? assignedClass : (tObj.class_name || "Nursery");
           appSession.schoolId = tObj.school_id || getActiveSchoolId();
           return "teacher";
         } catch(e) {}
@@ -4908,13 +4909,15 @@
         openPrincipalPanel();
       } else {
         // Teacher
+        var assignedClass = account.assigned_class || "ALL";
         appSession.type = "teacher";
         appSession.teacherObj = Object.assign({}, account, {
           teacher_name: account.user_name || "Faculty Teacher",
-          class_name: account.class_name || appSession.parentClass || "Nursery",
+          class_name: (assignedClass && assignedClass !== "ALL") ? assignedClass : (account.class_name || appSession.parentClass || "Nursery"),
+          assigned_class: assignedClass,
           teacher_mobile: account.mobile || account.udise_code
         });
-        appSession.teacherClass = appSession.parentClass || "Nursery";
+        appSession.teacherClass = (assignedClass && assignedClass !== "ALL") ? assignedClass : (appSession.parentClass || "Nursery");
         appSession.teacherTab = "send";
         localStorage.setItem("taa_kids_teacher_session", JSON.stringify(appSession.teacherObj));
         openTeacherPanel();
@@ -4959,6 +4962,11 @@
     }
 
     function switchTeacherClass(cls) {
+      var assignedClass = (appSession.teacherObj && appSession.teacherObj.assigned_class) || "ALL";
+      if (assignedClass !== "ALL" && assignedClass !== cls) {
+        showToast("Access Restricted: You are assigned strictly to " + assignedClass + " Class.", "wrong");
+        return;
+      }
       appSession.teacherClass = cls;
       playTone("pop");
       renderTeacherPanelView();
@@ -4968,35 +4976,59 @@
       var view = document.getElementById("main-view");
       var school = getActiveSchool();
       var teacher = appSession.teacherObj || { teacher_name: "Class Teacher", class_name: appSession.teacherClass || "Nursery" };
-      var cls = appSession.teacherClass || "Nursery";
+      var assignedClass = teacher.assigned_class || "ALL";
+      var isSingleClassLocked = (assignedClass === "Nursery" || assignedClass === "LKG" || assignedClass === "UKG");
+      if (isSingleClassLocked) {
+        appSession.teacherClass = assignedClass;
+      }
+      var cls = appSession.teacherClass || (isSingleClassLocked ? assignedClass : "Nursery");
 
       var html = '<div class="teacher-panel-wrap">';
 
       // Header row
       html += '<div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
       html += '  <div>';
-      html += '    <h2 style="font-size: 19px; font-weight: 900; color: #D84315; margin: 0;">👩‍🏫 Class Teacher Portal</h2>';
-      html += '    <div style="font-size: 11px; color: #546E7A; font-weight: 700;">' + escapeHtml(school.name) + ' • Teacher: <strong>' + escapeHtml(teacher.teacher_name || teacher.user_name) + '</strong></div>';
+      html += '    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">';
+      html += '      <h2 style="font-size: 19px; font-weight: 900; color: #D84315; margin: 0;">👩‍🏫 Class Teacher Portal</h2>';
+      if (isSingleClassLocked) {
+        html += '      <span style="font-size:11px; font-weight:800; background:#FFE0B2; color:#E65100; padding:2px 8px; border-radius:8px;">Class Teacher • ' + cls + '</span>';
+      } else {
+        html += '      <span style="font-size:11px; font-weight:800; background:#E8F5E9; color:#2E7D32; padding:2px 8px; border-radius:8px;">Class Teacher • All Classes</span>';
+      }
+      html += '    </div>';
+      html += '    <div style="font-size: 11px; color: #546E7A; font-weight: 700; margin-top:2px;">' + escapeHtml(school.name) + ' • Teacher: <strong>' + escapeHtml(teacher.teacher_name || teacher.user_name) + '</strong></div>';
       html += '  </div>';
       html += '  <div style="display: flex; gap: 6px; align-items: center;">';
       html += '    <button class="nav-icon-btn" style="font-size: 11px; padding: 6px 10px;" onclick="safeAction(goHome)">Home 🏠</button>';
-      html += '    <button class="btn-logout" style="font-size: 11px; padding: 5px 9px;" onclick="safeAction(logoutUser)">🚪 Logout</button>';
+      html += '    <button class="btn-logout" style="font-size: 11px; padding: 5px 9px;" onclick="safeAction(logoutUser)">🚪 Exit</button>';
       html += '  </div>';
       html += '</div>';
 
-      // Full Class Access Banner & Class Switcher (Nursery, LKG, UKG)
-      html += '<div style="background: #E8F5E9; border: 2px solid #81C784; border-radius: 14px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
-      html += '  <div>';
-      html += '    <span style="font-size: 10px; font-weight: 900; background: #2E7D32; color: #FFF; padding: 2px 6px; border-radius: 6px;">FULL CLASS ACCESS</span>';
-      html += '    <div style="font-size: 14px; font-weight: 900; color: #1B5E20; margin-top: 3px;">Active Class: <strong>' + cls + '</strong> (Manage &amp; Publish)</div>';
-      html += '  </div>';
-      html += '  <div style="display: flex; gap: 6px;">';
-      ["Nursery", "LKG", "UKG"].forEach(function(c) {
-        var isAct = (c === cls);
-        html += '<button onclick="safeAction(function(){ switchTeacherClass(\'' + c + '\'); })" style="padding:6px 12px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer; border:2px solid ' + (isAct ? '#2E7D32' : '#CFD8DC') + '; background:' + (isAct ? '#2E7D32' : '#FFF') + '; color:' + (isAct ? '#FFF' : '#37474F') + ';">' + (c === 'Nursery' ? '🧸 ' : (c === 'LKG' ? '🚂 ' : '🚀 ')) + c + '</button>';
-      });
-      html += '  </div>';
-      html += '</div>';
+      // Class Access Banner & Class Switcher
+      if (isSingleClassLocked) {
+        html += '<div style="background: #FFF3E0; border: 2px solid #FFB74D; border-radius: 14px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
+        html += '  <div>';
+        html += '    <span style="font-size: 10px; font-weight: 900; background: #E65100; color: #FFF; padding: 2px 6px; border-radius: 6px;">ASSIGNED CLASS LOCK</span>';
+        html += '    <div style="font-size: 14px; font-weight: 900; color: #BF360C; margin-top: 3px;">Assigned Class: <strong>' + cls + '</strong> (Class Teacher Access)</div>';
+        html += '  </div>';
+        html += '  <div>';
+        html += '    <span style="font-size:12px; font-weight:900; background:#E65100; color:#FFF; padding:6px 12px; border-radius:10px;">' + (cls === 'Nursery' ? '🧸 ' : (cls === 'LKG' ? '🚂 ' : '🚀 ')) + cls + ' Class Only</span>';
+        html += '  </div>';
+        html += '</div>';
+      } else {
+        html += '<div style="background: #E8F5E9; border: 2px solid #81C784; border-radius: 14px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
+        html += '  <div>';
+        html += '    <span style="font-size: 10px; font-weight: 900; background: #2E7D32; color: #FFF; padding: 2px 6px; border-radius: 6px;">ALL CLASSES ACCESS</span>';
+        html += '    <div style="font-size: 14px; font-weight: 900; color: #1B5E20; margin-top: 3px;">Active Class: <strong>' + cls + '</strong> (Manage &amp; Publish)</div>';
+        html += '  </div>';
+        html += '  <div style="display: flex; gap: 6px;">';
+        ["Nursery", "LKG", "UKG"].forEach(function(c) {
+          var isAct = (c === cls);
+          html += '<button onclick="safeAction(function(){ switchTeacherClass(\'' + c + '\'); })" style="padding:6px 12px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer; border:2px solid ' + (isAct ? '#2E7D32' : '#CFD8DC') + '; background:' + (isAct ? '#2E7D32' : '#FFF') + '; color:' + (isAct ? '#FFF' : '#37474F') + ';">' + (c === 'Nursery' ? '🧸 ' : (c === 'LKG' ? '🚂 ' : '🚀 ')) + c + '</button>';
+        });
+        html += '  </div>';
+        html += '</div>';
+      }
 
       // 3 Main Navigation Tabs
       var curTab = appSession.teacherTab || "send";
@@ -5514,12 +5546,31 @@
         html += '<div style="display:flex; flex-direction:column; gap:8px;">';
         teachers.forEach(function(t) {
           var isPassSet = t.is_password_set;
-          html += '<div style="display:flex; justify-content:space-between; align-items:center; background:#FAFAFA; border:1.5px solid #E0E0E0; border-radius:12px; padding:10px 14px;">';
-          html += '  <div>';
-          html += '    <div style="font-size:14px; font-weight:900; color:#263238;">👩‍🏫 ' + escapeHtml(t.user_name) + '</div>';
-          html += '    <div style="font-size:11px; color:#546E7A; font-weight:700;">Mobile: <strong>' + escapeHtml(t.mobile) + '</strong> • ' + (isPassSet ? '<span style="color:#2E7D32;">Password Set ✅</span>' : '<span style="color:#E65100;">Password Pending ⏳</span>') + '</div>';
+          var tClass = t.assigned_class || "ALL";
+          var classBadgeText = (tClass === "ALL") ? "📚 All Classes" : ("📚 " + tClass);
+          var classBadgeBg = (tClass === "Nursery") ? "#E1F5FE" : (tClass === "LKG" ? "#E8F5E9" : (tClass === "UKG" ? "#FFF3E0" : "#EDE7F6"));
+          var classBadgeColor = (tClass === "Nursery") ? "#0288D1" : (tClass === "LKG" ? "#2E7D32" : (tClass === "UKG" ? "#E65100" : "#512DA8"));
+
+          html += '<div style="display:flex; justify-content:space-between; align-items:center; background:#FAFAFA; border:1.5px solid #E0E0E0; border-radius:12px; padding:10px 14px; flex-wrap:wrap; gap:8px;">';
+          html += '  <div style="flex:1; min-width:180px;">';
+          html += '    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">';
+          html += '      <span style="font-size:14px; font-weight:900; color:#263238;">👩‍🏫 ' + escapeHtml(t.user_name) + '</span>';
+          html += '      <span style="font-size:10px; font-weight:800; background:' + classBadgeBg + '; color:' + classBadgeColor + '; padding:2px 8px; border-radius:6px;">' + classBadgeText + '</span>';
+          html += '    </div>';
+          html += '    <div style="font-size:11px; color:#546E7A; font-weight:700; margin-top:2px;">Mobile: <strong>' + escapeHtml(t.mobile) + '</strong> • ' + (isPassSet ? '<span style="color:#2E7D32;">Password Set ✅</span>' : '<span style="color:#E65100;">Password Pending ⏳</span>') + '</div>';
           html += '  </div>';
-          html += '  <button onclick="safeAction(function(){ handleRemoveTeacherPrompt(\'' + escapeHtml(t.udise_code) + '\', \'' + escapeHtml(t.mobile) + '\', \'' + escapeHtml(t.user_name) + '\'); })" style="background:#FFEBEE; color:#C62828; border:1px solid #FFCDD2; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">Remove 🗑️</button>';
+          html += '  <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">';
+          html += '    <div style="display:flex; align-items:center; gap:4px;">';
+          html += '      <label style="font-size:11px; font-weight:800; color:#546E7A;">Class:</label>';
+          html += '      <select class="input-field" style="padding:4px 8px; font-size:11px; font-weight:800; border-radius:8px; border:1px solid #B0BEC5; margin:0;" onchange="handleReassignTeacherClass(\'' + escapeHtml(t.udise_code) + '\', \'' + escapeHtml(t.mobile) + '\', this.value, \'' + escapeHtml(t.user_name) + '\')">';
+          ["Nursery", "LKG", "UKG", "ALL"].forEach(function(opt) {
+            var isSel = (opt === tClass);
+            html += '<option value="' + opt + '"' + (isSel ? ' selected' : '') + '>' + (opt === 'ALL' ? 'All Classes' : opt) + '</option>';
+          });
+          html += '      </select>';
+          html += '    </div>';
+          html += '    <button onclick="safeAction(function(){ handleRemoveTeacherPrompt(\'' + escapeHtml(t.udise_code) + '\', \'' + escapeHtml(t.mobile) + '\', \'' + escapeHtml(t.user_name) + '\'); })" style="background:#FFEBEE; color:#C62828; border:1px solid #FFCDD2; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">Remove 🗑️</button>';
+          html += '  </div>';
           html += '</div>';
         });
         html += '</div>';
@@ -5586,9 +5637,18 @@
         '    <label style="font-size:11px; font-weight:800; color:#37474F;">Teacher Full Name:</label>' +
         '    <input type="text" id="add-teacher-name" class="input-field" placeholder="Enter Teacher Name" style="margin-top:4px;" />' +
         '  </div>' +
-        '  <div style="margin-bottom:16px;">' +
+        '  <div style="margin-bottom:10px;">' +
         '    <label style="font-size:11px; font-weight:800; color:#37474F;">10-Digit Mobile Number:</label>' +
         '    <input type="tel" id="add-teacher-mobile" class="input-field" placeholder="e.g. 9829011111" maxlength="10" style="margin-top:4px;" />' +
+        '  </div>' +
+        '  <div style="margin-bottom:16px;">' +
+        '    <label style="font-size:11px; font-weight:800; color:#37474F;">Assign Class:</label>' +
+        '    <select id="new-teacher-class" class="input-field" style="margin-top:4px; font-weight:700;">' +
+        '      <option value="Nursery">Nursery</option>' +
+        '      <option value="LKG">LKG</option>' +
+        '      <option value="UKG">UKG</option>' +
+        '      <option value="ALL" selected>ALL (All Classes: Nursery, LKG &amp; UKG)</option>' +
+        '    </select>' +
         '  </div>' +
         '  <button class="btn-action-primary" style="background:#673AB7;" onclick="safeAction(submitAddTeacherForm)">' +
         '    Authorize &amp; Add Teacher ✅' +
@@ -5600,10 +5660,12 @@
     async function submitAddTeacherForm() {
       var nameIn = document.getElementById("add-teacher-name");
       var mobileIn = document.getElementById("add-teacher-mobile");
+      var classIn = document.getElementById("new-teacher-class");
       if (!nameIn || !mobileIn) return;
 
       var name = nameIn.value.trim();
       var mobile = mobileIn.value.trim().replace(/\D/g, "");
+      var assignedClass = classIn ? classIn.value : "ALL";
 
       if (!name) {
         showToast("Please enter teacher name", "wrong");
@@ -5628,6 +5690,7 @@
         school_name: school.name,
         role: "teacher",
         user_name: name,
+        assigned_class: assignedClass,
         is_password_set: false,
         password_hash: null
       };
@@ -5649,8 +5712,48 @@
       if (modal) modal.remove();
 
       playTone("fanfare");
-      showToast("Teacher " + name + " authorized successfully! 👩‍🏫", "success");
+      showToast("Teacher " + name + " authorized successfully! (" + (assignedClass === 'ALL' ? 'All Classes' : assignedClass) + ") 👩‍🏫", "success");
       speak("Teacher " + name + " authorized successfully.", "en-IN");
+      renderPrincipalPanelView();
+    }
+
+    async function handleReassignTeacherClass(udiseCode, mobile, newClass, teacherName) {
+      showToast("Updating class assignment...", "info");
+
+      // 1. Supabase PATCH
+      try {
+        await supabaseRest("/udise_accounts?udise_code=eq." + encodeURIComponent(udiseCode) + "&mobile=eq." + encodeURIComponent(mobile), {
+          method: "PATCH",
+          body: { assigned_class: newClass }
+        });
+      } catch(err) {
+        console.log("Supabase reassign teacher note:", err.message || err);
+      }
+
+      // 2. Update local accounts cache
+      var accounts = getLocalUdiseAccounts();
+      var found = accounts.find(function(a) {
+        return String(a.udise_code).trim() === String(udiseCode).trim() && String(a.mobile || "").trim() === String(mobile).trim();
+      });
+      if (found) {
+        found.assigned_class = newClass;
+        try {
+          localStorage.setItem("taa_udise_accounts_cache", JSON.stringify(accounts));
+        } catch(e) {}
+      }
+
+      // If this teacher is currently logged in, update appSession
+      if (appSession.teacherObj && String(appSession.teacherObj.udise_code).trim() === String(udiseCode).trim() && String(appSession.teacherObj.mobile).trim() === String(mobile).trim()) {
+        appSession.teacherObj.assigned_class = newClass;
+        if (newClass !== "ALL") {
+          appSession.teacherClass = newClass;
+        }
+        localStorage.setItem("taa_kids_teacher_session", JSON.stringify(appSession.teacherObj));
+      }
+
+      playTone("pop");
+      showToast("Assigned class for " + teacherName + " updated to " + (newClass === 'ALL' ? 'All Classes' : newClass) + " 📚", "success");
+      speak("Class updated to " + (newClass === 'ALL' ? 'All Classes' : newClass) + " for " + teacherName, "en-IN");
       renderPrincipalPanelView();
     }
 

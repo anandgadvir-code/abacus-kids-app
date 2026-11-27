@@ -418,6 +418,31 @@ runTest('Neutral landing screen, dynamic post-login branding, principal logo upl
   assert(html.includes('&udise_code=eq.'), 'Supabase query must filter by udise_code');
 });
 
+// TEST 26: Teacher Class Assignment (Nursery/LKG/UKG/ALL) in Principal Desk & Enforcement in Teacher Portal
+runTest('Teacher Class Assignment (Nursery/LKG/UKG/ALL) in Principal Desk & Strict Teacher Portal Enforcement', () => {
+  // 1. Supabase schema column
+  const sqlUdise = fs.readFileSync('supabase_udise_accounts.sql', 'utf8');
+  assert(sqlUdise.includes("assigned_class TEXT NOT NULL DEFAULT 'ALL'"), 'assigned_class column missing in supabase_udise_accounts.sql');
+
+  // 2. Principal Supervision Desk: Add Teacher class dropdown
+  assert(html.includes('id="new-teacher-class"'), 'new-teacher-class dropdown missing in Add Teacher form');
+  assert(html.includes('value="Nursery"'), 'Nursery option missing in new-teacher-class');
+  assert(html.includes('value="LKG"'), 'LKG option missing in new-teacher-class');
+  assert(html.includes('value="UKG"'), 'UKG option missing in new-teacher-class');
+  assert(html.includes('value="ALL"'), 'ALL option missing in new-teacher-class');
+
+  // 3. Principal Supervision Desk: Inline class re-assignment and badges
+  assert(html.includes('handleReassignTeacherClass'), 'handleReassignTeacherClass function missing in index.html');
+  assert(html.includes('📚 All Classes'), 'All Classes badge missing in Principal Desk teachers tab');
+  assert(html.includes('onchange="handleReassignTeacherClass('), 'Inline class reassign select missing in teachers list');
+
+  // 4. Session & class lock enforcement
+  assert(html.includes('assigned_class: assignedClass'), 'submitAddTeacherForm must pass assigned_class');
+  assert(html.includes('appSession.teacherObj.assigned_class'), 'appSession must track assigned_class');
+  assert(html.includes('ASSIGNED CLASS LOCK'), 'ASSIGNED CLASS LOCK banner missing in Teacher Portal');
+  assert(html.includes('Access Restricted: You are assigned strictly to'), 'Restricted class switch alert missing in switchTeacherClass');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');
