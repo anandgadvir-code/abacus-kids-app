@@ -460,6 +460,24 @@ runTest('Strict Teacher Portal Class Lock, Single Logout Button & Dropdown-Only 
   assert(!html.includes('id="teacher-hw-link"'), 'External worksheet link input must be removed from publish homework form');
 });
 
+// TEST 28: Home Screen Teacher Class Lock, Green Banner Text Contrast & Top Header Overflow Suppression
+runTest('Home Screen Teacher Class Lock, Green Banner Text Contrast & Top Header Overflow Suppression', () => {
+  // 1. Home screen single-class lock for teachers
+  assert(html.includes('isTeacherSingleLocked'), 'isTeacherSingleLocked logic missing in renderHome');
+  assert(html.includes('(Assigned Class)</button>'), 'Single-class assigned button missing in parent-student-hub');
+  assert(html.includes('switchParentClass'), 'switchParentClass function missing');
+
+  // 2. Green banner crisp white text contrast
+  assert(html.includes('.student-pass-banner') && html.includes('color: #FFFFFF !important;'), 'Crisp white text color missing in .student-pass-banner CSS');
+  assert(html.includes('color:#ffffff !important; font-weight:700;'), 'Inline pure white text styling missing in teacher status banner');
+
+  // 3. Force-hide top header overflow buttons when logged in
+  assert(html.includes('body.user-logged-in #btn-school-switcher'), 'user-logged-in CSS rule missing for school switcher');
+  assert(html.includes('body.user-logged-in #btn-teacher-portal'), 'user-logged-in CSS rule missing for teacher button');
+  assert(html.includes('body.user-logged-in #btn-principal-desk'), 'user-logged-in CSS rule missing for principal button');
+  assert(html.includes("style.setProperty('display', 'none', 'important')") || html.includes('style.setProperty("display", "none", "important")'), 'Strict style.setProperty display none important missing');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');

@@ -1025,16 +1025,22 @@
        ========================================================= */
     .student-pass-banner {
       background: linear-gradient(135deg, #1B5E20, #2E7D32);
-      color: #FFFFFF;
+      color: #FFFFFF !important;
+      font-weight: 700;
       padding: 7px 14px;
-      font-size: 11px;
-      font-weight: 800;
+      font-size: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       letter-spacing: 0.3px;
       border-bottom: 2px solid #81C784;
       z-index: 99;
+    }
+    body.user-logged-in #btn-school-switcher,
+    body.user-logged-in #btn-teacher-portal,
+    body.user-logged-in #btn-principal-desk,
+    body.user-logged-in #btn-app-logout {
+      display: none !important;
     }
     .student-pass-banner .pass-badge {
       background: #C8E6C9;
@@ -3462,6 +3468,7 @@
       var isUserLoggedIn = (isStudentLoggedIn || isTeacherLoggedIn || isPrincipalLoggedIn);
 
       if (!isUserLoggedIn) {
+        document.body.classList.remove("user-logged-in");
         // NEUTRAL LANDING SCREEN (WHEN LOGGED OUT)
         if (bSchoolLogo) {
           bSchoolLogo.style.display = "none";
@@ -3475,12 +3482,17 @@
           bAppTitle.textContent = "Abacus Kids";
           bAppTitle.style.color = "#FF9800";
         }
-        if (bSchoolSwitcher) bSchoolSwitcher.style.display = "none";
-        if (bTeacherBtn) bTeacherBtn.style.display = "none";
-        if (bPrincipalBtn) bPrincipalBtn.style.display = "none";
+        if (bSchoolSwitcher) bSchoolSwitcher.style.setProperty("display", "none", "important");
+        if (bTeacherBtn) bTeacherBtn.style.setProperty("display", "none", "important");
+        if (bPrincipalBtn) bPrincipalBtn.style.setProperty("display", "none", "important");
         document.title = "Abacus Kids - Smart Early Learning Platform";
         return;
       }
+
+      document.body.classList.add("user-logged-in");
+      if (bSchoolSwitcher) bSchoolSwitcher.style.setProperty("display", "none", "important");
+      if (bTeacherBtn) bTeacherBtn.style.setProperty("display", "none", "important");
+      if (bPrincipalBtn) bPrincipalBtn.style.setProperty("display", "none", "important");
 
       // DYNAMIC POST-LOGIN BRANDING
       var activeUdise = getActiveUdiseCode();
@@ -3892,15 +3904,15 @@
         if (banner) {
           banner.style.display = "flex";
           banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
-            '<div style="font-size:13px; font-weight:800; color:#1B5E20; display:flex; align-items:center; gap:6px;">' +
-            '  <span>👩‍🏫 ' + tName + ' • ' + roleTag + '</span>' +
+            '<div style="font-size:13px; font-weight:700; color:#ffffff !important; display:flex; align-items:center; gap:6px;">' +
+            '  <span style="color:#ffffff !important; font-weight:700;">👩‍🏫 ' + tName + ' • ' + roleTag + '</span>' +
             '</div>' +
             '<button class="btn-logout" style="padding:4px 10px; font-size:11px; font-weight:800; background:#FFF; color:#D32F2F; border:1.5px solid #FFCDD2; border-radius:8px; cursor:pointer;" onclick="safeAction(logoutUser)">🚪 Logout</button>' +
             '</div>';
         }
-        if (btnLogout) btnLogout.style.display = "none";
-        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
-        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
+        if (btnLogout) btnLogout.style.setProperty("display", "none", "important");
+        if (btnTeacherPortal) btnTeacherPortal.style.setProperty("display", "none", "important");
+        if (btnPrincipalDesk) btnPrincipalDesk.style.setProperty("display", "none", "important");
         if (starBadge) starBadge.style.display = "none";
       } else if (appSession.type === "principal" && appSession.principalObj) {
         if (banner) {
@@ -3914,9 +3926,9 @@
             '</div>' +
             '</div>';
         }
-        if (btnLogout) btnLogout.style.display = "none";
-        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
-        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
+        if (btnLogout) btnLogout.style.setProperty("display", "none", "important");
+        if (btnTeacherPortal) btnTeacherPortal.style.setProperty("display", "none", "important");
+        if (btnPrincipalDesk) btnPrincipalDesk.style.setProperty("display", "none", "important");
         if (starBadge) starBadge.style.display = "none";
       } else if (appSession.type === "parent" && appSession.student) {
         if (banner) {
@@ -3929,15 +3941,15 @@
             '</div>' +
             '</div>';
         }
-        if (btnLogout) btnLogout.style.display = "none";
-        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
-        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
+        if (btnLogout) btnLogout.style.setProperty("display", "none", "important");
+        if (btnTeacherPortal) btnTeacherPortal.style.setProperty("display", "none", "important");
+        if (btnPrincipalDesk) btnPrincipalDesk.style.setProperty("display", "none", "important");
         if (starBadge) starBadge.style.display = "flex";
       } else {
         if (banner) banner.style.display = "none";
-        if (btnLogout) btnLogout.style.display = "none";
-        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
-        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
+        if (btnLogout) btnLogout.style.setProperty("display", "none", "important");
+        if (btnTeacherPortal) btnTeacherPortal.style.setProperty("display", "none", "important");
+        if (btnPrincipalDesk) btnPrincipalDesk.style.setProperty("display", "none", "important");
         if (starBadge) starBadge.style.display = "none";
       }
     }
@@ -4154,8 +4166,16 @@
     function switchParentClass(cls) {
       // If student is logged in, their class is locked
       if (appSession.type === "parent" && appSession.student) {
-        showToast("Class locked to " + appSession.student.student_class + " for enrolled student!", "info");
+        showToast("Class locked to " + (appSession.student.student_class || appSession.student.class_name || "Nursery") + " for enrolled student!", "info");
         return;
+      }
+      // If single-class teacher is logged in, their class is locked
+      if ((appSession.type === "teacher" || appSession.role === "teacher") && appSession.teacherObj) {
+        var tAssignedClass = normalizeAssignedClass(appSession.teacherObj.assigned_class);
+        if (tAssignedClass !== "ALL" && tAssignedClass !== cls) {
+          showToast("Access Restricted: You are assigned strictly to " + tAssignedClass + " Class.", "wrong");
+          return;
+        }
       }
       appSession.parentClass = cls;
       playTone("pop");
@@ -31895,8 +31915,21 @@ function setNurseryNumSubTab(st) {
       // =========================================================================
       if (isUserLoggedIn) {
         var isStudentLocked = isStudentLoggedIn;
-        var curClass = isStudentLocked ? (appSession.student.student_class || appSession.student.class_name || "Nursery") : (appSession.parentClass || (isTeacherLoggedIn ? appSession.teacherClass : "Nursery") || "Nursery");
-        appSession.parentClass = curClass;
+        var tObj = appSession.teacherObj || {};
+        var isTeacher = (isTeacherLoggedIn || appSession.role === "teacher" || appSession.type === "teacher");
+        var tAssignedClass = isTeacher ? normalizeAssignedClass(tObj.assigned_class) : "ALL";
+        var isTeacherSingleLocked = isTeacher && (tAssignedClass !== "ALL");
+
+        var curClass = isStudentLocked ? (appSession.student.student_class || appSession.student.class_name || "Nursery") :
+                       (isTeacherSingleLocked ? tAssignedClass :
+                       (appSession.parentClass || (isTeacherLoggedIn ? appSession.teacherClass : "Nursery") || "Nursery"));
+
+        if (isTeacherSingleLocked) {
+          appSession.teacherClass = tAssignedClass;
+          appSession.parentClass = tAssignedClass;
+        } else {
+          appSession.parentClass = curClass;
+        }
         var curTab = appSession.parentTab || "homework";
 
         html += '<div id="parent-student-hub" style="background:#FFFFFF; border:2px solid #E0E0E0; border-radius:20px; padding:14px; margin-top:8px; box-shadow:0 4px 14px rgba(0,0,0,0.04);">';
@@ -31915,7 +31948,7 @@ function setNurseryNumSubTab(st) {
           html += '</div>';
         }
 
-        // SINGLE-CLASS LOCK: Completely hide switcher for logged in student, show only for teachers/principals
+        // SINGLE-CLASS LOCK: Completely hide switcher for logged in student or single-class teacher
         if (isStudentLocked) {
           html += '<div class="student-profile-banner" style="background:linear-gradient(135deg, #E8F5E9, #C8E6C9); border:2px solid #4CAF50; border-radius:16px; padding:12px 14px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">';
           html += '  <div style="display:flex; align-items:center; gap:10px;">';
@@ -31931,7 +31964,24 @@ function setNurseryNumSubTab(st) {
           html += '    <button onclick="safeAction(logoutStudentSession)" style="background:#FFEBEE; color:#C62828; border:1px solid #EF9A9A; border-radius:10px; padding:5px 10px; font-size:11px; font-weight:800; cursor:pointer;">Logout 🚪</button>';
           html += '  </div>';
           html += '</div>';
+        } else if (isTeacherSingleLocked) {
+          html += '<div class="class-switcher-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">';
+          html += '  <span style="font-size:12px; font-weight:900; color:#37474F; text-transform:uppercase;">Select Student Class:</span>';
+          html += '  <div style="display:flex; gap:6px;">';
+          html += '    <button style="padding:6px 14px; border-radius:12px; font-size:12px; font-weight:900; cursor:default; border:2px solid ' + school.primaryColor + '; background:' + school.primaryColor + '; color:#FFF;">' + (curClass === 'Nursery' ? '🧸 ' : (curClass === 'LKG' ? '🚂 ' : '🚀 ')) + curClass + ' (Assigned Class)</button>';
+          html += '  </div>';
+          html += '</div>';
         } else {
+          html += '<div class="class-switcher-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">';
+          html += '  <span style="font-size:12px; font-weight:900; color:#37474F; text-transform:uppercase;">' + (isPrincipalLoggedIn ? 'Showcase Class Tabs:' : 'Select Student Class:') + '</span>';
+          html += '  <div style="display:flex; gap:6px;">';
+          ["Nursery", "LKG", "UKG"].forEach(function(cls) {
+            var isAct = (curClass === cls);
+            html += '<button onclick="safeAction(function(){ switchParentClass(\'' + cls + '\'); })" style="padding:6px 12px; border-radius:12px; font-size:12px; font-weight:900; cursor:pointer; border:2px solid ' + (isAct ? school.primaryColor : '#CFD8DC') + '; background:' + (isAct ? school.primaryColor : '#FFF') + '; color:' + (isAct ? '#FFF' : '#455A64') + '; transition:all 0.15s ease;">' + (cls === 'Nursery' ? '🧸 ' : (cls === 'LKG' ? '🚂 ' : '🚀 ')) + cls + '</button>';
+          });
+          html += '  </div>';
+          html += '</div>';
+        }
           html += '<div class="class-switcher-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">';
           html += '  <span style="font-size:12px; font-weight:900; color:#37474F; text-transform:uppercase;">' + (isPrincipalLoggedIn ? 'Showcase Class Tabs:' : 'Select Student Class:') + '</span>';
           html += '  <div style="display:flex; gap:6px;">';
@@ -32096,9 +32146,6 @@ function setNurseryNumSubTab(st) {
           html += '  </div>';
           html += '</div>';
         }
-
-        html += '</div>';
-      }
 
         html += '</div>'; // End parent/student hub card
       } // End if (isUserLoggedIn)
