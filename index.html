@@ -3150,6 +3150,14 @@
     // =========================================================================
     var DEFAULT_UDISE_ACCOUNTS = [];
 
+    function normalizeAssignedClass(cls) {
+      var s = String(cls || "").trim().toLowerCase();
+      if (s === "nursery") return "Nursery";
+      if (s === "lkg") return "LKG";
+      if (s === "ukg") return "UKG";
+      return "ALL";
+    }
+
     function getLocalUdiseAccounts() {
       try {
         var raw = localStorage.getItem("taa_udise_accounts_cache");
@@ -3218,8 +3226,10 @@
         }
         var res = await supabaseRest(query);
         if (Array.isArray(res) && res.length > 0) {
-          updateLocalUdiseAccount(cleanCode, res[0].mobile || cleanMobile, res[0]);
-          return res[0];
+          var acc = res[0];
+          acc.assigned_class = normalizeAssignedClass(acc.assigned_class);
+          updateLocalUdiseAccount(cleanCode, acc.mobile || cleanMobile, acc);
+          return acc;
         }
       } catch(err) {
         console.log("Supabase udise_accounts query note:", err.message || err);
@@ -3232,6 +3242,9 @@
         if (!cleanMobile) return matchCode;
         return matchCode && String(a.mobile || "").trim() === cleanMobile;
       });
+      if (found) {
+        found.assigned_class = normalizeAssignedClass(found.assigned_class);
+      }
       return found || null;
     }
 
@@ -3242,6 +3255,7 @@
         var res = await supabaseRest("/udise_accounts?udise_code=eq." + encodeURIComponent(udiseCode));
         if (Array.isArray(res) && res.length > 0) {
           res.forEach(function(r) {
+            r.assigned_class = normalizeAssignedClass(r.assigned_class);
             updateLocalUdiseAccount(r.udise_code, r.mobile, r);
           });
           return res;
@@ -3499,9 +3513,7 @@
       if (bSchoolName) bSchoolName.textContent = school.shortName;
       if (bSchoolIcon) bSchoolIcon.textContent = school.emoji;
       if (bSchoolSwitcher) {
-        bSchoolSwitcher.style.background = school.badgeBg;
-        bSchoolSwitcher.style.borderColor = school.themeColor;
-        bSchoolSwitcher.style.color = school.primaryColor;
+        bSchoolSwitcher.style.display = "none";
       }
       document.title = schoolFullName + " - Abacus Kids";
     }
@@ -3836,10 +3848,11 @@
       } else if (teacherSession) {
         try {
           var tObj = JSON.parse(teacherSession);
+          var assignedClass = normalizeAssignedClass(tObj.assigned_class);
+          tObj.assigned_class = assignedClass;
           appSession.type = "teacher";
           appSession.teacherObj = tObj;
-          var assignedClass = tObj.assigned_class || "ALL";
-          appSession.teacherClass = (assignedClass && assignedClass !== "ALL") ? assignedClass : (tObj.class_name || "Nursery");
+          appSession.teacherClass = (assignedClass !== "ALL") ? assignedClass : (tObj.class_name || "Nursery");
           appSession.schoolId = tObj.school_id || getActiveSchoolId();
           return "teacher";
         } catch(e) {}
@@ -3871,32 +3884,39 @@
       var school = getActiveSchool();
 
       if (appSession.type === "teacher" && appSession.teacherObj) {
+        var tObj = appSession.teacherObj;
+        var tClass = normalizeAssignedClass(tObj.assigned_class);
+        var tName = escapeHtml(tObj.teacher_name || tObj.user_name || "Teacher");
+        var roleTag = (tClass !== "ALL") ? (tClass + " Class Teacher") : "All Classes Teacher";
+
         if (banner) {
           banner.style.display = "flex";
           banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px;">' +
-            '<div><span class="pass-badge" style="background:#FFE082; color:#E65100;">👩‍🏫 Teacher Portal</span> <strong>' + escapeHtml(appSession.teacherObj.teacher_name || appSession.teacherObj.user_name || "Teacher") + '</strong> (' + school.shortName + ' • Full Access)</div>' +
-            '<button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Logout</button>' +
+            '<div style="font-size:13px; font-weight:800; color:#1B5E20; display:flex; align-items:center; gap:6px;">' +
+            '  <span>👩‍🏫 ' + tName + ' • ' + roleTag + '</span>' +
+            '</div>' +
+            '<button class="btn-logout" style="padding:4px 10px; font-size:11px; font-weight:800; background:#FFF; color:#D32F2F; border:1.5px solid #FFCDD2; border-radius:8px; cursor:pointer;" onclick="safeAction(logoutUser)">🚪 Logout</button>' +
             '</div>';
         }
-        if (btnLogout) btnLogout.style.display = "inline-flex";
-        if (btnTeacherPortal) btnTeacherPortal.style.display = "inline-flex";
+        if (btnLogout) btnLogout.style.display = "none";
+        if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
         if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
         if (starBadge) starBadge.style.display = "none";
       } else if (appSession.type === "principal" && appSession.principalObj) {
         if (banner) {
           banner.style.display = "flex";
           banner.innerHTML = '<div style="display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px; flex-wrap:wrap;">' +
-            '<div><span class="pass-badge" style="background:#EDE7F6; color:#4527A0;">🛡️ Principal Supervision Desk</span> Campus: <strong>' + school.name + '</strong> (Full Access)</div>' +
+            '<div><span class="pass-badge" style="background:#EDE7F6; color:#4527A0;">🛡️ Principal Supervision Desk</span> Campus: <strong>' + escapeHtml(school.name) + '</strong></div>' +
             '<div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">' +
             '  <button class="btn-action-primary" style="background:#673AB7; color:#FFF; font-size:11px; font-weight:800; padding:5px 10px; border:none; border-radius:8px; cursor:pointer;" onclick="safeAction(openPrincipalShowcaseMode)">📱 Preview All Classes &amp; Content (Showcase Mode)</button>' +
             '  <button class="btn-back-principal" style="background:#512DA8; color:#FFF; font-size:11px; font-weight:800; padding:5px 10px; border:none; border-radius:8px; cursor:pointer;" onclick="safeAction(openPrincipalPanel)">← Back to Principal Desk</button>' +
-            '  <button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutUser)">🚪 Exit</button>' +
+            '  <button class="btn-logout" style="padding:4px 10px; font-size:11px; font-weight:800; background:#FFF; color:#D32F2F; border:1.5px solid #FFCDD2; border-radius:8px; cursor:pointer;" onclick="safeAction(logoutUser)">🚪 Exit</button>' +
             '</div>' +
             '</div>';
         }
-        if (btnLogout) btnLogout.style.display = "inline-flex";
+        if (btnLogout) btnLogout.style.display = "none";
         if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
-        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "inline-flex";
+        if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
         if (starBadge) starBadge.style.display = "none";
       } else if (appSession.type === "parent" && appSession.student) {
         if (banner) {
@@ -3905,11 +3925,11 @@
             '<div><span class="pass-badge" style="background:#E8F5E9; color:#2E7D32;">🎒 ' + escapeHtml(appSession.student.student_name) + '</span> <strong>' + appSession.parentClass + ' Class</strong> • ⭐ <strong><span id="header-student-points">' + (appSession.student.points || 0) + '</span> Pts</strong></div>' +
             '<div style="display:flex; align-items:center; gap:6px;">' +
             '  <button class="btn-reward-shelf" onclick="safeAction(openRewardShelfModal)" style="background:#FF9800; color:#FFF; border:none; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 2px 6px rgba(255,152,0,0.3);">🎁 My Rewards</button>' +
-            '  <button class="btn-logout" style="padding:4px 8px; font-size:11px;" onclick="safeAction(logoutStudentSession)">🚪 Logout</button>' +
+            '  <button class="btn-logout" style="padding:4px 10px; font-size:11px; font-weight:800; background:#FFF; color:#D32F2F; border:1.5px solid #FFCDD2; border-radius:8px; cursor:pointer;" onclick="safeAction(logoutStudentSession)">🚪 Logout</button>' +
             '</div>' +
             '</div>';
         }
-        if (btnLogout) btnLogout.style.display = "inline-flex";
+        if (btnLogout) btnLogout.style.display = "none";
         if (btnTeacherPortal) btnTeacherPortal.style.display = "none";
         if (btnPrincipalDesk) btnPrincipalDesk.style.display = "none";
         if (starBadge) starBadge.style.display = "flex";
@@ -4909,15 +4929,16 @@
         openPrincipalPanel();
       } else {
         // Teacher
-        var assignedClass = account.assigned_class || "ALL";
+        var assignedClass = normalizeAssignedClass(account.assigned_class);
+        account.assigned_class = assignedClass;
         appSession.type = "teacher";
         appSession.teacherObj = Object.assign({}, account, {
           teacher_name: account.user_name || "Faculty Teacher",
-          class_name: (assignedClass && assignedClass !== "ALL") ? assignedClass : (account.class_name || appSession.parentClass || "Nursery"),
+          class_name: (assignedClass !== "ALL") ? assignedClass : (account.class_name || appSession.parentClass || "Nursery"),
           assigned_class: assignedClass,
           teacher_mobile: account.mobile || account.udise_code
         });
-        appSession.teacherClass = (assignedClass && assignedClass !== "ALL") ? assignedClass : (appSession.parentClass || "Nursery");
+        appSession.teacherClass = (assignedClass !== "ALL") ? assignedClass : (appSession.parentClass || "Nursery");
         appSession.teacherTab = "send";
         localStorage.setItem("taa_kids_teacher_session", JSON.stringify(appSession.teacherObj));
         openTeacherPanel();
@@ -4934,15 +4955,20 @@
     }
 
     function activateTeacherSession(teacher) {
+      var assignedClass = normalizeAssignedClass(teacher.assigned_class || teacher.class_name);
+      teacher.assigned_class = assignedClass;
       appSession.type = "teacher";
       appSession.teacherObj = teacher;
       appSession.teacherClass = teacher.class_name; // Class lock enforcement
+      if (assignedClass !== "ALL") {
+        appSession.teacherClass = assignedClass;
+      }
       appSession.teacherTab = "send";
       appSession.schoolId = teacher.school_id || getActiveSchoolId();
       localStorage.setItem("taa_kids_teacher_session", JSON.stringify(teacher));
       playTone("fanfare");
-      showToast("Verified! Welcome " + teacher.teacher_name + " (" + teacher.class_name + " Teacher) 👩‍🏫", "success");
-      speak("Welcome Teacher " + teacher.teacher_name + "! Opening dashboard for " + teacher.class_name + " class.", "en-IN");
+      showToast("Verified! Welcome " + teacher.teacher_name + " (" + appSession.teacherClass + " Teacher) 👩‍🏫", "success");
+      speak("Welcome Teacher " + teacher.teacher_name + "! Opening dashboard for " + appSession.teacherClass + " class.", "en-IN");
       openTeacherPanel();
     }
 
@@ -4962,7 +4988,7 @@
     }
 
     function switchTeacherClass(cls) {
-      var assignedClass = (appSession.teacherObj && appSession.teacherObj.assigned_class) || "ALL";
+      var assignedClass = normalizeAssignedClass(appSession.teacherObj && appSession.teacherObj.assigned_class);
       if (assignedClass !== "ALL" && assignedClass !== cls) {
         showToast("Access Restricted: You are assigned strictly to " + assignedClass + " Class.", "wrong");
         return;
@@ -4976,7 +5002,7 @@
       var view = document.getElementById("main-view");
       var school = getActiveSchool();
       var teacher = appSession.teacherObj || { teacher_name: "Class Teacher", class_name: appSession.teacherClass || "Nursery" };
-      var assignedClass = teacher.assigned_class || "ALL";
+      var assignedClass = normalizeAssignedClass(teacher.assigned_class);
       var isSingleClassLocked = (assignedClass === "Nursery" || assignedClass === "LKG" || assignedClass === "UKG");
       if (isSingleClassLocked) {
         appSession.teacherClass = assignedClass;
@@ -5000,7 +5026,6 @@
       html += '  </div>';
       html += '  <div style="display: flex; gap: 6px; align-items: center;">';
       html += '    <button class="nav-icon-btn" style="font-size: 11px; padding: 6px 10px;" onclick="safeAction(goHome)">Home 🏠</button>';
-      html += '    <button class="btn-logout" style="font-size: 11px; padding: 5px 9px;" onclick="safeAction(logoutUser)">🚪 Exit</button>';
       html += '  </div>';
       html += '</div>';
 
@@ -5009,10 +5034,10 @@
         html += '<div style="background: #FFF3E0; border: 2px solid #FFB74D; border-radius: 14px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">';
         html += '  <div>';
         html += '    <span style="font-size: 10px; font-weight: 900; background: #E65100; color: #FFF; padding: 2px 6px; border-radius: 6px;">ASSIGNED CLASS LOCK</span>';
-        html += '    <div style="font-size: 14px; font-weight: 900; color: #BF360C; margin-top: 3px;">Assigned Class: <strong>' + cls + '</strong> (Class Teacher Access)</div>';
+        html += '    <div style="font-size: 14px; font-weight: 900; color: #BF360C; margin-top: 3px;">🔒 Assigned Class: <strong>' + cls + '</strong> (Class Teacher Access)</div>';
         html += '  </div>';
         html += '  <div>';
-        html += '    <span style="font-size:12px; font-weight:900; background:#E65100; color:#FFF; padding:6px 12px; border-radius:10px;">' + (cls === 'Nursery' ? '🧸 ' : (cls === 'LKG' ? '🚂 ' : '🚀 ')) + cls + ' Class Only</span>';
+        html += '    <span style="font-size:12px; font-weight:900; background:#E65100; color:#FFF; padding:6px 14px; border-radius:10px;">🔒 Assigned Class: ' + cls + '</span>';
         html += '  </div>';
         html += '</div>';
       } else {
@@ -5055,96 +5080,187 @@
       view.innerHTML = html;
     }
 
+    function getTeacherCurriculumCatalog(cls) {
+      cls = cls || "Nursery";
+      var catalog = {
+        "English": {
+          label: "📚 English / Phonics",
+          topics: (cls === "UKG") ? [
+            { title: "Grammar: Use of Is / Am / Are Drill", module_key: "ukg_gram_is_am_are" },
+            { title: "Grammar: Use of This / That (Visual Arrow)", module_key: "ukg_gram_this_that" },
+            { title: "Grammar: Use of These / Those (Visual Arrow)", module_key: "ukg_gram_these_those" },
+            { title: "Grammar: Use of Has / Have Drill", module_key: "ukg_gram_has_have" },
+            { title: "Grammar: 28+ Opposite Words Drill", module_key: "ukg_gram_opposite_words" },
+            { title: "Grammar: 22+ Opposite Gender Pairs", module_key: "ukg_gram_opposite_gender" },
+            { title: "Grammar: Singular & Plural Nouns (s/es)", module_key: "ukg_gram_singular_plural" },
+            { title: "Grammar: Simple Prepositions (In, On, Under, Near)", module_key: "ukg_gram_prepositions" },
+            { title: "English: 4-Letter 'A' Words (STAR, CART, HAND)", module_key: "ukg_phonics_4let_a" },
+            { title: "English: 4-Letter 'E' Words (TREE, JEEP, BELL)", module_key: "ukg_phonics_4let_e" },
+            { title: "English World: Days of the Week Quiz", module_key: "ukg_eng_world_days" }
+          ] : (cls === "LKG") ? [
+            { title: "2-Letter Phonic Words (AT, IN, ON, GO)", module_key: "lkg_phonics_2letter" },
+            { title: "3-Letter CVC Short 'a' (CAT, BAT, MAT)", module_key: "lkg_phonics_cvc_a" },
+            { title: "3-Letter CVC Short 'e' (PEN, BED, RED)", module_key: "lkg_phonics_cvc_e" },
+            { title: "3-Letter CVC Short 'i' (PIN, TIN, BIN)", module_key: "lkg_phonics_cvc_i" },
+            { title: "3-Letter CVC Short 'o' (POT, HOT, DOG)", module_key: "lkg_phonics_cvc_o" },
+            { title: "3-Letter CVC Short 'u' (SUN, CUP, BUG)", module_key: "lkg_phonics_cvc_u" },
+            { title: "Vowels & Consonants Phonics Rules", module_key: "lkg_vowels_practice" }
+          ] : [
+            { title: "Initial Phonic Sound Match", module_key: "nursery_phonics_sounds" },
+            { title: "Match Letter with Picture (A-Z)", module_key: "nursery_abc_match_pic" },
+            { title: "Capital to Small Letter Match", module_key: "nursery_abc_match_small" },
+            { title: "Missing Letters (A-Z) Quiz", module_key: "nursery_abc_missing_letters" },
+            { title: "Choose Correct Letter Quiz", module_key: "nursery_abc_choose_letter" },
+            { title: "Write A-Z in Correct Order", module_key: "nursery_abc_order_az" }
+          ]
+        },
+        "Mathematics": {
+          label: "🔢 Maths / Numbers",
+          topics: (cls === "UKG") ? [
+            { title: "Addition Fun (1-10 Quiz)", module_key: "ukg_math_addition" },
+            { title: "Subtraction Fun (1-10 Quiz)", module_key: "ukg_math_subtraction" },
+            { title: "Ascending & Descending Order (1-50)", module_key: "" },
+            { title: "Number Names (1 to 50)", module_key: "" },
+            { title: "Skip Counting by 2s and 5s", module_key: "" }
+          ] : (cls === "LKG") ? [
+            { title: "Numbers 1-100 & Before/After Drill", module_key: "lkg_math_numbers" },
+            { title: "Number Names (ONE to TWENTY)", module_key: "lkg_math_names" },
+            { title: "More or Less Comparison Drill", module_key: "lkg_math_moreless" },
+            { title: "Before & After Numbers Practice", module_key: "lkg_math_before_after" }
+          ] : [
+            { title: "Count & Tap (1-10) Quiz", module_key: "nursery_num_count_tap_10" },
+            { title: "Count & Tap (11-20) Quiz", module_key: "nursery_num_count_tap_20" },
+            { title: "Counting 1-50 Numbers Chart", module_key: "nursery_num_count_50" },
+            { title: "After Numbers (1-20) Quiz", module_key: "nursery_num_after" },
+            { title: "Before Numbers (1-20) Quiz", module_key: "nursery_num_before" },
+            { title: "Pre-Math Big vs Small Comparison", module_key: "nursery_num_compare" },
+            { title: "Shapes & Real Objects Quiz", module_key: "nursery_num_shapes" },
+            { title: "Number Names (ONE to TEN)", module_key: "nursery_num_names_1_10" }
+          ]
+        },
+        "Hindi": {
+          label: "🪔 Hindi / हिंदी",
+          topics: (cls === "UKG") ? [
+            { title: "Matra Quiz (ा, ि, ी, ु, ू)", module_key: "ukg_hindi_matra" },
+            { title: "3 व 4 अक्षर मात्रा शब्द पठन", module_key: "" },
+            { title: "चित्र देखकर वाक्य पूरा करो", module_key: "" }
+          ] : (cls === "LKG") ? [
+            { title: "स्वर अ-अः अभ्यास (Picture Quiz)", module_key: "lkg_hindi_swar" },
+            { title: "क-ज्ञ Vyanjan Picture Quiz", module_key: "lkg_hindi_vyanjan" },
+            { title: "2 व 3 अक्षर बिना मात्रा शब्द निर्माण", module_key: "lkg_shabda_nirman" }
+          ] : [
+            { title: "स्वर व व्यंजन सीखें (अ-अः & क-ज्ञ)", module_key: "nursery_hindi_learn_all" },
+            { title: "चित्र पहचान कर सही अक्षर मिलाओ", module_key: "nursery_hindi_match_pic" },
+            { title: "बाद वाला अक्षर बताओ (After Letter)", module_key: "nursery_hindi_after" },
+            { title: "पहले वाला अक्षर बताओ (Before Letter)", module_key: "nursery_hindi_before" },
+            { title: "खाली स्थान भरो (Missing Hindi Letters)", module_key: "nursery_hindi_missing" }
+          ]
+        },
+        "EVS / GK": {
+          label: "🌍 EVS / GK",
+          topics: (cls === "UKG") ? [
+            { title: "EVS: Community Helpers (Doctor, Teacher, Police)", module_key: "ukg_evs_helpers" },
+            { title: "EVS: Means of Transport (Land, Water, Air)", module_key: "ukg_evs_transport" },
+            { title: "GK: UKG General Knowledge Challenge (150 Qs)", module_key: "ukg_gk_quiz" },
+            { title: "EVS: Living Things vs Non-Living Things", module_key: "" }
+          ] : (cls === "LKG") ? [
+            { title: "EVS: Domestic vs Wild Animals Quiz", module_key: "lkg_evs_animals" },
+            { title: "EVS: My Body & Five Senses Quiz", module_key: "lkg_evs_body" },
+            { title: "EVS: Fruits & Vegetables Identification", module_key: "lkg_evs_fruits" },
+            { title: "EVS: Colors & Shapes Quiz", module_key: "lkg_evs_colors" },
+            { title: "GK: LKG General Knowledge Challenge (100 Qs)", module_key: "lkg_gk_quiz" }
+          ] : [
+            { title: "GK: Nursery General Knowledge Challenge (50 Qs)", module_key: "nursery_gk_quiz" },
+            { title: "EVS: My Body Parts & 5 Senses Practice", module_key: "" },
+            { title: "EVS: Colors & Common Fruits Recognition", module_key: "" },
+            { title: "EVS: Domestic & Pet Animals Around Us", module_key: "" }
+          ]
+        },
+        "Rhymes / Activities": {
+          label: "🎨 Rhymes / Activities",
+          topics: (cls === "UKG") ? [
+            { title: "Public Speaking: 3 Sentences on My School / Family", module_key: "" },
+            { title: "Creative Drawing: Garden Scene with Colors", module_key: "" },
+            { title: "Science Fun: Floating vs Sinking Water Experiment", module_key: "" }
+          ] : (cls === "LKG") ? [
+            { title: "English & Hindi Action Rhymes Recitation", module_key: "" },
+            { title: "Pattern Tracing & Handwriting Practice", module_key: "" },
+            { title: "Craft: Paper Folding & Geometric Shapes Collage", module_key: "" }
+          ] : [
+            { title: "Nursery Rhymes Recitation (Twinkle Twinkle / Johny Johny)", module_key: "" },
+            { title: "Drawing & Freehand Coloring in Shapes", module_key: "" },
+            { title: "Paper Tearing & Clay Dough Modeling Fun", module_key: "" },
+            { title: "Good Habits & Table Manners Daily Practice", module_key: "" }
+          ]
+        }
+      };
+      return catalog;
+    }
+
+    function onTeacherHomeworkSubjectChange() {
+      var cls = appSession.teacherClass || "Nursery";
+      var subSelect = document.getElementById("teacher-hw-subject");
+      var topicSelect = document.getElementById("teacher-hw-topic");
+      if (!subSelect || !topicSelect) return;
+      var curSubject = subSelect.value || "English";
+      var catalog = getTeacherCurriculumCatalog(cls);
+      var subData = catalog[curSubject] || catalog["English"];
+      var topics = subData.topics || [];
+      var html = '';
+      topics.forEach(function(t, idx) {
+        html += '<option value="' + idx + '" data-module-key="' + (t.module_key || '') + '">' + escapeHtml(t.title) + '</option>';
+      });
+      topicSelect.innerHTML = html;
+    }
+
     function renderTeacherSendHomeworkTab() {
-      var cls = appSession.teacherClass;
+      var cls = appSession.teacherClass || "Nursery";
       var schoolId = getActiveSchoolId();
       var currentHw = getTodayActiveHomework(cls, schoolId);
+      var catalog = getTeacherCurriculumCatalog(cls);
+      var defaultSubject = "English";
+      var defaultTopics = catalog[defaultSubject].topics;
       var html = '';
 
       html += '<div class="teacher-card">';
       html += '  <h3 style="font-size: 16px; font-weight: 900; color: #E65100; margin-bottom: 8px;">📤 Publish Homework &amp; Activity for ' + cls + '</h3>';
-      html += '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 12px;">Fill assignment details or pick from curriculum modules:</div>';
+      html += '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 14px;">Select subject and activity topic from curriculum to assign immediately:</div>';
 
-      // 1. Subject & Activity Type row
-      html += '  <div style="display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap;">';
-      html += '    <div style="flex:1; min-width:140px;">';
-      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">1. Subject:</label>';
-      html += '      <select id="teacher-hw-subject" class="input-field" style="margin-top: 4px;">';
-      html += '        <option value="English">📚 English / Phonics</option>';
-      html += '        <option value="Mathematics">🔢 Mathematics / Pre-Math</option>';
-      html += '        <option value="Hindi">🪔 Hindi / हिंदी</option>';
-      html += '        <option value="English Grammar">📖 English Grammar</option>';
-      html += '        <option value="EVS">🌍 EVS Studies</option>';
-      html += '        <option value="General Knowledge">💡 General Knowledge (GK)</option>';
-      html += '        <option value="Drawing & Craft">🎨 Drawing &amp; Creative Art</option>';
-      html += '      </select>';
-      html += '    </div>';
-      html += '    <div style="flex:1; min-width:140px;">';
-      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">2. Activity Type:</label>';
-      html += '      <select id="teacher-hw-type" class="input-field" style="margin-top: 4px;">';
-      html += '        <option value="Homework" selected>📝 Written Homework</option>';
-      html += '        <option value="Worksheet">📄 Activity Worksheet</option>';
-      html += '        <option value="Reading Practice">📖 Reading / Speaking Practice</option>';
-      html += '        <option value="Activity Project">🧩 Hands-on Activity / Project</option>';
-      html += '        <option value="Revision">🔄 Weekly Revision</option>';
-      html += '      </select>';
-      html += '    </div>';
-      html += '  </div>';
-
-      // 2. Homework Title
-      html += '  <div style="margin-bottom: 10px;">';
-      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">3. Homework Title:</label>';
-      html += '    <input type="text" id="teacher-hw-title" class="input-field" placeholder="e.g. Write CVC Words Short a in 4-line notebook" style="margin-top: 4px;" />';
-      html += '  </div>';
-
-      // 3. Instructions
-      html += '  <div style="margin-bottom: 10px;">';
-      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">4. Instructions for Students &amp; Parents:</label>';
-      html += '    <textarea id="teacher-hw-instructions" class="input-field" rows="3" placeholder="Provide clear instructions for parents and students (e.g. Complete page 12 neatly and speak each word aloud)..." style="margin-top: 4px; resize:vertical;"></textarea>';
-      html += '  </div>';
-
-      // 4. Due Date, Due Time & Target Qs
-      html += '  <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">';
-      html += '    <div style="flex: 1; min-width: 130px;">';
-      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">Due Date:</label>';
-      html += '      <input type="date" id="teacher-hw-date" value="' + new Date().toISOString().split('T')[0] + '" class="input-field" style="margin-top: 4px;" />';
-      html += '    </div>';
-      html += '    <div style="flex: 1; min-width: 130px;">';
-      html += '      <label style="font-size: 11px; font-weight: 800; color: #37474F;">Due Time:</label>';
-      html += '      <input type="time" id="teacher-hw-due" value="18:00" class="input-field" style="margin-top: 4px; font-weight: 800;" />';
-      html += '    </div>';
-      html += '  </div>';
-
-      // 5. Optional Worksheet Photo Upload & Link
-      html += '  <div style="margin-bottom: 12px; background:#FAFAFA; border:1.5px dashed #B0BEC5; border-radius:14px; padding:10px;">';
-      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">📸 Optional Worksheet Photo / File Upload:</label>';
-      html += '    <input type="file" id="teacher-hw-photo-file" accept="image/*" class="input-field" style="margin-top:4px; padding:6px;" onchange="previewTeacherWorksheetUpload(this)" />';
-      html += '    <div id="teacher-photo-preview-wrap" style="display:none; margin-top:8px; border-radius:10px; overflow:hidden; border:2px solid #FF9800; text-align:center; max-height:160px;">';
-      html += '      <img id="teacher-photo-preview-img" src="" style="max-width:100%; max-height:160px; object-fit:contain;" />';
-      html += '    </div>';
-      html += '    <div style="font-size:11px; color:#78909C; margin-top:4px;">Or paste external worksheet / video link:</div>';
-      html += '    <input type="text" id="teacher-hw-link" class="input-field" placeholder="https://example.com/worksheet.pdf" style="margin-top:2px;" />';
-      html += '  </div>';
-
-      // 6. Optional Curriculum Module Link
-      html += '  <div style="margin-bottom: 14px;">';
-      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Optional: Link Interactive App Quiz / Activity:</label>';
-      html += '    <select id="teacher-hw-module" class="input-field" style="margin-top: 4px;">';
-      html += '      <option value="">-- No Interactive App Quiz (Written / Offline) --</option>';
-      var mods = getCurriculumModulesForClass(cls);
-      mods.forEach(function(m) {
-        html += '<option value="' + m.key + '">' + escapeHtml(m.title) + '</option>';
+      // 1. Subject Dropdown
+      html += '  <div style="margin-bottom: 12px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">1. Subject:</label>';
+      html += '    <select id="teacher-hw-subject" class="input-field" style="margin-top: 4px;" onchange="onTeacherHomeworkSubjectChange()">';
+      Object.keys(catalog).forEach(function(sKey) {
+        html += '<option value="' + sKey + '"' + (sKey === defaultSubject ? ' selected' : '') + '>' + catalog[sKey].label + '</option>';
       });
       html += '    </select>';
       html += '  </div>';
 
+      // 2. Activity / Topic Dropdown
+      html += '  <div style="margin-bottom: 12px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">2. Activity / Topic (Curriculum Ready):</label>';
+      html += '    <select id="teacher-hw-topic" class="input-field" style="margin-top: 4px;">';
+      defaultTopics.forEach(function(t, idx) {
+        html += '<option value="' + idx + '" data-module-key="' + (t.module_key || '') + '">' + escapeHtml(t.title) + '</option>';
+      });
+      html += '    </select>';
+      html += '  </div>';
+
+      // 3. Due Date Selector
+      var tomorrow = new Date(Date.now() + 24*60*60*1000).toISOString().split('T')[0];
+      html += '  <div style="margin-bottom: 14px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">3. Due Date:</label>';
+      html += '    <input type="date" id="teacher-hw-date" value="' + tomorrow + '" class="input-field" style="margin-top: 4px;" />';
+      html += '  </div>';
+
+      // 4. Publish Homework Button
       html += '  <button class="btn-action-primary" style="margin-top: 4px;" onclick="safeAction(handleAssignHomeworkSubmit)">';
       html += '    Publish Homework to ' + cls + ' Class 🚀';
       html += '  </button>';
 
-      // If active homework exists
+      // Currently active homework card (if any)
       if (currentHw && !currentHw.is_placeholder) {
-        html += '<div style="margin-top: 14px; padding: 12px; background: #FFF8E1; border: 1.5px solid #FFE082; border-radius: 14px;">';
+        html += '<div style="margin-top: 16px; padding: 12px; background: #FFF8E1; border: 1.5px solid #FFE082; border-radius: 14px;">';
         html += '  <div style="display:flex; justify-content:space-between; align-items:center;">';
         html += '    <span style="font-size: 11px; font-weight: 900; color: #E65100; text-transform: uppercase;">Currently Active Homework:</span>';
         html += '    <button onclick="safeAction(function(){ deleteTeacherHomework(\'' + currentHw.id + '\'); })" style="background:#FFEBEE; color:#C62828; border:1px solid #EF9A9A; border-radius:8px; padding:3px 8px; font-size:11px; font-weight:800; cursor:pointer;">Delete 🗑️</button>';
@@ -5154,7 +5270,7 @@
           html += '  <div style="font-size: 12px; color: #5D4037; margin-top: 3px;">' + escapeHtml(currentHw.instructions) + '</div>';
         }
         html += '  <div style="font-size: 11px; color: #6D4C41; font-weight: 700; margin-top: 4px;">';
-        html += '    Subject: ' + currentHw.subject + ' • Type: ' + (currentHw.activity_type || 'Homework') + ' • Due: ' + (currentHw.due_time || '18:00') + ' (' + (currentHw.due_date || 'Today') + ')';
+        html += '    Subject: ' + currentHw.subject + ' • Due: ' + (currentHw.due_date || 'Tomorrow');
         html += '  </div>';
         html += '</div>';
       }
@@ -5163,64 +5279,40 @@
       return html;
     }
 
-    function previewTeacherWorksheetUpload(input) {
-      if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          var wrap = document.getElementById("teacher-photo-preview-wrap");
-          var img = document.getElementById("teacher-photo-preview-img");
-          if (wrap && img) {
-            img.src = e.target.result;
-            wrap.style.display = "block";
-          }
-        };
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-
     async function handleAssignHomeworkSubmit() {
-      var cls = appSession.teacherClass;
+      var cls = appSession.teacherClass || "Nursery";
       var schoolId = getActiveSchoolId();
       var teacher = appSession.teacherObj || { teacher_name: "Teacher", teacher_mobile: "" };
 
       var subSelect = document.getElementById("teacher-hw-subject");
-      var typeSelect = document.getElementById("teacher-hw-type");
-      var titleInput = document.getElementById("teacher-hw-title");
-      var instInput = document.getElementById("teacher-hw-instructions");
+      var topicSelect = document.getElementById("teacher-hw-topic");
       var dateInput = document.getElementById("teacher-hw-date");
-      var dueInput = document.getElementById("teacher-hw-due");
-      var linkInput = document.getElementById("teacher-hw-link");
-      var modSelect = document.getElementById("teacher-hw-module");
-      var img = document.getElementById("teacher-photo-preview-img");
 
       var subject = subSelect ? subSelect.value : "English";
-      var actType = typeSelect ? typeSelect.value : "Homework";
-      var title = (titleInput ? titleInput.value.trim() : "");
-      var instructions = instInput ? instInput.value.trim() : "";
-      var dueDate = dateInput ? dateInput.value : new Date().toISOString().split('T')[0];
-      var dueTime = dueInput ? dueInput.value : "18:00";
-      var attachmentUrl = (img && img.src && img.src.startsWith("data:")) ? img.src : (linkInput ? linkInput.value.trim() : "");
-      var moduleKey = modSelect ? modSelect.value : "";
+      var catalog = getTeacherCurriculumCatalog(cls);
+      var subData = catalog[subject] || catalog["English"];
+      var topics = subData.topics || [];
+      var topicIdx = topicSelect ? parseInt(topicSelect.value, 10) : 0;
+      var chosenTopic = topics[topicIdx] || { title: "Daily Learning Activity", module_key: "" };
 
-      if (!title) {
-        showToast("Please enter a Homework Title", "wrong");
-        speak("Please enter a homework title.", "en-IN");
-        return;
-      }
+      var title = subject + ": " + chosenTopic.title;
+      var instructions = "Please complete the " + chosenTopic.title + " assignment for " + cls + " Class. Review the lessons carefully and practice daily.";
+      var moduleKey = chosenTopic.module_key || (topicSelect && topicSelect.options[topicSelect.selectedIndex] ? topicSelect.options[topicSelect.selectedIndex].getAttribute("data-module-key") : "") || "";
+      var dueDate = dateInput ? dateInput.value : new Date(Date.now() + 24*60*60*1000).toISOString().split('T')[0];
 
       var newHw = {
         id: "HW-" + Date.now(),
         school_id: schoolId,
         class_name: cls,
         subject: subject,
-        activity_type: actType,
+        activity_type: "Curriculum Activity",
         title: title,
         instructions: instructions,
         module_key: moduleKey,
         target_questions: 10,
         due_date: dueDate,
-        due_time: dueTime,
-        attachment_url: attachmentUrl,
+        due_time: "18:00",
+        attachment_url: "",
         assigned_by: teacher.teacher_name || teacher.user_name || "Teacher",
         teacher_mobile: teacher.teacher_mobile || teacher.mobile || "",
         created_at: new Date().toISOString()
@@ -31678,14 +31770,20 @@ function setNurseryNumSubTab(st) {
 
       var html = '';
 
-      // Teacher / Principal Active Full Access Status Banner
+      // Teacher / Principal Active Status Banner
       if (appSession.type === "teacher") {
         var tObj = appSession.teacherObj || { teacher_name: "Faculty Teacher" };
+        var tClass = normalizeAssignedClass(tObj.assigned_class);
+        var isSingleLock = (tClass !== "ALL");
         html += '<div style="background:linear-gradient(135deg, #FFF3E0, #FFE0B2); border:2.5px solid #FF9800; border-radius:18px; padding:12px 16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">';
         html += '  <div>';
         html += '    <span style="font-size:10px; font-weight:900; background:#E65100; color:#FFF; padding:2px 8px; border-radius:6px;">👩‍🏫 TEACHER ACCESS ACTIVE</span>';
         html += '    <div style="font-size:15px; font-weight:900; color:#BF360C; margin-top:2px;">Welcome ' + escapeHtml(tObj.teacher_name || tObj.user_name || "Teacher") + ' (' + escapeHtml(school.name) + ')</div>';
-        html += '    <div style="font-size:11px; color:#5D4037; font-weight:700;">Full Access to all Nursery, LKG, UKG Modules, Quizzes &amp; Homework</div>';
+        if (isSingleLock) {
+          html += '    <div style="font-size:11px; color:#5D4037; font-weight:700;">🔒 Assigned Class: ' + tClass + ' Class Teacher</div>';
+        } else {
+          html += '    <div style="font-size:11px; color:#5D4037; font-weight:700;">Teacher Access to Nursery, LKG &amp; UKG Modules, Quizzes &amp; Homework</div>';
+        }
         html += '  </div>';
         html += '  <div style="display:flex; gap:8px;">';
         html += '    <button onclick="safeAction(openTeacherPanel)" style="background:#E65100; color:#FFF; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer;">📤 Homework Desk</button>';

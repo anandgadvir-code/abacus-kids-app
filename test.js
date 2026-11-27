@@ -67,9 +67,8 @@ runTest('Strict Class-Teacher access control for Nursery, LKG, and UKG', () => {
 runTest('Teacher Homework & Activity Publisher with live completion counts', () => {
   assert(html.includes('renderTeacherSendHomeworkTab'), 'renderTeacherSendHomeworkTab missing');
   assert(html.includes('teacher-hw-subject'), 'Subject selector missing');
-  assert(html.includes('teacher-hw-type'), 'Activity type selector missing');
-  assert(html.includes('teacher-hw-instructions'), 'Instructions input missing');
-  assert(html.includes('teacher-hw-photo-file'), 'Worksheet photo file upload missing');
+  assert(html.includes('teacher-hw-topic'), 'Activity topic selector missing');
+  assert(html.includes('teacher-hw-date'), 'Due date selector missing');
   assert(html.includes('renderTeacherCompletionReportTab'), 'renderTeacherCompletionReportTab missing');
   assert(html.includes('Completed ('), 'Completion metric missing');
   assert(html.includes('deleteTeacherHomework'), 'deleteTeacherHomework missing');
@@ -441,6 +440,24 @@ runTest('Teacher Class Assignment (Nursery/LKG/UKG/ALL) in Principal Desk & Stri
   assert(html.includes('appSession.teacherObj.assigned_class'), 'appSession must track assigned_class');
   assert(html.includes('ASSIGNED CLASS LOCK'), 'ASSIGNED CLASS LOCK banner missing in Teacher Portal');
   assert(html.includes('Access Restricted: You are assigned strictly to'), 'Restricted class switch alert missing in switchTeacherClass');
+});
+
+// TEST 27: Strict Teacher Portal Class Lock, Single Logout Button & Dropdown-Only Homework Flow
+runTest('Strict Teacher Portal Class Lock, Single Logout Button & Dropdown-Only Homework Flow', () => {
+  // 1. normalizeAssignedClass normalizes class strings case-insensitively
+  assert(html.includes('function normalizeAssignedClass(cls)'), 'normalizeAssignedClass function missing');
+  assert(html.includes('🔒 Assigned Class:'), 'Locked class badge missing in Teacher Portal');
+
+  // 2. Clean header without duplicate logout or button overflow
+  assert(html.includes('roleTag = (tClass !== "ALL") ? (tClass + " Class Teacher") : "All Classes Teacher"'), 'roleTag format missing in renderHeaderStatus');
+  assert(!html.includes('• Full Access)</div>'), 'Full Access must not be hardcoded in teacher pass banner');
+
+  // 3. Dropdown-Only Homework Publishing Flow
+  assert(html.includes('getTeacherCurriculumCatalog'), 'getTeacherCurriculumCatalog function missing');
+  assert(html.includes('onTeacherHomeworkSubjectChange'), 'onTeacherHomeworkSubjectChange function missing');
+  assert(!html.includes('id="teacher-hw-instructions"'), 'Manual instructions input must be removed from publish homework form');
+  assert(!html.includes('id="teacher-hw-photo-file"'), 'Worksheet photo file upload must be removed from publish homework form');
+  assert(!html.includes('id="teacher-hw-link"'), 'External worksheet link input must be removed from publish homework form');
 });
 
 console.log('\n----------------------------------------------------------------');
