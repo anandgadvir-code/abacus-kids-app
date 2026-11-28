@@ -589,6 +589,81 @@ runTest('Teacher-to-Student homework sync uses exact public.kids_homework schema
   assert(html.includes('var hwDesc = hw.description || hw.instructions;'), 'renderHome must support both hw.description and hw.instructions');
 });
 
+// TEST 32: Student Homework Row Normalization, Fetch Pipeline & Refresh UI
+runTest('Raw kids_homework rows from Supabase are normalized, cached and rendered without filtering', () => {
+  // 1. Presence of normalization and refresh helpers
+  assert(html.includes('function normalizeHomeworkRow('), 'normalizeHomeworkRow helper missing');
+  assert(html.includes('function refreshStudentHomeworkManual('), 'refreshStudentHomeworkManual missing');
+  assert(html.includes('id="btn-refresh-homework"'), 'btn-refresh-homework button element missing in HTML');
+  assert(html.includes('🔄 Refresh'), 'Refresh button text missing');
+
+  // 2. Functional test of normalizeHomeworkRow
+  const normMatch = html.match(/function normalizeHomeworkRow\([\s\S]*?^ {4}\}/m);
+  assert(normMatch, 'Could not extract normalizeHomeworkRow');
+
+  const getTodayMatch = html.match(/function getTodayIstDateString\([\s\S]*?^ {4}\}/m);
+  const resolveMatch = html.match(/function resolveHomeworkSchoolId\([\s\S]*?^ {4}\}/m);
+  const normClassMatch = html.match(/function normalizeAssignedClass\([\s\S]*?^ {4}\}/m);
+
+  const testEnv = new Function('rawRow', `
+    ${getTodayMatch[0]}
+    ${resolveMatch[0]}
+    ${normClassMatch[0]}
+    function getActiveSchoolId() { return "the-abacus-academy"; }
+    ${normMatch[0]}
+    return normalizeHomeworkRow(rawRow, "the-abacus-academy", "LKG");
+  `);
+
+  const rawRow = {
+    id: 'hw-lkg-101',
+    school_id: 'the-abacus-academy',
+    class_name: 'LKG',
+    subject: 'English',
+    title: 'Phonics CVC Words',
+    description: 'Practice 2-letter and 3-letter sounding words',
+    attachment_url: null,
+    due_date: '2026-11-28',
+    teacher_name: 'Kalawati S.',
+    teacher_mobile: '9876543210',
+    is_approved: true,
+    created_at: '2026-11-28T06:00:00.000Z'
+  };
+
+  const normalized = testEnv(rawRow);
+  assert(normalized, 'Normalized row is null or undefined');
+  assert.strictEqual(normalized.class_name, 'LKG', 'class_name must be normalized to LKG');
+  assert.strictEqual(normalized.student_class, 'LKG', 'student_class must be normalized to LKG');
+  assert.strictEqual(normalized.class, 'LKG', 'class must be normalized to LKG');
+  assert.strictEqual(normalized.description, 'Practice 2-letter and 3-letter sounding words', 'description must match');
+  assert.strictEqual(normalized.instructions, 'Practice 2-letter and 3-letter sounding words', 'instructions must match description');
+  assert.strictEqual(normalized.due_date, '2026-11-28', 'due_date must match');
+  assert.strictEqual(normalized.date, '2026-11-28', 'date must match due_date');
+  assert.strictEqual(normalized.school_id, 'the-abacus-academy', 'school_id must be normalized');
+
+  // 3. Functional test of getTodayActiveHomework with normalized row
+  const activeHwMatch = html.match(/function getTodayActiveHomework\([\s\S]*?^ {4}\}/m);
+  assert(activeHwMatch, 'Could not extract getTodayActiveHomework');
+
+  const testActiveEnv = new Function('homeworkList', 'reqClass', `
+    ${resolveMatch[0]}
+    ${normClassMatch[0]}
+    function getActiveSchoolId() { return "the-abacus-academy"; }
+    const appSession = { student: null };
+    function getAllHomeworkList(schoolId) { return homeworkList; }
+    ${activeHwMatch[0]}
+    return getTodayActiveHomework(reqClass, "the-abacus-academy");
+  `);
+
+  const active = testActiveEnv([normalized], 'LKG');
+  assert(active, 'getTodayActiveHomework returned null for valid LKG homework');
+  assert.strictEqual(active.id, 'hw-lkg-101', 'getTodayActiveHomework should return the latest LKG homework');
+  assert.strictEqual(active.title, 'Phonics CVC Words', 'Title should match active homework');
+
+  // 4. Verify fetch loop prevention and re-render guard
+  assert(html.includes('_studentHwFetchedMap'), '_studentHwFetchedMap fetch cache missing');
+  assert(html.includes('_isStudentHwFetching'), '_isStudentHwFetching in-flight guard missing');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');
