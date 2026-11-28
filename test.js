@@ -1293,6 +1293,172 @@ runTest('48-Hour Homework Visibility & One-Time Points (Practice-Only on Replay)
   assert.strictEqual(res.pointsAfterPracticeReplay, 80.0, 'Practice mode replay must add 0 extra points (remain strictly 80.0)');
 });
 
+// TEST 40: 5 Separate Fun-Learning Hindi UKG Modules (Vilom, Paheli, Railgadi, Ek-Anek, Vakya) with Question Range & Slicing
+runTest('5 Separate Fun-Learning Hindi UKG Modules (Vilom, Paheli, Railgadi, Ek-Anek, Vakya) with Question Range & Slicing', () => {
+  const indexHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+
+  // 1. Static file declarations
+  assert(indexHtml.includes('DATA_HINDI_VILOM'), 'index.html must define DATA_HINDI_VILOM');
+  assert(indexHtml.includes('DATA_HINDI_PAHELI'), 'index.html must define DATA_HINDI_PAHELI');
+  assert(indexHtml.includes('DATA_HINDI_RAILGADI'), 'index.html must define DATA_HINDI_RAILGADI');
+  assert(indexHtml.includes('DATA_HINDI_EKANEK'), 'index.html must define DATA_HINDI_EKANEK');
+  assert(indexHtml.includes('DATA_HINDI_VAKYA'), 'index.html must define DATA_HINDI_VAKYA');
+
+  assert(indexHtml.includes('renderUkgHindiVilomView'), 'renderUkgHindiVilomView must be defined');
+  assert(indexHtml.includes('renderUkgHindiPaheliView'), 'renderUkgHindiPaheliView must be defined');
+  assert(indexHtml.includes('renderUkgHindiRailgadiView'), 'renderUkgHindiRailgadiView must be defined');
+  assert(indexHtml.includes('renderUkgHindiEkanekView'), 'renderUkgHindiEkanekView must be defined');
+  assert(indexHtml.includes('renderUkgHindiVakyaView'), 'renderUkgHindiVakyaView must be defined');
+
+  // 2. Behavioral verification in clean VM sandbox
+  const sandbox = {
+    console: console,
+    Math: Math,
+    parseInt: parseInt,
+    Object: Object,
+    Array: Array,
+    String: String,
+    Number: Number,
+    decodeURIComponent: decodeURIComponent,
+    encodeURIComponent: encodeURIComponent,
+    appState: { section: 'ukg', mode: 'quiz', quizIndex: 0 },
+    appSession: {}
+  };
+
+  const codeMatch = indexHtml.match(/<script>([\s\S]*?)<\/script>/i);
+  assert(codeMatch, 'Script block must be present');
+  const scriptContent = codeMatch[1];
+
+  const testSandbox = new Function(`
+    ${indexHtml.match(/var DATA_HINDI_VILOM = [\s\S]*?^    \];/m)[0]}
+    ${indexHtml.match(/var DATA_HINDI_PAHELI = [\s\S]*?^    \];/m)[0]}
+    ${indexHtml.match(/var DATA_HINDI_RAILGADI = [\s\S]*?^    \];/m)[0]}
+    ${indexHtml.match(/var DATA_HINDI_EKANEK = [\s\S]*?^    \];/m)[0]}
+    ${indexHtml.match(/var DATA_HINDI_VAKYA = [\s\S]*?^    \];/m)[0]}
+
+    ${indexHtml.match(/function parseHomeworkGameParams[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function getGranularHomeworkInfo[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function detectGranularTopicType[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function getGranularTopicMaxQuestions[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function getCurriculumModulesForClass[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function getTeacherCurriculumCatalog[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function normalizeAssignedClass[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function resolveHomeworkGameModule[\s\S]*?^    \}/m)[0]}
+
+    var ukgMods = getCurriculumModulesForClass('UKG');
+    var vilomMod = ukgMods.find(function(m){ return m.key === 'ukg_hindi_vilom'; });
+    var paheliMod = ukgMods.find(function(m){ return m.key === 'ukg_hindi_paheli'; });
+    var railMod = ukgMods.find(function(m){ return m.key === 'ukg_hindi_railgadi'; });
+    var ekanekMod = ukgMods.find(function(m){ return m.key === 'ukg_hindi_ekanek'; });
+    var vakyaMod = ukgMods.find(function(m){ return m.key === 'ukg_hindi_vakya'; });
+
+    var cat = getTeacherCurriculumCatalog('UKG');
+    var hindiTopics = (cat['Hindi'] && cat['Hindi'].topics) ? cat['Hindi'].topics : [];
+    var tVilom = hindiTopics.find(function(t){ return t.module_key === 'ukg_hindi_vilom'; });
+    var tPaheli = hindiTopics.find(function(t){ return t.module_key === 'ukg_hindi_paheli'; });
+    var tRail = hindiTopics.find(function(t){ return t.module_key === 'ukg_hindi_railgadi'; });
+    var tEkanek = hindiTopics.find(function(t){ return t.module_key === 'ukg_hindi_ekanek'; });
+    var tVakya = hindiTopics.find(function(t){ return t.module_key === 'ukg_hindi_vakya'; });
+
+    var gTypeVilom = detectGranularTopicType('Hindi', { module_key: 'ukg_hindi_vilom' });
+    var gTypePaheli = detectGranularTopicType('Hindi', { module_key: 'ukg_hindi_paheli' });
+    var gTypeRail = detectGranularTopicType('Hindi', { module_key: 'ukg_hindi_railgadi' });
+    var gTypeEkanek = detectGranularTopicType('Hindi', { module_key: 'ukg_hindi_ekanek' });
+    var gTypeVakya = detectGranularTopicType('Hindi', { module_key: 'ukg_hindi_vakya' });
+
+    var maxQVilom = getGranularTopicMaxQuestions('hindi_vilom', 'all');
+    var maxQPaheli = getGranularTopicMaxQuestions('hindi_paheli', 'all');
+    var maxQRail = getGranularTopicMaxQuestions('hindi_railgadi', 'all');
+    var maxQEkanek = getGranularTopicMaxQuestions('hindi_ekanek', 'all');
+    var maxQVakya = getGranularTopicMaxQuestions('hindi_vakya', 'all');
+
+    var parsedVilom = parseHomeworkGameParams('game:ukg:hindi_vilom|q=1-5');
+    var infoVilom = getGranularHomeworkInfo('game:ukg:hindi_vilom|q=1-5');
+
+    var resolvedHw = resolveHomeworkGameModule({
+      class_name: 'UKG',
+      attachment_url: 'game:ukg:hindi_paheli|q=3-7'
+    });
+
+    var resolvedByKeyword = resolveHomeworkGameModule({
+      class_name: 'UKG',
+      title: 'अक्षर रेलगाड़ी (शब्द बनाओ Puzzle)'
+    });
+
+    return {
+      vilomLen: DATA_HINDI_VILOM.length,
+      paheliLen: DATA_HINDI_PAHELI.length,
+      railLen: DATA_HINDI_RAILGADI.length,
+      ekanekLen: DATA_HINDI_EKANEK.length,
+      vakyaLen: DATA_HINDI_VAKYA.length,
+      hasVilomMod: !!vilomMod && vilomMod.tab === 'hindi_vilom',
+      hasPaheliMod: !!paheliMod && paheliMod.tab === 'hindi_paheli',
+      hasRailMod: !!railMod && railMod.tab === 'hindi_railgadi',
+      hasEkanekMod: !!ekanekMod && ekanekMod.tab === 'hindi_ekanek',
+      hasVakyaMod: !!vakyaMod && vakyaMod.tab === 'hindi_vakya',
+      hasTVilom: !!tVilom,
+      hasTPaheli: !!tPaheli,
+      hasTRail: !!tRail,
+      hasTEkanek: !!tEkanek,
+      hasTVakya: !!tVakya,
+      gTypeVilom: gTypeVilom,
+      gTypePaheli: gTypePaheli,
+      gTypeRail: gTypeRail,
+      gTypeEkanek: gTypeEkanek,
+      gTypeVakya: gTypeVakya,
+      maxQVilom: maxQVilom,
+      maxQPaheli: maxQPaheli,
+      maxQRail: maxQRail,
+      maxQEkanek: maxQEkanek,
+      maxQVakya: maxQVakya,
+      parsedVilomQ: parsedVilom ? (parsedVilom.fromQ + '-' + parsedVilom.toQ) : null,
+      infoVilomLabel: infoVilom ? infoVilom.label : null,
+      resolvedTab: resolvedHw ? resolvedHw.tab : null,
+      resolvedFromQ: resolvedHw ? resolvedHw.fromQ : null,
+      resolvedToQ: resolvedHw ? resolvedHw.toQ : null,
+      resolvedKeywordTab: resolvedByKeyword ? resolvedByKeyword.tab : null
+    };
+  `);
+
+  const res = testSandbox();
+  assert(res.vilomLen >= 20, `DATA_HINDI_VILOM must have 20 items (got ${res.vilomLen})`);
+  assert(res.paheliLen >= 15, `DATA_HINDI_PAHELI must have 15 items (got ${res.paheliLen})`);
+  assert(res.railLen >= 20, `DATA_HINDI_RAILGADI must have 20 items (got ${res.railLen})`);
+  assert(res.ekanekLen >= 15, `DATA_HINDI_EKANEK must have 15 items (got ${res.ekanekLen})`);
+  assert(res.vakyaLen >= 15, `DATA_HINDI_VAKYA must have 15 items (got ${res.vakyaLen})`);
+
+  assert.strictEqual(res.hasVilomMod, true, 'Curriculum must include ukg_hindi_vilom');
+  assert.strictEqual(res.hasPaheliMod, true, 'Curriculum must include ukg_hindi_paheli');
+  assert.strictEqual(res.hasRailMod, true, 'Curriculum must include ukg_hindi_railgadi');
+  assert.strictEqual(res.hasEkanekMod, true, 'Curriculum must include ukg_hindi_ekanek');
+  assert.strictEqual(res.hasVakyaMod, true, 'Curriculum must include ukg_hindi_vakya');
+
+  assert.strictEqual(res.hasTVilom, true, 'Teacher catalog must include ukg_hindi_vilom');
+  assert.strictEqual(res.hasTPaheli, true, 'Teacher catalog must include ukg_hindi_paheli');
+  assert.strictEqual(res.hasTRail, true, 'Teacher catalog must include ukg_hindi_railgadi');
+  assert.strictEqual(res.hasTEkanek, true, 'Teacher catalog must include ukg_hindi_ekanek');
+  assert.strictEqual(res.hasTVakya, true, 'Teacher catalog must include ukg_hindi_vakya');
+
+  assert.strictEqual(res.gTypeVilom, 'hindi_vilom', 'gTypeVilom must be hindi_vilom');
+  assert.strictEqual(res.gTypePaheli, 'hindi_paheli', 'gTypePaheli must be hindi_paheli');
+  assert.strictEqual(res.gTypeRail, 'hindi_railgadi', 'gTypeRail must be hindi_railgadi');
+  assert.strictEqual(res.gTypeEkanek, 'hindi_ekanek', 'gTypeEkanek must be hindi_ekanek');
+  assert.strictEqual(res.gTypeVakya, 'hindi_vakya', 'gTypeVakya must be hindi_vakya');
+
+  assert.strictEqual(res.maxQVilom, 20, 'Vilom max questions must be 20');
+  assert.strictEqual(res.maxQPaheli, 15, 'Paheli max questions must be 15');
+  assert.strictEqual(res.maxQRail, 20, 'Railgadi max questions must be 20');
+  assert.strictEqual(res.maxQEkanek, 15, 'Ek-Anek max questions must be 15');
+  assert.strictEqual(res.maxQVakya, 15, 'Vakya max questions must be 15');
+
+  assert.strictEqual(res.parsedVilomQ, '1-5', 'Parsed Vilom range must be 1-5');
+  assert.strictEqual(res.infoVilomLabel, 'उल्टा-सीधा खेल (विलोम शब्द) • Q1–Q5', 'Granular badge label must format cleanly');
+  assert.strictEqual(res.resolvedTab, 'hindi_paheli', 'Resolved tab must be hindi_paheli');
+  assert.strictEqual(res.resolvedFromQ, 3, 'Resolved fromQ must be 3');
+  assert.strictEqual(res.resolvedToQ, 7, 'Resolved toQ must be 7');
+  assert.strictEqual(res.resolvedKeywordTab, 'hindi_railgadi', 'Keyword fallback must resolve to hindi_railgadi');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');

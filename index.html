@@ -3875,6 +3875,14 @@
         rangeText = "From Q" + parsed.fromQ;
       }
 
+      if (!subName && parsed.gameUri) {
+        if (parsed.gameUri.indexOf("hindi_vilom") !== -1) subName = "उल्टा-सीधा खेल (विलोम शब्द)";
+        else if (parsed.gameUri.indexOf("hindi_paheli") !== -1) subName = "बूझो तो जानें! (Hindi Riddles)";
+        else if (parsed.gameUri.indexOf("hindi_railgadi") !== -1) subName = "अक्षर रेलगाड़ी (शब्द बनाओ)";
+        else if (parsed.gameUri.indexOf("hindi_ekanek") !== -1) subName = "एक – अनेक (One & Many)";
+        else if (parsed.gameUri.indexOf("hindi_vakya") !== -1) subName = "चित्र देखो, वाक्य चुनो";
+      }
+
       var label = subName;
       if (rangeText) {
         label = label ? (label + " • " + rangeText) : rangeText;
@@ -3897,6 +3905,23 @@
       var title = String(topicObj.title || "").toLowerCase();
       var sub = String(subject || "").toLowerCase();
 
+      // Check UKG Hindi Separate Modules
+      if (key === "ukg_hindi_vilom" || key.indexOf("vilom") !== -1 || title.indexOf("विलोम") !== -1 || title.indexOf("उल्टा-सीधा") !== -1) {
+        return "hindi_vilom";
+      }
+      if (key === "ukg_hindi_paheli" || key.indexOf("paheli") !== -1 || title.indexOf("बूझो") !== -1 || title.indexOf("riddle") !== -1) {
+        return "hindi_paheli";
+      }
+      if (key === "ukg_hindi_railgadi" || key.indexOf("railgadi") !== -1 || title.indexOf("रेलगाड़ी") !== -1) {
+        return "hindi_railgadi";
+      }
+      if (key === "ukg_hindi_ekanek" || key.indexOf("ekanek") !== -1 || title.indexOf("एक – अनेक") !== -1 || title.indexOf("एक-अनेक") !== -1) {
+        return "hindi_ekanek";
+      }
+      if (key === "ukg_hindi_vakya" || key.indexOf("vakya") !== -1 || title.indexOf("वाक्य चुनो") !== -1 || title.indexOf("picture sentences") !== -1) {
+        return "hindi_vakya";
+      }
+
       // Check Hindi Matra
       if (sub.indexOf("hindi") !== -1 || sub.indexOf("हिंदी") !== -1 || key.indexOf("hindi") !== -1) {
         if (key.indexOf("matra") !== -1 || title.indexOf("matra") !== -1 || title.indexOf("मात्रा") !== -1) {
@@ -3913,6 +3938,11 @@
     }
 
     function getGranularTopicMaxQuestions(type, subKey) {
+      if (type === "hindi_vilom") return (typeof DATA_HINDI_VILOM !== "undefined" ? DATA_HINDI_VILOM.length : 20);
+      if (type === "hindi_paheli") return (typeof DATA_HINDI_PAHELI !== "undefined" ? DATA_HINDI_PAHELI.length : 15);
+      if (type === "hindi_railgadi") return (typeof DATA_HINDI_RAILGADI !== "undefined" ? DATA_HINDI_RAILGADI.length : 20);
+      if (type === "hindi_ekanek") return (typeof DATA_HINDI_EKANEK !== "undefined" ? DATA_HINDI_EKANEK.length : 15);
+      if (type === "hindi_vakya") return (typeof DATA_HINDI_VAKYA !== "undefined" ? DATA_HINDI_VAKYA.length : 15);
       if (type === "matra") {
         if (subKey === "all" || subKey === "mixed") return 300;
         if (typeof DATA_MATRA_TABS !== "undefined" && DATA_MATRA_TABS[subKey] && DATA_MATRA_TABS[subKey].words) {
@@ -3991,6 +4021,28 @@
 
       // 3. Smart Keyword Resolver based on subject, title, and description
       var text = (String(hw.subject || "") + " " + String(hw.title || "") + " " + String(hw.description || "")).toLowerCase();
+
+      // Specific UKG Hindi Modules Keyword Matching
+      if (text.indexOf("vilom") !== -1 || text.indexOf("विलोम") !== -1 || text.indexOf("उल्टा-सीधा") !== -1) {
+        var vMod = modules.find(function(m) { return m.tab === "hindi_vilom"; });
+        if (vMod) return vMod;
+      }
+      if (text.indexOf("paheli") !== -1 || text.indexOf("पहेली") !== -1 || text.indexOf("बूझो") !== -1 || text.indexOf("riddle") !== -1) {
+        var pMod = modules.find(function(m) { return m.tab === "hindi_paheli"; });
+        if (pMod) return pMod;
+      }
+      if (text.indexOf("railgadi") !== -1 || text.indexOf("रेलगाड़ी") !== -1) {
+        var rMod = modules.find(function(m) { return m.tab === "hindi_railgadi"; });
+        if (rMod) return rMod;
+      }
+      if (text.indexOf("ekanek") !== -1 || text.indexOf("एक – अनेक") !== -1 || text.indexOf("एक-अनेक") !== -1 || text.indexOf("एक अनेक") !== -1) {
+        var eaMod = modules.find(function(m) { return m.tab === "hindi_ekanek"; });
+        if (eaMod) return eaMod;
+      }
+      if (text.indexOf("vakya") !== -1 || text.indexOf("वाक्य") !== -1) {
+        var vkMod = modules.find(function(m) { return m.tab === "hindi_vakya"; });
+        if (vkMod) return vkMod;
+      }
 
       // English Phonics / Letters A-Z
       if (text.indexOf("phonic") !== -1 || text.indexOf("letter") !== -1 || text.indexOf("alphabet") !== -1 || text.indexOf("abc") !== -1 || text.indexOf("cvc") !== -1 || text.indexOf("sound") !== -1 || text.indexOf("vowel") !== -1 || text.indexOf("english") !== -1) {
@@ -5880,6 +5932,11 @@
         "Hindi": {
           label: "🪔 Hindi / हिंदी",
           topics: (cls === "UKG") ? [
+            { title: "Hindi Vilom: 🔄 उल्टा-सीधा खेल (विलोम शब्द / Opposites)", module_key: "ukg_hindi_vilom" },
+            { title: "Hindi Paheli: 🤔 बूझो तो जानें! (Hindi Riddles)", module_key: "ukg_hindi_paheli" },
+            { title: "Hindi Railgadi: 🚂 अक्षर रेलगाड़ी (शब्द बनाओ Puzzle)", module_key: "ukg_hindi_railgadi" },
+            { title: "Hindi Ek-Anek: 🔢 एक – अनेक (One & Many)", module_key: "ukg_hindi_ekanek" },
+            { title: "Hindi Vakya: 📖 चित्र देखो, वाक्य चुनो (Picture Sentences)", module_key: "ukg_hindi_vakya" },
             { title: "Matra Quiz (ा, ि, ी, ु, ू)", module_key: "ukg_hindi_matra" },
             { title: "3 व 4 अक्षर मात्रा शब्द पठन", module_key: "" },
             { title: "चित्र देखकर वाक्य पूरा करो", module_key: "" }
@@ -5976,42 +6033,50 @@
       container.style.display = "block";
       var subSelectEl = document.getElementById("teacher-hw-subtopic");
       var subLabelEl = document.getElementById("teacher-hw-subtopic-label");
+      var subRow = subSelectEl ? subSelectEl.parentElement : null;
       if (!subSelectEl) return;
 
       var html = "";
-      if (gType === "matra") {
-        if (subLabelEl) subLabelEl.textContent = "Select Matra / मात्रा चुनें:";
-        var matras = [
-          { key: "all", label: "All / Mixed Matras (सभी मात्राएँ - 300 Qs)" },
-          { key: "aa", label: "आ की मात्रा (ा) - 30 Qs" },
-          { key: "i", label: "इ की मात्रा (ि) - 30 Qs" },
-          { key: "ee", label: "ई की मात्रा (ी) - 30 Qs" },
-          { key: "u", label: "उ की मात्रा (ु) - 30 Qs" },
-          { key: "oo", label: "ऊ की मात्रा (ू) - 30 Qs" },
-          { key: "e", label: "ए की मात्रा (े) - 30 Qs" },
-          { key: "ai", label: "ऐ की मात्रा (ै) - 30 Qs" },
-          { key: "o", label: "ओ की मात्रा (ो) - 30 Qs" },
-          { key: "au", label: "औ की मात्रा (ौ) - 30 Qs" },
-          { key: "ang", label: "अं की मात्रा (ं) - 30 Qs" }
-        ];
-        matras.forEach(function(m) {
-          html += '<option value="' + m.key + '">' + m.label + '</option>';
-        });
-      } else if (gType === "cvc") {
-        if (subLabelEl) subLabelEl.textContent = "Select Phonic Sound / Vowel:";
-        var cvcs = [
-          { key: "all", label: "Mixed / All CVC Sounds (A, E, I, O, U - 143 Qs)" },
-          { key: "a", label: "Short 'A' Sound (31 Qs)" },
-          { key: "e", label: "Short 'E' Sound (28 Qs)" },
-          { key: "i", label: "Short 'I' Sound (28 Qs)" },
-          { key: "o", label: "Short 'O' Sound (28 Qs)" },
-          { key: "u", label: "Short 'U' Sound (28 Qs)" }
-        ];
-        cvcs.forEach(function(c) {
-          html += '<option value="' + c.key + '">' + c.label + '</option>';
-        });
+      if (gType === "matra" || gType === "cvc") {
+        if (subRow) subRow.style.display = "block";
+        if (gType === "matra") {
+          if (subLabelEl) subLabelEl.textContent = "Select Matra / मात्रा चुनें:";
+          var matras = [
+            { key: "all", label: "All / Mixed Matras (सभी मात्राएँ - 300 Qs)" },
+            { key: "aa", label: "आ की मात्रा (ा) - 30 Qs" },
+            { key: "i", label: "इ की मात्रा (ि) - 30 Qs" },
+            { key: "ee", label: "ई की मात्रा (ी) - 30 Qs" },
+            { key: "u", label: "उ की मात्रा (ु) - 30 Qs" },
+            { key: "oo", label: "ऊ की मात्रा (ू) - 30 Qs" },
+            { key: "e", label: "ए की मात्रा (े) - 30 Qs" },
+            { key: "ai", label: "ऐ की मात्रा (ै) - 30 Qs" },
+            { key: "o", label: "ओ की मात्रा (ो) - 30 Qs" },
+            { key: "au", label: "औ की मात्रा (ौ) - 30 Qs" },
+            { key: "ang", label: "अं की मात्रा (ं) - 30 Qs" }
+          ];
+          matras.forEach(function(m) {
+            html += '<option value="' + m.key + '">' + m.label + '</option>';
+          });
+        } else if (gType === "cvc") {
+          if (subLabelEl) subLabelEl.textContent = "Select Phonic Sound / Vowel:";
+          var cvcs = [
+            { key: "all", label: "Mixed / All CVC Sounds (A, E, I, O, U - 143 Qs)" },
+            { key: "a", label: "Short 'A' Sound (31 Qs)" },
+            { key: "e", label: "Short 'E' Sound (28 Qs)" },
+            { key: "i", label: "Short 'I' Sound (28 Qs)" },
+            { key: "o", label: "Short 'O' Sound (28 Qs)" },
+            { key: "u", label: "Short 'U' Sound (28 Qs)" }
+          ];
+          cvcs.forEach(function(c) {
+            html += '<option value="' + c.key + '">' + c.label + '</option>';
+          });
+        }
+        subSelectEl.innerHTML = html;
+      } else {
+        // Direct module practice sets without sub-variants
+        if (subRow) subRow.style.display = "none";
+        subSelectEl.innerHTML = '<option value="all">All</option>';
       }
-      subSelectEl.innerHTML = html;
       onTeacherHomeworkSubtopicChange();
     }
 
@@ -6044,7 +6109,7 @@
 
       toEl.min = "1";
       toEl.max = String(maxQ);
-      var defaultCount = (gType === "matra" && subKey !== "all") ? Math.min(5, maxQ) : Math.min(10, maxQ);
+      var defaultCount = (gType === "matra" && subKey !== "all") ? Math.min(5, maxQ) : Math.min(5, maxQ);
       toEl.value = String(defaultCount);
 
       if (hintEl) {
@@ -6201,7 +6266,13 @@
         if (fromVal < 1) fromVal = 1;
         if (toVal < fromVal) toVal = fromVal;
 
-        attachmentGameId += "|sub=" + encodeURIComponent(subVal) + "|q=" + fromVal + "-" + toVal;
+        var subRow = subSelectEl ? subSelectEl.parentElement : null;
+        var hasSubtopic = subRow && subRow.style.display !== "none" && subVal;
+        if (hasSubtopic) {
+          attachmentGameId += "|sub=" + encodeURIComponent(subVal) + "|q=" + fromVal + "-" + toVal;
+        } else {
+          attachmentGameId += "|q=" + fromVal + "-" + toVal;
+        }
         var gInfo = (typeof getGranularHomeworkInfo === "function") ? getGranularHomeworkInfo(attachmentGameId) : null;
         if (gInfo && gInfo.label) {
           title = subject + ": " + gInfo.label;
@@ -7084,6 +7155,11 @@
           { key: "ukg_math_addition", title: "Math: Addition Fun (1-10 Quiz)", section: "ukg", tab: "math", mathSubTab: "addition", mode: "quiz" },
           { key: "ukg_math_subtraction", title: "Math: Subtraction Fun (1-10 Quiz)", section: "ukg", tab: "math", mathSubTab: "subtraction", mode: "quiz" },
           { key: "ukg_hindi_matra", title: "Hindi: Matra Quiz (ा, ि, ी, ु, ू)", section: "ukg", tab: "matra", mode: "quiz" },
+          { key: "ukg_hindi_vilom", title: "Hindi Vilom: 🔄 उल्टा-सीधा खेल (विलोम शब्द / Opposites)", section: "ukg", tab: "hindi_vilom", mode: "quiz" },
+          { key: "ukg_hindi_paheli", title: "Hindi Paheli: 🤔 बूझो तो जानें! (Hindi Riddles)", section: "ukg", tab: "hindi_paheli", mode: "quiz" },
+          { key: "ukg_hindi_railgadi", title: "Hindi Railgadi: 🚂 अक्षर रेलगाड़ी (शब्द बनाओ Puzzle)", section: "ukg", tab: "hindi_railgadi", mode: "quiz" },
+          { key: "ukg_hindi_ekanek", title: "Hindi Ek-Anek: 🔢 एक – अनेक (One & Many)", section: "ukg", tab: "hindi_ekanek", mode: "quiz" },
+          { key: "ukg_hindi_vakya", title: "Hindi Vakya: 📖 चित्र देखो, वाक्य चुनो (Picture Sentences)", section: "ukg", tab: "hindi_vakya", mode: "quiz" },
           { key: "ukg_evs_helpers", title: "EVS: Community Helpers (Doctor, Teacher, Police)", section: "ukg", tab: "evs", topic: "helpers", mode: "quiz" },
           { key: "ukg_evs_transport", title: "EVS: Means of Transport (Land, Water, Air)", section: "ukg", tab: "evs", topic: "transport", mode: "quiz" },
           { key: "ukg_gk_quiz", title: "GK: UKG General Knowledge Challenge (150 Qs)", section: "ukg", tab: "gk", mode: "quiz" }
@@ -7396,7 +7472,12 @@
         { key: "evs", label: "🌍 EVS Studies" },
         { key: "matra", label: "✍️ हिंदी मात्राएं व शब्द निर्माण" },
         { key: "math", label: "➕➖ Math (+ / -)" },
-        { key: "gk", label: "🌍 GK (150 Qs)" }
+        { key: "gk", label: "🌍 GK (150 Qs)" },
+        { key: "hindi_vilom", label: "🔄 विलोम शब्द" },
+        { key: "hindi_paheli", label: "🤔 पहेलियाँ" },
+        { key: "hindi_railgadi", label: "🚂 अक्षर रेलगाड़ी" },
+        { key: "hindi_ekanek", label: "🔢 एक – अनेक" },
+        { key: "hindi_vakya", label: "📖 चित्र वाक्य" }
       ],
       picture_world: [
         { key: "fruits", label: "🍎 Fruits (15)" },
@@ -30366,6 +30447,109 @@ var DATA_UKG_MATH_ADDITION = [
     }
 
     /* ---------------------------------------------------------
+       DATA: 5 UKG HINDI CURRICULUM MODULES (Fun Learning)
+       --------------------------------------------------------- */
+    var DATA_HINDI_VILOM = [
+      { word: "दिन", opp: "रात", emoji: "☀️", oppEmoji: "🌙", sound: "दिन का विलोम रात", distractors: ["शाम", "सुबह"] },
+      { word: "बड़ा", opp: "छोटा", emoji: "🐘", oppEmoji: "🐭", sound: "बड़ा का विलोम छोटा", distractors: ["मोटा", "लंबा"] },
+      { word: "गरम", opp: "ठंडा", emoji: "🔥", oppEmoji: "🧊", sound: "गरम का विलोम ठंडा", distractors: ["मीठा", "खट्टा"] },
+      { word: "हँसना", opp: "रोना", emoji: "😊", oppEmoji: "😢", sound: "हँसना का विलोम रोना", distractors: ["गाना", "सोना"] },
+      { word: "ऊपर", opp: "नीचे", emoji: "⬆️", oppEmoji: "⬇️", sound: "ऊपर का विलोम नीचे", distractors: ["आगे", "पीछे"] },
+      { word: "धीरे", opp: "तेज़", emoji: "🐢", oppEmoji: "🐇", sound: "धीरे का विलोम तेज़", distractors: ["कम", "पास"] },
+      { word: "खुला", opp: "बंद", emoji: "🚪", oppEmoji: "🔒", sound: "खुला का विलोम बंद", distractors: ["साफ", "नया"] },
+      { word: "नया", opp: "पुराना", emoji: "👶", oppEmoji: "🧓", sound: "नया का विलोम पुराना", distractors: ["अच्छा", "छोटा"] },
+      { word: "हल्का", opp: "भारी", emoji: "🕊️", oppEmoji: "🪨", sound: "हल्का का विलोम भारी", distractors: ["गहरा", "सख्त"] },
+      { word: "सुख", opp: "दुःख", emoji: "🌞", oppEmoji: "🌧️", sound: "सुख का विलोम दुःख", distractors: ["डर", "क्रोध"] },
+      { word: "पास", opp: "दूर", emoji: "👫", oppEmoji: "🔭", sound: "पास का विलोम दूर", distractors: ["साथ", "यहाँ"] },
+      { word: "सुबह", opp: "शाम", emoji: "🌅", oppEmoji: "🌆", sound: "सुबह का विलोम शाम", distractors: ["रात", "दोपहर"] },
+      { word: "अमीर", opp: "गरीब", emoji: "👑", oppEmoji: "🛖", sound: "अमीर का विलोम गरीब", distractors: ["राजा", "दास"] },
+      { word: "सच", opp: "झूठ", emoji: "🦁", oppEmoji: "🦊", sound: "सच का विलोम झूठ", distractors: ["बात", "कथा"] },
+      { word: "गीला", opp: "सूखा", emoji: "💧", oppEmoji: "☀️", sound: "गीला का विलोम सूखा", distractors: ["ठंडा", "ताजा"] },
+      { word: "मीठा", opp: "खट्टा", emoji: "🍭", oppEmoji: "🍋", sound: "मीठा का विलोम खट्टा", distractors: ["कड़वा", "तीखा"] },
+      { word: "दोस्त", opp: "दुश्मन", emoji: "🤝", oppEmoji: "⚔️", sound: "दोस्त का विलोम दुश्मन", distractors: ["भाई", "साथी"] },
+      { word: "आगे", opp: "पीछे", emoji: "🚶", oppEmoji: "🔙", sound: "आगे का विलोम पीछे", distractors: ["नीचे", "दाएं"] },
+      { word: "प्रकाश", opp: "अंधकार", emoji: "☀️", oppEmoji: "🌑", sound: "प्रकाश का विलोम अंधकार", distractors: ["धूप", "सवेरा"] },
+      { word: "जीत", opp: "हार", emoji: "🏆", oppEmoji: "💔", sound: "जीत का विलोम हार", distractors: ["खेल", "दौड़"] }
+    ];
+
+    var DATA_HINDI_PAHELI = [
+      { q: "गोल-गोल हूँ लाल-लाल, खाओ मुझे तो गाल हों लाल। बोलो मैं कौन?", ans: "सेब", emoji: "🍎", sound: "गोल-गोल हूँ लाल-लाल, खाओ मुझे तो गाल हों लाल। बोलो मैं कौन?", options: ["सेब", "केला", "अंगूर"] },
+      { q: "पीला मेरा रंग है, बंदर मुझे खाते हैं। छील कर खाओ मुझे, बताओ मैं कौन?", ans: "केला", emoji: "🍌", sound: "पीला मेरा रंग है, बंदर मुझे खाते हैं। छील कर खाओ मुझे, बताओ मैं कौन?", options: ["केला", "सेब", "अंगूर"] },
+      { q: "सोने को पलंग नहीं, ना ही महल बनाए। एक रुपया पास नहीं, फिर भी राजा कहलाए।", ans: "शेर", emoji: "🦁", sound: "सोने को पलंग नहीं, ना ही महल बनाए। एक रुपया पास नहीं, फिर भी राजा कहलाए।", options: ["शेर", "हाथी", "बंदर"] },
+      { q: "हरी थी मन भरी थी, लाख मोती जड़ी थी। राजा जी के बाग में, दुशाला ओढ़े खड़ी थी।", ans: "भुट्टा", emoji: "🌽", sound: "हरी थी मन भरी थी, लाख मोती जड़ी थी। राजा जी के बाग में, दुशाला ओढ़े खड़ी थी।", options: ["भुट्टा", "गाजर", "गोभी"] },
+      { q: "काले पंख हैं, मीठी बोली, कुहू-कुहू गाती हूँ मैं। बताओ मैं कौन?", ans: "कोयल", emoji: "🐦", sound: "काले पंख हैं, मीठी बोली, कुहू-कुहू गाती हूँ मैं। बताओ मैं कौन?", options: ["कोयल", "तोता", "चील"] },
+      { q: "गोल-गोल है मेरा पेट, सब मुझको बजाते हैं। शादी हो या त्यौहार, सब नाचने लग जाते हैं।", ans: "ढोलक", emoji: "🥁", sound: "गोल-गोल है मेरा पेट, सब मुझको बजाते हैं। सब नाचने लग जाते हैं।", options: ["ढोलक", "गिटार", "बाँसुरी"] },
+      { q: "तीन आँखें हैं मेरी, सड़क पर सबको रोकता हूँ। लाल, पीली, हरी बत्ती, बताओ मैं कौन?", ans: "ट्रैफिक लाइट", emoji: "🚦", sound: "तीन आँखें हैं मेरी, सड़क पर सबको रोकता हूँ, बताओ कौन?", options: ["ट्रैफिक लाइट", "कार", "साइकिल"] },
+      { q: "पंख नहीं पर उड़ती हूँ, हवा में खूब लहराती हूँ। डोर कटे तो गिर जाती हूँ।", ans: "पतंग", emoji: "🪁", sound: "पंख नहीं पर उड़ती हूँ, हवा में खूब लहराती हूँ। डोर कटे तो गिर जाती हूँ।", options: ["पतंग", "गुब्बारा", "चिड़िया"] },
+      { q: "पानी में रहता हूँ, ज़मीन पर भी चलता हूँ। पीठ पर है भारी ढाल, बोलो मेरा नाम?", ans: "कछुआ", emoji: "🐢", sound: "पानी में रहता हूँ, ज़मीन पर भी चलता हूँ। पीठ पर है भारी ढाल।", options: ["कछुआ", "मछली", "मेंढक"] },
+      { q: "लंबी पूँछ, पीठ पर धारी। कुतर-कुतर फल खाती प्यारी। बताओ कौन?", ans: "गिलहरी", emoji: "🐿️", sound: "लंबी पूँछ, पीठ पर धारी। कुतर-कुतर फल खाती प्यारी।", options: ["गिलहरी", "चूहा", "खरगोश"] },
+      { q: "गर्मी में सबको भाता हूँ, मीठा-मीठा रसीला हूँ, फलों का राजा कहलाता हूँ।", ans: "आम", emoji: "🥭", sound: "गर्मी में सबको भाता हूँ, फलों का राजा कहलाता हूँ।", options: ["आम", "तरबूज", "सेब"] },
+      { q: "आसमान से नीचे आऊँ, धरती की प्यास बुझाऊँ। छाता तानो तो बच जाओ।", ans: "बारिश", emoji: "🌧️", sound: "आसमान से नीचे आऊँ, धरती की प्यास बुझाऊँ। छाता तानो तो बच जाओ।", options: ["बारिश", "धूप", "बर्फ"] },
+      { q: "रंग-बिरंगे पंख हैं मेरे, फूलों पर मंडराती हूँ। नन्हीं सी हूँ प्यारी सी हूँ।", ans: "तितली", emoji: "🦋", sound: "रंग-बिरंगे पंख हैं मेरे, फूलों पर मंडराती हूँ। बताओ कौन?", options: ["तितली", "मधुमक्खी", "मक्खी"] },
+      { q: "रात में जगता हूँ, दिन में सोता हूँ। आँखें मेरी गोल-गोल, बताओ कौन हूँ?", ans: "उल्लू", emoji: "🦉", sound: "रात में जगता हूँ, दिन में सोता हूँ। आँखें मेरी गोल-गोल।", options: ["उल्लू", "चमगादड़", "बाज़"] },
+      { q: "चार पाँव हैं पर चल ना पाऊँ, सबको अपनी पीठ बिठाऊँ। बताओ कौन?", ans: "कुर्सी", emoji: "🪑", sound: "चार पाँव हैं पर चल ना पाऊँ, सबको अपनी पीठ बिठाऊँ।", options: ["कुर्सी", "पलंग", "दरवाज़ा"] }
+    ];
+
+    var DATA_HINDI_RAILGADI = [
+      { word: "घर", emoji: "🏠", parts: ["घ", "?"], missingIdx: 1, ans: "र", options: ["र", "न", "ब"], sound: "घ + र = घर" },
+      { word: "कमल", emoji: "🪷", parts: ["क", "?", "ल"], missingIdx: 1, ans: "म", options: ["म", "ज", "च"], sound: "क + म + ल = कमल" },
+      { word: "फल", emoji: "🍉", parts: ["फ", "?"], missingIdx: 1, ans: "ल", options: ["ल", "र", "क"], sound: "फ + ल = फल" },
+      { word: "बस", emoji: "🚌", parts: ["ब", "?"], missingIdx: 1, ans: "स", options: ["स", "म", "ल"], sound: "ब + स = बस" },
+      { word: "मोर", emoji: "🦚", parts: ["मो", "?"], missingIdx: 1, ans: "र", options: ["र", "त", "ग"], sound: "मो + र = मोर" },
+      { word: "मछली", emoji: "🐟", parts: ["म", "छ", "?"], missingIdx: 2, ans: "ली", options: ["ली", "री", "ती"], sound: "म + छ + ली = मछली" },
+      { word: "जल", emoji: "💧", parts: ["ज", "?"], missingIdx: 1, ans: "ल", options: ["ल", "म", "ग"], sound: "ज + ल = जल" },
+      { word: "पेड़", emoji: "🌲", parts: ["पे", "?"], missingIdx: 1, ans: "ड़", options: ["ड़", "त", "म"], sound: "पे + ड़ = पेड़" },
+      { word: "बतख", emoji: "🦆", parts: ["ब", "?", "ख"], missingIdx: 1, ans: "त", options: ["त", "न", "प"], sound: "ब + त + ख = बतख" },
+      { word: "आम", emoji: "🥭", parts: ["आ", "?"], missingIdx: 1, ans: "म", options: ["म", "स", "न"], sound: "आ + म = आम" },
+      { word: "कार", emoji: "🚗", parts: ["का", "?"], missingIdx: 1, ans: "र", options: ["र", "प", "त"], sound: "का + र = कार" },
+      { word: "तीर", emoji: "🏹", parts: ["ती", "?"], missingIdx: 1, ans: "र", options: ["र", "क", "न"], sound: "ती + र = तीर" },
+      { word: "शेर", emoji: "🦁", parts: ["शे", "?"], missingIdx: 1, ans: "र", options: ["र", "ब", "द"], sound: "शे + र = शेर" },
+      { word: "नयन", emoji: "👁️", parts: ["न", "?", "न"], missingIdx: 1, ans: "य", options: ["य", "म", "त"], sound: "न + य + न = नयन" },
+      { word: "सड़क", emoji: "🛣️", parts: ["स", "?", "क"], missingIdx: 1, ans: "ड़", options: ["ड़", "म", "र"], sound: "स + ड़ + क = सड़क" },
+      { word: "शहद", emoji: "🍯", parts: ["श", "?", "द"], missingIdx: 1, ans: "ह", options: ["ह", "न", "च"], sound: "श + ह + द = शहद" },
+      { word: "मटर", emoji: "🫛", parts: ["म", "?", "र"], missingIdx: 1, ans: "ट", options: ["ट", "ल", "न"], sound: "म + ट + र = मटर" },
+      { word: "गमला", emoji: "🪴", parts: ["ग", "म", "?"], missingIdx: 2, ans: "ला", options: ["ला", "ना", "पा"], sound: "ग + म + ला = गमला" },
+      { word: "सूरज", emoji: "☀️", parts: ["सू", "?", "ज"], missingIdx: 1, ans: "र", options: ["र", "त", "म"], sound: "सू + र + ज = सूरज" },
+      { word: "कलम", emoji: "🖊️", parts: ["क", "?", "म"], missingIdx: 1, ans: "ल", options: ["ल", "च", "ब"], sound: "क + ल + म = कलम" }
+    ];
+
+    var DATA_HINDI_EKANEK = [
+      { one: "मछली", many: "मछलियाँ", oneEmoji: "🐟", manyEmoji: "🐟🐟🐟", sound: "एक मछली, अनेक मछलियाँ", options: ["मछलियाँ", "मछली", "लड़के"] },
+      { one: "तारा", many: "तारे", oneEmoji: "⭐", manyEmoji: "⭐⭐⭐", sound: "एक तारा, अनेक तारे", options: ["तारे", "तारा", "तोते"] },
+      { one: "तोता", many: "तोते", oneEmoji: "🦜", manyEmoji: "🦜🦜🦜", sound: "एक तोता, अनेक तोते", options: ["तोते", "तोता", "घोड़े"] },
+      { one: "लड़का", many: "लड़के", oneEmoji: "👦", manyEmoji: "👦👦👦", sound: "एक लड़का, अनेक लड़के", options: ["लड़के", "लड़का", "बच्चे"] },
+      { one: "गाड़ी", many: "गाड़ियाँ", oneEmoji: "🚗", manyEmoji: "🚗🚗🚗", sound: "एक गाड़ी, अनेक गाड़ियाँ", options: ["गाड़ियाँ", "गाड़ी", "नावें"] },
+      { one: "तितली", many: "तितलियाँ", oneEmoji: "🦋", manyEmoji: "🦋🦋🦋", sound: "एक तितली, अनेक तितलियाँ", options: ["तितलियाँ", "तितली", "चिड़ियाँ"] },
+      { one: "किताब", many: "किताबें", oneEmoji: "📚", manyEmoji: "📚📚📚", sound: "एक किताब, अनेक किताबें", options: ["किताबें", "किताब", "कलमें"] },
+      { one: "पत्ता", many: "पत्ते", oneEmoji: "🍃", manyEmoji: "🍃🍃🍃", sound: "एक पत्ता, अनेक पत्ते", options: ["पत्ते", "पत्ता", "पेड़"] },
+      { one: "बिल्ली", many: "बिल्लियाँ", oneEmoji: "🐱", manyEmoji: "🐱🐱🐱", sound: "एक बिल्ली, अनेक बिल्लियाँ", options: ["बिल्लियाँ", "बिल्ली", "चूहे"] },
+      { one: "कुर्सी", many: "कुर्सियाँ", oneEmoji: "🪑", manyEmoji: "🪑🪑🪑", sound: "एक कुर्सी, अनेक कुर्सियाँ", options: ["कुर्सियाँ", "कुर्सी", "मेज़"] },
+      { one: "गुब्बारा", many: "गुब्बारे", oneEmoji: "🎈", manyEmoji: "🎈🎈🎈", sound: "एक गुब्बारा, अनेक गुब्बारे", options: ["गुब्बारे", "गुब्बारा", "गेंदें"] },
+      { one: "केला", many: "केले", oneEmoji: "🍌", manyEmoji: "🍌🍌🍌", sound: "एक केला, अनेक केले", options: ["केले", "केला", "सेब"] },
+      { one: "घोड़ा", many: "घोड़े", oneEmoji: "🐎", manyEmoji: "🐎🐎🐎", sound: "एक घोड़ा, अनेक घोड़े", options: ["घोड़े", "घोड़ा", "हाथी"] },
+      { one: "खिड़की", many: "खिड़कियाँ", oneEmoji: "🪟", manyEmoji: "🪟🪟🪟", sound: "एक खिड़की, अनेक खिड़कियाँ", options: ["खिड़कियाँ", "खिड़की", "दरवाजे"] },
+      { one: "साड़ी", many: "साड़ियाँ", oneEmoji: "🥻", manyEmoji: "🥻🥻🥻", sound: "एक साड़ी, अनेक साड़ियाँ", options: ["साड़ियाँ", "साड़ी", "कुर्ते"] }
+    ];
+
+    var DATA_HINDI_VAKYA = [
+      { scene: "राम फल खा रहा है", emoji: "👦🍉", correct: "राम फल चख।", sound: "राम फल चख।", options: ["राम फल चख।", "घर चल।", "जल भर।"] },
+      { scene: "बच्चा घर जा रहा है", emoji: "🏠🚶", correct: "अब घर चल।", sound: "अब घर चल।", options: ["अब घर चल।", "बस पर चढ़।", "खत पढ़।"] },
+      { scene: "नल पर पानी भरना", emoji: "💧🪣", correct: "नल पर जल भर।", sound: "नल पर जल भर।", options: ["नल पर जल भर।", "रथ पर चढ़।", "फल मत खा।"] },
+      { scene: "बस पर चढ़ना", emoji: "🚌👦", correct: "बस पर चढ़ कर जा।", sound: "बस पर चढ़ कर जा।", options: ["बस पर चढ़ कर जा।", "हठ मत कर।", "सच कह।"] },
+      { scene: "खत पढ़ना", emoji: "✉️👦", correct: "यह खत पढ़।", sound: "यह खत पढ़।", options: ["यह खत पढ़।", "कमल मत तोड़।", "डर मत।"] },
+      { scene: "मीठा आम खाना", emoji: "🥭👧", correct: "मीठा आम खा।", sound: "मीठा आम खा।", options: ["मीठा आम खा।", "झटपट चल।", "कलम पकड़।"] },
+      { scene: "सूरज निकलना", emoji: "☀️🌅", correct: "सूरज निकल आया।", sound: "सूरज निकल आया।", options: ["सूरज निकल आया।", "सड़क पर चल।", "दीप जला।"] },
+      { scene: "कमल का फूल खिला", emoji: "🪷💧", correct: "कमल का फूल खिला।", sound: "कमल का फूल खिला।", options: ["कमल का फूल खिला।", "हाथी आया।", "पेंसिल ला।"] },
+      { scene: "सड़क पर मत भाग", emoji: "🛣️🚶", correct: "सड़क पर मत भाग।", sound: "सड़क पर मत भाग।", options: ["सड़क पर मत भाग।", "दूध पी।", "गाना गा।"] },
+      { scene: "गरम दूध पीना", emoji: "🥛🧒", correct: "गरम दूध पी।", sound: "गरम दूध पी।", options: ["गरम दूध पी।", "ताला लगा।", "नाव चला।"] },
+      { scene: "पेड़ पर तोता", emoji: "🌳🦜", correct: "पेड़ पर तोता बैठा है।", sound: "पेड़ पर तोता बैठा है।", options: ["पेड़ पर तोता बैठा है।", "मछली जल की रानी है।", "गाड़ी आई।"] },
+      { scene: "मछली तैरना", emoji: "🐟🌊", correct: "मछली तैर रही है।", sound: "मछली तैर रही है।", options: ["मछली तैर रही है।", "पतंग उड़ती है।", "घोड़ा दौड़ा।"] },
+      { scene: "पतंग उड़ाना", emoji: "🪁👦", correct: "रोहन पतंग उड़ा।", sound: "रोहन पतंग उड़ा।", options: ["रोहन पतंग उड़ा।", "चाय पी।", "दरवाजा खोल।"] },
+      { scene: "बारिश में छाता", emoji: "🌧️☔", correct: "बारिश आई, छाता लाओ।", sound: "बारिश आई, छाता लाओ।", options: ["बारिश आई, छाता लाओ।", "सूरज चमका।", "किताब पढ़।"] },
+      { scene: "जंगल में मोर", emoji: "🦚🌧️", correct: "जंगल में मोर नाचा।", sound: "जंगल में मोर नाचा।", options: ["जंगल में मोर नाचा।", "सेब खाओ।", "बिल्ली सोई।"] }
+    ];
+
+    /* ---------------------------------------------------------
        DATA: BEFORE, AFTER, BETWEEN (50+ Procedural Generator)
        --------------------------------------------------------- */
     function generateBeforeAfterList() {
@@ -37712,7 +37896,328 @@ function setNurseryNumSubTab(st) {
         html += renderGkView("ukg");
       }
 
+      // TAB 7: 🔄 Hindi Vilom (उल्टा-सीधा खेल)
+      else if (tabKey === "hindi_vilom") {
+        html += renderUkgHindiVilomView();
+      }
+
+      // TAB 8: 🤔 Hindi Paheli (बूझो तो जानें!)
+      else if (tabKey === "hindi_paheli") {
+        html += renderUkgHindiPaheliView();
+      }
+
+      // TAB 9: 🚂 Hindi Railgadi (अक्षर रेलगाड़ी)
+      else if (tabKey === "hindi_railgadi") {
+        html += renderUkgHindiRailgadiView();
+      }
+
+      // TAB 10: 🔢 Hindi Ek-Anek (एक – अनेक)
+      else if (tabKey === "hindi_ekanek") {
+        html += renderUkgHindiEkanekView();
+      }
+
+      // TAB 11: 📖 Hindi Vakya (चित्र देखो, वाक्य चुनो)
+      else if (tabKey === "hindi_vakya") {
+        html += renderUkgHindiVakyaView();
+      }
+
       view.innerHTML = html;
+    }
+
+    // ------------------------------------------------------------------------
+    // 5 UKG HINDI MODULES: RENDERERS & INTERACTIVE LEARNING
+    // ------------------------------------------------------------------------
+
+    // MODULE 1: 🔄 उल्टा-सीधा खेल (विलोम शब्द / Opposites)
+    function renderUkgHindiVilomView() {
+      var filterBar = document.getElementById("filter-pills-bar");
+      if (filterBar) filterBar.style.display = "none";
+      var html = "";
+
+      var list = (typeof DATA_HINDI_VILOM !== "undefined" ? DATA_HINDI_VILOM : []).slice();
+      var hwSession = appSession.homeworkSession;
+      var isHwActive = !!(appSession.focusedHomeworkQuiz && hwSession);
+      if (isHwActive && hwSession.fromQ && hwSession.toQ && list.length > 0) {
+        var fQ = Math.max(1, hwSession.fromQ);
+        var tQ = Math.min(list.length, hwSession.toQ);
+        if (tQ >= fQ) list = list.slice(fQ - 1, tQ);
+      }
+
+      html += '<div class="mode-switch">';
+      html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 सीखें (Learn Opposites)</button>';
+      html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 खेलें (Opposites Quiz)</button>';
+      html += '</div>';
+
+      if (appState.mode === "learn") {
+        autoSpeak("vilom_learn", "उल्टा-सीधा खेल, विलोम शब्द। कार्ड छूकर सही विलोम शब्द सुनें", "hi-IN");
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'उल्टा-सीधा खेल, विलोम शब्द। कार्ड छूकर सही विलोम शब्द सुनें\', \'hi-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">कार्ड छूकर सही विलोम शब्द सुनें 🔊</div>';
+        html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 250px); overflow-y: auto;">';
+        for (var i = 0; i < list.length; i++) {
+          var item = list[i];
+          html += '<div class="interactive-card" style="padding: 12px; text-align: center; border-color: #FFB74D;" onclick="safeAction(function(){ speak(\'' + item.sound + '\', \'hi-IN\'); })">';
+          html += '  <div style="font-size: 32px; margin-bottom: 4px;">' + item.emoji + ' ➔ ' + item.oppEmoji + '</div>';
+          html += '  <div style="font-size: 18px; font-weight: 900; color: #E65100;">' + item.word + ' <span style="color:#78909C;">✕</span> ' + item.opp + '</div>';
+          html += '  <div style="font-size: 11px; font-weight: 700; color: #546E7A; margin-top: 2px;">🔊 ' + item.sound + '</div>';
+          html += '</div>';
+        }
+        html += '</div>';
+      } else {
+        var target = list[appState.quizIndex % list.length];
+        var cacheKey = "ukg_vilom_" + appState.quizIndex;
+        var opts = getShuffledOptions(cacheKey, function() {
+          var o = [target.opp];
+          var dists = target.distractors || [];
+          for (var di = 0; di < dists.length && o.length < 3; di++) {
+            if (o.indexOf(dists[di]) === -1) o.push(dists[di]);
+          }
+          while (o.length < 3) {
+            var randItem = DATA_HINDI_VILOM[Math.floor(Math.random() * DATA_HINDI_VILOM.length)].opp;
+            if (o.indexOf(randItem) === -1) o.push(randItem);
+          }
+          return fisherYatesShuffle(o);
+        });
+        var isAnswered = (quizState.isAnswered && quizState.activeKey === cacheKey);
+
+        autoSpeak(cacheKey, target.word + " का उल्टा या विलोम शब्द क्या है?", "hi-IN");
+
+        html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + target.word + ' का उल्टा शब्द क्या है?\', \'hi-IN\'); })">';
+        html += '  <div style="font-size: 13px; font-weight: 800; color: #E65100; margin-bottom: 4px;">🔄 उल्टा-सीधा खेल (विलोम शब्द)</div>';
+        html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 46px;">' + target.emoji + '</div>';
+        html += '  <div style="font-size: 34px; font-weight: 900; color: #BF360C; margin-top: 4px;">' + target.word + '</div>';
+        html += '  <div class="audio-hint">🔊 ' + target.word + ' का उल्टा शब्द चुनो</div>';
+        html += '</div>';
+
+        html += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 440px; margin: 16px auto 0;">';
+        for (var oi = 0; oi < opts.length; oi++) {
+          var isOk = (opts[oi] === target.opp);
+          var btnCls = "opt-btn has-text";
+          if (isAnswered) {
+            btnCls += isOk ? " correct-choice" : " disabled-choice";
+          }
+          html += '<button class="' + btnCls + '" style="min-height: 58px; font-size: 1.45rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isOk + ', { key: \'' + cacheKey + '\', display: \'' + target.word + ' ✕ ' + target.opp + '\', spoken: \'' + target.word + ' का विलोम ' + target.opp + '! बहुत बढ़िया!\', lang: \'hi-IN\', ansVal: \'' + target.opp + '\', wrongMsg: \'फिर से कोशिश करो! 😊\' }); })">' + opts[oi] + '</button>';
+        }
+        html += '</div>';
+        html += renderCompletedPreviewCard();
+      }
+      return html;
+    }
+
+    // MODULE 2: 🤔 बूझो तो जानें! (Hindi Riddles)
+    function renderUkgHindiPaheliView() {
+      var filterBar = document.getElementById("filter-pills-bar");
+      if (filterBar) filterBar.style.display = "none";
+      var html = "";
+
+      var list = (typeof DATA_HINDI_PAHELI !== "undefined" ? DATA_HINDI_PAHELI : []).slice();
+      var hwSession = appSession.homeworkSession;
+      var isHwActive = !!(appSession.focusedHomeworkQuiz && hwSession);
+      if (isHwActive && hwSession.fromQ && hwSession.toQ && list.length > 0) {
+        var fQ = Math.max(1, hwSession.fromQ);
+        var tQ = Math.min(list.length, hwSession.toQ);
+        if (tQ >= fQ) list = list.slice(fQ - 1, tQ);
+      }
+
+      var target = list[appState.quizIndex % list.length];
+      var cacheKey = "ukg_paheli_" + appState.quizIndex;
+      var opts = getShuffledOptions(cacheKey, function() {
+        return fisherYatesShuffle((target.options || [target.ans]).slice());
+      });
+      var isAnswered = (quizState.isAnswered && quizState.activeKey === cacheKey);
+
+      autoSpeak(cacheKey, target.sound || target.q, "hi-IN");
+
+      html += '<div class="flashcard" style="background: linear-gradient(135deg, #FFF8E1, #FFECB3); border: 2px solid #FFA000;" onclick="safeAction(function(){ speak(\'' + (target.sound || target.q).replace(/'/g, "\\'") + '\', \'hi-IN\'); })">';
+      html += '  <div style="font-size: 14px; font-weight: 900; color: #E65100; margin-bottom: 6px;">🤔 बूझो तो जानें! (Hindi Riddle)</div>';
+      html += '  <div style="font-size: 38px; margin: 4px 0;">🎁❓</div>';
+      html += '  <div style="font-size: 20px; font-weight: 900; color: #4E342E; line-height: 1.4; padding: 0 8px;">"' + target.q + '"</div>';
+      html += '  <div class="audio-hint" style="margin-top: 8px;">🔊 पहेली दोबारा सुनने के लिए टैप करें</div>';
+      html += '</div>';
+
+      html += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 440px; margin: 18px auto 0;">';
+      for (var oi = 0; oi < opts.length; oi++) {
+        var isOk = (opts[oi] === target.ans);
+        var btnCls = "opt-btn has-text";
+        if (isAnswered) {
+          btnCls += isOk ? " correct-choice" : " disabled-choice";
+        }
+        var optEmoji = (opts[oi] === target.ans) ? target.emoji : (opts[oi] === "केला" ? "🍌" : (opts[oi] === "सेब" ? "🍎" : (opts[oi] === "अंगूर" ? "🍇" : "🎯")));
+        html += '<button class="' + btnCls + '" style="min-height: 64px; font-size: 1.35rem; font-weight: 900; border-radius: 14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isOk + ', { key: \'' + cacheKey + '\', display: \'' + target.emoji + ' ' + target.ans + '\', spoken: \'सही जवाब! ' + target.ans + '! शाबाश!\', lang: \'hi-IN\', ansVal: \'' + target.ans + '\', wrongMsg: \'फिर से सोचो! 😊\' }); })">';
+        html += '  <span style="font-size: 24px;">' + optEmoji + '</span>';
+        html += '  <span>' + opts[oi] + '</span>';
+        html += '</button>';
+      }
+      html += '</div>';
+      html += renderCompletedPreviewCard();
+      return html;
+    }
+
+    // MODULE 3: 🚂 अक्षर रेलगाड़ी (शब्द बनाओ Puzzle)
+    function renderUkgHindiRailgadiView() {
+      var filterBar = document.getElementById("filter-pills-bar");
+      if (filterBar) filterBar.style.display = "none";
+      var html = "";
+
+      var list = (typeof DATA_HINDI_RAILGADI !== "undefined" ? DATA_HINDI_RAILGADI : []).slice();
+      var hwSession = appSession.homeworkSession;
+      var isHwActive = !!(appSession.focusedHomeworkQuiz && hwSession);
+      if (isHwActive && hwSession.fromQ && hwSession.toQ && list.length > 0) {
+        var fQ = Math.max(1, hwSession.fromQ);
+        var tQ = Math.min(list.length, hwSession.toQ);
+        if (tQ >= fQ) list = list.slice(fQ - 1, tQ);
+      }
+
+      var target = list[appState.quizIndex % list.length];
+      var cacheKey = "ukg_railgadi_" + appState.quizIndex;
+      var opts = getShuffledOptions(cacheKey, function() {
+        return fisherYatesShuffle((target.options || [target.ans]).slice());
+      });
+      var isAnswered = (quizState.isAnswered && quizState.activeKey === cacheKey);
+
+      autoSpeak(cacheKey, "अक्षर रेलगाड़ी। " + target.word + " बनाने के लिए सही अक्षर चुनो।", "hi-IN");
+
+      html += '<div class="flashcard" style="background: linear-gradient(135deg, #E8F5E9, #C8E6C9); border: 2px solid #43A047;" onclick="safeAction(function(){ speak(\'' + target.sound + '\', \'hi-IN\'); })">';
+      html += '  <div style="font-size: 13px; font-weight: 900; color: #2E7D32; margin-bottom: 4px;">🚂 अक्षर रेलगाड़ी (शब्द बनाओ Puzzle)</div>';
+      html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 46px;">' + target.emoji + '</div>';
+
+      // Train compartments visual
+      html += '  <div style="display:flex; justify-content:center; align-items:center; gap:6px; margin:12px auto; max-width:320px;">';
+      html += '    <div style="font-size:28px;">🚂</div>';
+      for (var pi = 0; pi < target.parts.length; pi++) {
+        var pChar = target.parts[pi];
+        var isMissing = (pi === target.missingIdx);
+        var boxBg = isMissing ? (isAnswered ? "#C8E6C9" : "#FFF9C4") : "#FFFFFF";
+        var boxBorder = isMissing ? (isAnswered ? "#2E7D32" : "#FBC02D") : "#81C784";
+        var boxText = isMissing ? (isAnswered ? target.ans : "?") : pChar;
+        var textColor = isMissing ? (isAnswered ? "#1B5E20" : "#E65100") : "#2E7D32";
+        html += '    <div style="background:' + boxBg + '; border:2.5px solid ' + boxBorder + '; border-radius:10px; width:54px; height:54px; display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:900; color:' + textColor + '; box-shadow:0 3px 6px rgba(0,0,0,0.08);">';
+        html += boxText;
+        html += '    </div>';
+        if (pi < target.parts.length - 1) {
+          html += '    <div style="font-size:16px; font-weight:900; color:#81C784;">+</div>';
+        }
+      }
+      html += '  </div>';
+
+      html += '  <div class="audio-hint">🔊 खाली डिब्बे (?) में सही अक्षर भरो</div>';
+      html += '</div>';
+
+      html += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 360px; margin: 18px auto 0;">';
+      for (var oi = 0; oi < opts.length; oi++) {
+        var isOk = (opts[oi] === target.ans);
+        var btnCls = "opt-btn has-text";
+        if (isAnswered) {
+          btnCls += isOk ? " correct-choice" : " disabled-choice";
+        }
+        html += '<button class="' + btnCls + '" style="min-height: 58px; font-size: 1.8rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isOk + ', { key: \'' + cacheKey + '\', display: \'' + target.emoji + ' ' + target.word + '\', spoken: \'' + target.sound + '! शाबाश!\', lang: \'hi-IN\', ansVal: \'' + target.ans + '\', wrongMsg: \'फिर से कोशिश करो! 😊\' }); })">' + opts[oi] + '</button>';
+      }
+      html += '</div>';
+      html += renderCompletedPreviewCard();
+      return html;
+    }
+
+    // MODULE 4: 🔢 एक – अनेक (One & Many)
+    function renderUkgHindiEkanekView() {
+      var filterBar = document.getElementById("filter-pills-bar");
+      if (filterBar) filterBar.style.display = "none";
+      var html = "";
+
+      var list = (typeof DATA_HINDI_EKANEK !== "undefined" ? DATA_HINDI_EKANEK : []).slice();
+      var hwSession = appSession.homeworkSession;
+      var isHwActive = !!(appSession.focusedHomeworkQuiz && hwSession);
+      if (isHwActive && hwSession.fromQ && hwSession.toQ && list.length > 0) {
+        var fQ = Math.max(1, hwSession.fromQ);
+        var tQ = Math.min(list.length, hwSession.toQ);
+        if (tQ >= fQ) list = list.slice(fQ - 1, tQ);
+      }
+
+      var target = list[appState.quizIndex % list.length];
+      var cacheKey = "ukg_ekanek_" + appState.quizIndex;
+      var opts = getShuffledOptions(cacheKey, function() {
+        return fisherYatesShuffle((target.options || [target.many]).slice());
+      });
+      var isAnswered = (quizState.isAnswered && quizState.activeKey === cacheKey);
+
+      autoSpeak(cacheKey, "एक " + target.one + ", अनेक क्या होगा?", "hi-IN");
+
+      html += '<div class="flashcard" style="background: linear-gradient(135deg, #EDE7F6, #D1C4E9); border: 2px solid #7E57C2;" onclick="safeAction(function(){ speak(\'' + target.sound + '\', \'hi-IN\'); })">';
+      html += '  <div style="font-size: 13px; font-weight: 900; color: #512DA8; margin-bottom: 6px;">🔢 एक – अनेक (One & Many)</div>';
+
+      // Visual split comparison: One vs Many
+      html += '  <div style="display:flex; justify-content:center; align-items:stretch; gap:12px; margin:8px auto; max-width:360px;">';
+      // Left box: 1 (एक)
+      html += '    <div style="flex:1; background:#FFFFFF; border:2px solid #B39DDB; border-radius:12px; padding:8px 4px; text-align:center;">';
+      html += '      <div style="font-size:11px; font-weight:800; color:#5E35B1;">एक (1)</div>';
+      html += '      <div style="font-size:36px; margin:4px 0;">' + target.oneEmoji + '</div>';
+      html += '      <div style="font-size:16px; font-weight:900; color:#311B92;">' + target.one + '</div>';
+      html += '    </div>';
+      // Right box: Many (अनेक)
+      html += '    <div style="flex:1; background:#FFFFFF; border:2px solid #7E57C2; border-radius:12px; padding:8px 4px; text-align:center;">';
+      html += '      <div style="font-size:11px; font-weight:800; color:#512DA8;">अनेक (Many)</div>';
+      html += '      <div style="font-size:32px; margin:4px 0; letter-spacing:-2px;">' + target.manyEmoji + '</div>';
+      html += '      <div style="font-size:16px; font-weight:900; color:#D81B60;">' + (isAnswered ? target.many : "???") + '</div>';
+      html += '    </div>';
+      html += '  </div>';
+
+      html += '  <div class="audio-hint">🔊 अनेक (बहुवचन) शब्द चुनो</div>';
+      html += '</div>';
+
+      html += '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 440px; margin: 16px auto 0;">';
+      for (var oi = 0; oi < opts.length; oi++) {
+        var isOk = (opts[oi] === target.many);
+        var btnCls = "opt-btn has-text";
+        if (isAnswered) {
+          btnCls += isOk ? " correct-choice" : " disabled-choice";
+        }
+        html += '<button class="' + btnCls + '" style="min-height: 56px; font-size: 1.35rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isOk + ', { key: \'' + cacheKey + '\', display: \'1 ' + target.one + ' ➔ अनेक ' + target.many + '\', spoken: \'' + target.sound + '! बहुत बढ़िया!\', lang: \'hi-IN\', ansVal: \'' + target.many + '\', wrongMsg: \'फिर से सोचो! 😊\' }); })">' + opts[oi] + '</button>';
+      }
+      html += '</div>';
+      html += renderCompletedPreviewCard();
+      return html;
+    }
+
+    // MODULE 5: 📖 चित्र देखो, वाक्य चुनो (Picture Sentences)
+    function renderUkgHindiVakyaView() {
+      var filterBar = document.getElementById("filter-pills-bar");
+      if (filterBar) filterBar.style.display = "none";
+      var html = "";
+
+      var list = (typeof DATA_HINDI_VAKYA !== "undefined" ? DATA_HINDI_VAKYA : []).slice();
+      var hwSession = appSession.homeworkSession;
+      var isHwActive = !!(appSession.focusedHomeworkQuiz && hwSession);
+      if (isHwActive && hwSession.fromQ && hwSession.toQ && list.length > 0) {
+        var fQ = Math.max(1, hwSession.fromQ);
+        var tQ = Math.min(list.length, hwSession.toQ);
+        if (tQ >= fQ) list = list.slice(fQ - 1, tQ);
+      }
+
+      var target = list[appState.quizIndex % list.length];
+      var cacheKey = "ukg_vakya_" + appState.quizIndex;
+      var opts = getShuffledOptions(cacheKey, function() {
+        return fisherYatesShuffle((target.options || [target.correct]).slice());
+      });
+      var isAnswered = (quizState.isAnswered && quizState.activeKey === cacheKey);
+
+      autoSpeak(cacheKey, "चित्र देखो और सही वाक्य चुनो। " + target.scene, "hi-IN");
+
+      html += '<div class="flashcard" style="background: linear-gradient(135deg, #E1F5FE, #B3E5FC); border: 2px solid #0288D1;" onclick="safeAction(function(){ speak(\'चित्र देखो और सही वाक्य चुनो। ' + target.scene + '\', \'hi-IN\'); })">';
+      html += '  <div style="font-size: 13px; font-weight: 900; color: #0277BD; margin-bottom: 4px;">📖 चित्र देखो, वाक्य चुनो (Picture Sentences)</div>';
+      html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 50px; margin: 6px 0;">' + target.emoji + '</div>';
+      html += '  <div style="font-size: 14px; font-weight: 800; color: #455A64;">(' + target.scene + ')</div>';
+      html += '  <div class="audio-hint" style="margin-top: 6px;">🔊 चित्र देखकर सही वाक्य पहचानें</div>';
+      html += '</div>';
+
+      html += '<div style="display: flex; flex-direction: column; gap: 10px; max-width: 420px; margin: 16px auto 0;">';
+      for (var oi = 0; oi < opts.length; oi++) {
+        var isOk = (opts[oi] === target.correct);
+        var btnCls = "opt-btn has-text";
+        if (isAnswered) {
+          btnCls += isOk ? " correct-choice" : " disabled-choice";
+        }
+        html += '<button class="' + btnCls + '" style="min-height: 52px; font-size: 1.35rem; font-weight: 900; border-radius: 14px; text-align: left; padding: 10px 18px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isOk + ', { key: \'' + cacheKey + '\', display: \'' + target.emoji + ' ' + target.correct + '\', spoken: \'सही वाक्य! ' + target.correct + '! शाबाश!\', lang: \'hi-IN\', ansVal: \'' + target.correct + '\', wrongMsg: \'फिर से कोशिश करो! 😊\' }); })">👉 ' + opts[oi] + '</button>';
+      }
+      html += '</div>';
+      html += renderCompletedPreviewCard();
+      return html;
     }
 
     function renderPictureWorldView() {
