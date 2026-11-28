@@ -991,6 +991,141 @@ runTest('Top-Right Header Gold Star Badge synchronizes cleanly with logged-in st
   assert.strictEqual(res.appStateStars, 30, 'appState.stars should synchronize with floor of points');
 });
 
+// TEST 38: Granular Teacher Homework Selection (Individual Hindi Matras + Question Range & Individual/Mixed CVC Phonic Sounds)
+runTest('Granular Teacher Homework Selection (Individual Hindi Matras + Question Range & Individual/Mixed CVC Phonic Sounds)', () => {
+  // 1. Check presence of granular helper functions in index.html
+  assert(html.includes('parseHomeworkGameParams'), 'parseHomeworkGameParams function missing in index.html');
+  assert(html.includes('getGranularHomeworkInfo'), 'getGranularHomeworkInfo function missing in index.html');
+  assert(html.includes('detectGranularTopicType'), 'detectGranularTopicType function missing in index.html');
+  assert(html.includes('getGranularTopicMaxQuestions'), 'getGranularTopicMaxQuestions function missing in index.html');
+  assert(html.includes('onTeacherHomeworkTopicChange'), 'onTeacherHomeworkTopicChange function missing in index.html');
+  assert(html.includes('onTeacherHomeworkSubtopicChange'), 'onTeacherHomeworkSubtopicChange function missing in index.html');
+  assert(html.includes('validateTeacherHwRange'), 'validateTeacherHwRange function missing in index.html');
+
+  // 2. Check presence of granular UI elements in index.html
+  assert(html.includes('id="teacher-hw-granular-container"'), 'teacher-hw-granular-container element missing in index.html');
+  assert(html.includes('id="teacher-hw-subtopic"'), 'teacher-hw-subtopic dropdown missing in index.html');
+  assert(html.includes('id="teacher-hw-range-from"'), 'teacher-hw-range-from input missing in index.html');
+  assert(html.includes('id="teacher-hw-range-to"'), 'teacher-hw-range-to input missing in index.html');
+  assert(html.includes('hw-granular-badge'), 'hw-granular-badge CSS class missing in index.html');
+
+  // 3. Isolated sandbox testing for parsing, detection, encoding & question slicing
+  const sStart = html.indexOf('<script>');
+  const sEnd = html.lastIndexOf('</script>');
+  const scriptContent = html.substring(sStart + 8, sEnd);
+
+  const testGranularSandbox = new Function(`
+    var DATA_MATRA_TABS = {
+      aa: { words: Array.from({length: 30}, function(_, i) { return { full: "कार" + i, ans: "ा", sound: "क + आ" }; }) },
+      i: { words: Array.from({length: 30}, function(_, i) { return { full: "दिन" + i, ans: "ि", sound: "द + इ" }; }) }
+    };
+    var DATA_3LETTER_CVC = {
+      a: Array.from({length: 31}, function(_, i) { return { word: "cat" + i, letters: ["c", "a", "t"], blend: "c-a-t" }; }),
+      e: Array.from({length: 28}, function(_, i) { return { word: "pen" + i, letters: ["p", "e", "n"], blend: "p-e-n" }; }),
+      i: Array.from({length: 28}, function(_, i) { return { word: "pin" + i, letters: ["p", "i", "n"], blend: "p-i-n" }; }),
+      o: Array.from({length: 28}, function(_, i) { return { word: "pot" + i, letters: ["p", "o", "t"], blend: "p-o-t" }; }),
+      u: Array.from({length: 28}, function(_, i) { return { word: "sun" + i, letters: ["s", "u", "n"], blend: "s-u-n" }; })
+    };
+
+    ${scriptContent.match(/function parseHomeworkGameParams[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function getGranularHomeworkInfo[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function detectGranularTopicType[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function getGranularTopicMaxQuestions[\s\S]*?^    \}/m)[0]}
+
+    // A. Topic Detection
+    var matraType = detectGranularTopicType("Hindi", { title: "Matra Quiz (ा, ि, ी, ु, ू)", module_key: "ukg_hindi_matra" });
+    var cvcTypeUkg = detectGranularTopicType("English", { title: "English: 3-Letter CVC Phonics Words (A, E, I, O, U)", module_key: "ukg_phonics_cvc" });
+    var cvcTypeLkg = detectGranularTopicType("English", { title: "3-Letter CVC Short 'a' (CAT, BAT, MAT)", module_key: "lkg_phonics_cvc_a" });
+    var otherType = detectGranularTopicType("Mathematics", { title: "Addition Fun", module_key: "ukg_math_addition" });
+
+    // B. Max Questions
+    var maxMatraAa = getGranularTopicMaxQuestions("matra", "aa");
+    var maxMatraAll = getGranularTopicMaxQuestions("matra", "all");
+    var maxCvcA = getGranularTopicMaxQuestions("cvc", "a");
+    var maxCvcAll = getGranularTopicMaxQuestions("cvc", "all");
+
+    // C. Parsing and Labeling
+    var matraAtt = "game:ukg:matra|sub=aa|q=1-5";
+    var parsedMatra = parseHomeworkGameParams(matraAtt);
+    var infoMatra = getGranularHomeworkInfo(matraAtt);
+
+    var cvcAtt = "game:lkg:phonics|sub=a|q=1-8";
+    var parsedCvc = parseHomeworkGameParams(cvcAtt);
+    var infoCvc = getGranularHomeworkInfo(cvcAtt);
+
+    var mixedCvcAtt = "game:lkg:phonics|sub=mixed|q=1-15";
+    var parsedMixed = parseHomeworkGameParams(mixedCvcAtt);
+    var infoMixed = getGranularHomeworkInfo(mixedCvcAtt);
+
+    // D. Slicing logic emulation
+    // 1. Matra aa Q1-Q5
+    var mList = DATA_MATRA_TABS[parsedMatra.sub].words;
+    var slicedMatra = mList.slice(parsedMatra.fromQ - 1, parsedMatra.toQ);
+
+    // 2. CVC a Q1-Q8
+    var vList = DATA_3LETTER_CVC[parsedCvc.sub];
+    var slicedCvc = vList.slice(parsedCvc.fromQ - 1, parsedCvc.toQ);
+
+    // 3. Mixed CVC Q1-Q15
+    var allCvc = [];
+    var cKeys = Object.keys(DATA_3LETTER_CVC);
+    for (var ci = 0; ci < cKeys.length; ci++) {
+      allCvc = allCvc.concat(DATA_3LETTER_CVC[cKeys[ci]]);
+    }
+    var slicedMixed = allCvc.slice(parsedMixed.fromQ - 1, parsedMixed.toQ);
+
+    return {
+      matraType: matraType,
+      cvcTypeUkg: cvcTypeUkg,
+      cvcTypeLkg: cvcTypeLkg,
+      otherType: otherType,
+      maxMatraAa: maxMatraAa,
+      maxMatraAll: maxMatraAll,
+      maxCvcA: maxCvcA,
+      maxCvcAll: maxCvcAll,
+      parsedMatra: parsedMatra,
+      infoMatra: infoMatra,
+      parsedCvc: parsedCvc,
+      infoCvc: infoCvc,
+      parsedMixed: parsedMixed,
+      infoMixed: infoMixed,
+      slicedMatraLength: slicedMatra.length,
+      slicedMatraAns: slicedMatra.every(function(x) { return x.ans === "ा"; }),
+      slicedCvcLength: slicedCvc.length,
+      slicedMixedLength: slicedMixed.length,
+      totalCvcPool: allCvc.length
+    };
+  `);
+
+  const res = testGranularSandbox();
+  assert.strictEqual(res.matraType, 'matra', 'detectGranularTopicType must identify Hindi Matra as matra');
+  assert.strictEqual(res.cvcTypeUkg, 'cvc', 'detectGranularTopicType must identify UKG CVC as cvc');
+  assert.strictEqual(res.cvcTypeLkg, 'cvc', 'detectGranularTopicType must identify LKG CVC as cvc');
+  assert.strictEqual(res.otherType, null, 'detectGranularTopicType must return null for Math');
+
+  assert.strictEqual(res.maxMatraAa, 30, 'Matra aa must have 30 questions');
+  assert.strictEqual(res.maxMatraAll, 300, 'Matra all must have 300 questions');
+  assert.strictEqual(res.maxCvcA, 31, 'CVC short a must have 31 questions');
+  assert.strictEqual(res.maxCvcAll, 143, 'CVC all must have 143 questions');
+
+  assert.strictEqual(res.parsedMatra.sub, 'aa', 'Matra sub must be aa');
+  assert.strictEqual(res.parsedMatra.fromQ, 1, 'Matra fromQ must be 1');
+  assert.strictEqual(res.parsedMatra.toQ, 5, 'Matra toQ must be 5');
+  assert(res.infoMatra.label.includes('आ की मात्रा') && res.infoMatra.label.includes('Q1–Q5'), 'infoMatra label must contain Matra name and range');
+  assert.strictEqual(res.slicedMatraLength, 5, 'Sliced matra question list must contain exactly 5 questions');
+  assert.strictEqual(res.slicedMatraAns, true, 'All 5 sliced matra questions must test aa (ा)');
+
+  assert.strictEqual(res.parsedCvc.sub, 'a', 'CVC sub must be a');
+  assert.strictEqual(res.parsedCvc.fromQ, 1, 'CVC fromQ must be 1');
+  assert.strictEqual(res.parsedCvc.toQ, 8, 'CVC toQ must be 8');
+  assert(res.infoCvc.label.includes("CVC 'A' Sound") && res.infoCvc.label.includes('Q1–Q8'), 'infoCvc label must contain sound name and range');
+  assert.strictEqual(res.slicedCvcLength, 8, 'Sliced CVC question list must contain exactly 8 questions');
+
+  assert.strictEqual(res.parsedMixed.sub, 'mixed', 'Mixed CVC sub must be mixed');
+  assert.strictEqual(res.totalCvcPool, 143, 'Combined CVC pool across all 5 vowels must be 143');
+  assert.strictEqual(res.slicedMixedLength, 15, 'Sliced mixed CVC list must contain exactly 15 questions');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');

@@ -3793,6 +3793,143 @@
       localStorage.setItem("taa_kids_homework_" + schoolId, JSON.stringify(hwList));
     }
 
+    function parseHomeworkGameParams(att) {
+      if (!att || typeof att !== "string") return null;
+      var str = att.trim();
+      if (str.indexOf("game:") !== 0) return null;
+      var clean = str.slice(5).trim();
+      var parts = clean.split("|");
+      var gameUri = parts[0].trim();
+      var sub = null;
+      var fromQ = null;
+      var toQ = null;
+
+      for (var i = 1; i < parts.length; i++) {
+        var p = parts[i].trim();
+        if (p.indexOf("sub=") === 0) {
+          sub = decodeURIComponent(p.slice(4).trim().toLowerCase());
+        } else if (p.indexOf("q=") === 0) {
+          var qVal = p.slice(2).trim();
+          var qParts = qVal.split("-");
+          if (qParts.length === 2) {
+            fromQ = parseInt(qParts[0], 10) || 1;
+            toQ = parseInt(qParts[1], 10) || fromQ;
+          } else if (qParts.length === 1) {
+            fromQ = 1;
+            toQ = parseInt(qParts[0], 10) || 10;
+          }
+        }
+      }
+
+      return {
+        gameUri: gameUri,
+        sub: sub,
+        fromQ: fromQ,
+        toQ: toQ
+      };
+    }
+
+    function getGranularHomeworkInfo(att) {
+      var parsed = parseHomeworkGameParams(att);
+      if (!parsed || (!parsed.sub && !parsed.fromQ)) return null;
+
+      var subName = "";
+      if (parsed.sub) {
+        var s = parsed.sub.toLowerCase();
+        var matraMap = {
+          "all": "All / Mixed Matras",
+          "mixed": "All / Mixed Matras",
+          "aa": "आ की मात्रा (ा)",
+          "i": "इ की मात्रा (ि)",
+          "ee": "ई की मात्रा (ी)",
+          "u": "उ की मात्रा (ु)",
+          "oo": "ऊ की मात्रा (ू)",
+          "e": "ए की मात्रा (े)",
+          "ai": "ऐ की मात्रा (ै)",
+          "o": "ओ की मात्रा (ो)",
+          "au": "औ की मात्रा (ौ)",
+          "ang": "अं की मात्रा (ं)"
+        };
+        var cvcMap = {
+          "all": "Mixed / All CVC Sounds",
+          "mixed": "Mixed / All CVC Sounds",
+          "a": "CVC 'A' Sound",
+          "e": "CVC 'E' Sound",
+          "i": "CVC 'I' Sound",
+          "o": "CVC 'O' Sound",
+          "u": "CVC 'U' Sound"
+        };
+        if (matraMap[s] && (parsed.gameUri.indexOf("matra") !== -1 || !cvcMap[s])) {
+          subName = matraMap[s];
+        } else if (cvcMap[s]) {
+          subName = cvcMap[s];
+        } else {
+          subName = s.toUpperCase();
+        }
+      }
+
+      var rangeText = "";
+      if (parsed.fromQ && parsed.toQ) {
+        rangeText = "Q" + parsed.fromQ + "–Q" + parsed.toQ;
+      } else if (parsed.fromQ) {
+        rangeText = "From Q" + parsed.fromQ;
+      }
+
+      var label = subName;
+      if (rangeText) {
+        label = label ? (label + " • " + rangeText) : rangeText;
+      }
+
+      return {
+        gameUri: parsed.gameUri,
+        sub: parsed.sub,
+        fromQ: parsed.fromQ,
+        toQ: parsed.toQ,
+        subName: subName,
+        rangeText: rangeText,
+        label: label
+      };
+    }
+
+    function detectGranularTopicType(subject, topicObj) {
+      if (!topicObj) return null;
+      var key = String(topicObj.module_key || "").toLowerCase();
+      var title = String(topicObj.title || "").toLowerCase();
+      var sub = String(subject || "").toLowerCase();
+
+      // Check Hindi Matra
+      if (sub.indexOf("hindi") !== -1 || sub.indexOf("हिंदी") !== -1 || key.indexOf("hindi") !== -1) {
+        if (key.indexOf("matra") !== -1 || title.indexOf("matra") !== -1 || title.indexOf("मात्रा") !== -1) {
+          return "matra";
+        }
+      }
+      // Check English Phonics / CVC
+      if (sub.indexOf("english") !== -1 || key.indexOf("phonics") !== -1 || title.indexOf("cvc") !== -1) {
+        if (key.indexOf("cvc") !== -1 || title.indexOf("cvc") !== -1 || title.indexOf("3-letter") !== -1) {
+          return "cvc";
+        }
+      }
+      return null;
+    }
+
+    function getGranularTopicMaxQuestions(type, subKey) {
+      if (type === "matra") {
+        if (subKey === "all" || subKey === "mixed") return 300;
+        if (typeof DATA_MATRA_TABS !== "undefined" && DATA_MATRA_TABS[subKey] && DATA_MATRA_TABS[subKey].words) {
+          return DATA_MATRA_TABS[subKey].words.length;
+        }
+        return 30;
+      }
+      if (type === "cvc") {
+        if (subKey === "all" || subKey === "mixed") return 143;
+        if (typeof DATA_3LETTER_CVC !== "undefined" && DATA_3LETTER_CVC[subKey]) {
+          return DATA_3LETTER_CVC[subKey].length;
+        }
+        return 28;
+      }
+      return 10;
+    }
+
     function resolveHomeworkGameModule(hw) {
       if (!hw) return null;
       var cls = normalizeAssignedClass(hw.class_name || hw.student_class || hw.class || "Nursery");
@@ -3801,18 +3938,49 @@
 
       // 1. Check attachment_url if it starts with "game:"
       var att = String(hw.attachment_url || "").trim();
-      if (att.indexOf("game:") === 0) {
-        var gameVal = att.slice(5).trim();
+      var parsedGame = (typeof parseHomeworkGameParams === "function") ? parseHomeworkGameParams(att) : null;
+      var effectiveAtt = (parsedGame && parsedGame.gameUri) ? ("game:" + parsedGame.gameUri) : att;
+
+      if (effectiveAtt.indexOf("game:") === 0) {
+        var gameVal = effectiveAtt.slice(5).trim();
+        if (gameVal.indexOf("|") !== -1) {
+          gameVal = gameVal.split("|")[0].trim();
+        }
         if (gameVal.indexOf(":") !== -1) {
           var parts = gameVal.split(":");
           var sec = parts[0];
           var tb = parts[1];
           var foundBySecTab = modules.find(function(m) { return m.section === sec && String(m.tab) === tb; });
-          if (foundBySecTab) return foundBySecTab;
-          return { key: "game_" + sec + "_" + tb, title: hw.title || "Homework Game", section: sec, tab: tb, mode: "quiz" };
+          if (foundBySecTab) {
+            var mObj = Object.assign({}, foundBySecTab);
+            if (parsedGame) {
+              mObj.sub = parsedGame.sub;
+              mObj.fromQ = parsedGame.fromQ;
+              mObj.toQ = parsedGame.toQ;
+            }
+            return mObj;
+          }
+          return {
+            key: "game_" + sec + "_" + tb,
+            title: hw.title || "Homework Game",
+            section: sec,
+            tab: tb,
+            mode: "quiz",
+            sub: parsedGame ? parsedGame.sub : null,
+            fromQ: parsedGame ? parsedGame.fromQ : null,
+            toQ: parsedGame ? parsedGame.toQ : null
+          };
         }
         var foundByKey = modules.find(function(m) { return m.key === gameVal; });
-        if (foundByKey) return foundByKey;
+        if (foundByKey) {
+          var mObj2 = Object.assign({}, foundByKey);
+          if (parsedGame) {
+            mObj2.sub = parsedGame.sub;
+            mObj2.fromQ = parsedGame.fromQ;
+            mObj2.toQ = parsedGame.toQ;
+          }
+          return mObj2;
+        }
       }
 
       // 2. Check if hw.module_key directly matches
@@ -3872,6 +4040,10 @@
       var resolvedMod = (typeof resolveHomeworkGameModule === "function") ? resolveHomeworkGameModule(row) : null;
       var modKey = row.module_key || (resolvedMod ? resolvedMod.key : "");
       var attUrl = row.attachment_url || (resolvedMod ? ("game:" + resolvedMod.section + ":" + resolvedMod.tab) : null);
+      var parsedQ = (typeof parseHomeworkGameParams === "function") ? parseHomeworkGameParams(attUrl) : null;
+      var targetQs = (parsedQ && parsedQ.fromQ && parsedQ.toQ && parsedQ.toQ >= parsedQ.fromQ)
+        ? (parsedQ.toQ - parsedQ.fromQ + 1)
+        : (row.target_questions || 10);
 
       return Object.assign({}, row, {
         class_name: c,
@@ -3886,6 +4058,7 @@
         subject: row.subject || "General",
         attachment_url: attUrl,
         module_key: modKey,
+        target_questions: targetQs,
         teacher_name: row.teacher_name || row.assigned_by || "Teacher",
         assigned_by: row.assigned_by || row.teacher_name || "Teacher",
         teacher_mobile: row.teacher_mobile || "",
@@ -5589,6 +5762,9 @@
 
       html += '</div>';
       view.innerHTML = html;
+      if (curTab === "send") {
+        setTimeout(onTeacherHomeworkTopicChange, 50);
+      }
     }
 
     function getTeacherCurriculumCatalog(cls) {
@@ -5597,6 +5773,7 @@
         "English": {
           label: "📚 English / Phonics",
           topics: (cls === "UKG") ? [
+            { title: "English: 3-Letter CVC Phonics Words (A, E, I, O, U)", module_key: "ukg_phonics_cvc" },
             { title: "Grammar: Use of Is / Am / Are Drill", module_key: "ukg_gram_is_am_are" },
             { title: "Grammar: Use of This / That (Visual Arrow)", module_key: "ukg_gram_this_that" },
             { title: "Grammar: Use of These / Those (Visual Arrow)", module_key: "ukg_gram_these_those" },
@@ -5609,6 +5786,7 @@
             { title: "English: 4-Letter 'E' Words (TREE, JEEP, BELL)", module_key: "ukg_phonics_4let_e" },
             { title: "English World: Days of the Week Quiz", module_key: "ukg_eng_world_days" }
           ] : (cls === "LKG") ? [
+            { title: "English: 3-Letter CVC Phonics Words (A, E, I, O, U)", module_key: "lkg_phonics_cvc" },
             { title: "2-Letter Phonic Words (AT, IN, ON, GO)", module_key: "lkg_phonics_2letter" },
             { title: "3-Letter CVC Short 'a' (CAT, BAT, MAT)", module_key: "lkg_phonics_cvc_a" },
             { title: "3-Letter CVC Short 'e' (PEN, BED, RED)", module_key: "lkg_phonics_cvc_e" },
@@ -5722,6 +5900,121 @@
         html += '<option value="' + idx + '" data-module-key="' + (t.module_key || '') + '">' + escapeHtml(t.title) + '</option>';
       });
       topicSelect.innerHTML = html;
+      onTeacherHomeworkTopicChange();
+    }
+
+    function onTeacherHomeworkTopicChange() {
+      var cls = appSession.teacherClass || "Nursery";
+      var subSelect = document.getElementById("teacher-hw-subject");
+      var topicSelect = document.getElementById("teacher-hw-topic");
+      var container = document.getElementById("teacher-hw-granular-container");
+      if (!subSelect || !topicSelect || !container) return;
+
+      var curSubject = subSelect.value || "English";
+      var catalog = getTeacherCurriculumCatalog(cls);
+      var subData = catalog[curSubject] || catalog["English"];
+      var topics = subData.topics || [];
+      var topicIdx = parseInt(topicSelect.value, 10) || 0;
+      var topicObj = topics[topicIdx] || {};
+
+      var gType = detectGranularTopicType(curSubject, topicObj);
+      if (!gType) {
+        container.style.display = "none";
+        return;
+      }
+
+      container.style.display = "block";
+      var subSelectEl = document.getElementById("teacher-hw-subtopic");
+      var subLabelEl = document.getElementById("teacher-hw-subtopic-label");
+      if (!subSelectEl) return;
+
+      var html = "";
+      if (gType === "matra") {
+        if (subLabelEl) subLabelEl.textContent = "Select Matra / मात्रा चुनें:";
+        var matras = [
+          { key: "all", label: "All / Mixed Matras (सभी मात्राएँ - 300 Qs)" },
+          { key: "aa", label: "आ की मात्रा (ा) - 30 Qs" },
+          { key: "i", label: "इ की मात्रा (ि) - 30 Qs" },
+          { key: "ee", label: "ई की मात्रा (ी) - 30 Qs" },
+          { key: "u", label: "उ की मात्रा (ु) - 30 Qs" },
+          { key: "oo", label: "ऊ की मात्रा (ू) - 30 Qs" },
+          { key: "e", label: "ए की मात्रा (े) - 30 Qs" },
+          { key: "ai", label: "ऐ की मात्रा (ै) - 30 Qs" },
+          { key: "o", label: "ओ की मात्रा (ो) - 30 Qs" },
+          { key: "au", label: "औ की मात्रा (ौ) - 30 Qs" },
+          { key: "ang", label: "अं की मात्रा (ं) - 30 Qs" }
+        ];
+        matras.forEach(function(m) {
+          html += '<option value="' + m.key + '">' + m.label + '</option>';
+        });
+      } else if (gType === "cvc") {
+        if (subLabelEl) subLabelEl.textContent = "Select Phonic Sound / Vowel:";
+        var cvcs = [
+          { key: "all", label: "Mixed / All CVC Sounds (A, E, I, O, U - 143 Qs)" },
+          { key: "a", label: "Short 'A' Sound (31 Qs)" },
+          { key: "e", label: "Short 'E' Sound (28 Qs)" },
+          { key: "i", label: "Short 'I' Sound (28 Qs)" },
+          { key: "o", label: "Short 'O' Sound (28 Qs)" },
+          { key: "u", label: "Short 'U' Sound (28 Qs)" }
+        ];
+        cvcs.forEach(function(c) {
+          html += '<option value="' + c.key + '">' + c.label + '</option>';
+        });
+      }
+      subSelectEl.innerHTML = html;
+      onTeacherHomeworkSubtopicChange();
+    }
+
+    function onTeacherHomeworkSubtopicChange() {
+      var cls = appSession.teacherClass || "Nursery";
+      var subSelect = document.getElementById("teacher-hw-subject");
+      var topicSelect = document.getElementById("teacher-hw-topic");
+      var subSelectEl = document.getElementById("teacher-hw-subtopic");
+      var fromEl = document.getElementById("teacher-hw-range-from");
+      var toEl = document.getElementById("teacher-hw-range-to");
+      var hintEl = document.getElementById("teacher-hw-range-hint");
+      if (!subSelect || !topicSelect || !subSelectEl || !fromEl || !toEl) return;
+
+      var curSubject = subSelect.value || "English";
+      var catalog = getTeacherCurriculumCatalog(cls);
+      var subData = catalog[curSubject] || catalog["English"];
+      var topics = subData.topics || [];
+      var topicIdx = parseInt(topicSelect.value, 10) || 0;
+      var topicObj = topics[topicIdx] || {};
+
+      var gType = detectGranularTopicType(curSubject, topicObj);
+      if (!gType) return;
+
+      var subKey = subSelectEl.value || "all";
+      var maxQ = getGranularTopicMaxQuestions(gType, subKey);
+
+      fromEl.min = "1";
+      fromEl.max = String(maxQ);
+      fromEl.value = "1";
+
+      toEl.min = "1";
+      toEl.max = String(maxQ);
+      var defaultCount = (gType === "matra" && subKey !== "all") ? Math.min(5, maxQ) : Math.min(10, maxQ);
+      toEl.value = String(defaultCount);
+
+      if (hintEl) {
+        hintEl.textContent = "Available: 1 to " + maxQ + " questions. Select range for student practice.";
+      }
+    }
+
+    function validateTeacherHwRange() {
+      var fromEl = document.getElementById("teacher-hw-range-from");
+      var toEl = document.getElementById("teacher-hw-range-to");
+      if (!fromEl || !toEl) return;
+      var f = parseInt(fromEl.value, 10) || 1;
+      var t = parseInt(toEl.value, 10) || f;
+      var maxQ = parseInt(toEl.max, 10) || 300;
+      if (f < 1) f = 1;
+      if (f > maxQ) f = maxQ;
+      if (t < f) t = f;
+      if (t > maxQ) t = maxQ;
+      fromEl.value = f;
+      toEl.value = t;
     }
 
     function renderTeacherSendHomeworkTab() {
@@ -5750,11 +6043,29 @@
       // 2. Activity / Topic Dropdown
       html += '  <div style="margin-bottom: 12px;">';
       html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">2. Activity / Topic (Curriculum Ready):</label>';
-      html += '    <select id="teacher-hw-topic" class="input-field" style="margin-top: 4px;">';
+      html += '    <select id="teacher-hw-topic" class="input-field" style="margin-top: 4px;" onchange="onTeacherHomeworkTopicChange()">';
       defaultTopics.forEach(function(t, idx) {
         html += '<option value="' + idx + '" data-module-key="' + (t.module_key || '') + '">' + escapeHtml(t.title) + '</option>';
       });
       html += '    </select>';
+      html += '  </div>';
+
+      // Granular Sub-Topic & Question Range Selector (Dynamic)
+      html += '  <div id="teacher-hw-granular-container" style="display: none; background: #FFFDE7; border: 1.5px solid #FFE082; border-radius: 12px; padding: 10px 12px; margin-bottom: 12px;">';
+      html += '    <div style="margin-bottom: 8px;">';
+      html += '      <label id="teacher-hw-subtopic-label" style="font-size: 11px; font-weight: 800; color: #E65100;">Select Sub-topic / Sound:</label>';
+      html += '      <select id="teacher-hw-subtopic" class="input-field" style="margin-top: 4px;" onchange="onTeacherHomeworkSubtopicChange()"></select>';
+      html += '    </div>';
+      html += '    <div>';
+      html += '      <label style="font-size: 11px; font-weight: 800; color: #E65100;">Question Range (Practice Set):</label>';
+      html += '      <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">';
+      html += '        <span style="font-size: 11px; font-weight: 700; color: #546E7A;">From Q:</span>';
+      html += '        <input type="number" id="teacher-hw-range-from" value="1" min="1" max="30" class="input-field" style="width: 70px; padding: 6px;" onchange="validateTeacherHwRange()" />';
+      html += '        <span style="font-size: 11px; font-weight: 700; color: #546E7A;">To Q:</span>';
+      html += '        <input type="number" id="teacher-hw-range-to" value="10" min="1" max="30" class="input-field" style="width: 70px; padding: 6px;" onchange="validateTeacherHwRange()" />';
+      html += '      </div>';
+      html += '      <div id="teacher-hw-range-hint" style="font-size: 10px; color: #78909C; font-weight: 600; margin-top: 4px;">Available: 1 to 30 questions.</div>';
+      html += '    </div>';
       html += '  </div>';
 
       // 3. Due Date Selector
@@ -5779,6 +6090,10 @@
         html += '  <div style="font-size: 14px; font-weight: 900; color: #BF360C; margin-top: 4px;">' + escapeHtml(currentHw.title) + '</div>';
         if (currentHw.instructions) {
           html += '  <div style="font-size: 12px; color: #5D4037; margin-top: 3px;">' + escapeHtml(currentHw.instructions) + '</div>';
+        }
+        var currGran = (typeof getGranularHomeworkInfo === "function") ? getGranularHomeworkInfo(currentHw.attachment_url) : null;
+        if (currGran && currGran.label) {
+          html += '  <div class="hw-granular-badge" style="display:inline-block; margin-top:5px; background:#FFF3E0; color:#E65100; border:1px solid #FFE082; padding:2px 8px; border-radius:8px; font-size:11px; font-weight:800;">🎯 ' + escapeHtml(currGran.label) + '</div>';
         }
         html += '  <div style="font-size: 11px; color: #6D4C41; font-weight: 700; margin-top: 4px;">';
         html += '    Subject: ' + currentHw.subject + ' • Due: ' + (currentHw.due_date || 'Tomorrow');
@@ -5823,6 +6138,26 @@
 
       var targetMod = getCurriculumModulesForClass(normalizedClass).find(function(m) { return m.key === moduleKey; });
       var attachmentGameId = targetMod ? ("game:" + targetMod.section + ":" + targetMod.tab) : (moduleKey ? ("game:" + moduleKey) : null);
+
+      var gContainer = document.getElementById("teacher-hw-granular-container");
+      var isGranular = gContainer && gContainer.style.display !== "none";
+      if (isGranular && attachmentGameId) {
+        var subSelectEl = document.getElementById("teacher-hw-subtopic");
+        var fromEl = document.getElementById("teacher-hw-range-from");
+        var toEl = document.getElementById("teacher-hw-range-to");
+        var subVal = subSelectEl ? subSelectEl.value : "all";
+        var fromVal = fromEl ? (parseInt(fromEl.value, 10) || 1) : 1;
+        var toVal = toEl ? (parseInt(toEl.value, 10) || fromVal) : fromVal;
+        if (fromVal < 1) fromVal = 1;
+        if (toVal < fromVal) toVal = fromVal;
+
+        attachmentGameId += "|sub=" + encodeURIComponent(subVal) + "|q=" + fromVal + "-" + toVal;
+        var gInfo = (typeof getGranularHomeworkInfo === "function") ? getGranularHomeworkInfo(attachmentGameId) : null;
+        if (gInfo && gInfo.label) {
+          title = subject + ": " + gInfo.label;
+          instructions = "Practice " + gInfo.label + " (" + (toVal - fromVal + 1) + " Qs). Complete the quiz to earn stars!";
+        }
+      }
 
       // Exact valid schema for public.kids_homework
       var payload = {
@@ -6679,6 +7014,7 @@
     function getCurriculumModulesForClass(className) {
       if (className === "UKG") {
         return [
+          { key: "ukg_phonics_cvc", title: "English: 3-Letter CVC Phonics Words (A, E, I, O, U)", section: "ukg", tab: "phonics", vowel: "three", mode: "quiz" },
           { key: "ukg_gram_is_am_are", title: "Grammar: ⚖️ Use of Is / Am / Are (Drill & Sentences)", section: "ukg", tab: "grammar", grammarSubTab: "is_am_are", mode: "quiz" },
           { key: "ukg_gram_this_that", title: "Grammar: 👉 Use of This / That (Visual Arrow)", section: "ukg", tab: "grammar", grammarSubTab: "this_that", mode: "quiz" },
           { key: "ukg_gram_these_those", title: "Grammar: 👉👉 Use of These / Those (Visual Arrow)", section: "ukg", tab: "grammar", grammarSubTab: "these_those", mode: "quiz" },
@@ -6704,6 +7040,7 @@
         ];
       } else if (className === "LKG") {
         return [
+          { key: "lkg_phonics_cvc", title: "English: 3-Letter CVC Phonics Words (A, E, I, O, U)", section: "lkg", tab: "phonics", vowel: "a", mode: "quiz" },
           { key: "lkg_phonics_2letter", title: "English: 2-Letter Words (AT, IN, ON, GO)", section: "lkg", tab: "phonics", vowel: "two", mode: "quiz" },
           { key: "lkg_phonics_cvc_a", title: "English: 3-Letter CVC Short 'a' (CAT, BAT, MAT)", section: "lkg", tab: "phonics", vowel: "a", mode: "quiz" },
           { key: "lkg_phonics_cvc_e", title: "English: 3-Letter CVC Short 'e' (PEN, BED, RED)", section: "lkg", tab: "phonics", vowel: "e", mode: "quiz" },
@@ -6780,12 +7117,20 @@
         return;
       }
 
+      var parsedQ = (typeof parseHomeworkGameParams === "function") ? parseHomeworkGameParams(hw.attachment_url) : null;
+      var targetQs = (parsedQ && parsedQ.fromQ && parsedQ.toQ && parsedQ.toQ >= parsedQ.fromQ)
+        ? (parsedQ.toQ - parsedQ.fromQ + 1)
+        : (hw.target_questions || 10);
+
       // Lock session to focused homework quiz matching this specific teacher-assigned homework
       appSession.focusedHomeworkQuiz = hw;
       appSession.activeHomeworkId = hw.id;
       appSession.homeworkSession = {
         homeworkId: hw.id,
-        targetQuestions: hw.target_questions || 10,
+        sub: (parsedQ && parsedQ.sub) ? parsedQ.sub : null,
+        fromQ: (parsedQ && parsedQ.fromQ) ? parsedQ.fromQ : null,
+        toQ: (parsedQ && parsedQ.toQ) ? parsedQ.toQ : null,
+        targetQuestions: targetQs,
         currentQuestionWrongTaps: 0,
         totalWrongTapsAllQs: 0,
         questionScores: [],
@@ -6794,6 +7139,7 @@
       };
       appSession.homeworkAnsweredCount = 0;
       if (typeof quizState !== "undefined") quizState.questionAttempts = 0;
+      appState.quizIndex = 0;
 
       var mod = (typeof resolveHomeworkGameModule === "function") ? resolveHomeworkGameModule(hw) : null;
       if (!mod) {
@@ -6802,7 +7148,20 @@
       }
       hw.module_key = mod.key;
 
-      if (mod.vowel) appState.phonicsVowel = mod.vowel;
+      if (parsedQ && parsedQ.sub) {
+        var sVal = parsedQ.sub.toLowerCase();
+        if (sVal === "all" || sVal === "mixed") {
+          appState.matraFilter = "all";
+          appState.lkgPhonicsVowel = "a";
+          appState.ukgPhonicsVowel = "three";
+        } else {
+          appState.matraFilter = sVal;
+          appState.lkgPhonicsVowel = sVal;
+          appState.ukgPhonicsVowel = "three";
+        }
+      }
+
+      if (mod.vowel && (!parsedQ || !parsedQ.sub)) appState.phonicsVowel = mod.vowel;
       if (mod.topic) {
         if (hw.class_name === "LKG") appState.lkgEvsTopic = mod.topic;
         if (hw.class_name === "UKG") appState.ukgEvsTopic = mod.topic;
@@ -6826,6 +7185,7 @@
     function renderFocusedHomeworkQuizHeader() {
       if (!appSession.focusedHomeworkQuiz) return "";
       var hw = appSession.focusedHomeworkQuiz;
+      var gInfo = (typeof getGranularHomeworkInfo === "function") ? getGranularHomeworkInfo(hw.attachment_url) : null;
       var html = '<div id="focused-homework-banner" style="background:#FFF3E0; border:2.5px solid #FF9800; border-radius:18px; padding:12px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; box-shadow:0 4px 12px rgba(255,152,0,0.18);">';
       html += '  <button class="btn-back-hw" onclick="safeAction(exitFocusedHomeworkQuiz)" style="background:#E65100; color:#FFFFFF; border:none; padding:10px 16px; border-radius:12px; font-size:13px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(230,81,0,0.3);">';
       html += '    ← Back to Today\'s Homework';
@@ -6833,7 +7193,12 @@
       html += '  <div style="text-align:right;">';
       html += '    <span style="font-size:10px; font-weight:900; background:#FF9800; color:#FFF; padding:3px 8px; border-radius:6px; text-transform:uppercase;">🎯 ASSIGNED HOMEWORK QUIZ</span>';
       html += '    <div style="font-size:15px; font-weight:900; color:#BF360C; margin-top:2px;">' + escapeHtml(hw.title) + '</div>';
-      html += '    <div style="font-size:11px; color:#546E7A; font-weight:700;">' + hw.class_name + ' Class • ' + escapeHtml(hw.subject) + ' • Target: ' + (hw.target_questions || 10) + ' Qs</div>';
+      var subtitle = hw.class_name + ' Class • ' + escapeHtml(hw.subject);
+      if (gInfo && gInfo.label) {
+        subtitle += ' • ' + escapeHtml(gInfo.label);
+      }
+      subtitle += ' • Target: ' + (hw.target_questions || 10) + ' Qs';
+      html += '    <div style="font-size:11px; color:#546E7A; font-weight:700;">' + subtitle + '</div>';
       html += '  </div>';
       html += '</div>';
       return html;
@@ -32632,6 +32997,13 @@ function setNurseryNumSubTab(st) {
           html += '    <span style="font-size:11px; font-weight:800; color:#E65100;">Due: ' + (hw.due_time || '18:00') + ' (' + (hw.due_date || 'Today') + ')</span>';
           html += '  </div>';
 
+          var gHwInfo = (typeof getGranularHomeworkInfo === "function") ? getGranularHomeworkInfo(hw.attachment_url) : null;
+          if (gHwInfo && gHwInfo.label) {
+            html += '  <div class="hw-granular-badge" style="display:inline-flex; align-items:center; gap:6px; background:#FFF3E0; color:#E65100; border:1px solid #FFE082; padding:3px 10px; border-radius:10px; font-size:11px; font-weight:800; margin-top:6px;">';
+            html += '    <span>🎯 ' + escapeHtml(gHwInfo.label) + '</span>';
+            html += '  </div>';
+          }
+
           html += '  <div style="font-size:16px; font-weight:900; color:#BF360C; margin:6px 0;">' + escapeHtml(hw.title) + '</div>';
 
           var hwDesc = hw.description || hw.instructions;
@@ -34470,27 +34842,33 @@ function setNurseryNumSubTab(st) {
           appState.lkgAzSoundLetter = "A";
         }
 
+        var hwSession = appSession.homeworkSession;
+        var isHwActive = !!(appSession.focusedHomeworkQuiz && hwSession);
         if (filterBar) {
-          filterBar.style.display = "flex";
-          var lkgPills = [
-            { key: "vowels", label: "🔴 Vowels (5)" },
-            { key: "consonants", label: "🔵 Consonants (19)" },
-            { key: "semi_vowels", label: "🟡 Semi-Vowels (2)" },
-            { key: "az_sound", label: "🔊 A–Z Sound Words" },
-            { key: "two", label: "🔤 2-Letter Words (25)" },
-            { key: "a", label: "Short 'a' (31)" },
-            { key: "e", label: "Short 'e' (28)" },
-            { key: "i", label: "Short 'i' (28)" },
-            { key: "o", label: "Short 'o' (28)" },
-            { key: "u", label: "Short 'u' (28)" }
-          ];
-          var lpFilterHtml = "";
-          for (var lpi = 0; lpi < lkgPills.length; lpi++) {
-            var lp = lkgPills[lpi];
-            var lpCls = "filter-pill" + (appState.lkgPhonicsVowel === lp.key ? " active" : "");
-            lpFilterHtml += '<button class="' + lpCls + '" onclick="event.stopPropagation(); setLkgPhonicsVowel(\'' + lp.key + '\');">' + lp.label + '</button>';
+          if (isHwActive && hwSession.sub) {
+            filterBar.style.display = "none";
+          } else {
+            filterBar.style.display = "flex";
+            var lkgPills = [
+              { key: "vowels", label: "🔴 Vowels (5)" },
+              { key: "consonants", label: "🔵 Consonants (19)" },
+              { key: "semi_vowels", label: "🟡 Semi-Vowels (2)" },
+              { key: "az_sound", label: "🔊 A–Z Sound Words" },
+              { key: "two", label: "🔤 2-Letter Words (25)" },
+              { key: "a", label: "Short 'a' (31)" },
+              { key: "e", label: "Short 'e' (28)" },
+              { key: "i", label: "Short 'i' (28)" },
+              { key: "o", label: "Short 'o' (28)" },
+              { key: "u", label: "Short 'u' (28)" }
+            ];
+            var lpFilterHtml = "";
+            for (var lpi = 0; lpi < lkgPills.length; lpi++) {
+              var lp = lkgPills[lpi];
+              var lpCls = "filter-pill" + (appState.lkgPhonicsVowel === lp.key ? " active" : "");
+              lpFilterHtml += '<button class="' + lpCls + '" onclick="event.stopPropagation(); setLkgPhonicsVowel(\'' + lp.key + '\');">' + lp.label + '</button>';
+            }
+            filterBar.innerHTML = lpFilterHtml;
           }
-          filterBar.innerHTML = lpFilterHtml;
         }
 
         // Sub 1, 2, 3: Vowels, Consonants, Semi-Vowels Practice
@@ -34660,7 +35038,26 @@ function setNurseryNumSubTab(st) {
           html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 Missing Letter Quiz</button>';
           html += '</div>';
 
-          var vList = DATA_3LETTER_CVC[appState.lkgPhonicsVowel] || DATA_3LETTER_CVC.a;
+          var vList = [];
+          var cvcHwSession = appSession.homeworkSession;
+          var isCvcHwActive = !!(appSession.focusedHomeworkQuiz && cvcHwSession);
+
+          if (isCvcHwActive && cvcHwSession && (cvcHwSession.sub === "all" || cvcHwSession.sub === "mixed")) {
+            var cKeys = Object.keys(DATA_3LETTER_CVC);
+            for (var ci = 0; ci < cKeys.length; ci++) {
+              vList = vList.concat(DATA_3LETTER_CVC[cKeys[ci]]);
+            }
+          } else {
+            vList = DATA_3LETTER_CVC[appState.lkgPhonicsVowel] || DATA_3LETTER_CVC.a;
+          }
+
+          if (isCvcHwActive && cvcHwSession && cvcHwSession.fromQ && cvcHwSession.toQ && vList.length > 0) {
+            var fQ = Math.max(1, cvcHwSession.fromQ);
+            var tQ = Math.min(vList.length, cvcHwSession.toQ);
+            if (tQ >= fQ) {
+              vList = vList.slice(fQ - 1, tQ);
+            }
+          }
 
           if (appState.mode === "learn") {
             autoSpeak("lkg_cvc_learn_" + appState.lkgPhonicsVowel, "CVC 3-letter words with short " + appState.lkgPhonicsVowel + ". Tap any word!", "en-IN");
@@ -36070,27 +36467,33 @@ function setNurseryNumSubTab(st) {
 
       // TAB 2: 🔤 Phonics & 4-Letter Words
       else if (tabKey === "phonics") {
+        var ukgHwSession = appSession.homeworkSession;
+        var isUkgHwActive = !!(appSession.focusedHomeworkQuiz && ukgHwSession);
         if (filterBar) {
-          filterBar.style.display = "flex";
-          var uPills = [
-            { key: "vowels", label: "🔴 Vowels (5)" },
-            { key: "consonants", label: "🔵 Consonants (19)" },
-            { key: "semi_vowels", label: "🟡 Semi-Vowels (2)" },
-            { key: "two", label: "✌️ 2-Letter (25)" },
-            { key: "three", label: "🔺 3-Letter CVC (143)" },
-            { key: "a", label: "Short 'a' 4-Let" },
-            { key: "e", label: "Short 'e' 4-Let" },
-            { key: "i", label: "Short 'i' 4-Let" },
-            { key: "o", label: "Short 'o' 4-Let" },
-            { key: "u", label: "Short 'u' 4-Let" }
-          ];
-          var uFilterHtml = "";
-          for (var upi = 0; upi < uPills.length; upi++) {
-            var up = uPills[upi];
-            var upCls = "filter-pill" + (appState.ukgPhonicsVowel === up.key ? " active" : "");
-            uFilterHtml += '<button class="' + upCls + '" onclick="event.stopPropagation(); setUkgPhonicsVowel(\'' + up.key + '\');">' + up.label + '</button>';
+          if (isUkgHwActive && ukgHwSession.sub) {
+            filterBar.style.display = "none";
+          } else {
+            filterBar.style.display = "flex";
+            var uPills = [
+              { key: "vowels", label: "🔴 Vowels (5)" },
+              { key: "consonants", label: "🔵 Consonants (19)" },
+              { key: "semi_vowels", label: "🟡 Semi-Vowels (2)" },
+              { key: "two", label: "✌️ 2-Letter (25)" },
+              { key: "three", label: "🔺 3-Letter CVC (143)" },
+              { key: "a", label: "Short 'a' 4-Let" },
+              { key: "e", label: "Short 'e' 4-Let" },
+              { key: "i", label: "Short 'i' 4-Let" },
+              { key: "o", label: "Short 'o' 4-Let" },
+              { key: "u", label: "Short 'u' 4-Let" }
+            ];
+            var uFilterHtml = "";
+            for (var upi = 0; upi < uPills.length; upi++) {
+              var up = uPills[upi];
+              var upCls = "filter-pill" + (appState.ukgPhonicsVowel === up.key ? " active" : "");
+              uFilterHtml += '<button class="' + upCls + '" onclick="event.stopPropagation(); setUkgPhonicsVowel(\'' + up.key + '\');">' + up.label + '</button>';
+            }
+            filterBar.innerHTML = uFilterHtml;
           }
-          filterBar.innerHTML = uFilterHtml;
         }
 
         if (appState.ukgPhonicsVowel === "vowels" || appState.ukgPhonicsVowel === "consonants" || appState.ukgPhonicsVowel === "semi_vowels") {
@@ -36166,9 +36569,21 @@ function setNurseryNumSubTab(st) {
         // 3-Letter Words in UKG
         else if (appState.ukgPhonicsVowel === "three") {
           var all3 = [];
-          var vKeys = Object.keys(DATA_3LETTER_CVC);
-          for (var vk = 0; vk < vKeys.length; vk++) {
-            all3 = all3.concat(DATA_3LETTER_CVC[vKeys[vk]]);
+          if (isUkgHwActive && ukgHwSession && ukgHwSession.sub && ukgHwSession.sub !== "all" && ukgHwSession.sub !== "mixed" && DATA_3LETTER_CVC[ukgHwSession.sub]) {
+            all3 = DATA_3LETTER_CVC[ukgHwSession.sub];
+          } else {
+            var vKeys = Object.keys(DATA_3LETTER_CVC);
+            for (var vk = 0; vk < vKeys.length; vk++) {
+              all3 = all3.concat(DATA_3LETTER_CVC[vKeys[vk]]);
+            }
+          }
+
+          if (isUkgHwActive && ukgHwSession && ukgHwSession.fromQ && ukgHwSession.toQ && all3.length > 0) {
+            var fQ3 = Math.max(1, ukgHwSession.fromQ);
+            var tQ3 = Math.min(all3.length, ukgHwSession.toQ);
+            if (tQ3 >= fQ3) {
+              all3 = all3.slice(fQ3 - 1, tQ3);
+            }
           }
 
           if (appState.mode === "learn") {
@@ -36471,16 +36886,22 @@ function setNurseryNumSubTab(st) {
           if (!appState.matraFilter || (appState.matraFilter !== "all" && !DATA_MATRA_TABS[appState.matraFilter])) {
             appState.matraFilter = "all";
           }
+          var matraHwSession = appSession.homeworkSession;
+          var isMatraHwActive = !!(appSession.focusedHomeworkQuiz && matraHwSession);
           if (filterBar) {
-            filterBar.style.display = "flex";
-            var mKeys = ["all", "aa", "i", "ee", "u", "oo", "e", "ai", "o", "au", "ang"];
-            var mLabels = ["सभी (All)", "ा (आ)", "ि (इ)", "ी (ई)", "ु (उ)", "ू (ऊ)", "े (ए)", "ै (ऐ)", "ो (ओ)", "ौ (औ)", "ं (अं)"];
-            var mHtml = "";
-            for (var mi = 0; mi < mKeys.length; mi++) {
-              var mCls = "filter-pill" + (appState.matraFilter === mKeys[mi] ? " active" : "");
-              mHtml += '<button class="' + mCls + '" onclick="event.stopPropagation(); setMatraFilter(\'' + mKeys[mi] + '\');">' + mLabels[mi] + '</button>';
+            if (isMatraHwActive && matraHwSession.sub) {
+              filterBar.style.display = "none";
+            } else {
+              filterBar.style.display = "flex";
+              var mKeys = ["all", "aa", "i", "ee", "u", "oo", "e", "ai", "o", "au", "ang"];
+              var mLabels = ["सभी (All)", "ा (आ)", "ि (इ)", "ी (ई)", "ु (उ)", "ू (ऊ)", "े (ए)", "ै (ऐ)", "ो (ओ)", "ौ (औ)", "ं (अं)"];
+              var mHtml = "";
+              for (var mi = 0; mi < mKeys.length; mi++) {
+                var mCls = "filter-pill" + (appState.matraFilter === mKeys[mi] ? " active" : "");
+                mHtml += '<button class="' + mCls + '" onclick="event.stopPropagation(); setMatraFilter(\'' + mKeys[mi] + '\');">' + mLabels[mi] + '</button>';
+              }
+              filterBar.innerHTML = mHtml;
             }
-            filterBar.innerHTML = mHtml;
           }
 
           var mList = [];
@@ -36494,6 +36915,14 @@ function setNurseryNumSubTab(st) {
             }
           } else {
             mList = DATA_MATRA_TABS[appState.matraFilter].words || [];
+          }
+
+          if (isMatraHwActive && matraHwSession.fromQ && matraHwSession.toQ && mList.length > 0) {
+            var fQm = Math.max(1, matraHwSession.fromQ);
+            var tQm = Math.min(mList.length, matraHwSession.toQ);
+            if (tQm >= fQm) {
+              mList = mList.slice(fQm - 1, tQm);
+            }
           }
 
           if (appState.mode === "learn") {
