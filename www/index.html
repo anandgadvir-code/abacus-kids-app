@@ -4398,6 +4398,10 @@
     }
 
     function switchParentTab(tab) {
+      if (appSession.role === "student" || (appSession.type === "parent" && appSession.student)) {
+        appSession.parentTab = "homework";
+        return;
+      }
       appSession.parentTab = tab;
       playTone("pop");
       renderHome();
@@ -30418,6 +30422,11 @@ var DATA_UKG_MATH_ADDITION = [
       if (appSession.type === "principal") {
         isBypassHwLock = true;
       }
+      var isStudentUser = (appSession.role === "student" || (appSession.type === "parent" && appSession.student));
+      if (isStudentUser && !isBypassHwLock && !appSession.focusedHomeworkQuiz) {
+        showToast("Student Dashboard is locked to Teacher-Assigned Homework 📚", "info");
+        return;
+      }
       if (appSession.focusedHomeworkQuiz && !isBypassHwLock) {
         var hw = appSession.focusedHomeworkQuiz;
         var modules = getCurriculumModulesForClass(hw.class_name);
@@ -32183,7 +32192,10 @@ function setNurseryNumSubTab(st) {
         } else {
           appSession.parentClass = curClass;
         }
-        var curTab = appSession.parentTab || "homework";
+        var curTab = isStudentLoggedIn ? "homework" : (appSession.parentTab || "homework");
+        if (isStudentLoggedIn) {
+          appSession.parentTab = "homework";
+        }
 
         html += '<div id="parent-student-hub" style="background:#FFFFFF; border:2px solid #E0E0E0; border-radius:20px; padding:14px; margin-top:8px; box-shadow:0 4px 14px rgba(0,0,0,0.04);">';
 
@@ -32227,11 +32239,13 @@ function setNurseryNumSubTab(st) {
           html += '</div>';
         }
 
-        // Sub-Tabs: Today's Homework vs Learning Modules
-        html += '<div class="teacher-nav-tabs" style="margin-bottom:12px;">';
-        html += '  <button class="teacher-tab-btn ' + (curTab === 'homework' ? 'active' : '') + '" onclick="safeAction(function(){ switchParentTab(\'homework\'); })">📋 Today\'s Homework &amp; Activities</button>';
-        html += '  <button class="teacher-tab-btn ' + (curTab === 'learning' ? 'active' : '') + '" onclick="safeAction(function(){ switchParentTab(\'learning\'); })">📚 Class Learning Modules</button>';
-        html += '</div>';
+        // Sub-Tabs: Today's Homework vs Learning Modules (Completely hidden for logged-in students)
+        if (!isStudentLoggedIn) {
+          html += '<div class="teacher-nav-tabs" style="margin-bottom:12px;">';
+          html += '  <button class="teacher-tab-btn ' + (curTab === 'homework' ? 'active' : '') + '" onclick="safeAction(function(){ switchParentTab(\'homework\'); })">📋 Today\'s Homework &amp; Activities</button>';
+          html += '  <button class="teacher-tab-btn ' + (curTab === 'learning' ? 'active' : '') + '" onclick="safeAction(function(){ switchParentTab(\'learning\'); })">📚 Class Learning Modules</button>';
+          html += '</div>';
+        }
 
         // Auto-fetch fresh homework from Supabase once per session/tab view
         var isStudentOrParent = (isStudentLoggedIn || appSession.type === "parent");
@@ -32323,14 +32337,18 @@ function setNurseryNumSubTab(st) {
           html += '  <div style="font-size: 42px; margin-bottom: 6px;">📚⏳</div>';
           html += '  <h3 style="font-size: 17px; font-weight: 900; color: #E65100; margin-bottom: 4px;">No Homework Assigned Yet for ' + curClass + '</h3>';
           html += '  <div style="font-size: 12px; color: #6D4C41; font-weight: 700; line-height: 1.4;">';
-          html += '    Your ' + curClass + ' class teacher will post today\'s tasks soon. You can practice from the learning modules tab!';
+          if (isStudentLoggedIn) {
+            html += '    Your ' + curClass + ' class teacher will assign new homework and practice activities soon. Tap 🔄 Refresh above to check for updates!';
+          } else {
+            html += '    Your ' + curClass + ' class teacher will post today\'s tasks soon. You can practice from the learning modules tab!';
+          }
           html += '  </div>';
           html += '</div>';
         }
       }
 
       // SUB-TAB 2: CLASS LEARNING MODULES
-      else if (curTab === 'learning') {
+      else if (curTab === 'learning' && !isStudentLoggedIn) {
         html += '<div class="home-grid">';
         if (isPrincipalLoggedIn) {
           // In Principal Showcase mode, show all 3 class cards with active highlight

@@ -693,6 +693,27 @@ runTest('True instant auto-update configuration for Android APK and Vercel cache
   assert(html.includes('initPullToRefresh'), 'Pull to refresh updater missing');
 });
 
+// TEST 34: Student Dashboard Locked Strictly to Teacher-Assigned Homework
+runTest('Student dashboard locks strictly to teacher homework only, hiding free modules while keeping assigned quizzes playable', () => {
+  // 1. Hide Class Learning Modules tab switcher for logged-in students
+  assert(html.includes('if (!isStudentLoggedIn) {\n          html += \'<div class="teacher-nav-tabs"') || html.includes('if (!isStudentLoggedIn) {\r\n          html += \'<div class="teacher-nav-tabs"'), 'teacher-nav-tabs not guarded against logged in student');
+  assert(html.includes('var curTab = isStudentLoggedIn ? "homework" : (appSession.parentTab || "homework");'), 'curTab must force homework for logged in students');
+  assert(html.includes('else if (curTab === \'learning\' && !isStudentLoggedIn)'), 'learning modules tab must be blocked for logged in students');
+
+  // 2. switchParentTab enforcement
+  assert(html.includes('if (appSession.role === "student" || (appSession.type === "parent" && appSession.student)) {\n        appSession.parentTab = "homework";\n        return;\n      }') || html.includes('if (appSession.role === "student" || (appSession.type === "parent" && appSession.student)) {\r\n        appSession.parentTab = "homework";\r\n        return;\r\n      }'), 'switchParentTab must prevent switching away from homework');
+
+  // 3. openSection free-roam module lock
+  assert(html.includes('var isStudentUser = (appSession.role === "student" || (appSession.type === "parent" && appSession.student));'), 'isStudentUser check missing in openSection');
+  assert(html.includes('if (isStudentUser && !isBypassHwLock && !appSession.focusedHomeworkQuiz)'), 'openSection must block direct free-roam modules for students');
+
+  // 4. Assigned teacher homework remains playable and returns to Today Homework
+  assert(html.includes('startAssignedHomework') && html.includes('🚀 Launch Interactive Practice Quiz'), 'startAssignedHomework handler missing in homework card');
+  assert(html.includes('openSection(mod.section, mod.tab, true);'), 'startAssignedHomework must pass isBypassHwLock true');
+  assert(html.includes('exitFocusedHomeworkQuiz'), 'exitFocusedHomeworkQuiz handler missing');
+  assert(html.includes('enterParentMode(appSession.parentClass || "Nursery");'), 'exitFocusedHomeworkQuiz must return to Today Homework');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');
