@@ -1501,7 +1501,7 @@ runTest('Admin / Principal Portal exposes 5 new UKG Hindi modules & granular Mat
   assert(indexHtml.includes('📖 चित्र देखो, वाक्य चुनो'), 'Module 5 title 📖 चित्र देखो, वाक्य चुनो must be present');
 
   // 7. Verify Cache Busting version
-  assert(/var APP_BUILD_VERSION = "2026\.11\.28-v[23]";/.test(indexHtml), 'APP_BUILD_VERSION must be bumped');
+  assert(/var APP_BUILD_VERSION = "2026\.11\.28-v[234]";/.test(indexHtml), 'APP_BUILD_VERSION must be bumped');
 
   // 8. Runtime Sandbox Execution of Principal Curriculum & Send Homework Tab Renderers
   const testSandbox = new Function(`
@@ -1594,6 +1594,97 @@ runTest('Upgraded Hindi Reading Experience (Classroom Syllable Speech, Matra Col
   assert.strictEqual(indexHtml.includes("karaoke-active"), true, "index.html must include .karaoke-active styling");
   assert.strictEqual(indexHtml.includes("दोबारा जोड़ें"), false, "index.html must not contain legacy 'दोबारा जोड़ें'");
   assert.strictEqual(indexHtml.includes("सही मात्रा जोड़ो"), false, "index.html must not contain legacy 'सही मात्रा जोड़ो'");
+});
+
+// TEST 43: UKG Hindi Curriculum — LKG Bina-Matra Hindi Words Integration across all Portals
+runTest('UKG Hindi Curriculum: LKG Bina-Matra Words reuse with Question Range, Teacher/Principal homework & all-portal exposure', () => {
+  const indexHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+
+  // 1. Static declarations in index.html
+  assert(indexHtml.includes('ukg_hindi_bina_matra'), 'ukg_hindi_bina_matra module key must be present in index.html');
+  assert(indexHtml.includes('hindi_bina_matra'), 'hindi_bina_matra tab key must be present in index.html');
+  assert(indexHtml.includes('renderUkgHindiBinaMatraView'), 'renderUkgHindiBinaMatraView must be defined');
+  assert(indexHtml.includes('setUkgBinaMatraSubTab'), 'setUkgBinaMatraSubTab must be defined');
+
+  // 2. SECTION_TABS.ukg exposure
+  assert(indexHtml.includes('{ key: "hindi_bina_matra", label: "🔤 बिना मात्रा वाले शब्द" }'), 'SECTION_TABS.ukg must include hindi_bina_matra');
+
+  // 3. Runtime sandbox execution: Curriculum catalog, modules, granular detection, and range parsing
+  const testSandbox = new Function(`
+    ${indexHtml.match(/var DATA_LKG_HINDI_WORDS = \{[\s\S]*?^\s*\};/m)[0]}
+    ${indexHtml.match(/function getTeacherCurriculumCatalog[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function getCurriculumModulesForClass[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function detectGranularTopicType[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function getGranularTopicMaxQuestions[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function parseHomeworkGameParams[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function getGranularHomeworkInfo[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function normalizeAssignedClass[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function resolveHomeworkGameModule[\s\S]*?^    \}/m)[0]}
+
+    var ukgCatalog = getTeacherCurriculumCatalog("UKG");
+    var lkgCatalog = getTeacherCurriculumCatalog("LKG");
+    var ukgModules = getCurriculumModulesForClass("UKG");
+    var lkgModules = getCurriculumModulesForClass("LKG");
+
+    var ukgHindiTopics = ukgCatalog["Hindi"] ? ukgCatalog["Hindi"].topics : [];
+    var binaMatraTopic = ukgHindiTopics.find(function(t) { return t.module_key === "ukg_hindi_bina_matra"; });
+
+    var ukgBinaMod = ukgModules.find(function(m) { return m.key === "ukg_hindi_bina_matra" && m.tab === "hindi_bina_matra"; });
+
+    var gType = detectGranularTopicType("Hindi", { module_key: "ukg_hindi_bina_matra", title: "Hindi Bina-Matra: 🔤 बिना मात्रा वाले शब्द (2, 3, 4 अक्षर)" });
+    var maxQ = getGranularTopicMaxQuestions("hindi_bina_matra", "all");
+
+    var parsedHw = parseHomeworkGameParams("game:ukg:hindi_bina_matra|q=1-15");
+    var gInfo = getGranularHomeworkInfo("game:ukg:hindi_bina_matra|q=1-15");
+    var resolvedMod = resolveHomeworkGameModule({
+      class_name: "UKG",
+      subject: "Hindi",
+      title: "Hindi: बिना मात्रा वाले शब्द",
+      attachment_url: "game:ukg:hindi_bina_matra|q=5-20"
+    });
+
+    return {
+      hasBinaInUkgCatalog: !!binaMatraTopic,
+      binaTopicTitle: binaMatraTopic ? binaMatraTopic.title : null,
+      hasBinaInUkgModules: !!ukgBinaMod,
+      lkgModulesIntact: lkgModules.some(function(m) { return m.key === "lkg_hindi_swar"; }),
+      gType: gType,
+      maxQ: maxQ,
+      parsedHwGameUri: parsedHw ? parsedHw.gameUri : null,
+      parsedHwFromQ: parsedHw ? parsedHw.fromQ : null,
+      parsedHwToQ: parsedHw ? parsedHw.toQ : null,
+      gInfoSubName: gInfo ? gInfo.subName : null,
+      gInfoLabel: gInfo ? gInfo.label : null,
+      resolvedTab: resolvedMod ? resolvedMod.tab : null,
+      resolvedFromQ: resolvedMod ? resolvedMod.fromQ : null,
+      resolvedToQ: resolvedMod ? resolvedMod.toQ : null
+    };
+  `);
+
+  const res = testSandbox();
+
+  // (a) UKG catalog and modules expose bina_matra
+  assert.strictEqual(res.hasBinaInUkgCatalog, true, 'getTeacherCurriculumCatalog("UKG") must include ukg_hindi_bina_matra');
+  assert(res.binaTopicTitle.includes("बिना मात्रा"), 'Bina matra topic title must mention बिना मात्रा');
+  assert.strictEqual(res.hasBinaInUkgModules, true, 'getCurriculumModulesForClass("UKG") must include ukg_hindi_bina_matra with tab hindi_bina_matra');
+  assert.strictEqual(res.lkgModulesIntact, true, 'LKG Hindi curriculum must remain completely intact');
+
+  // (b) Granular topic detection and max question count
+  assert.strictEqual(res.gType, "hindi_bina_matra", 'detectGranularTopicType must return hindi_bina_matra');
+  assert.strictEqual(res.maxQ, 100, 'getGranularTopicMaxQuestions for hindi_bina_matra must return 100 questions');
+
+  // (c) Question range encoding and resolution
+  assert.strictEqual(res.parsedHwGameUri, "ukg:hindi_bina_matra", 'parseHomeworkGameParams must extract ukg:hindi_bina_matra');
+  assert.strictEqual(res.parsedHwFromQ, 1, 'parsed fromQ must be 1');
+  assert.strictEqual(res.parsedHwToQ, 15, 'parsed toQ must be 15');
+  assert(res.gInfoSubName.includes("बिना मात्रा वाले शब्द"), 'gInfo subName must mention बिना मात्रा वाले शब्द');
+  assert.strictEqual(res.resolvedTab, "hindi_bina_matra", 'resolveHomeworkGameModule must resolve to hindi_bina_matra tab');
+  assert.strictEqual(res.resolvedFromQ, 5, 'resolveHomeworkGameModule must pass fromQ = 5');
+  assert.strictEqual(res.resolvedToQ, 20, 'resolveHomeworkGameModule must pass toQ = 20');
+
+  // (d) Principal & Admin Desk exposure
+  assert(indexHtml.includes('ukg_hindi_bina_matra') && indexHtml.includes('🔤 बिना मात्रा वाले शब्द'), 'Principal Desk curriculum tab must showcase बिना मात्रा वाले शब्द');
+  assert(indexHtml.includes("launchPrincipalCurriculumModule('ukg', 'hindi_bina_matra')") || indexHtml.includes('launchPrincipalCurriculumModule(\\\'ukg\\\', \\\'hindi_bina_matra\\\')'), 'Direct launch button for hindi_bina_matra must be present');
 });
 
 console.log('\n----------------------------------------------------------------');

@@ -4255,7 +4255,8 @@
       }
 
       if (!subName && parsed.gameUri) {
-        if (parsed.gameUri.indexOf("hindi_vilom") !== -1) subName = "उल्टा-सीधा खेल (विलोम शब्द)";
+        if (parsed.gameUri.indexOf("hindi_bina_matra") !== -1) subName = "बिना मात्रा वाले शब्द (2, 3, 4 अक्षर)";
+        else if (parsed.gameUri.indexOf("hindi_vilom") !== -1) subName = "उल्टा-सीधा खेल (विलोम शब्द)";
         else if (parsed.gameUri.indexOf("hindi_paheli") !== -1) subName = "बूझो तो जानें! (Hindi Riddles)";
         else if (parsed.gameUri.indexOf("hindi_railgadi") !== -1) subName = "अक्षर रेलगाड़ी (शब्द बनाओ)";
         else if (parsed.gameUri.indexOf("hindi_ekanek") !== -1) subName = "एक – अनेक (One & Many)";
@@ -4285,6 +4286,9 @@
       var sub = String(subject || "").toLowerCase();
 
       // Check UKG Hindi Separate Modules
+      if (key === "ukg_hindi_bina_matra" || key.indexOf("bina_matra") !== -1 || title.indexOf("बिना मात्रा") !== -1 || title.indexOf("bina matra") !== -1) {
+        return "hindi_bina_matra";
+      }
       if (key === "ukg_hindi_vilom" || key.indexOf("vilom") !== -1 || title.indexOf("विलोम") !== -1 || title.indexOf("उल्टा-सीधा") !== -1) {
         return "hindi_vilom";
       }
@@ -4317,6 +4321,7 @@
     }
 
     function getGranularTopicMaxQuestions(type, subKey) {
+      if (type === "hindi_bina_matra") return (typeof DATA_LKG_HINDI_WORDS !== "undefined" ? (DATA_LKG_HINDI_WORDS.words_2.length + DATA_LKG_HINDI_WORDS.words_3.length + DATA_LKG_HINDI_WORDS.words_4.length + DATA_LKG_HINDI_WORDS.words_5.length) : 100);
       if (type === "hindi_vilom") return (typeof DATA_HINDI_VILOM !== "undefined" ? DATA_HINDI_VILOM.length : 20);
       if (type === "hindi_paheli") return (typeof DATA_HINDI_PAHELI !== "undefined" ? DATA_HINDI_PAHELI.length : 15);
       if (type === "hindi_railgadi") return (typeof DATA_HINDI_RAILGADI !== "undefined" ? DATA_HINDI_RAILGADI.length : 20);
@@ -4402,6 +4407,10 @@
       var text = (String(hw.subject || "") + " " + String(hw.title || "") + " " + String(hw.description || "")).toLowerCase();
 
       // Specific UKG Hindi Modules Keyword Matching
+      if (text.indexOf("bina_matra") !== -1 || text.indexOf("बिना मात्रा") !== -1 || text.indexOf("bina matra") !== -1) {
+        var bmMod = modules.find(function(m) { return m.tab === "hindi_bina_matra"; });
+        if (bmMod) return bmMod;
+      }
       if (text.indexOf("vilom") !== -1 || text.indexOf("विलोम") !== -1 || text.indexOf("उल्टा-सीधा") !== -1) {
         var vMod = modules.find(function(m) { return m.tab === "hindi_vilom"; });
         if (vMod) return vMod;
@@ -6311,6 +6320,7 @@
         "Hindi": {
           label: "🪔 Hindi / हिंदी",
           topics: (cls === "UKG") ? [
+            { title: "Hindi Bina-Matra: 🔤 बिना मात्रा वाले शब्द (2, 3, 4 अक्षर)", module_key: "ukg_hindi_bina_matra" },
             { title: "Hindi Vilom: 🔄 उल्टा-सीधा खेल (विलोम शब्द / Opposites)", module_key: "ukg_hindi_vilom" },
             { title: "Hindi Paheli: 🤔 बूझो तो जानें! (Hindi Riddles)", module_key: "ukg_hindi_paheli" },
             { title: "Hindi Railgadi: 🚂 अक्षर रेलगाड़ी (शब्द बनाओ Puzzle)", module_key: "ukg_hindi_railgadi" },
@@ -7536,6 +7546,7 @@
       html += '  </div>';
       html += '  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px;">';
       var ukgHindiPreviewItems = [
+        { key: "ukg_hindi_bina_matra", tab: "hindi_bina_matra", title: "🔤 बिना मात्रा वाले शब्द", sub: "2, 3, 4 अक्षर (100 Qs)" },
         { key: "ukg_hindi_vilom", tab: "hindi_vilom", title: "🔄 उल्टा-सीधा खेल", sub: "विलोम शब्द / Opposites (20 Qs)" },
         { key: "ukg_hindi_paheli", tab: "hindi_paheli", title: "🤔 बूझो तो जानें!", sub: "Hindi Riddles (15 Qs)" },
         { key: "ukg_hindi_railgadi", tab: "hindi_railgadi", title: "🚂 अक्षर रेलगाड़ी", sub: "शब्द बनाओ Puzzle (20 Qs)" },
@@ -7614,6 +7625,7 @@
         html += '  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">';
 
         var ukgHindiMods = [
+          { key: "ukg_hindi_bina_matra", tab: "hindi_bina_matra", label: "🔤 बिना मात्रा वाले शब्द", sub: "2, 3, 4 अक्षर (100 शब्द)", qs: "100 Qs", desc: "Foundational phonics reading & quiz for 2, 3 and 4 letter words without matras" },
           { key: "ukg_hindi_vilom", tab: "hindi_vilom", label: "🔄 उल्टा-सीधा खेल", sub: "विलोम शब्द / Opposites", qs: "20 Qs", desc: "Opposite words pairing with audio hints & pictures" },
           { key: "ukg_hindi_paheli", tab: "hindi_paheli", label: "🤔 बूझो तो जानें!", sub: "Hindi Riddles", qs: "15 Qs", desc: "Interactive rhyming riddles with tap-to-reveal answer" },
           { key: "ukg_hindi_railgadi", tab: "hindi_railgadi", label: "🚂 अक्षर रेलगाड़ी", sub: "शब्द बनाओ Puzzle", qs: "20 Qs", desc: "Train bogie letter sequencing to build 2, 3 & 4 letter words" },
@@ -8067,6 +8079,7 @@
           { key: "ukg_math_addition", title: "Math: Addition Fun (1-10 Quiz)", section: "ukg", tab: "math", mathSubTab: "addition", mode: "quiz" },
           { key: "ukg_math_subtraction", title: "Math: Subtraction Fun (1-10 Quiz)", section: "ukg", tab: "math", mathSubTab: "subtraction", mode: "quiz" },
           { key: "ukg_hindi_matra", title: "Hindi: Matra Quiz (ा, ि, ी, ु, ू)", section: "ukg", tab: "matra", mode: "quiz" },
+          { key: "ukg_hindi_bina_matra", title: "Hindi Bina-Matra: 🔤 बिना मात्रा वाले शब्द (2, 3, 4 अक्षर)", section: "ukg", tab: "hindi_bina_matra", mode: "learn" },
           { key: "ukg_hindi_vilom", title: "Hindi Vilom: 🔄 उल्टा-सीधा खेल (विलोम शब्द / Opposites)", section: "ukg", tab: "hindi_vilom", mode: "quiz" },
           { key: "ukg_hindi_paheli", title: "Hindi Paheli: 🤔 बूझो तो जानें! (Hindi Riddles)", section: "ukg", tab: "hindi_paheli", mode: "quiz" },
           { key: "ukg_hindi_railgadi", title: "Hindi Railgadi: 🚂 अक्षर रेलगाड़ी (शब्द बनाओ Puzzle)", section: "ukg", tab: "hindi_railgadi", mode: "quiz" },
@@ -8383,6 +8396,7 @@
         { key: "grammar", label: "📖 English Grammar" },
         { key: "evs", label: "🌍 EVS Studies" },
         { key: "matra", label: "✍️ हिंदी मात्राएं व शब्द निर्माण" },
+        { key: "hindi_bina_matra", label: "🔤 बिना मात्रा वाले शब्द" },
         { key: "math", label: "➕➖ Math (+ / -)" },
         { key: "gk", label: "🌍 GK (150 Qs)" },
         { key: "hindi_vilom", label: "🔄 उल्टा-सीधा खेल" },
@@ -34293,6 +34307,7 @@ function setNurseryNumSubTab(st) {
             html += '    <span style="font-size:10px; font-weight:800; background:#FFE082; color:#BF360C; padding:2px 8px; border-radius:8px;">UKG Curriculum Ready</span>';
             html += '  </div>';
             html += '  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px;">';
+            html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_bina_matra\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🔤 बिना मात्रा शब्द</button>';
             html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_vilom\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🔄 उल्टा-सीधा खेल</button>';
             html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_paheli\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🤔 बूझो तो जानें!</button>';
             html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_railgadi\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🚂 अक्षर रेलगाड़ी</button>';
@@ -38006,6 +38021,7 @@ function setNurseryNumSubTab(st) {
         html += '<div class="ukg-hindi-modules-nav" style="background:#FFF3E0; border:2px solid #FFE082; border-radius:14px; padding:10px 12px; margin-bottom:12px;">';
         html += '  <div style="font-size:12px; font-weight:900; color:#E65100; margin-bottom:6px;">🪔 5 New UKG Hindi Modules (Explore &amp; Play):</div>';
         html += '  <div style="display:flex; gap:6px; flex-wrap:wrap;">';
+        html += '    <button onclick="safeAction(function(){ setTab(\'hindi_bina_matra\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔤 बिना मात्रा वाले शब्द</button>';
         html += '    <button onclick="safeAction(function(){ setTab(\'hindi_vilom\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔄 उल्टा-सीधा खेल</button>';
         html += '    <button onclick="safeAction(function(){ setTab(\'hindi_paheli\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🤔 बूझो तो जानें!</button>';
         html += '    <button onclick="safeAction(function(){ setTab(\'hindi_railgadi\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🚂 अक्षर रेलगाड़ी</button>';
@@ -38875,6 +38891,11 @@ function setNurseryNumSubTab(st) {
         html += renderUkgHindiVakyaView();
       }
 
+      // TAB 12: 🔤 Hindi Bina-Matra (बिना मात्रा वाले शब्द)
+      else if (tabKey === "hindi_bina_matra") {
+        html += renderUkgHindiBinaMatraView();
+      }
+
       view.innerHTML = html;
     }
 
@@ -39171,6 +39192,138 @@ function setNurseryNumSubTab(st) {
       }
       html += '</div>';
       html += renderCompletedPreviewCard();
+      return html;
+    }
+
+    // MODULE 6 (UKG): 🔤 बिना मात्रा वाले शब्द (2, 3, 4, 5 अक्षर शब्द - Reused from LKG)
+    function setUkgBinaMatraSubTab(sub) {
+      appState.ukgBinaMatraSubTab = sub;
+      appState.quizIndex = 0;
+      if (typeof quizState !== "undefined") {
+        quizState.isAnswered = false;
+        quizState.activeKey = null;
+      }
+      renderCurrentView();
+    }
+
+    function renderUkgHindiBinaMatraView() {
+      var filterBar = document.getElementById("filter-pills-bar");
+      var hwSession = appSession.homeworkSession;
+      var isHwActive = !!(appSession.focusedHomeworkQuiz && hwSession);
+
+      if (filterBar) {
+        if (isHwActive) {
+          filterBar.style.display = "none";
+        } else {
+          filterBar.style.display = "flex";
+          var subKeys = [
+            { key: "all", label: "सभी शब्द (100)" },
+            { key: "words_2", label: "दो अक्षर (25)" },
+            { key: "words_3", label: "तीन अक्षर (25)" },
+            { key: "words_4", label: "चार अक्षर (25)" },
+            { key: "words_5", label: "पाँच अक्षर (25)" }
+          ];
+          var curSub = appState.ukgBinaMatraSubTab || "all";
+          var pbarHtml = "";
+          for (var pi = 0; pi < subKeys.length; pi++) {
+            var sk = subKeys[pi];
+            var pCls = "filter-pill" + (curSub === sk.key ? " active" : "");
+            pbarHtml += '<button class="' + pCls + '" onclick="event.stopPropagation(); setUkgBinaMatraSubTab(\'' + sk.key + '\');">' + sk.label + '</button>';
+          }
+          filterBar.innerHTML = pbarHtml;
+        }
+      }
+
+      var allList = [];
+      if (typeof DATA_LKG_HINDI_WORDS !== "undefined") {
+        allList = [].concat(
+          DATA_LKG_HINDI_WORDS.words_2 || [],
+          DATA_LKG_HINDI_WORDS.words_3 || [],
+          DATA_LKG_HINDI_WORDS.words_4 || [],
+          DATA_LKG_HINDI_WORDS.words_5 || []
+        );
+      }
+
+      var list = allList.slice();
+      if (!isHwActive && appState.ukgBinaMatraSubTab && appState.ukgBinaMatraSubTab !== "all") {
+        list = (DATA_LKG_HINDI_WORDS && DATA_LKG_HINDI_WORDS[appState.ukgBinaMatraSubTab]) ? DATA_LKG_HINDI_WORDS[appState.ukgBinaMatraSubTab].slice() : allList.slice();
+      }
+
+      if (isHwActive && hwSession.fromQ && hwSession.toQ && list.length > 0) {
+        var fQ = Math.max(1, hwSession.fromQ);
+        var tQ = Math.min(list.length, hwSession.toQ);
+        if (tQ >= fQ) list = list.slice(fQ - 1, tQ);
+      }
+
+      if (list.length === 0) list = allList.slice(0, 25);
+
+      var html = "";
+      html += '<div class="mode-switch">';
+      html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 शब्द पढ़ना सीखें</button>';
+      html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🧩 शब्द निर्माण Quiz</button>';
+      html += '</div>';
+
+      if (appState.mode === "learn") {
+        autoSpeak("ukg_bm_learn", "बिना मात्रा वाले शब्द। कार्ड छूकर उच्चारण और अक्षरों का जोड़ सुनें!", "hi-IN");
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'बिना मात्रा वाले शब्द। कार्ड छूकर सुनें!\', \'hi-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">कार्ड छूकर अक्षरों का जोड़ व उच्चारण सुनें 🔊</div>';
+        html += '<div class="grid-items-container" style="max-height: calc(100vh - 250px); overflow-y: auto;">';
+        for (var wdi = 0; wdi < list.length; wdi++) {
+          var wObj = list[wdi];
+          html += '<div class="item-chip-card" style="padding: 12px 10px; text-align: center;" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + wObj.word + '\', \'bina_matra\', this); })">';
+          html += '  <div class="chip-emoji safe-emoji" style="font-size: 40px;" onclick="event.stopPropagation(); safeAction(function(){ speakHindiWordClassroom(\'' + wObj.word + '\', \'bina_matra\', this); })">' + wObj.emoji + '</div>';
+          html += '  <div class="chip-word" style="font-size: 20px; font-weight: 900; color: #E65100; margin-top: 4px;">' + renderColorCodedHindiWord(wObj.word) + '</div>';
+          html += '  <div style="font-size: 12px; font-weight: 700; color: #795548; margin-top: 2px;">' + (wObj.letters ? wObj.letters.join(" + ") : "") + '</div>';
+          html += '</div>';
+        }
+        html += '</div>';
+      } else {
+        var targetWObj = list[appState.quizIndex % list.length];
+        var wQuizCacheKey = "ukg_bm_q_" + appState.quizIndex;
+        var wQuizOpts = getShuffledOptions(wQuizCacheKey, function() {
+          var wo = [targetWObj.word];
+          while (wo.length < 4) {
+            var rw = allList[Math.floor(Math.random() * allList.length)].word;
+            if (wo.indexOf(rw) === -1) wo.push(rw);
+          }
+          return fisherYatesShuffle(wo);
+        });
+        var isWAnswered = (quizState.isAnswered && quizState.activeKey === wQuizCacheKey);
+
+        var wSpoken = (targetWObj.letters ? targetWObj.letters.join(" जमा ") : targetWObj.word) + " से कौन सा शब्द बनता है?";
+        autoSpeak(wQuizCacheKey, wSpoken, "hi-IN");
+
+        html += '<div class="flashcard" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + targetWObj.word + '\', \'bina_matra\', this); })">';
+        html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 60px;" onclick="event.stopPropagation(); safeAction(function(){ speakHindiWordClassroom(\'' + targetWObj.word + '\', \'bina_matra\', this); })">' + targetWObj.emoji + '</div>';
+        html += '  <div style="display:flex; justify-content:center; align-items:center; gap:8px; font-size:24px; font-weight:900; color:#E65100; margin: 8px 0; flex-wrap: wrap;">';
+        if (targetWObj.letters) {
+          for (var li = 0; li < targetWObj.letters.length; li++) {
+            html += '<span style="background: #FFF3E0; padding: 4px 10px; border-radius: 8px; border: 1px solid #FFE0B2;">' + targetWObj.letters[li] + '</span>';
+            if (li < targetWObj.letters.length - 1) {
+              html += '<span style="color: #FF9800;">+</span>';
+            }
+          }
+          html += '<span style="color: #FF9800;">=</span>';
+        }
+        html += (isWAnswered ? '<span class="dash-blank filled-blank" style="font-size: 26px; color: #2E7D32;">' + renderColorCodedHindiWord(targetWObj.word) + '</span>' : '<span class="dash-blank" style="font-size: 26px;">___</span>');
+        html += '  </div>';
+        html += '  <div class="audio-hint">🔊 ' + buildHindiClassroomSpeechText(targetWObj.word, 'bina_matra') + '</div>';
+        html += '</div>';
+
+        html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 8px;">जोड़कर सही शब्द चुनो: 🔊</div>';
+
+        html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 14px auto 0;">';
+        for (var woi = 0; woi < wQuizOpts.length; woi++) {
+          var isWOk = (wQuizOpts[woi] === targetWObj.word);
+          var wBtnCls = "opt-btn";
+          if (isWAnswered) {
+            wBtnCls += isWOk ? " correct-choice" : " disabled-choice";
+          }
+          html += '<button class="' + wBtnCls + '" style="min-height: 58px; font-size: 1.55rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isWOk + ', { key: \'' + wQuizCacheKey + '\', display: \'' + (targetWObj.letters ? targetWObj.letters.join(" + ") : targetWObj.word) + ' = ' + targetWObj.word + ' ' + targetWObj.emoji + '\', spoken: \'' + buildHindiClassroomSpeechText(targetWObj.word, 'bina_matra') + '\', lang: \'hi-IN\', ansVal: \'' + wQuizOpts[woi] + '\', wrongMsg: \'गलत शब्द, फिर से प्रयास करें\' }); })">' + renderColorCodedHindiWord(wQuizOpts[woi]) + '</button>';
+        }
+        html += '</div>';
+        html += renderCompletedPreviewCard();
+      }
+
       return html;
     }
 
@@ -39822,7 +39975,7 @@ function setNurseryNumSubTab(st) {
     }
 
     // Lightweight App Live Version & Update Checker for Android APK
-    var APP_BUILD_VERSION = "2026.11.28-v3";
+    var APP_BUILD_VERSION = "2026.11.28-v4";
     async function checkForLiveAppUpdate() {
       if (!navigator.onLine) return;
       try {
