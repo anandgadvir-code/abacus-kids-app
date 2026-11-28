@@ -664,6 +664,35 @@ runTest('Raw kids_homework rows from Supabase are normalized, cached and rendere
   assert(html.includes('_isStudentHwFetching'), '_isStudentHwFetching in-flight guard missing');
 });
 
+// TEST 33: True Instant Auto-Update Configuration (Capacitor, Vercel & HTML Cache Guards)
+runTest('True instant auto-update configuration for Android APK and Vercel cache guards', () => {
+  // 1. Capacitor configuration for live production URL
+  assert(fs.existsSync('capacitor.config.json'), 'capacitor.config.json missing');
+  const capConfig = JSON.parse(fs.readFileSync('capacitor.config.json', 'utf8').replace(/^\uFEFF/, ''));
+  assert.strictEqual(capConfig.server.url, 'https://abacus-kids-app.vercel.app', 'server.url must point to live Vercel app');
+  assert.strictEqual(capConfig.server.cleartext, false, 'server.cleartext must be false');
+  assert.strictEqual(capConfig.server.androidScheme, 'https', 'server.androidScheme must be https');
+  assert(capConfig.android && capConfig.android.allowMixedContent === true, 'android.allowMixedContent must be true');
+
+  // 2. Vercel strict no-cache headers configuration
+  assert(fs.existsSync('vercel.json'), 'vercel.json missing in project root');
+  const vercelConfig = JSON.parse(fs.readFileSync('vercel.json', 'utf8'));
+  assert(Array.isArray(vercelConfig.headers) && vercelConfig.headers.length > 0, 'vercel.json headers block missing');
+  const allRouteHeader = vercelConfig.headers.find(h => h.source === '/(.*)');
+  assert(allRouteHeader, 'vercel.json must define headers for /(.*)');
+  const cacheControl = allRouteHeader.headers.find(h => h.key === 'Cache-Control');
+  assert(cacheControl && cacheControl.value.includes('no-store'), 'Cache-Control header missing no-store in vercel.json');
+  assert(cacheControl && cacheControl.value.includes('no-cache'), 'Cache-Control header missing no-cache in vercel.json');
+
+  // 3. HTML meta tags & update checker
+  assert(html.includes('<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />'), 'Cache-Control meta tag missing');
+  assert(html.includes('<meta http-equiv="Pragma" content="no-cache" />'), 'Pragma meta tag missing');
+  assert(html.includes('<meta http-equiv="Expires" content="0" />'), 'Expires meta tag missing');
+  assert(html.includes('APP_BUILD_VERSION'), 'APP_BUILD_VERSION missing');
+  assert(html.includes('checkForLiveAppUpdate'), 'checkForLiveAppUpdate function missing');
+  assert(html.includes('initPullToRefresh'), 'Pull to refresh updater missing');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');

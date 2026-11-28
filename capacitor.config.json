@@ -2,11 +2,13 @@
   "appId": "com.abacusacademy.jodhpur.kids",
   "appName": "Abacus Kids",
   "webDir": "www",
-  "bundledWebRuntime": false,
   "server": {
     "url": "https://abacus-kids-app.vercel.app",
     "cleartext": false,
     "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true
   },
   "plugins": {
     "LocalNotifications": {

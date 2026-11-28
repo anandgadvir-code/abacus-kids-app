@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <meta name="theme-color" content="#FF5252" />
   <meta name="description" content="Abacus Kids - The Abacus Academy, Jodhpur: English Medium IXL, Starfall & NCERT Balvatika learning app with Hybrid Native TTS, Phonics, EVS, and Math." />
   <title>Abacus Kids - The Abacus Academy, Jodhpur</title>
@@ -37478,11 +37481,58 @@ function setNurseryNumSubTab(st) {
       }
     }
 
+    // Lightweight App Live Version & Update Checker for Android APK
+    var APP_BUILD_VERSION = "2026.11.28-v1";
+    async function checkForLiveAppUpdate() {
+      if (!navigator.onLine) return;
+      try {
+        var res = await fetch("/index.html?_t=" + Date.now(), { method: "HEAD", cache: "no-store" });
+        if (res && res.ok) {
+          var etag = res.headers.get("etag") || res.headers.get("last-modified");
+          var lastEtag = localStorage.getItem("taa_last_app_etag");
+          if (etag && lastEtag && etag !== lastEtag) {
+            localStorage.setItem("taa_last_app_etag", etag);
+            console.log("New live build detected, refreshing WebView...");
+            window.location.reload();
+          } else if (etag) {
+            localStorage.setItem("taa_last_app_etag", etag);
+          }
+        }
+      } catch(e) {}
+    }
+
+    // Pull-to-refresh fallback for touch devices
+    (function initPullToRefresh() {
+      var touchStartY = 0;
+      var touchEndY = 0;
+      window.addEventListener("touchstart", function(e) {
+        if (window.scrollY === 0 && e.touches.length === 1) {
+          touchStartY = e.touches[0].clientY;
+        } else {
+          touchStartY = 0;
+        }
+      }, { passive: true });
+
+      window.addEventListener("touchend", function(e) {
+        if (touchStartY > 0 && e.changedTouches.length === 1) {
+          touchEndY = e.changedTouches[0].clientY;
+          if (touchEndY - touchStartY > 180 && window.scrollY === 0) {
+            showToast("🔄 Checking for live app updates...", "info");
+            checkForLiveAppUpdate().then(function() {
+              if (appState.section === "home") renderHome();
+            });
+          }
+        }
+      }, { passive: true });
+    })();
+
     // Initial load
     window.addEventListener("DOMContentLoaded", function() {
       unlockAudioContext();
       runDaily48HourCleanup();
       updateSchoolBrandingUI();
+      checkForLiveAppUpdate();
+      window.addEventListener("online", checkForLiveAppUpdate);
       var sessionType = restoreSession();
       renderHeaderStatus();
 
