@@ -546,6 +546,49 @@ runTest('Clean Student Dashboard hides role cards, intro banner, other class but
   assert(html.includes('document.body.classList.remove("student-logged-in");'), 'Removing student-logged-in class missing');
 });
 
+// TEST 31: Teacher-to-Student Homework Sync & Exact public.kids_homework Schema
+runTest('Teacher-to-Student homework sync uses exact public.kids_homework schema and normalized school_id', () => {
+  // 1. Helper functions presence and behavior
+  assert(html.includes('function resolveHomeworkSchoolId('), 'resolveHomeworkSchoolId function missing');
+  assert(html.includes('function isValidUuid('), 'isValidUuid function missing');
+  assert(html.includes('function getTodayIstDateString('), 'getTodayIstDateString function missing');
+
+  // Extract and test resolveHomeworkSchoolId logic
+  const resolveMatch = html.match(/function resolveHomeworkSchoolId\([\s\S]*?^ {4}\}/m);
+  assert(resolveMatch, 'Could not extract resolveHomeworkSchoolId');
+  const resolveFn = new Function('udiseOrSchoolId', resolveMatch[0] + '\nreturn resolveHomeworkSchoolId(udiseOrSchoolId);');
+  assert.strictEqual(resolveFn('08150803534'), 'the-abacus-academy');
+  assert.strictEqual(resolveFn('the-abacus-academy'), 'the-abacus-academy');
+  assert.strictEqual(resolveFn('08150803535'), 'gr_academy');
+  assert.strictEqual(resolveFn('gr-children-academy'), 'gr_academy');
+  assert.strictEqual(resolveFn('gr_academy'), 'gr_academy');
+
+  // Extract and test isValidUuid logic
+  const uuidMatch = html.match(/function isValidUuid\([\s\S]*?^ {4}\}/m);
+  assert(uuidMatch, 'Could not extract isValidUuid');
+  const uuidFn = new Function('id', uuidMatch[0] + '\nreturn isValidUuid(id);');
+  assert.strictEqual(uuidFn('3fa85f64-5717-4562-b3fc-2c963f66afa6'), true);
+  assert.strictEqual(uuidFn('9876543210'), false);
+  assert.strictEqual(uuidFn('TEACHER-101'), false);
+  assert.strictEqual(uuidFn(null), false);
+
+  // 2. Publish payload schema compliance (public.kids_homework columns only)
+  assert(html.includes('school_id: resolvedSchoolId,'), 'payload.school_id missing');
+  assert(html.includes('class_name: normalizedClass,'), 'payload.class_name missing');
+  assert(html.includes('description: instructions,'), 'payload.description mapping missing');
+  assert(html.includes('due_date: dueDate || getTodayIstDateString(),'), 'payload.due_date fallback missing');
+  assert(html.includes('isValidUuid(rawTeacherId) ? rawTeacherId : null'), 'UUID check for teacher_id missing');
+  assert(html.includes('is_approved: true'), 'payload.is_approved missing');
+  assert(html.includes('showToast("Supabase Homework Error:'), 'Visible toast on Supabase error missing');
+
+  // 3. Student Homework Fetch query & integration
+  assert(html.includes('fetchStudentHomeworkFromSupabase'), 'fetchStudentHomeworkFromSupabase missing');
+  assert(html.includes('/kids_homework?school_id=eq." + encodeURIComponent(resolvedSchoolId) + "&class_name=ilike." + encodeURIComponent(normClass) + "&order=created_at.desc'), 'Student homework query parameters missing');
+  assert(html.includes('await fetchStudentHomeworkFromSupabase(studentClass,'), 'Student login must await fetchStudentHomeworkFromSupabase');
+  assert(html.includes('body: { title: title, description: inst }'), 'Principal edit homework PATCH must update description column');
+  assert(html.includes('var hwDesc = hw.description || hw.instructions;'), 'renderHome must support both hw.description and hw.instructions');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');

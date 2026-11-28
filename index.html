@@ -3707,27 +3707,58 @@
     // =========================================================================
     // HOMEWORK & SUBMISSIONS DATA HELPERS (kids_homework & kids_homework_submissions)
     // =========================================================================
+    function resolveHomeworkSchoolId(udiseOrSchoolId) {
+      var s = String(udiseOrSchoolId || "").trim().toLowerCase();
+      if (s === "08150803534" || s === "the-abacus-academy" || s === "abacus" || s === "the abacus academy") {
+        return "the-abacus-academy";
+      }
+      if (s === "08150803535" || s === "gr-children-academy" || s === "gr_academy" || s === "gr children academy" || s === "gr_children_academy") {
+        return "gr_academy";
+      }
+      if (s) return s;
+      return "the-abacus-academy";
+    }
+
+    function isValidUuid(id) {
+      if (!id || typeof id !== "string") return false;
+      return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id.trim());
+    }
+
+    function getTodayIstDateString() {
+      var now = new Date();
+      var istTime = new Date(now.getTime() + (5.5 * 60 * 60 * 1000));
+      return istTime.toISOString().split("T")[0];
+    }
+
     function getAllHomeworkList(schoolId) {
-      schoolId = schoolId || getActiveSchoolId();
+      schoolId = resolveHomeworkSchoolId(schoolId || getActiveSchoolId());
       var stored = localStorage.getItem("taa_kids_homework_" + schoolId);
       if (stored) {
         try {
           return JSON.parse(stored);
         } catch(e) {}
       }
-      return DEFAULT_SCHOOL_HOMEWORK.filter(function(h) { return h.school_id === schoolId; });
+      return DEFAULT_SCHOOL_HOMEWORK.filter(function(h) { return resolveHomeworkSchoolId(h.school_id) === schoolId; });
     }
 
     function saveAllHomeworkList(schoolId, hwList) {
-      schoolId = schoolId || getActiveSchoolId();
+      schoolId = resolveHomeworkSchoolId(schoolId || getActiveSchoolId());
       localStorage.setItem("taa_kids_homework_" + schoolId, JSON.stringify(hwList));
     }
 
     async function syncHomeworkFromSupabase(schoolId) {
-      schoolId = schoolId || getActiveSchoolId();
+      schoolId = resolveHomeworkSchoolId(schoolId || getActiveSchoolId());
       try {
         var res = await supabaseRest("/kids_homework?school_id=eq." + encodeURIComponent(schoolId) + "&order=created_at.desc");
         if (Array.isArray(res)) {
+          res.forEach(function(h) {
+            h.instructions = h.instructions || h.description || "";
+            h.description = h.description || h.instructions || "";
+            h.assigned_by = h.assigned_by || h.teacher_name || "Teacher";
+            h.teacher_name = h.teacher_name || h.assigned_by || "Teacher";
+            h.teacher_mobile = h.teacher_mobile || "";
+            h.school_id = schoolId;
+          });
           saveAllHomeworkList(schoolId, res);
           return res;
         }
@@ -3735,6 +3766,38 @@
         console.log("Supabase homework sync note:", err.message || err);
       }
       return getAllHomeworkList(schoolId);
+    }
+
+    async function fetchStudentHomeworkFromSupabase(studentClass, schoolIdOrUdise) {
+      var resolvedSchoolId = resolveHomeworkSchoolId(schoolIdOrUdise || (appSession.student && (appSession.student.udise_code || appSession.student.school_id)) || getActiveSchoolId());
+      var normClass = normalizeAssignedClass(studentClass || (appSession.student && (appSession.student.student_class || appSession.student.class_name)) || appSession.parentClass || "Nursery");
+
+      try {
+        var query = "/kids_homework?school_id=eq." + encodeURIComponent(resolvedSchoolId) + "&class_name=ilike." + encodeURIComponent(normClass) + "&order=created_at.desc";
+        var res = await supabaseRest(query);
+        if (Array.isArray(res)) {
+          res.forEach(function(h) {
+            h.instructions = h.instructions || h.description || "";
+            h.description = h.description || h.instructions || "";
+            h.assigned_by = h.assigned_by || h.teacher_name || "Teacher";
+            h.teacher_name = h.teacher_name || h.assigned_by || "Teacher";
+            h.teacher_mobile = h.teacher_mobile || "";
+            h.school_id = resolvedSchoolId;
+          });
+          var existingList = getAllHomeworkList(resolvedSchoolId);
+          var otherClassList = existingList.filter(function(h) {
+            return normalizeAssignedClass(h.class_name) !== normClass;
+          });
+          var merged = res.concat(otherClassList);
+          saveAllHomeworkList(resolvedSchoolId, merged);
+          return res;
+        }
+      } catch(err) {
+        console.log("Supabase fetch student homework note:", err.message || err);
+      }
+      return getAllHomeworkList(resolvedSchoolId).filter(function(h) {
+        return normalizeAssignedClass(h.class_name) === normClass;
+      });
     }
 
     async function syncClassTeachersFromSupabase(schoolId) {
@@ -3766,14 +3829,17 @@
     }
 
     function getTodayActiveHomework(className, schoolId) {
-      schoolId = schoolId || getActiveSchoolId();
-      var list = getAllHomeworkList(schoolId);
-      var cutoff = Date.now() - (48 * 60 * 60 * 1000);
-      for (var i = 0; i < list.length; i++) {
-        var h = list[i];
-        if (h.class_name === className && (new Date(h.created_at)).getTime() >= cutoff) {
-          return h;
-        }
+      var resolvedSchool = resolveHomeworkSchoolId(schoolId || (appSession.student && (appSession.student.udise_code || appSession.student.school_id)) || getActiveSchoolId());
+      var normClass = normalizeAssignedClass(className);
+      var list = getAllHomeworkList(resolvedSchool);
+      var matched = list.filter(function(h) {
+        return normalizeAssignedClass(h.class_name) === normClass;
+      });
+      if (matched.length > 0) {
+        matched.sort(function(a, b) {
+          return (new Date(b.created_at || 0)).getTime() - (new Date(a.created_at || 0)).getTime();
+        });
+        return matched[0];
       }
       return null;
     }
@@ -4171,6 +4237,11 @@
       localStorage.setItem("taa_kids_student_session", JSON.stringify(account));
       localStorage.setItem("taa_kids_parent_session", "active");
 
+      // Fresh homework sync from Supabase for student's class and school
+      try {
+        await fetchStudentHomeworkFromSupabase(studentClass, studentUdise || appSession.schoolId);
+      } catch(e) {}
+
       var modal = document.getElementById("student-login-modal");
       if (modal) modal.remove();
 
@@ -4220,6 +4291,13 @@
       speak("Welcome " + appSession.student.student_name, "en-IN");
       renderHeaderStatus();
       renderHome();
+
+      var sCls = appSession.parentClass;
+      var sSchool = (appSession.student && (appSession.student.udise_code || appSession.student.school_id)) || getActiveSchoolId();
+      fetchStudentHomeworkFromSupabase(sCls, sSchool).then(function() {
+        renderHome();
+      }).catch(function() {});
+
       setTimeout(function() {
         var hub = document.getElementById("parent-student-hub");
         if (hub) {
@@ -4251,6 +4329,13 @@
       appSession.parentTab = tab;
       playTone("pop");
       renderHome();
+      if (tab === "homework" && (appSession.type === "parent" || appSession.role === "student")) {
+        var sCls = appSession.parentClass || (appSession.student && (appSession.student.student_class || appSession.student.class_name)) || "Nursery";
+        var sSchool = (appSession.student && (appSession.student.udise_code || appSession.student.school_id)) || getActiveSchoolId();
+        fetchStudentHomeworkFromSupabase(sCls, sSchool).then(function() {
+          renderHome();
+        }).catch(function() {});
+      }
     }
 
     // =========================================================================
@@ -5383,49 +5468,75 @@
       var title = subject + ": " + chosenTopic.title;
       var instructions = "Please complete the " + chosenTopic.title + " assignment for " + cls + " Class. Review the lessons carefully and practice daily.";
       var moduleKey = chosenTopic.module_key || (topicSelect && topicSelect.options[topicSelect.selectedIndex] ? topicSelect.options[topicSelect.selectedIndex].getAttribute("data-module-key") : "") || "";
-      var dueDate = dateInput ? dateInput.value : new Date(Date.now() + 24*60*60*1000).toISOString().split('T')[0];
+      var rawDueDate = dateInput ? dateInput.value.trim() : "";
+      var dueDate = (/^\d{4}-\d{2}-\d{2}$/.test(rawDueDate)) ? rawDueDate : getTodayIstDateString();
 
-      var newHw = {
-        id: "HW-" + Date.now(),
-        school_id: schoolId,
-        class_name: cls,
-        subject: subject,
-        activity_type: "Curriculum Activity",
+      var resolvedSchoolId = resolveHomeworkSchoolId(teacher.school_id || teacher.udise_code || schoolId || getActiveSchoolId());
+      var normalizedClass = normalizeAssignedClass(cls);
+      if (normalizedClass === "ALL" || !normalizedClass) normalizedClass = "Nursery";
+
+      var rawTeacherId = teacher.id || teacher.teacher_id || teacher.user_id || "";
+      var teacherId = isValidUuid(rawTeacherId) ? rawTeacherId : null;
+      var teacherName = teacher.teacher_name || teacher.user_name || "Teacher";
+      var teacherMobile = teacher.teacher_mobile || teacher.mobile || "";
+
+      // Exact valid schema for public.kids_homework
+      var payload = {
+        school_id: resolvedSchoolId,
+        class_name: normalizedClass,
+        subject: String(subject || "General").trim() || "General",
         title: title,
-        instructions: instructions,
-        module_key: moduleKey,
-        target_questions: 10,
-        due_date: dueDate,
-        due_time: "18:00",
-        attachment_url: "",
-        assigned_by: teacher.teacher_name || teacher.user_name || "Teacher",
-        teacher_mobile: teacher.teacher_mobile || teacher.mobile || "",
-        created_at: new Date().toISOString()
+        description: instructions,
+        attachment_url: null,
+        due_date: dueDate || getTodayIstDateString(),
+        teacher_id: teacherId,
+        teacher_name: teacherName,
+        teacher_mobile: teacherMobile,
+        is_approved: true
       };
 
-      // Save locally
-      var hwList = getAllHomeworkList(schoolId);
-      hwList.unshift(newHw);
-      saveAllHomeworkList(schoolId, hwList);
-
-      // Async sync with Supabase
+      showToast("Publishing homework to " + normalizedClass + "...", "info");
+      var createdRecord = null;
       try {
-        await supabaseRest("/kids_homework", {
+        var res = await supabaseRest("/kids_homework", {
           method: "POST",
-          body: newHw
+          body: payload
         });
+        if (Array.isArray(res) && res.length > 0) {
+          createdRecord = res[0];
+        }
       } catch(err) {
-        console.log("Supabase homework insert fallback:", err.message || err);
+        var errMsg = (err && (err.message || err.details || err.hint)) || (typeof err === "string" ? err : JSON.stringify(err));
+        console.error("Supabase homework insert error:", err);
+        showToast("Supabase Homework Error: " + errMsg, "wrong");
+        speak("Failed to save homework: " + errMsg, "en-IN");
+        return;
       }
 
+      var newHw = Object.assign({}, payload, {
+        id: (createdRecord && createdRecord.id) ? createdRecord.id : ("HW-" + Date.now()),
+        created_at: (createdRecord && createdRecord.created_at) ? createdRecord.created_at : new Date().toISOString(),
+        instructions: payload.description,
+        assigned_by: payload.teacher_name,
+        activity_type: "Curriculum Activity",
+        module_key: moduleKey,
+        due_time: "18:00"
+      });
+
+      // Save locally
+      var hwList = getAllHomeworkList(resolvedSchoolId);
+      hwList.unshift(newHw);
+      saveAllHomeworkList(resolvedSchoolId, hwList);
+
       playTone("fanfare");
-      showToast("Homework published to " + cls + " Class! 🚀", "success");
-      speak("Homework published to " + cls + " class successfully.", "en-IN");
+      showToast("Homework published to " + normalizedClass + " Class! 🚀", "success");
+      speak("Homework published to " + normalizedClass + " class successfully.", "en-IN");
 
       // Switch to live report tab
       appSession.teacherTab = "report";
       renderTeacherPanelView();
     }
+    var submitPublishHomework = handleAssignHomeworkSubmit;
 
     async function deleteTeacherHomework(hwId) {
       var confirmed = confirm("Are you sure you want to delete this homework entry?");
@@ -6119,7 +6230,7 @@
       html += '  </div>';
       html += '  <div style="margin-bottom:8px;">';
       html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Instructions:</label>';
-      html += '    <textarea id="edit-hw-inst" class="input-field" rows="3" style="margin-top:4px;">' + escapeHtml(hw.instructions || '') + '</textarea>';
+      html += '    <textarea id="edit-hw-inst" class="input-field" rows="3" style="margin-top:4px;">' + escapeHtml(hw.description || hw.instructions || '') + '</textarea>';
       html += '  </div>';
       html += '  <div style="margin-bottom:14px;">';
       html += '    <label style="font-size:11px; font-weight:800; color:#37474F;">Due Time:</label>';
@@ -6145,6 +6256,7 @@
       var due = document.getElementById("edit-hw-due").value;
 
       if (title) hw.title = title;
+      hw.description = inst;
       hw.instructions = inst;
       hw.due_time = due;
 
@@ -6153,7 +6265,7 @@
       try {
         await supabaseRest("/kids_homework?id=eq." + hwId, {
           method: "PATCH",
-          body: { title: title, instructions: inst, due_time: due }
+          body: { title: title, description: inst }
         });
       } catch(e) {}
 
@@ -32073,9 +32185,10 @@ function setNurseryNumSubTab(st) {
 
           html += '  <div style="font-size:16px; font-weight:900; color:#BF360C; margin:6px 0;">' + escapeHtml(hw.title) + '</div>';
 
-          if (hw.instructions) {
+          var hwDesc = hw.description || hw.instructions;
+          if (hwDesc) {
             html += '  <div class="hw-instructions-box">';
-            html += '    <strong>Teacher Instructions:</strong><br/>' + escapeHtml(hw.instructions);
+            html += '    <strong>Teacher Instructions:</strong><br/>' + escapeHtml(hwDesc);
             html += '  </div>';
           }
 
