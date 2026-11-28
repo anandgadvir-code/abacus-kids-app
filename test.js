@@ -1459,6 +1459,98 @@ runTest('5 Separate Fun-Learning Hindi UKG Modules (Vilom, Paheli, Railgadi, Ek-
   assert.strictEqual(res.resolvedKeywordTab, 'hindi_railgadi', 'Keyword fallback must resolve to hindi_railgadi');
 });
 
+// TEST 41: Admin / Principal Portal Integration for 5 UKG Hindi Modules & Granular Homework Controls
+runTest('Admin / Principal Portal exposes 5 new UKG Hindi modules & granular Matra/CVC controls', () => {
+  const indexHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+
+  // 1. Static declarations in Admin / Principal Portal
+  assert(indexHtml.includes('renderPrincipalCurriculumTab'), 'renderPrincipalCurriculumTab must be defined');
+  assert(indexHtml.includes('renderPrincipalSendHomeworkTab'), 'renderPrincipalSendHomeworkTab must be defined');
+  assert(indexHtml.includes('launchPrincipalCurriculumModule'), 'launchPrincipalCurriculumModule must be defined');
+  assert(indexHtml.includes('quickAssignModuleAsHomework'), 'quickAssignModuleAsHomework must be defined');
+
+  // 2. Navigation tabs in Principal Desk
+  assert(indexHtml.includes('📚 Curriculum Preview &amp; Modules'), 'Curriculum Preview tab button must be in Principal Desk');
+  assert(indexHtml.includes('📤 Assign / Send Homework'), 'Assign Homework tab button must be in Principal Desk');
+
+  // 3. Admin / Principal Homework Assignment Form elements & Granular Controls
+  assert(indexHtml.includes('id="principal-hw-class"'), 'principal-hw-class dropdown must exist');
+  assert(indexHtml.includes('id="principal-hw-subject"'), 'principal-hw-subject dropdown must exist');
+  assert(indexHtml.includes('id="principal-hw-topic"'), 'principal-hw-topic dropdown must exist');
+  assert(indexHtml.includes('id="principal-hw-granular-container"'), 'principal-hw-granular-container must exist');
+  assert(indexHtml.includes('id="principal-hw-subtopic"'), 'principal-hw-subtopic dropdown must exist');
+  assert(indexHtml.includes('id="principal-hw-range-from"'), 'principal-hw-range-from input must exist');
+  assert(indexHtml.includes('id="principal-hw-range-to"'), 'principal-hw-range-to input must exist');
+  assert(indexHtml.includes('handlePrincipalAssignHomeworkSubmit'), 'handlePrincipalAssignHomeworkSubmit must be defined');
+
+  // 4. Principal Homework supervision & Summary tabs
+  assert(indexHtml.includes("send_homework") && indexHtml.includes("switchPrincipalTab"), 'Homework supervision must link to send homework');
+  assert(indexHtml.includes("curriculum") && indexHtml.includes("switchPrincipalTab"), 'Summary tab must link to curriculum preview desk');
+  assert(indexHtml.includes('ukg-hindi-curriculum-box'), 'ukg-hindi-curriculum-box must exist in Curriculum tab');
+  assert(indexHtml.includes('principal-curriculum-summary-preview'), 'principal-curriculum-summary-preview must exist in Summary tab');
+
+  // 5. Showcase mode & Direct launch
+  assert(indexHtml.includes('ukg-hindi-showcase-box'), 'ukg-hindi-showcase-box must exist in renderHome');
+  assert(indexHtml.includes('ukg-hindi-modules-nav'), 'ukg-hindi-modules-nav must exist in UKG Hindi tab');
+
+  // 6. Verify 5 new UKG Hindi modules titles are present in Admin / Principal views
+  assert(indexHtml.includes('🔄 उल्टा-सीधा खेल'), 'Module 1 title 🔄 उल्टा-सीधा खेल must be present');
+  assert(indexHtml.includes('🤔 बूझो तो जानें!'), 'Module 2 title 🤔 बूझो तो जानें! must be present');
+  assert(indexHtml.includes('🚂 अक्षर रेलगाड़ी'), 'Module 3 title 🚂 अक्षर रेलगाड़ी must be present');
+  assert(indexHtml.includes('🔢 एक – अनेक'), 'Module 4 title 🔢 एक – अनेक must be present');
+  assert(indexHtml.includes('📖 चित्र देखो, वाक्य चुनो'), 'Module 5 title 📖 चित्र देखो, वाक्य चुनो must be present');
+
+  // 7. Verify Cache Busting version
+  assert(indexHtml.includes('var APP_BUILD_VERSION = "2026.11.28-v2";'), 'APP_BUILD_VERSION must be bumped to v2');
+
+  // 8. Runtime Sandbox Execution of Principal Curriculum & Send Homework Tab Renderers
+  const testSandbox = new Function(`
+    var appSession = {
+      type: "principal",
+      principalTab: "curriculum",
+      principalCurriculumClass: "UKG",
+      principalHomeworkClass: "UKG",
+      principalHomeworkSubject: "Hindi"
+    };
+    var appState = { section: "home" };
+
+    function safeAction(fn) { return fn; }
+    function escapeHtml(s) { return String(s || ""); }
+    function getActiveSchool() {
+      return { id: "the-abacus-academy", name: "The Abacus Academy", fullName: "The Abacus Academy - Jodhpur" };
+    }
+
+    ${indexHtml.match(/function getTeacherCurriculumCatalog[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function getCurriculumModulesForClass[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function renderPrincipalCurriculumTab[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function renderPrincipalSendHomeworkTab[\s\S]*?^    \}/m)[0]}
+
+    var currHtml = renderPrincipalCurriculumTab("the-abacus-academy");
+    var sendHwHtml = renderPrincipalSendHomeworkTab("the-abacus-academy");
+
+    return {
+      hasVilomInCurr: currHtml.includes("ukg_hindi_vilom") && currHtml.includes("🔄 उल्टा-सीधा खेल"),
+      hasPaheliInCurr: currHtml.includes("ukg_hindi_paheli") && currHtml.includes("🤔 बूझो तो जानें!"),
+      hasRailInCurr: currHtml.includes("ukg_hindi_railgadi") && currHtml.includes("🚂 अक्षर रेलगाड़ी"),
+      hasEkanekInCurr: currHtml.includes("ukg_hindi_ekanek") && currHtml.includes("🔢 एक – अनेक"),
+      hasVakyaInCurr: currHtml.includes("ukg_hindi_vakya") && currHtml.includes("📖 चित्र देखो, वाक्य चुनो"),
+      hasLaunchBtnInCurr: currHtml.includes("launchPrincipalCurriculumModule"),
+      hasGranularInSend: sendHwHtml.includes("principal-hw-granular-container") && sendHwHtml.includes("principal-hw-range-from"),
+      hasClassSelectInSend: sendHwHtml.includes("principal-hw-class")
+    };
+  `);
+
+  const res = testSandbox();
+  assert.strictEqual(res.hasVilomInCurr, true, 'Principal curriculum tab must expose ukg_hindi_vilom');
+  assert.strictEqual(res.hasPaheliInCurr, true, 'Principal curriculum tab must expose ukg_hindi_paheli');
+  assert.strictEqual(res.hasRailInCurr, true, 'Principal curriculum tab must expose ukg_hindi_railgadi');
+  assert.strictEqual(res.hasEkanekInCurr, true, 'Principal curriculum tab must expose ukg_hindi_ekanek');
+  assert.strictEqual(res.hasVakyaInCurr, true, 'Principal curriculum tab must expose ukg_hindi_vakya');
+  assert.strictEqual(res.hasLaunchBtnInCurr, true, 'Principal curriculum tab must include direct module launch buttons');
+  assert.strictEqual(res.hasGranularInSend, true, 'Principal send homework tab must wire granular Matra/CVC and range controls');
+  assert.strictEqual(res.hasClassSelectInSend, true, 'Principal send homework tab must allow selecting class');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');

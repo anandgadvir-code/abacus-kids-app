@@ -6588,6 +6588,8 @@
       html += '<div class="teacher-nav-tabs">';
       html += '  <button class="teacher-tab-btn ' + (curTab === "teachers" ? "active" : "") + '" onclick="safeAction(function(){ switchPrincipalTab(\'teachers\'); })">👩‍🏫 Class Teachers (Nursery, LKG, UKG)</button>';
       html += '  <button class="teacher-tab-btn ' + (curTab === "homework" ? "active" : "") + '" onclick="safeAction(function(){ switchPrincipalTab(\'homework\'); })">📋 Homework Supervision</button>';
+      html += '  <button class="teacher-tab-btn ' + (curTab === "curriculum" ? "active" : "") + '" onclick="safeAction(function(){ switchPrincipalTab(\'curriculum\'); })">📚 Curriculum Preview &amp; Modules</button>';
+      html += '  <button class="teacher-tab-btn ' + (curTab === "send_homework" ? "active" : "") + '" onclick="safeAction(function(){ switchPrincipalTab(\'send_homework\'); })">📤 Assign / Send Homework</button>';
       html += '  <button class="teacher-tab-btn ' + (curTab === "summary" ? "active" : "") + '" onclick="safeAction(function(){ switchPrincipalTab(\'summary\'); })">📊 Campus Summary</button>';
       html += '</div>';
 
@@ -6599,7 +6601,15 @@
       else if (curTab === "homework") {
         html += renderPrincipalHomeworkTab(schoolId);
       }
-      // TAB 3: CAMPUS SUMMARY
+      // TAB 3: CURRICULUM PREVIEW (ADMIN / PRINCIPAL)
+      else if (curTab === "curriculum") {
+        html += renderPrincipalCurriculumTab(schoolId);
+      }
+      // TAB 4: ASSIGN / SEND HOMEWORK (ADMIN / PRINCIPAL)
+      else if (curTab === "send_homework") {
+        html += renderPrincipalSendHomeworkTab(schoolId);
+      }
+      // TAB 5: CAMPUS SUMMARY
       else if (curTab === "summary") {
         html += renderPrincipalSummaryTab(schoolId);
       }
@@ -6965,9 +6975,15 @@
     function renderPrincipalHomeworkTab(schoolId) {
       var hwList = getAllHomeworkList(schoolId);
       var html = '<div class="principal-card">';
-      html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">';
-      html += '    <h3 style="font-size:16px; font-weight:900; color:#4527A0; margin:0;">📋 Daily Homework Across All Classes</h3>';
-      html += '    <span style="font-size:11px; font-weight:800; background:#EDE7F6; color:#4527A0; padding:3px 8px; border-radius:8px;">Supervision Mode</span>';
+      html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">';
+      html += '    <div>';
+      html += '      <h3 style="font-size:16px; font-weight:900; color:#4527A0; margin:0;">📋 Daily Homework Across All Classes</h3>';
+      html += '      <div style="font-size:11px; color:#546E7A; font-weight:700;">Supervise, preview interactive games, edit, delete, or assign new homework</div>';
+      html += '    </div>';
+      html += '    <div style="display:flex; gap:6px; align-items:center;">';
+      html += '      <button onclick="safeAction(function(){ switchPrincipalTab(\'send_homework\'); })" style="background:#673AB7; color:#FFF; border:none; padding:6px 12px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 6px rgba(103,58,183,0.3);">📤 Assign New Homework</button>';
+      html += '      <span style="font-size:11px; font-weight:800; background:#EDE7F6; color:#4527A0; padding:4px 8px; border-radius:8px;">Supervision Mode</span>';
+      html += '    </div>';
       html += '  </div>';
 
       if (hwList.length === 0) {
@@ -6990,14 +7006,19 @@
           if (hw.instructions) {
             html += '  <div style="font-size:12px; color:#5D4037; margin-bottom:6px;">' + escapeHtml(hw.instructions) + '</div>';
           }
-          html += '  <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#78909C; font-weight:700;">';
-          html += '    <span>Assigned by ' + escapeHtml(hw.assigned_by || 'Teacher') + ' • Due: ' + (hw.due_time || '18:00') + ' (' + (hw.due_date || 'Today') + ')</span>';
-          html += '    <div style="display:flex; gap:6px;">';
-          if (hw.attachment_url) {
-            html += '      <button onclick="viewWorksheetFullModal(\'' + hw.attachment_url + '\', \'Worksheet Photo\')" style="background:#E0E0E0; border:none; padding:3px 7px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">📷 Attachment</button>';
+          var currGran = (typeof getGranularHomeworkInfo === "function") ? getGranularHomeworkInfo(hw.attachment_url) : null;
+          if (currGran && currGran.label) {
+            html += '  <div class="hw-granular-badge" style="display:inline-block; margin-bottom:6px; background:#FFF3E0; color:#E65100; border:1px solid #FFE082; padding:2px 8px; border-radius:8px; font-size:11px; font-weight:800;">🎯 ' + escapeHtml(currGran.label) + '</div>';
           }
-          html += '      <button onclick="openPrincipalEditHomeworkModal(\'' + hw.id + '\')" style="background:#E3F2FD; color:#1565C0; border:none; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">✏️ Edit</button>';
-          html += '      <button onclick="deletePrincipalHomework(\'' + hw.id + '\')" style="background:#FFEBEE; color:#C62828; border:none; padding:3px 8px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">🗑️ Delete</button>';
+          html += '  <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#78909C; font-weight:700; flex-wrap:wrap; gap:6px;">';
+          html += '    <span>Assigned by ' + escapeHtml(hw.assigned_by || 'Teacher') + ' • Due: ' + (hw.due_time || '18:00') + ' (' + (hw.due_date || 'Today') + ')</span>';
+          html += '    <div style="display:flex; gap:6px; align-items:center;">';
+          html += '      <button onclick="safeAction(function(){ startAssignedHomework(\'' + hw.id + '\', true); })" style="background:#E8F5E9; color:#2E7D32; border:1px solid #A5D6A7; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">🎮 Play / Preview</button>';
+          if (hw.attachment_url) {
+            html += '      <button onclick="viewWorksheetFullModal(\'' + hw.attachment_url + '\', \'Worksheet Photo\')" style="background:#E0E0E0; border:none; padding:4px 7px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">📷 Attachment</button>';
+          }
+          html += '      <button onclick="openPrincipalEditHomeworkModal(\'' + hw.id + '\')" style="background:#E3F2FD; color:#1565C0; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">✏️ Edit</button>';
+          html += '      <button onclick="deletePrincipalHomework(\'' + hw.id + '\')" style="background:#FFEBEE; color:#C62828; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">🗑️ Delete</button>';
           html += '    </div>';
           html += '  </div>';
           html += '</div>';
@@ -7119,9 +7140,41 @@
       html += '    <div style="font-size:22px; font-weight:900; color:#F57F17;">' + totalStudents + '</div>';
       html += '    <div style="font-size:11px; font-weight:800; color:#E65100;">Enrolled Students</div>';
       html += '  </div>';
-      html += '  <div style="background:#E3F2FD; padding:12px; border-radius:14px; text-align:center;">';
+      html += '  <div onclick="safeAction(function(){ switchPrincipalTab(\'curriculum\'); })" style="background:#E3F2FD; padding:12px; border-radius:14px; text-align:center; cursor:pointer; transition:transform 0.1s ease;">';
       html += '    <div style="font-size:22px; font-weight:900; color:#1565C0;">Nursery, LKG, UKG</div>';
-      html += '    <div style="font-size:11px; font-weight:800; color:#0D47A1;">Curriculum Modules</div>';
+      html += '    <div style="font-size:11px; font-weight:800; color:#0D47A1;">Curriculum Modules ➔</div>';
+      html += '  </div>';
+      html += '</div>';
+
+      // 5 New UKG Hindi Curriculum Modules Highlight Card in Principal Desk
+      html += '<div class="principal-curriculum-summary-preview" style="background:#FFF8E1; border:2px solid #FFE082; border-radius:16px; padding:14px; margin-top:14px;">';
+      html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">';
+      html += '    <div>';
+      html += '      <div style="font-size:14px; font-weight:900; color:#BF360C;">🪔 UKG Hindi: 5 New Interactive Learning Modules</div>';
+      html += '      <div style="font-size:11px; color:#5D4037; font-weight:700;">Directly preview and launch in Principal Showcase Mode</div>';
+      html += '    </div>';
+      html += '    <button onclick="safeAction(function(){ switchPrincipalTab(\'curriculum\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 10px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">Full Curriculum Desk ➔</button>';
+      html += '  </div>';
+      html += '  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px;">';
+      var ukgHindiPreviewItems = [
+        { key: "ukg_hindi_vilom", tab: "hindi_vilom", title: "🔄 उल्टा-सीधा खेल", sub: "विलोम शब्द / Opposites (20 Qs)" },
+        { key: "ukg_hindi_paheli", tab: "hindi_paheli", title: "🤔 बूझो तो जानें!", sub: "Hindi Riddles (15 Qs)" },
+        { key: "ukg_hindi_railgadi", tab: "hindi_railgadi", title: "🚂 अक्षर रेलगाड़ी", sub: "शब्द बनाओ Puzzle (20 Qs)" },
+        { key: "ukg_hindi_ekanek", tab: "hindi_ekanek", title: "🔢 एक – अनेक", sub: "One & Many (15 Qs)" },
+        { key: "ukg_hindi_vakya", tab: "hindi_vakya", title: "📖 चित्र देखो, वाक्य चुनो", sub: "Picture Sentences (15 Qs)" }
+      ];
+      ukgHindiPreviewItems.forEach(function(item) {
+        html += '<div style="background:#FFF; border:1.5px solid #FFD54F; border-radius:12px; padding:10px; display:flex; flex-direction:column; justify-content:space-between;">';
+        html += '  <div>';
+        html += '    <div style="font-size:13px; font-weight:900; color:#BF360C;">' + item.title + '</div>';
+        html += '    <div style="font-size:11px; color:#546E7A; font-weight:700; margin-top:2px;">' + item.sub + '</div>';
+        html += '  </div>';
+        html += '  <div style="display:flex; gap:6px; margin-top:8px;">';
+        html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'' + item.tab + '\'); })" style="flex:1; background:#FF9800; color:#FFF; border:none; padding:6px 10px; border-radius:8px; font-size:11px; font-weight:900; cursor:pointer;">▶ Preview 🎮</button>';
+        html += '    <button onclick="safeAction(function(){ quickAssignModuleAsHomework(\'UKG\', \'Hindi\', \'' + item.key + '\'); })" style="background:#FFF3E0; color:#E65100; border:1px solid #FFE082; padding:6px 8px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">📤 Assign</button>';
+        html += '  </div>';
+        html += '</div>';
+      });
       html += '  </div>';
       html += '</div>';
 
@@ -7130,6 +7183,486 @@
     }
 
     // ------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------
+    // PRINCIPAL DESK TAB: CURRICULUM PREVIEW & MODULES
+    // ------------------------------------------------------------------------
+    function launchPrincipalCurriculumModule(section, tab, subTab) {
+      appSession.principalShowcaseMode = true;
+      appSession.focusedHomeworkQuiz = null;
+      appSession.activeHomeworkPracticeMode = false;
+      appState.section = section;
+      appState.tabKey = tab;
+      if (subTab) {
+        if (tab === "grammar") appState.ukgGrammarSubTab = subTab;
+        if (tab === "math") appState.ukgMathSubTab = subTab;
+        if (tab === "evs") appState.ukgEvsTopic = subTab;
+        if (tab === "english_world") appState.ukgEnglishWorldCat = subTab;
+      }
+      openSection(section, tab, true);
+      var banner = document.getElementById("focused-homework-banner");
+      if (banner) banner.remove();
+      speak("Opening " + tab + " preview in showcase mode", "en-IN");
+    }
+
+    function renderPrincipalCurriculumTab(schoolId) {
+      var school = getActiveSchool();
+      var selectedClass = appSession.principalCurriculumClass || "UKG";
+      var modules = getCurriculumModulesForClass(selectedClass);
+      var catalog = getTeacherCurriculumCatalog(selectedClass);
+
+      var html = '<div class="principal-card principal-curriculum-desk">';
+      html += '  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:14px;">';
+      html += '    <div>';
+      html += '      <h3 style="font-size:17px; font-weight:900; color:#4527A0; margin:0;">📚 Curriculum Preview &amp; Interactive Modules</h3>';
+      html += '      <div style="font-size:11px; color:#546E7A; font-weight:700;">Directly preview, test and launch learning activities across Nursery, LKG and UKG</div>';
+      html += '    </div>';
+      html += '    <div style="display:flex; gap:6px;">';
+      ["Nursery", "LKG", "UKG"].forEach(function(c) {
+        var isSel = (selectedClass === c);
+        html += '<button onclick="safeAction(function(){ appSession.principalCurriculumClass = \'' + c + '\'; renderPrincipalPanelView(); })" style="padding:6px 12px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; border:2px solid ' + (isSel ? '#673AB7' : '#CFD8DC') + '; background:' + (isSel ? '#673AB7' : '#FFF') + '; color:' + (isSel ? '#FFF' : '#455A64') + ';">' + (c === 'Nursery' ? '🧸 ' : (c === 'LKG' ? '🚂 ' : '🚀 ')) + c + '</button>';
+      });
+      html += '    </div>';
+      html += '  </div>';
+
+      if (selectedClass === "UKG") {
+        // Prominently showcase UKG Hindi 5 modules first
+        html += '<div class="ukg-hindi-curriculum-box" style="background:#FFF8E1; border:2px solid #FFE082; border-radius:16px; padding:14px; margin-bottom:14px;">';
+        html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">';
+        html += '    <div style="font-size:14px; font-weight:900; color:#E65100;">🪔 5 New UKG Hindi Modules (Fun Learning &amp; Word Games)</div>';
+        html += '    <span style="font-size:10px; font-weight:900; background:#FFE082; color:#BF360C; padding:2px 8px; border-radius:8px;">UKG → Hindi</span>';
+        html += '  </div>';
+        html += '  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">';
+
+        var ukgHindiMods = [
+          { key: "ukg_hindi_vilom", tab: "hindi_vilom", label: "🔄 उल्टा-सीधा खेल", sub: "विलोम शब्द / Opposites", qs: "20 Qs", desc: "Opposite words pairing with audio hints & pictures" },
+          { key: "ukg_hindi_paheli", tab: "hindi_paheli", label: "🤔 बूझो तो जानें!", sub: "Hindi Riddles", qs: "15 Qs", desc: "Interactive rhyming riddles with tap-to-reveal answer" },
+          { key: "ukg_hindi_railgadi", tab: "hindi_railgadi", label: "🚂 अक्षर रेलगाड़ी", sub: "शब्द बनाओ Puzzle", qs: "20 Qs", desc: "Train bogie letter sequencing to build 2, 3 & 4 letter words" },
+          { key: "ukg_hindi_ekanek", tab: "hindi_ekanek", label: "🔢 एक – अनेक", sub: "One & Many / वचन", qs: "15 Qs", desc: "Singular & plural visual identification & sentence drill" },
+          { key: "ukg_hindi_vakya", tab: "hindi_vakya", label: "📖 चित्र देखो, वाक्य चुनो", sub: "Picture Sentences", qs: "15 Qs", desc: "Pick the accurate Hindi sentence matching the illustration" },
+          { key: "ukg_hindi_matra", tab: "matra", label: "✍️ हिंदी मात्राएं", sub: "Matra Quiz (ा, ि, ी, ु, ू)", qs: "300 Qs", desc: "Comprehensive Matra identification and word builder drill" }
+        ];
+
+        ukgHindiMods.forEach(function(m) {
+          html += '<div class="curriculum-module-card" style="background:#FFFFFF; border:1.5px solid #FFD54F; border-radius:12px; padding:10px; display:flex; flex-direction:column; justify-content:space-between;">';
+          html += '  <div>';
+          html += '    <div style="display:flex; justify-content:space-between; align-items:flex-start;">';
+          html += '      <div style="font-size:13px; font-weight:900; color:#BF360C;">' + m.label + '</div>';
+          html += '      <span style="font-size:10px; font-weight:800; background:#FFF3E0; color:#E65100; padding:2px 6px; border-radius:6px;">' + m.qs + '</span>';
+          html += '    </div>';
+          html += '    <div style="font-size:11px; font-weight:800; color:#6D4C41; margin-top:2px;">' + m.sub + '</div>';
+          html += '    <div style="font-size:10px; color:#78909C; font-weight:600; margin-top:4px;">' + m.desc + '</div>';
+          html += '  </div>';
+          html += '  <div style="display:flex; gap:6px; margin-top:10px;">';
+          html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'' + m.tab + '\'); })" style="flex:1; background:#FF9800; color:#FFF; border:none; padding:6px 10px; border-radius:8px; font-size:11px; font-weight:900; cursor:pointer;">▶ Preview 🎮</button>';
+          html += '    <button onclick="safeAction(function(){ quickAssignModuleAsHomework(\'UKG\', \'Hindi\', \'' + m.key + '\'); })" style="background:#FFF3E0; color:#E65100; border:1px solid #FFE082; padding:6px 8px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">📤 Assign</button>';
+          html += '  </div>';
+          html += '</div>';
+        });
+
+        html += '  </div>';
+        html += '</div>';
+      }
+
+      // Subject-wise catalog preview
+      html += '<div style="display:flex; flex-direction:column; gap:12px;">';
+      Object.keys(catalog).forEach(function(subKey) {
+        var subObj = catalog[subKey];
+        var topics = subObj.topics || [];
+        html += '<div style="background:#FAFAFA; border:1.5px solid #E0E0E0; border-radius:14px; padding:12px;">';
+        html += '  <div style="font-size:13px; font-weight:900; color:#37474F; margin-bottom:8px;">' + subObj.label + ' (' + topics.length + ' Activities)</div>';
+        html += '  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:8px;">';
+        topics.forEach(function(top) {
+          var mod = modules.find(function(m){ return m.key === top.module_key; });
+          html += '<div style="background:#FFF; border:1px solid #CFD8DC; border-radius:10px; padding:8px 10px; display:flex; justify-content:space-between; align-items:center; gap:6px;">';
+          html += '  <div style="font-size:11px; font-weight:800; color:#263238; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="' + escapeHtml(top.title) + '">' + escapeHtml(top.title) + '</div>';
+          if (mod) {
+            html += '  <div style="display:flex; gap:4px; flex-shrink:0;">';
+            html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'' + mod.section + '\', \'' + mod.tab + '\'); })" style="background:#EDE7F6; color:#4527A0; border:none; padding:4px 8px; border-radius:6px; font-size:10px; font-weight:900; cursor:pointer;">▶ Preview</button>';
+            html += '    <button onclick="safeAction(function(){ quickAssignModuleAsHomework(\'' + selectedClass + '\', \'' + subKey + '\', \'' + (top.module_key || '') + '\'); })" style="background:#FFF3E0; color:#E65100; border:none; padding:4px 6px; border-radius:6px; font-size:10px; font-weight:900; cursor:pointer;">📤</button>';
+            html += '  </div>';
+          } else {
+            html += '  <span style="font-size:10px; color:#90A4AE; font-weight:700; flex-shrink:0;">Oral Task</span>';
+          }
+          html += '</div>';
+        });
+        html += '  </div>';
+        html += '</div>';
+      });
+      html += '</div>';
+
+      html += '</div>';
+      return html;
+    }
+
+    // ------------------------------------------------------------------------
+    // PRINCIPAL DESK TAB: ASSIGN & SEND HOMEWORK
+    // ------------------------------------------------------------------------
+    function renderPrincipalSendHomeworkTab(schoolId) {
+      var cls = appSession.principalHomeworkClass || "UKG";
+      var school = getActiveSchool();
+      var catalog = getTeacherCurriculumCatalog(cls);
+      var defaultSubject = appSession.principalHomeworkSubject || "Hindi";
+      if (!catalog[defaultSubject]) defaultSubject = Object.keys(catalog)[0] || "English";
+      var defaultTopics = catalog[defaultSubject].topics || [];
+
+      var html = '<div class="principal-card principal-send-hw-card">';
+      html += '  <h3 style="font-size: 16px; font-weight: 900; color: #4527A0; margin-bottom: 8px;">📤 Publish Homework &amp; Activity (Principal Desk)</h3>';
+      html += '  <div style="font-size: 12px; color: #546E7A; font-weight: 600; margin-bottom: 14px;">Assign curriculum-aligned practice sets across Nursery, LKG, and UKG with granular Matra/CVC and question range controls:</div>';
+
+      // Target Class Dropdown
+      html += '  <div style="margin-bottom: 12px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">Target Class:</label>';
+      html += '    <select id="principal-hw-class" class="input-field" style="margin-top: 4px;" onchange="onPrincipalHomeworkClassChange()">';
+      ["Nursery", "LKG", "UKG"].forEach(function(c) {
+        html += '<option value="' + c + '"' + (c === cls ? ' selected' : '') + '>' + (c === 'Nursery' ? '🧸 ' : (c === 'LKG' ? '🚂 ' : '🚀 ')) + c + ' Class</option>';
+      });
+      html += '    </select>';
+      html += '  </div>';
+
+      // 1. Subject Dropdown
+      html += '  <div style="margin-bottom: 12px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">1. Subject:</label>';
+      html += '    <select id="principal-hw-subject" class="input-field" style="margin-top: 4px;" onchange="onPrincipalHomeworkSubjectChange()">';
+      Object.keys(catalog).forEach(function(sKey) {
+        html += '<option value="' + sKey + '"' + (sKey === defaultSubject ? ' selected' : '') + '>' + catalog[sKey].label + '</option>';
+      });
+      html += '    </select>';
+      html += '  </div>';
+
+      // 2. Activity / Topic Dropdown
+      html += '  <div style="margin-bottom: 12px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">2. Activity / Topic (Curriculum Ready):</label>';
+      html += '    <select id="principal-hw-topic" class="input-field" style="margin-top: 4px;" onchange="onPrincipalHomeworkTopicChange()">';
+      defaultTopics.forEach(function(t, idx) {
+        html += '<option value="' + idx + '" data-module-key="' + (t.module_key || '') + '">' + escapeHtml(t.title) + '</option>';
+      });
+      html += '    </select>';
+      html += '  </div>';
+
+      // Granular Sub-Topic & Question Range Selector (Dynamic)
+      html += '  <div id="principal-hw-granular-container" style="display: none; background: #FFFDE7; border: 1.5px solid #FFE082; border-radius: 12px; padding: 10px 12px; margin-bottom: 12px;">';
+      html += '    <div style="margin-bottom: 8px;">';
+      html += '      <label id="principal-hw-subtopic-label" style="font-size: 11px; font-weight: 800; color: #E65100;">Select Sub-topic / Sound:</label>';
+      html += '      <select id="principal-hw-subtopic" class="input-field" style="margin-top: 4px;" onchange="onPrincipalHomeworkSubtopicChange()"></select>';
+      html += '    </div>';
+      html += '    <div>';
+      html += '      <label style="font-size: 11px; font-weight: 800; color: #E65100;">Question Range (Practice Set):</label>';
+      html += '      <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">';
+      html += '        <span style="font-size: 11px; font-weight: 700; color: #546E7A;">From Q:</span>';
+      html += '        <input type="number" id="principal-hw-range-from" value="1" min="1" max="30" class="input-field" style="width: 70px; padding: 6px;" onchange="validatePrincipalHwRange()" />';
+      html += '        <span style="font-size: 11px; font-weight: 700; color: #546E7A;">To Q:</span>';
+      html += '        <input type="number" id="principal-hw-range-to" value="10" min="1" max="30" class="input-field" style="width: 70px; padding: 6px;" onchange="validatePrincipalHwRange()" />';
+      html += '      </div>';
+      html += '      <div id="principal-hw-range-hint" style="font-size: 10px; color: #78909C; font-weight: 600; margin-top: 4px;">Available: 1 to 30 questions.</div>';
+      html += '    </div>';
+      html += '  </div>';
+
+      // 3. Due Date Selector
+      var tomorrow = new Date(Date.now() + 24*60*60*1000).toISOString().split('T')[0];
+      html += '  <div style="margin-bottom: 14px;">';
+      html += '    <label style="font-size: 11px; font-weight: 800; color: #37474F;">3. Due Date:</label>';
+      html += '    <input type="date" id="principal-hw-date" value="' + tomorrow + '" class="input-field" style="margin-top: 4px;" />';
+      html += '  </div>';
+
+      // 4. Publish Homework Button
+      html += '  <button class="btn-action-primary" style="background:#673AB7; color:#FFF;" onclick="safeAction(handlePrincipalAssignHomeworkSubmit)">';
+      html += '    Publish Homework to ' + cls + ' Class (Principal Desk) 🚀';
+      html += '  </button>';
+
+      html += '</div>';
+      return html;
+    }
+
+    function onPrincipalHomeworkClassChange() {
+      var clsSelect = document.getElementById("principal-hw-class");
+      if (!clsSelect) return;
+      appSession.principalHomeworkClass = clsSelect.value;
+      var subSelect = document.getElementById("principal-hw-subject");
+      var catalog = getTeacherCurriculumCatalog(appSession.principalHomeworkClass);
+      var html = "";
+      Object.keys(catalog).forEach(function(sKey) {
+        html += '<option value="' + sKey + '">' + catalog[sKey].label + '</option>';
+      });
+      if (subSelect) {
+        subSelect.innerHTML = html;
+      }
+      onPrincipalHomeworkSubjectChange();
+    }
+
+    function onPrincipalHomeworkSubjectChange() {
+      var cls = appSession.principalHomeworkClass || "UKG";
+      var subSelect = document.getElementById("principal-hw-subject");
+      var topicSelect = document.getElementById("principal-hw-topic");
+      if (!subSelect || !topicSelect) return;
+      var curSubject = subSelect.value || "English";
+      var catalog = getTeacherCurriculumCatalog(cls);
+      var subData = catalog[curSubject] || catalog["English"] || { topics: [] };
+      var topics = subData.topics || [];
+      var html = "";
+      topics.forEach(function(t, idx) {
+        html += '<option value="' + idx + '" data-module-key="' + (t.module_key || '') + '">' + escapeHtml(t.title) + '</option>';
+      });
+      topicSelect.innerHTML = html;
+      onPrincipalHomeworkTopicChange();
+    }
+
+    function onPrincipalHomeworkTopicChange() {
+      var cls = appSession.principalHomeworkClass || "UKG";
+      var subSelect = document.getElementById("principal-hw-subject");
+      var topicSelect = document.getElementById("principal-hw-topic");
+      var container = document.getElementById("principal-hw-granular-container");
+      if (!subSelect || !topicSelect || !container) return;
+
+      var curSubject = subSelect.value || "English";
+      var catalog = getTeacherCurriculumCatalog(cls);
+      var subData = catalog[curSubject] || catalog["English"] || { topics: [] };
+      var topics = subData.topics || [];
+      var topicIdx = parseInt(topicSelect.value, 10) || 0;
+      var topicObj = topics[topicIdx] || {};
+
+      var gType = detectGranularTopicType(curSubject, topicObj);
+      if (!gType) {
+        container.style.display = "none";
+        return;
+      }
+
+      container.style.display = "block";
+      var subSelectEl = document.getElementById("principal-hw-subtopic");
+      var subLabelEl = document.getElementById("principal-hw-subtopic-label");
+      var subRow = subSelectEl ? subSelectEl.parentElement : null;
+      if (!subSelectEl) return;
+
+      var html = "";
+      if (gType === "matra" || gType === "cvc") {
+        if (subRow) subRow.style.display = "block";
+        if (gType === "matra") {
+          if (subLabelEl) subLabelEl.textContent = "Select Matra / मात्रा चुनें:";
+          var matras = [
+            { key: "all", label: "All / Mixed Matras (सभी मात्राएँ - 300 Qs)" },
+            { key: "aa", label: "आ की मात्रा (ा) - 30 Qs" },
+            { key: "i", label: "इ की मात्रा (ि) - 30 Qs" },
+            { key: "ee", label: "ई की मात्रा (ी) - 30 Qs" },
+            { key: "u", label: "उ की मात्रा (ु) - 30 Qs" },
+            { key: "oo", label: "ऊ की मात्रा (ू) - 30 Qs" },
+            { key: "e", label: "ए की मात्रा (े) - 30 Qs" },
+            { key: "ai", label: "ऐ की मात्रा (ै) - 30 Qs" },
+            { key: "o", label: "ओ की मात्रा (ो) - 30 Qs" },
+            { key: "au", label: "औ की मात्रा (ौ) - 30 Qs" },
+            { key: "ang", label: "अं की मात्रा (ं) - 30 Qs" }
+          ];
+          matras.forEach(function(m) {
+            html += '<option value="' + m.key + '">' + m.label + '</option>';
+          });
+        } else if (gType === "cvc") {
+          if (subLabelEl) subLabelEl.textContent = "Select Phonic Sound / Vowel:";
+          var cvcs = [
+            { key: "all", label: "Mixed / All CVC Sounds (A, E, I, O, U - 143 Qs)" },
+            { key: "a", label: "Short 'A' Sound (31 Qs)" },
+            { key: "e", label: "Short 'E' Sound (28 Qs)" },
+            { key: "i", label: "Short 'I' Sound (28 Qs)" },
+            { key: "o", label: "Short 'O' Sound (28 Qs)" },
+            { key: "u", label: "Short 'U' Sound (28 Qs)" }
+          ];
+          cvcs.forEach(function(c) {
+            html += '<option value="' + c.key + '">' + c.label + '</option>';
+          });
+        }
+        subSelectEl.innerHTML = html;
+      } else {
+        // 5 UKG Hindi modules (vilom, paheli, railgadi, ekanek, vakya)
+        if (subRow) subRow.style.display = "none";
+        subSelectEl.innerHTML = '<option value="all">All</option>';
+      }
+      onPrincipalHomeworkSubtopicChange();
+    }
+
+    function onPrincipalHomeworkSubtopicChange() {
+      var cls = appSession.principalHomeworkClass || "UKG";
+      var subSelect = document.getElementById("principal-hw-subject");
+      var topicSelect = document.getElementById("principal-hw-topic");
+      var subSelectEl = document.getElementById("principal-hw-subtopic");
+      var fromEl = document.getElementById("principal-hw-range-from");
+      var toEl = document.getElementById("principal-hw-range-to");
+      var hintEl = document.getElementById("principal-hw-range-hint");
+      if (!subSelect || !topicSelect || !subSelectEl || !fromEl || !toEl) return;
+
+      var curSubject = subSelect.value || "English";
+      var catalog = getTeacherCurriculumCatalog(cls);
+      var subData = catalog[curSubject] || catalog["English"] || { topics: [] };
+      var topics = subData.topics || [];
+      var topicIdx = parseInt(topicSelect.value, 10) || 0;
+      var topicObj = topics[topicIdx] || {};
+
+      var gType = detectGranularTopicType(curSubject, topicObj);
+      if (!gType) return;
+
+      var subKey = subSelectEl.value || "all";
+      var maxQ = getGranularTopicMaxQuestions(gType, subKey);
+
+      fromEl.min = "1";
+      fromEl.max = String(maxQ);
+      fromEl.value = "1";
+
+      toEl.min = "1";
+      toEl.max = String(maxQ);
+      var defaultCount = (gType === "matra" && subKey !== "all") ? Math.min(5, maxQ) : Math.min(5, maxQ);
+      toEl.value = String(defaultCount);
+
+      if (hintEl) {
+        hintEl.textContent = "Available: 1 to " + maxQ + " questions. Select range for student practice.";
+      }
+    }
+
+    function validatePrincipalHwRange() {
+      var fromEl = document.getElementById("principal-hw-range-from");
+      var toEl = document.getElementById("principal-hw-range-to");
+      if (!fromEl || !toEl) return;
+      var f = parseInt(fromEl.value, 10) || 1;
+      var t = parseInt(toEl.value, 10) || f;
+      var maxQ = parseInt(toEl.max, 10) || 300;
+      if (f < 1) f = 1;
+      if (f > maxQ) f = maxQ;
+      if (t < f) t = f;
+      if (t > maxQ) t = maxQ;
+      fromEl.value = f;
+      toEl.value = t;
+    }
+
+    async function handlePrincipalAssignHomeworkSubmit() {
+      var cls = appSession.principalHomeworkClass || "UKG";
+      var schoolId = getActiveSchoolId();
+      var principal = appSession.principalObj || { user_name: "Principal" };
+
+      var subSelect = document.getElementById("principal-hw-subject");
+      var topicSelect = document.getElementById("principal-hw-topic");
+      var dateInput = document.getElementById("principal-hw-date");
+
+      var subject = subSelect ? subSelect.value : "English";
+      var catalog = getTeacherCurriculumCatalog(cls);
+      var subData = catalog[subject] || catalog["English"] || { topics: [] };
+      var topics = subData.topics || [];
+      var topicIdx = topicSelect ? parseInt(topicSelect.value, 10) : 0;
+      var chosenTopic = topics[topicIdx] || { title: "Daily Learning Activity", module_key: "" };
+
+      var title = subject + ": " + chosenTopic.title;
+      var instructions = "Please complete the " + chosenTopic.title + " assignment for " + cls + " Class. Review the lessons carefully and practice daily.";
+      var moduleKey = chosenTopic.module_key || (topicSelect && topicSelect.options[topicSelect.selectedIndex] ? topicSelect.options[topicSelect.selectedIndex].getAttribute("data-module-key") : "") || "";
+      var rawDueDate = dateInput ? dateInput.value.trim() : "";
+      var dueDate = (/^d{4}-d{2}-d{2}$/.test(rawDueDate)) ? rawDueDate : getTodayIstDateString();
+
+      var resolvedSchoolId = resolveHomeworkSchoolId(principal.school_id || principal.udise_code || schoolId || getActiveSchoolId());
+      var normalizedClass = normalizeAssignedClass(cls);
+      if (normalizedClass === "ALL" || !normalizedClass) normalizedClass = "UKG";
+
+      var rawPrincipalId = principal.id || principal.user_id || "";
+      var principalId = isValidUuid(rawPrincipalId) ? rawPrincipalId : null;
+      var principalName = principal.user_name || principal.principal_name || "Principal";
+      var principalMobile = principal.mobile || "";
+
+      var targetMod = getCurriculumModulesForClass(normalizedClass).find(function(m) { return m.key === moduleKey; });
+      var attachmentGameId = targetMod ? ("game:" + targetMod.section + ":" + targetMod.tab) : (moduleKey ? ("game:" + moduleKey) : null);
+
+      var gContainer = document.getElementById("principal-hw-granular-container");
+      var isGranular = gContainer && gContainer.style.display !== "none";
+      if (isGranular && attachmentGameId) {
+        var subSelectEl = document.getElementById("principal-hw-subtopic");
+        var fromEl = document.getElementById("principal-hw-range-from");
+        var toEl = document.getElementById("principal-hw-range-to");
+        var subVal = subSelectEl ? subSelectEl.value : "all";
+        var fromVal = fromEl ? (parseInt(fromEl.value, 10) || 1) : 1;
+        var toVal = toEl ? (parseInt(toEl.value, 10) || fromVal) : fromVal;
+        if (fromVal < 1) fromVal = 1;
+        if (toVal < fromVal) toVal = fromVal;
+
+        var subRow = subSelectEl ? subSelectEl.parentElement : null;
+        var hasSubtopic = subRow && subRow.style.display !== "none" && subVal;
+        if (hasSubtopic) {
+          attachmentGameId += "|sub=" + encodeURIComponent(subVal) + "|q=" + fromVal + "-" + toVal;
+        } else {
+          attachmentGameId += "|q=" + fromVal + "-" + toVal;
+        }
+        var gInfo = (typeof getGranularHomeworkInfo === "function") ? getGranularHomeworkInfo(attachmentGameId) : null;
+        if (gInfo && gInfo.label) {
+          title = subject + ": " + gInfo.label;
+          instructions = "Practice " + gInfo.label + " (" + (toVal - fromVal + 1) + " Qs). Complete the quiz to earn stars!";
+        }
+      }
+
+      var payload = {
+        school_id: resolvedSchoolId,
+        class_name: normalizedClass,
+        subject: String(subject || "General").trim() || "General",
+        title: title,
+        description: instructions,
+        attachment_url: attachmentGameId,
+        due_date: dueDate || getTodayIstDateString(),
+        teacher_id: principalId,
+        teacher_name: principalName + " (Principal)",
+        teacher_mobile: principalMobile,
+        is_approved: true
+      };
+
+      showToast("Publishing homework to " + normalizedClass + "...", "info");
+      var createdRecord = null;
+      try {
+        var res = await supabaseRest("/kids_homework", {
+          method: "POST",
+          body: payload
+        });
+        if (Array.isArray(res) && res.length > 0) {
+          createdRecord = res[0];
+        }
+      } catch(err) {
+        console.error("Supabase homework insert error:", err);
+      }
+
+      var newHw = Object.assign({}, payload, {
+        id: (createdRecord && createdRecord.id) ? createdRecord.id : ("HW-" + Date.now()),
+        created_at: (createdRecord && createdRecord.created_at) ? createdRecord.created_at : new Date().toISOString(),
+        instructions: payload.description,
+        assigned_by: payload.teacher_name,
+        activity_type: "Curriculum Activity",
+        module_key: moduleKey,
+        due_time: "18:00"
+      });
+
+      var hwList = getAllHomeworkList(resolvedSchoolId);
+      hwList.unshift(newHw);
+      saveAllHomeworkList(resolvedSchoolId, hwList);
+
+      playTone("fanfare");
+      showToast("Homework published to " + normalizedClass + " Class! 🚀", "success");
+      speak("Homework published to " + normalizedClass + " class successfully.", "en-IN");
+
+      appSession.principalTab = "homework";
+      renderPrincipalPanelView();
+    }
+
+    function quickAssignModuleAsHomework(cls, subject, moduleKey) {
+      appSession.principalHomeworkClass = cls;
+      appSession.principalHomeworkSubject = subject;
+      appSession.principalTab = "send_homework";
+      renderPrincipalPanelView();
+      setTimeout(function() {
+        var subSelect = document.getElementById("principal-hw-subject");
+        if (subSelect) {
+          subSelect.value = subject;
+          onPrincipalHomeworkSubjectChange();
+        }
+        var topicSelect = document.getElementById("principal-hw-topic");
+        if (topicSelect) {
+          for (var i = 0; i < topicSelect.options.length; i++) {
+            if (topicSelect.options[i].getAttribute("data-module-key") === moduleKey) {
+              topicSelect.selectedIndex = i;
+              onPrincipalHomeworkTopicChange();
+              break;
+            }
+          }
+        }
+      }, 50);
+    }
+
     // CURRICULUM MODULES & TOPICS FOR TEACHER ASSIGNMENT & QUIZZES
     // ------------------------------------------------------------------------
     function getCurriculumModulesForClass(className) {
@@ -7473,11 +8006,11 @@
         { key: "matra", label: "✍️ हिंदी मात्राएं व शब्द निर्माण" },
         { key: "math", label: "➕➖ Math (+ / -)" },
         { key: "gk", label: "🌍 GK (150 Qs)" },
-        { key: "hindi_vilom", label: "🔄 विलोम शब्द" },
-        { key: "hindi_paheli", label: "🤔 पहेलियाँ" },
+        { key: "hindi_vilom", label: "🔄 उल्टा-सीधा खेल" },
+        { key: "hindi_paheli", label: "🤔 बूझो तो जानें!" },
         { key: "hindi_railgadi", label: "🚂 अक्षर रेलगाड़ी" },
         { key: "hindi_ekanek", label: "🔢 एक – अनेक" },
-        { key: "hindi_vakya", label: "📖 चित्र वाक्य" }
+        { key: "hindi_vakya", label: "📖 चित्र देखो, वाक्य चुनो" }
       ],
       picture_world: [
         { key: "fruits", label: "🍎 Fruits (15)" },
@@ -33179,9 +33712,13 @@ function setNurseryNumSubTab(st) {
           html += '    <div style="font-size:15px; font-weight:900; color:#311B92; margin-top:2px;">Full Multi-Class Learning Explorer (Unrestricted Access)</div>';
           html += '    <div style="font-size:11px; color:#4527A0; font-weight:700;">Nursery, LKG, UKG Modules, Picture World, Brain Booster &amp; All Quizzes Unlocked</div>';
           html += '  </div>';
-          html += '  <button class="btn-back-principal" onclick="safeAction(openPrincipalPanel)" style="background:#512DA8; color:#FFF; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(81,45,168,0.3);">';
-          html += '    ← Back to Principal Desk';
-          html += '  </button>';
+          html += '  <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">';
+          html += '    <button onclick="safeAction(function(){ switchPrincipalTab(\'curriculum\'); openPrincipalPanel(); })" style="background:#673AB7; color:#FFF; border:none; padding:8px 12px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 6px rgba(103,58,183,0.3);">📚 Curriculum Preview</button>';
+          html += '    <button onclick="safeAction(function(){ switchPrincipalTab(\'send_homework\'); openPrincipalPanel(); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 12px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 6px rgba(255,152,0,0.3);">📤 Assign Homework</button>';
+          html += '    <button class="btn-back-principal" onclick="safeAction(openPrincipalPanel)" style="background:#512DA8; color:#FFF; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(81,45,168,0.3);">';
+          html += '      ← Back to Principal Desk';
+          html += '    </button>';
+          html += '  </div>';
           html += '</div>';
         }
 
@@ -33364,10 +33901,27 @@ function setNurseryNumSubTab(st) {
           html += '  <div>';
           html += '    <span class="section-badge" style="background:#F57C00;">Age 5-6 Years</span>';
           html += '    <div class="section-name">UKG Modules ' + (curClass === 'UKG' ? '✓' : '') + '</div>';
-          html += '    <div class="section-desc">4-Letter Phonics • 📖 English Grammar (11 Topics) • English World • EVS • Hindi Matras • Math (+/-)</div>';
+          html += '    <div class="section-desc">4-Letter Phonics • 📖 English Grammar • 🪔 5 Hindi Fun Modules (विलोम, पहेली, रेलगाड़ी, एक-अनेक, वाक्य) • Matras • Math</div>';
           html += '  </div>';
           html += '  <div class="safe-emoji" style="font-size: 44px;">🚀</div>';
           html += '</div>';
+
+          // UKG Hindi 5 Modules Direct Launcher for Principal / Admin
+          if (curClass === "UKG" || isPrincipalLoggedIn) {
+            html += '<div class="ukg-hindi-showcase-box" style="grid-column: 1 / -1; background:#FFF8E1; border:2px solid #FFE082; border-radius:16px; padding:12px 14px; margin-top:4px;">';
+            html += '  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">';
+            html += '    <div style="font-size:13px; font-weight:900; color:#BF360C;">🪔 5 New UKG Hindi Modules (Direct Launch):</div>';
+            html += '    <span style="font-size:10px; font-weight:800; background:#FFE082; color:#BF360C; padding:2px 8px; border-radius:8px;">UKG Curriculum Ready</span>';
+            html += '  </div>';
+            html += '  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px;">';
+            html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_vilom\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🔄 उल्टा-सीधा खेल</button>';
+            html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_paheli\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🤔 बूझो तो जानें!</button>';
+            html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_railgadi\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🚂 अक्षर रेलगाड़ी</button>';
+            html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_ekanek\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🔢 एक – अनेक</button>';
+            html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_vakya\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">📖 चित्र देखो, वाक्य चुनो</button>';
+            html += '  </div>';
+            html += '</div>';
+          }
         } else {
           if (curClass === "Nursery") {
             html += '<div class="home-section-btn btn-nursery" onclick="safeAction(function(){ openSection(\'nursery\', 0); })">';
@@ -37070,6 +37624,16 @@ function setNurseryNumSubTab(st) {
 
       // TAB 4: ✍️ हिंदी मात्राएं व शब्द निर्माण (Hindi Subject Tab ONLY)
       else if (tabKey === "matra") {
+        html += '<div class="ukg-hindi-modules-nav" style="background:#FFF3E0; border:2px solid #FFE082; border-radius:14px; padding:10px 12px; margin-bottom:12px;">';
+        html += '  <div style="font-size:12px; font-weight:900; color:#E65100; margin-bottom:6px;">🪔 5 New UKG Hindi Modules (Explore &amp; Play):</div>';
+        html += '  <div style="display:flex; gap:6px; flex-wrap:wrap;">';
+        html += '    <button onclick="safeAction(function(){ setTab(\'hindi_vilom\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔄 उल्टा-सीधा खेल</button>';
+        html += '    <button onclick="safeAction(function(){ setTab(\'hindi_paheli\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🤔 बूझो तो जानें!</button>';
+        html += '    <button onclick="safeAction(function(){ setTab(\'hindi_railgadi\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🚂 अक्षर रेलगाड़ी</button>';
+        html += '    <button onclick="safeAction(function(){ setTab(\'hindi_ekanek\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔢 एक – अनेक</button>';
+        html += '    <button onclick="safeAction(function(){ setTab(\'hindi_vakya\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">📖 चित्र देखो, वाक्य चुनो</button>';
+        html += '  </div>';
+        html += '</div>';
         html += '<div class="mode-switch">';
         html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 मात्रा सीखें</button>';
         html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🎯 मात्रा पहचान Quiz</button>';
@@ -38868,7 +39432,7 @@ function setNurseryNumSubTab(st) {
     }
 
     // Lightweight App Live Version & Update Checker for Android APK
-    var APP_BUILD_VERSION = "2026.11.28-v1";
+    var APP_BUILD_VERSION = "2026.11.28-v2";
     async function checkForLiveAppUpdate() {
       if (!navigator.onLine) return;
       try {
