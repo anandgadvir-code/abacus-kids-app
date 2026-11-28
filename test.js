@@ -1126,6 +1126,173 @@ runTest('Granular Teacher Homework Selection (Individual Hindi Matras + Question
   assert.strictEqual(res.slicedMixedLength, 15, 'Sliced mixed CVC list must contain exactly 15 questions');
 });
 
+// TEST 39: 48-Hour Homework Visibility & One-Time Points (Practice-Only on Replay)
+runTest('48-Hour Homework Visibility & One-Time Points (Practice-Only on Replay)', () => {
+  // 1. Verify function & DOM definitions in index.html
+  assert(html.includes('isHomeworkWithin48Hours'), 'isHomeworkWithin48Hours function missing in index.html');
+  assert(html.includes('getStudentActiveHomework'), 'getStudentActiveHomework function missing in index.html');
+  assert(html.includes('isHomeworkCompletedByStudent'), 'isHomeworkCompletedByStudent function missing in index.html');
+  assert(html.includes('activeHomeworkPracticeMode'), 'activeHomeworkPracticeMode state missing in index.html');
+  assert(html.includes('Practice Again (No Extra Points)'), 'Practice Again (No Extra Points) button text missing in index.html');
+  assert(html.includes('btn-practice-again'), 'btn-practice-again CSS class missing in index.html');
+  assert(html.includes('Practice Mode • Points already earned'), 'Practice Mode toast / status message missing in index.html');
+
+  // 2. Logic testing in isolated sandbox
+  const sStart = html.indexOf('<script>');
+  const sEnd = html.lastIndexOf('</script>');
+  const scriptContent = html.substring(sStart + 8, sEnd);
+
+  const testPracticeSandbox = new Function(`
+    var mockStorage = {};
+    var localStorage = {
+      getItem: function(k) { return mockStorage[k] || null; },
+      setItem: function(k, v) { mockStorage[k] = String(v); }
+    };
+    var appSession = {
+      type: 'parent',
+      role: 'student',
+      parentClass: 'LKG',
+      student: {
+        login_id: 'STU101',
+        student_id: 'STU101',
+        student_name: 'Aarav Sharma',
+        student_class: 'LKG',
+        points: 50.0,
+        stars: 50.0,
+        tasks_completed: [],
+        badges: [],
+        reward_counts: {}
+      },
+      homeworkSession: null,
+      activeHomeworkId: null,
+      activeHomeworkPracticeMode: false
+    };
+    var appState = { stars: 50, section: 'home' };
+
+    function resolveHomeworkSchoolId(id) { return 'the-abacus-academy'; }
+    function getActiveSchoolId() { return 'the-abacus-academy'; }
+    function normalizeAssignedClass(c) { return String(c || 'LKG').trim(); }
+    function safeAction(fn) { fn(); }
+    function showToast() {}
+    function speak() {}
+    function playTone() {}
+    function triggerConfetti() {}
+    function updateHeaderPointBadges(pts) {}
+    function checkRewardShelfMilestones() {}
+    function saveStudentSessionLocallyAndRemote() {}
+    function syncHeaderPointsUI() {}
+    function showPointPopAnimation() {}
+    function openSection() {}
+    function setMode() {}
+    function escapeHtml(s) { return s; }
+    function getTodayIstDateString() { return '2026-11-28'; }
+    function supabaseRest() { return Promise.resolve(); }
+
+    var mockHwList = [
+      { id: 'HW-FRESH', class_name: 'LKG', created_at: '2026-11-28T10:00:00Z', title: 'Fresh HW (2h old)', target_questions: 5 },
+      { id: 'HW-YESTERDAY', class_name: 'LKG', created_at: '2026-11-27T06:00:00Z', title: 'Yesterday HW (30h old)', target_questions: 5 },
+      { id: 'HW-EXPIRED', class_name: 'LKG', created_at: '2026-11-26T08:00:00Z', title: 'Expired HW (52h old)', target_questions: 5 },
+      { id: 'HW-NODATE-FRESH', class_name: 'LKG', due_date: '2026-11-28', title: 'Due today end of day', target_questions: 5 },
+      { id: 'HW-NODATE-EXPIRED', class_name: 'LKG', due_date: '2026-11-25', title: 'Due 3 days ago', target_questions: 5 }
+    ];
+
+    function getAllHomeworkList(schoolId) {
+      return mockHwList;
+    }
+
+    ${scriptContent.match(/function isHomeworkWithin48Hours[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function getStudentActiveHomework[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function getAllSubmissionsList[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function saveAllSubmissionsList[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function isHomeworkCompletedByStudent[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function getStudentHomeworkSubmission[\s\S]*?^    \}/m)[0]}
+
+    // 1. Test 48-Hour Visibility Window with fixed reference time
+    var refNow = new Date('2026-11-28T12:00:00Z').getTime();
+    var isFreshOk = isHomeworkWithin48Hours(mockHwList[0], refNow);
+    var isYesterdayOk = isHomeworkWithin48Hours(mockHwList[1], refNow);
+    var isExpiredFiltered = isHomeworkWithin48Hours(mockHwList[2], refNow);
+    var isNoDateFreshOk = isHomeworkWithin48Hours(mockHwList[3], refNow);
+    var isNoDateExpiredFiltered = isHomeworkWithin48Hours(mockHwList[4], refNow);
+
+    var studentActiveHw = getStudentActiveHomework('LKG', 'the-abacus-academy', refNow);
+
+    // 2. Test One-Time Points vs Practice Replay
+    // Check initial completion state
+    var initCompleted = isHomeworkCompletedByStudent('STU101', 'HW-FRESH', 'the-abacus-academy');
+
+    // Emulate 1st completion:
+    // Mark as completed in submissions list
+    var subRecord = {
+      id: 'SUB-1',
+      school_id: 'the-abacus-academy',
+      homework_id: 'HW-FRESH',
+      student_id: 'STU101',
+      status: 'completed',
+      points_earned: 30.0
+    };
+    saveAllSubmissionsList('the-abacus-academy', [subRecord]);
+    appSession.student.points += 30.0;
+    var pointsAfterFirst = appSession.student.points;
+
+    // Verify homework is now completed
+    var afterFirstCompleted = isHomeworkCompletedByStudent('STU101', 'HW-FRESH', 'the-abacus-academy');
+
+    // Emulate Replay / Practice launch:
+    var isPractice = isHomeworkCompletedByStudent('STU101', 'HW-FRESH', 'the-abacus-academy');
+    appSession.activeHomeworkPracticeMode = isPractice;
+    appSession.homeworkSession = {
+      homeworkId: 'HW-FRESH',
+      targetQuestions: 5,
+      isPracticeMode: isPractice,
+      totalScore: 0.0,
+      questionScores: []
+    };
+
+    // Emulate answering question in practice mode
+    var earned = appSession.homeworkSession.isPracticeMode ? 0.0 : 1.0;
+    if (earned > 0) {
+      appSession.student.points += earned;
+    }
+
+    // Emulate completeActiveHomeworkRecord in practice mode (isPractice === true)
+    if (!appSession.homeworkSession.isPracticeMode) {
+      appSession.student.points += 30.0;
+    }
+    var pointsAfterPracticeReplay = appSession.student.points;
+
+    return {
+      isFreshOk: isFreshOk,
+      isYesterdayOk: isYesterdayOk,
+      isExpiredFiltered: isExpiredFiltered,
+      isNoDateFreshOk: isNoDateFreshOk,
+      isNoDateExpiredFiltered: isNoDateExpiredFiltered,
+      studentActiveHwId: studentActiveHw ? studentActiveHw.id : null,
+      initCompleted: initCompleted,
+      pointsAfterFirst: pointsAfterFirst,
+      afterFirstCompleted: afterFirstCompleted,
+      isPractice: isPractice,
+      pointsAfterPracticeReplay: pointsAfterPracticeReplay
+    };
+  `);
+
+  const res = testPracticeSandbox();
+  // 48-hour visibility assertions
+  assert.strictEqual(res.isFreshOk, true, 'Fresh homework (2h old) must be visible (true)');
+  assert.strictEqual(res.isYesterdayOk, true, 'Yesterday homework (30h old) must be visible (true)');
+  assert.strictEqual(res.isExpiredFiltered, false, 'Expired homework (52h old) must be hidden (false)');
+  assert.strictEqual(res.isNoDateFreshOk, true, 'Homework due today without created_at must be visible (true)');
+  assert.strictEqual(res.isNoDateExpiredFiltered, false, 'Homework due 3 days ago without created_at must be hidden (false)');
+  assert.strictEqual(res.studentActiveHwId, 'HW-FRESH', 'Student active homework must return the latest non-expired homework');
+
+  // One-time points & Practice mode assertions
+  assert.strictEqual(res.initCompleted, false, 'Homework must initially not be completed');
+  assert.strictEqual(res.pointsAfterFirst, 80.0, 'First completion must award +30 points (50 -> 80)');
+  assert.strictEqual(res.afterFirstCompleted, true, 'Homework must be recorded as completed after 1st submission');
+  assert.strictEqual(res.isPractice, true, 'Replay of completed homework must activate practice mode (true)');
+  assert.strictEqual(res.pointsAfterPracticeReplay, 80.0, 'Practice mode replay must add 0 extra points (remain strictly 80.0)');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');

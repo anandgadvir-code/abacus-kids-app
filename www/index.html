@@ -4180,7 +4180,51 @@
       return getAllSubmissionsList(schoolId);
     }
 
-    function getTodayActiveHomework(className, schoolId) {
+    function isHomeworkWithin48Hours(hw, referenceNow) {
+      if (!hw) return false;
+      var now = (typeof referenceNow === "number") ? referenceNow : Date.now();
+      var hwTime = null;
+      if (hw.created_at) {
+        hwTime = (new Date(hw.created_at)).getTime();
+      } else if (hw.due_date || hw.date) {
+        var dStr = String(hw.due_date || hw.date).slice(0, 10);
+        hwTime = (new Date(dStr + "T23:59:59.999")).getTime();
+        if (isNaN(hwTime)) {
+          var parts = dStr.split("-");
+          if (parts.length === 3) {
+            hwTime = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10), 23, 59, 59, 999).getTime();
+          }
+        }
+      }
+      if (!hwTime || isNaN(hwTime)) return true;
+      var ageMs = now - hwTime;
+      var fortyEightHoursMs = 48 * 60 * 60 * 1000;
+      return ageMs <= fortyEightHoursMs;
+    }
+
+    function getStudentActiveHomework(className, schoolId, referenceNow) {
+      var resolvedSchool = resolveHomeworkSchoolId(schoolId || (appSession.student && (appSession.student.udise_code || appSession.student.school_id)) || getActiveSchoolId());
+      var normClass = normalizeAssignedClass(className);
+      var list = getAllHomeworkList(resolvedSchool);
+      var matched = list.filter(function(h) {
+        if (normalizeAssignedClass(h.class_name || h.student_class || h.class) !== normClass) return false;
+        return isHomeworkWithin48Hours(h, referenceNow);
+      });
+      if (matched.length > 0) {
+        matched.sort(function(a, b) {
+          var bTime = (new Date(b.created_at || b.due_date || b.date || 0)).getTime();
+          var aTime = (new Date(a.created_at || a.due_date || a.date || 0)).getTime();
+          return bTime - aTime;
+        });
+        return matched[0];
+      }
+      return null;
+    }
+
+    function getTodayActiveHomework(className, schoolId, isStudentView) {
+      if (isStudentView) {
+        return getStudentActiveHomework(className, schoolId);
+      }
       var resolvedSchool = resolveHomeworkSchoolId(schoolId || (appSession.student && (appSession.student.udise_code || appSession.student.school_id)) || getActiveSchoolId());
       var normClass = normalizeAssignedClass(className);
       var list = getAllHomeworkList(resolvedSchool);
@@ -4215,18 +4259,24 @@
     }
 
     function isHomeworkCompletedByStudent(studentId, homeworkId, schoolId) {
-      if (!homeworkId) return false;
+      if (!homeworkId || !studentId) return false;
+      schoolId = resolveHomeworkSchoolId(schoolId || getActiveSchoolId());
       var subs = getAllSubmissionsList(schoolId);
+      var sid = String(studentId).trim();
+      var hid = String(homeworkId).trim();
       return subs.some(function(s) {
-        return (s.student_id === studentId || s.homework_id === homeworkId) && s.status === "completed";
+        return String(s.student_id).trim() === sid && String(s.homework_id).trim() === hid && s.status === "completed";
       });
     }
 
     function getStudentHomeworkSubmission(studentId, homeworkId, schoolId) {
-      if (!homeworkId) return null;
+      if (!homeworkId || !studentId) return null;
+      schoolId = resolveHomeworkSchoolId(schoolId || getActiveSchoolId());
       var subs = getAllSubmissionsList(schoolId);
+      var sid = String(studentId).trim();
+      var hid = String(homeworkId).trim();
       return subs.find(function(s) {
-        return (s.student_id === studentId || s.homework_id === homeworkId);
+        return String(s.student_id).trim() === sid && String(s.homework_id).trim() === hid;
       }) || null;
     }
 
@@ -7109,13 +7159,18 @@
     }
 
     // Launch Homework with Interactive Module (Focused Practice Quiz Mode)
-    function startAssignedHomework(hwId) {
+    function startAssignedHomework(hwId, isPracticeModeExplicit) {
       var schoolId = getActiveSchoolId();
       var hw = hwId ? getAllHomeworkList(schoolId).find(function(h) { return h.id === hwId; }) : getTodayActiveHomework(appSession.parentClass, schoolId);
       if (!hw) {
         showToast("No homework active!", "wrong");
         return;
       }
+
+      var student = appSession.student;
+      var stuId = student ? String(student.login_id || student.student_id || student.id || "") : "";
+      var alreadyCompleted = stuId ? isHomeworkCompletedByStudent(stuId, hw.id, schoolId) : false;
+      var isPractice = (isPracticeModeExplicit === true) || alreadyCompleted;
 
       var parsedQ = (typeof parseHomeworkGameParams === "function") ? parseHomeworkGameParams(hw.attachment_url) : null;
       var targetQs = (parsedQ && parsedQ.fromQ && parsedQ.toQ && parsedQ.toQ >= parsedQ.fromQ)
@@ -7125,6 +7180,7 @@
       // Lock session to focused homework quiz matching this specific teacher-assigned homework
       appSession.focusedHomeworkQuiz = hw;
       appSession.activeHomeworkId = hw.id;
+      appSession.activeHomeworkPracticeMode = isPractice;
       appSession.homeworkSession = {
         homeworkId: hw.id,
         sub: (parsedQ && parsedQ.sub) ? parsedQ.sub : null,
@@ -7135,7 +7191,7 @@
         totalWrongTapsAllQs: 0,
         questionScores: [],
         totalScore: 0.0,
-        isPracticeMode: false
+        isPracticeMode: isPractice
       };
       appSession.homeworkAnsweredCount = 0;
       if (typeof quizState !== "undefined") quizState.questionAttempts = 0;
@@ -7179,25 +7235,38 @@
 
       openSection(mod.section, mod.tab, true);
       setMode(mod.mode || "quiz");
-      speak("Starting " + hw.title, "en-IN");
+      if (isPractice) {
+        showToast("Practice Mode • Points already earned ✅", "info");
+        speak("Practice Mode. Let's practice " + hw.title, "en-IN");
+      } else {
+        speak("Starting " + hw.title, "en-IN");
+      }
     }
 
     function renderFocusedHomeworkQuizHeader() {
       if (!appSession.focusedHomeworkQuiz) return "";
       var hw = appSession.focusedHomeworkQuiz;
+      var isPractice = !!(appSession.activeHomeworkPracticeMode || (appSession.homeworkSession && appSession.homeworkSession.isPracticeMode));
       var gInfo = (typeof getGranularHomeworkInfo === "function") ? getGranularHomeworkInfo(hw.attachment_url) : null;
-      var html = '<div id="focused-homework-banner" style="background:#FFF3E0; border:2.5px solid #FF9800; border-radius:18px; padding:12px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; box-shadow:0 4px 12px rgba(255,152,0,0.18);">';
-      html += '  <button class="btn-back-hw" onclick="safeAction(exitFocusedHomeworkQuiz)" style="background:#E65100; color:#FFFFFF; border:none; padding:10px 16px; border-radius:12px; font-size:13px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(230,81,0,0.3);">';
+      var bannerBg = isPractice ? "#E8F5E9" : "#FFF3E0";
+      var bannerBorder = isPractice ? "#4CAF50" : "#FF9800";
+      var bannerShadow = isPractice ? "rgba(76,175,80,0.18)" : "rgba(255,152,0,0.18)";
+      var badgeBg = isPractice ? "#2E7D32" : "#FF9800";
+      var badgeText = isPractice ? "🎮 PRACTICE MODE • POINTS ALREADY EARNED ✅" : "🎯 ASSIGNED HOMEWORK QUIZ";
+      var backBtnBg = isPractice ? "#2E7D32" : "#E65100";
+
+      var html = '<div id="focused-homework-banner" style="background:' + bannerBg + '; border:2.5px solid ' + bannerBorder + '; border-radius:18px; padding:12px 16px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; box-shadow:0 4px 12px ' + bannerShadow + ';">';
+      html += '  <button class="btn-back-hw" onclick="safeAction(exitFocusedHomeworkQuiz)" style="background:' + backBtnBg + '; color:#FFFFFF; border:none; padding:10px 16px; border-radius:12px; font-size:13px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(0,0,0,0.2);">';
       html += '    ← Back to Today\'s Homework';
       html += '  </button>';
       html += '  <div style="text-align:right;">';
-      html += '    <span style="font-size:10px; font-weight:900; background:#FF9800; color:#FFF; padding:3px 8px; border-radius:6px; text-transform:uppercase;">🎯 ASSIGNED HOMEWORK QUIZ</span>';
-      html += '    <div style="font-size:15px; font-weight:900; color:#BF360C; margin-top:2px;">' + escapeHtml(hw.title) + '</div>';
+      html += '    <span style="font-size:10px; font-weight:900; background:' + badgeBg + '; color:#FFF; padding:3px 8px; border-radius:6px; text-transform:uppercase;">' + badgeText + '</span>';
+      html += '    <div style="font-size:15px; font-weight:900; color:' + (isPractice ? '#1B5E20' : '#BF360C') + '; margin-top:2px;">' + escapeHtml(hw.title) + '</div>';
       var subtitle = hw.class_name + ' Class • ' + escapeHtml(hw.subject);
       if (gInfo && gInfo.label) {
         subtitle += ' • ' + escapeHtml(gInfo.label);
       }
-      subtitle += ' • Target: ' + (hw.target_questions || 10) + ' Qs';
+      subtitle += isPractice ? ' • Practice Mode (0 Extra Pts)' : (' • Target: ' + (hw.target_questions || 10) + ' Qs');
       html += '    <div style="font-size:11px; color:#546E7A; font-weight:700;">' + subtitle + '</div>';
       html += '  </div>';
       html += '</div>';
@@ -7206,6 +7275,7 @@
 
     function exitFocusedHomeworkQuiz() {
       appSession.focusedHomeworkQuiz = null;
+      appSession.activeHomeworkPracticeMode = false;
       var oldB = document.getElementById("focused-homework-banner");
       if (oldB) oldB.remove();
       if (appSession.type === "principal") {
@@ -7220,20 +7290,36 @@
       var quizHw = appSession.focusedHomeworkQuiz;
       var activeId = hwId || (quizHw ? quizHw.id : "HW-QUIZ");
       var title = quizHw ? quizHw.title : "Practice Quiz";
+      var isPractice = !!(appSession.activeHomeworkPracticeMode || (appSession.homeworkSession && appSession.homeworkSession.isPracticeMode));
 
       appSession.focusedHomeworkQuiz = null;
+      appSession.activeHomeworkPracticeMode = false;
       var oldB = document.getElementById("focused-homework-banner");
       if (oldB) oldB.remove();
 
-      // Automatically mark homework as completed in submissions list
       var schoolId = getActiveSchoolId();
       var student = appSession.student;
+
+      if (isPractice) {
+        showToast("Great Practice! 👏 Points already earned ✅", "success");
+        speak("Great practice! You already finished this homework.", "en-IN");
+        setTimeout(function() {
+          if (appSession.type === "parent" || appSession.role === "student") {
+            enterParentMode(appSession.parentClass || "Nursery");
+          } else {
+            goHome();
+          }
+        }, 500);
+        return;
+      }
+
+      // Automatically mark homework as completed in submissions list
       if (student && activeId) {
         var stuId = String(student.login_id || student.student_id || student.id || "STU-1");
         var stuName = student.student_name || "Student";
         var hwItem = getAllHomeworkList(schoolId).find(function(h) { return h.id === activeId; }) || quizHw || {};
         var subList = getAllSubmissionsList(schoolId);
-        subList = subList.filter(function(s) { return !(s.homework_id === activeId && s.student_id === stuId); });
+        subList = subList.filter(function(s) { return !(String(s.homework_id) === String(activeId) && String(s.student_id) === stuId); });
         var subRecord = {
           id: "SUB-" + Date.now(),
           school_id: schoolId,
@@ -7261,7 +7347,7 @@
         } catch(e) {}
       }
 
-      // Award points & stars (+20 pts) with duplicate farming prevention
+      // Award completion bonus points (+20 pts)
       await awardStudentReward({
         type: "quiz",
         homeworkId: activeId,
@@ -7542,9 +7628,9 @@
 
           playTone("success");
           triggerConfetti();
-          var ptsMsg = hs.isPracticeMode ? "Practice Mode (0 Pts)" : (feedbackBadge + "! Total: " + hs.totalScore);
-          showToast("🎉 Correct! " + ptsMsg, "success");
-          speak(config.spoken || "Correct!", config.lang || "en-IN");
+          var ptsMsg = hs.isPracticeMode ? "Great Practice! 👏 (Points already earned ✅)" : (feedbackBadge + "! Total: " + hs.totalScore);
+          showToast(hs.isPracticeMode ? "Great Practice! 👏 Points already earned ✅" : ("🎉 Correct! " + ptsMsg), "success");
+          speak(config.spoken || (hs.isPracticeMode ? "Great practice!" : "Correct!"), config.lang || "en-IN");
 
           // Award to logged-in student live balance
           if (earned > 0 && (appSession.type === "parent" || appSession.role === "student") && appSession.student) {
@@ -32969,7 +33055,8 @@ function setNurseryNumSubTab(st) {
 
       // SUB-TAB 1: TODAY'S HOMEWORK
       if (curTab === 'homework') {
-        var hw = getTodayActiveHomework(curClass, schoolId);
+        var isStudentOrParent = (isStudentLoggedIn || appSession.type === "parent" || appSession.role === "student");
+        var hw = isStudentOrParent ? getStudentActiveHomework(curClass, schoolId) : getTodayActiveHomework(curClass, schoolId);
         var assignedTeacher = getAssignedClassTeacher(schoolId, curClass);
         var teacherDisplayName = (assignedTeacher && assignedTeacher.teacher_name) || (hw && (hw.teacher_name || hw.assigned_by)) || "";
         var teacherDisplayMobile = (assignedTeacher && assignedTeacher.teacher_mobile) || (hw && hw.teacher_mobile) || "";
@@ -33025,7 +33112,7 @@ function setNurseryNumSubTab(st) {
           var studentSubmission = null;
           if (appSession.student) {
             var stuId = String(appSession.student.login_id || appSession.student.student_id || "");
-            studentSubmission = submissions.find(function(s) { return String(s.student_id) === stuId; });
+            studentSubmission = isHomeworkCompletedByStudent(stuId, hw.id, schoolId) ? getStudentHomeworkSubmission(stuId, hw.id, schoolId) : submissions.find(function(s) { return String(s.student_id) === stuId; });
           }
 
           if (studentSubmission) {
@@ -33034,11 +33121,11 @@ function setNurseryNumSubTab(st) {
             html += '      <span>✅ Homework Completed!</span>';
             html += '      <span style="font-size:11px; background:#C8E6C9; color:#2E7D32; padding:2px 8px; border-radius:8px; font-weight:800;">+30 Pts Earned</span>';
             html += '    </div>';
-            html += '    <button class="btn-play-hw" onclick="safeAction(function(){ startAssignedHomework(\'' + hw.id + '\'); })" style="background:#2E7D32; color:#FFF; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px;">🎮 Replay Game</button>';
+            html += '    <button class="btn-play-hw btn-practice-again" onclick="safeAction(function(){ startAssignedHomework(\'' + hw.id + '\', true); })" style="background:#2E7D32; color:#FFF; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px;">🎮 Practice Again (No Extra Points)</button>';
             html += '  </div>';
           } else {
             // Bright primary action button: Play & Complete Homework
-            html += '  <button class="btn-play-hw btn-action-primary" onclick="safeAction(function(){ startAssignedHomework(\'' + hw.id + '\'); })" style="background:linear-gradient(135deg, #FF6F00, #FF9800); color:#FFF; border:none; padding:14px 18px; border-radius:16px; font-size:15px; font-weight:900; width:100%; margin:10px 0; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(255,111,0,0.35);">';
+            html += '  <button class="btn-play-hw btn-action-primary" onclick="safeAction(function(){ startAssignedHomework(\'' + hw.id + '\', false); })" style="background:linear-gradient(135deg, #FF6F00, #FF9800); color:#FFF; border:none; padding:14px 18px; border-radius:16px; font-size:15px; font-weight:900; width:100%; margin:10px 0; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(255,111,0,0.35);">';
             html += '    <span>🎮 Play &amp; Complete Homework</span>';
             html += '    <span style="font-size:16px;">➔</span>';
             html += '  </button>';
