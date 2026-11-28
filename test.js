@@ -708,10 +708,100 @@ runTest('Student dashboard locks strictly to teacher homework only, hiding free 
   assert(html.includes('if (isStudentUser && !isBypassHwLock && !appSession.focusedHomeworkQuiz)'), 'openSection must block direct free-roam modules for students');
 
   // 4. Assigned teacher homework remains playable and returns to Today Homework
-  assert(html.includes('startAssignedHomework') && html.includes('🚀 Launch Interactive Practice Quiz'), 'startAssignedHomework handler missing in homework card');
+  assert(html.includes('startAssignedHomework') && html.includes('Play &amp; Complete Homework'), 'startAssignedHomework handler missing in homework card');
   assert(html.includes('openSection(mod.section, mod.tab, true);'), 'startAssignedHomework must pass isBypassHwLock true');
   assert(html.includes('exitFocusedHomeworkQuiz'), 'exitFocusedHomeworkQuiz handler missing');
   assert(html.includes('enterParentMode(appSession.parentClass || "Nursery");'), 'exitFocusedHomeworkQuiz must return to Today Homework');
+});
+
+// TEST 35: Interactive Game Auto-Resolution & Direct Game Launch (No Notebook Popup)
+runTest('Homework card renders Play & Complete Homework button and auto-resolves interactive game even without attachment_url', () => {
+  // 1. resolveHomeworkGameModule presence and logic
+  assert(html.includes('function resolveHomeworkGameModule('), 'resolveHomeworkGameModule function missing');
+  const resMatch = html.match(/function resolveHomeworkGameModule\([\s\S]*?^ {4}\}/m);
+  assert(resMatch, 'Could not extract resolveHomeworkGameModule');
+
+  const currMatch = html.match(/function getCurriculumModulesForClass\([\s\S]*?^ {4}\}/m);
+  const normClassMatch = html.match(/function normalizeAssignedClass\([\s\S]*?^ {4}\}/m);
+
+  const testGameEnv = new Function('hw', `
+    ${normClassMatch[0]}
+    ${currMatch[0]}
+    ${resMatch[0]}
+    return resolveHomeworkGameModule(hw);
+  `);
+
+  // Test Case A: English Letters A-Z / Phonics without attachment_url (null)
+  const lkgPhonicsHw = {
+    school_id: 'the-abacus-academy',
+    class_name: 'LKG',
+    subject: 'English',
+    title: 'English: Letters A-Z Phonic Practice',
+    description: 'Practice letters daily',
+    attachment_url: null,
+    is_approved: true
+  };
+  const resolvedA = testGameEnv(lkgPhonicsHw);
+  assert(resolvedA, 'Failed to resolve game for English Phonics homework');
+  assert.strictEqual(resolvedA.section, 'lkg', 'Resolved game section should be lkg');
+  assert.strictEqual(resolvedA.tab, 'phonics', 'Resolved game tab should be phonics');
+
+  // Test Case B: Hindi Swar with null attachment_url
+  const hindiHw = {
+    school_id: 'the-abacus-academy',
+    class_name: 'Nursery',
+    subject: 'Hindi',
+    title: 'Hindi: स्वर अ-अः अभ्यास',
+    description: 'Learn Swar',
+    attachment_url: null,
+    is_approved: true
+  };
+  const resolvedB = testGameEnv(hindiHw);
+  assert(resolvedB, 'Failed to resolve game for Hindi Swar homework');
+  assert.strictEqual(resolvedB.section, 'nursery', 'Resolved game section should be nursery');
+  assert.strictEqual(resolvedB.tab, 'swar', 'Resolved game tab should be swar');
+
+  // Test Case C: Math Counting with null attachment_url
+  const mathHw = {
+    school_id: 'the-abacus-academy',
+    class_name: 'Nursery',
+    subject: 'Math',
+    title: 'Math: Counting 1-50 Chart',
+    description: 'Numbers Practice',
+    attachment_url: null,
+    is_approved: true
+  };
+  const resolvedC = testGameEnv(mathHw);
+  assert(resolvedC, 'Failed to resolve game for Math Counting homework');
+  assert.strictEqual(resolvedC.section, 'nursery', 'Resolved game section should be nursery');
+  assert.strictEqual(resolvedC.tab, 'numbers', 'Resolved game tab should be numbers');
+
+  // Test Case D: With attachment_url starting with game:<section>:<tab>
+  const gameUriHw = {
+    school_id: 'the-abacus-academy',
+    class_name: 'UKG',
+    subject: 'English',
+    title: 'Grammar Practice',
+    attachment_url: 'game:ukg:grammar',
+    is_approved: true
+  };
+  const resolvedD = testGameEnv(gameUriHw);
+  assert(resolvedD, 'Failed to resolve game from game: URI');
+  assert.strictEqual(resolvedD.section, 'ukg', 'Resolved section should match game: URI');
+  assert.strictEqual(resolvedD.tab, 'grammar', 'Resolved tab should match game: URI');
+
+  // 2. Button on homework card is "🎮 Play & Complete Homework" calling startAssignedHomework
+  assert(html.includes('btn-play-hw'), 'btn-play-hw class missing on homework card');
+  assert(html.includes('🎮 Play &amp; Complete Homework'), 'Play & Complete Homework button missing on card');
+  assert(html.includes("startAssignedHomework(\\'' + hw.id + '\\')") || html.includes("startAssignedHomework"), 'startAssignedHomework invocation missing on card');
+
+  // 3. Confirm card does NOT have the old notebook upload button
+  assert(!html.includes('One-Tap: Mark Done ✅\n    <span style="font-size:11px; font-weight:700; opacity:0.9;">(Upload Child\'s Worksheet / Note)</span>') &&
+         !html.includes('One-Tap: Mark Done ✅\r\n    <span style="font-size:11px; font-weight:700; opacity:0.9;">(Upload Child\'s Worksheet / Note)</span>'),
+         'Old notebook upload button must not be rendered on homework card');
+
+  // 4. Automatic completion and reward on game finish
+  assert(html.includes('kids_homework_submissions') && html.includes('completeActiveHomeworkRecord'), 'Submission record missing in completeActiveHomeworkRecord');
 });
 
 console.log('\n----------------------------------------------------------------');

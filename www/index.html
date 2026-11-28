@@ -3752,6 +3752,71 @@
       localStorage.setItem("taa_kids_homework_" + schoolId, JSON.stringify(hwList));
     }
 
+    function resolveHomeworkGameModule(hw) {
+      if (!hw) return null;
+      var cls = normalizeAssignedClass(hw.class_name || hw.student_class || hw.class || "Nursery");
+      if (cls === "ALL") cls = "Nursery";
+      var modules = (typeof getCurriculumModulesForClass === "function") ? getCurriculumModulesForClass(cls) : [];
+
+      // 1. Check attachment_url if it starts with "game:"
+      var att = String(hw.attachment_url || "").trim();
+      if (att.indexOf("game:") === 0) {
+        var gameVal = att.slice(5).trim();
+        if (gameVal.indexOf(":") !== -1) {
+          var parts = gameVal.split(":");
+          var sec = parts[0];
+          var tb = parts[1];
+          var foundBySecTab = modules.find(function(m) { return m.section === sec && String(m.tab) === tb; });
+          if (foundBySecTab) return foundBySecTab;
+          return { key: "game_" + sec + "_" + tb, title: hw.title || "Homework Game", section: sec, tab: tb, mode: "quiz" };
+        }
+        var foundByKey = modules.find(function(m) { return m.key === gameVal; });
+        if (foundByKey) return foundByKey;
+      }
+
+      // 2. Check if hw.module_key directly matches
+      if (hw.module_key) {
+        var foundByDirectKey = modules.find(function(m) { return m.key === hw.module_key; });
+        if (foundByDirectKey) return foundByDirectKey;
+      }
+
+      // 3. Smart Keyword Resolver based on subject, title, and description
+      var text = (String(hw.subject || "") + " " + String(hw.title || "") + " " + String(hw.description || "")).toLowerCase();
+
+      // English Phonics / Letters A-Z
+      if (text.indexOf("phonic") !== -1 || text.indexOf("letter") !== -1 || text.indexOf("alphabet") !== -1 || text.indexOf("abc") !== -1 || text.indexOf("cvc") !== -1 || text.indexOf("sound") !== -1 || text.indexOf("vowel") !== -1 || text.indexOf("english") !== -1) {
+        var phMod = modules.find(function(m) { return m.tab === "phonics" || m.tab === "abc"; });
+        if (phMod) return phMod;
+      }
+
+      // Hindi / Swar / Vyanjan / Matra
+      if (text.indexOf("hindi") !== -1 || text.indexOf("हिंदी") !== -1 || text.indexOf("स्वर") !== -1 || text.indexOf("व्यंजन") !== -1 || text.indexOf("matra") !== -1 || text.indexOf("वर्णमाला") !== -1 || text.indexOf("अक्षर") !== -1) {
+        var hiMod = modules.find(function(m) { return m.tab === "swar" || m.tab === "vyanjan" || m.tab === "matra"; });
+        if (hiMod) return hiMod;
+      }
+
+      // Math / Counting / Numbers / Shapes
+      if (text.indexOf("math") !== -1 || text.indexOf("count") !== -1 || text.indexOf("number") !== -1 || text.indexOf("गणित") !== -1 || text.indexOf("shape") !== -1 || text.indexOf("addition") !== -1 || text.indexOf("subtraction") !== -1) {
+        var mathMod = modules.find(function(m) { return m.tab === "numbers" || m.tab === "math"; });
+        if (mathMod) return mathMod;
+      }
+
+      // EVS / Animals / Fruits / GK / World
+      if (text.indexOf("evs") !== -1 || text.indexOf("animal") !== -1 || text.indexOf("fruit") !== -1 || text.indexOf("body") !== -1 || text.indexOf("gk") !== -1 || text.indexOf("world") !== -1) {
+        var evsMod = modules.find(function(m) { return m.tab === "evs" || m.tab === "gk" || m.tab === "english_world"; });
+        if (evsMod) return evsMod;
+      }
+
+      // Grammar (UKG)
+      if (text.indexOf("grammar") !== -1 || text.indexOf("noun") !== -1 || text.indexOf("opposite") !== -1 || text.indexOf("is/am/are") !== -1) {
+        var gramMod = modules.find(function(m) { return m.tab === "grammar"; });
+        if (gramMod) return gramMod;
+      }
+
+      // Default Fallback: First curriculum module for student's class
+      return modules[0] || { key: "fallback_" + cls.toLowerCase(), title: hw.title || "Homework Game", section: cls.toLowerCase(), tab: 0, mode: "quiz" };
+    }
+
     function normalizeHomeworkRow(row, fallbackSchoolId, fallbackClass) {
       if (!row || typeof row !== "object") return null;
       var todayIST = getTodayIstDateString();
@@ -3762,6 +3827,10 @@
       var desc = row.description || row.instructions || "";
       var d = row.due_date || row.date || (row.created_at ? String(row.created_at).slice(0, 10) : todayIST);
       var sId = resolveHomeworkSchoolId(row.school_id || fallbackSchoolId || getActiveSchoolId());
+
+      var resolvedMod = (typeof resolveHomeworkGameModule === "function") ? resolveHomeworkGameModule(row) : null;
+      var modKey = row.module_key || (resolvedMod ? resolvedMod.key : "");
+      var attUrl = row.attachment_url || (resolvedMod ? ("game:" + resolvedMod.section + ":" + resolvedMod.tab) : null);
 
       return Object.assign({}, row, {
         class_name: c,
@@ -3774,7 +3843,8 @@
         school_id: sId,
         title: row.title || "Daily Practice & Learning Activity",
         subject: row.subject || "General",
-        attachment_url: row.attachment_url || null,
+        attachment_url: attUrl,
+        module_key: modKey,
         teacher_name: row.teacher_name || row.assigned_by || "Teacher",
         assigned_by: row.assigned_by || row.teacher_name || "Teacher",
         teacher_mobile: row.teacher_mobile || "",
@@ -5557,6 +5627,9 @@
       var teacherName = teacher.teacher_name || teacher.user_name || "Teacher";
       var teacherMobile = teacher.teacher_mobile || teacher.mobile || "";
 
+      var targetMod = getCurriculumModulesForClass(normalizedClass).find(function(m) { return m.key === moduleKey; });
+      var attachmentGameId = targetMod ? ("game:" + targetMod.section + ":" + targetMod.tab) : (moduleKey ? ("game:" + moduleKey) : null);
+
       // Exact valid schema for public.kids_homework
       var payload = {
         school_id: resolvedSchoolId,
@@ -5564,7 +5637,7 @@
         subject: String(subject || "General").trim() || "General",
         title: title,
         description: instructions,
-        attachment_url: null,
+        attachment_url: attachmentGameId,
         due_date: dueDate || getTodayIstDateString(),
         teacher_id: teacherId,
         teacher_name: teacherName,
@@ -6527,8 +6600,12 @@
       appSession.homeworkAnsweredCount = 0;
       if (typeof quizState !== "undefined") quizState.questionAttempts = 0;
 
-      var modules = getCurriculumModulesForClass(hw.class_name);
-      var mod = modules.find(function(m) { return m.key === hw.module_key; }) || modules[0];
+      var mod = (typeof resolveHomeworkGameModule === "function") ? resolveHomeworkGameModule(hw) : null;
+      if (!mod) {
+        var modules = getCurriculumModulesForClass(hw.class_name);
+        mod = modules.find(function(m) { return m.key === hw.module_key; }) || modules[0];
+      }
+      hw.module_key = mod.key;
 
       if (mod.vowel) appState.phonicsVowel = mod.vowel;
       if (mod.topic) {
@@ -6588,6 +6665,42 @@
       var oldB = document.getElementById("focused-homework-banner");
       if (oldB) oldB.remove();
 
+      // Automatically mark homework as completed in submissions list
+      var schoolId = getActiveSchoolId();
+      var student = appSession.student;
+      if (student && activeId) {
+        var stuId = String(student.login_id || student.student_id || student.id || "STU-1");
+        var stuName = student.student_name || "Student";
+        var hwItem = getAllHomeworkList(schoolId).find(function(h) { return h.id === activeId; }) || quizHw || {};
+        var subList = getAllSubmissionsList(schoolId);
+        subList = subList.filter(function(s) { return !(s.homework_id === activeId && s.student_id === stuId); });
+        var subRecord = {
+          id: "SUB-" + Date.now(),
+          school_id: schoolId,
+          homework_id: activeId,
+          student_id: stuId,
+          student_name: stuName,
+          class_name: hwItem.class_name || student.student_class || "Nursery",
+          status: "completed",
+          submission_type: "quiz",
+          photo_url: null,
+          notes: "Completed interactive game/quiz",
+          points_earned: 30.0,
+          zero_mistake_bonus: 5.0,
+          total_score: 35.0,
+          wrong_taps: 0,
+          completed_at: new Date().toISOString()
+        };
+        subList.unshift(subRecord);
+        saveAllSubmissionsList(schoolId, subList);
+        try {
+          supabaseRest("/kids_homework_submissions", {
+            method: "POST",
+            body: subRecord
+          }).catch(function() {});
+        } catch(e) {}
+      }
+
       // Award points & stars (+20 pts) with duplicate farming prevention
       await awardStudentReward({
         type: "quiz",
@@ -6598,10 +6711,10 @@
         defaultBadge: "🏆 Quiz Champ"
       });
 
-      showToast("Quiz Completed! 🌟 +20 Points", "success");
-      speak("Great job! You finished the quiz successfully.", "en-IN");
+      showToast("Homework Completed! 🌟 +30 Points", "success");
+      speak("Great job! You finished your homework game.", "en-IN");
       setTimeout(function() {
-        if (appSession.type === "parent") {
+        if (appSession.type === "parent" || appSession.role === "student") {
           enterParentMode(appSession.parentClass || "Nursery");
         } else {
           goHome();
@@ -32305,30 +32418,40 @@ function setNurseryNumSubTab(st) {
           }
 
           // Worksheet Photo Preview if attached by teacher
-          if (hw.attachment_url) {
+          if (hw.attachment_url && !hw.attachment_url.startsWith("game:")) {
             html += '  <div class="hw-attachment-preview" onclick="viewWorksheetFullModal(\'' + hw.attachment_url + '\', \'Worksheet Attached by Teacher\')">';
             html += '    <img src="' + hw.attachment_url + '" alt="Worksheet Photo" />';
             html += '  </div>';
             html += '  <div style="font-size:10px; color:#78909C; font-weight:700; text-align:center; margin-bottom:10px;">Tap worksheet photo to zoom full screen 🔍</div>';
           }
 
-          // Launch Interactive Quiz if linked
-          if (hw.module_key) {
-            html += '  <button onclick="safeAction(function(){ startAssignedHomework(\'' + hw.id + '\'); })" style="background:#FF9800; color:#FFF; border:none; padding:10px 14px; border-radius:12px; font-size:13px; font-weight:900; width:100%; margin-bottom:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">';
-            html += '    🚀 Launch Interactive Practice Quiz';
+          // Check if current student has already completed this homework
+          var studentSubmission = null;
+          if (appSession.student) {
+            var stuId = String(appSession.student.login_id || appSession.student.student_id || "");
+            studentSubmission = submissions.find(function(s) { return String(s.student_id) === stuId; });
+          }
+
+          if (studentSubmission) {
+            html += '  <div style="background:#E8F5E9; border:2px solid #81C784; border-radius:14px; padding:12px 14px; margin:10px 0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">';
+            html += '    <div style="font-size:13px; font-weight:900; color:#1B5E20; display:flex; align-items:center; gap:6px;">';
+            html += '      <span>✅ Homework Completed!</span>';
+            html += '      <span style="font-size:11px; background:#C8E6C9; color:#2E7D32; padding:2px 8px; border-radius:8px; font-weight:800;">+30 Pts Earned</span>';
+            html += '    </div>';
+            html += '    <button class="btn-play-hw" onclick="safeAction(function(){ startAssignedHomework(\'' + hw.id + '\'); })" style="background:#2E7D32; color:#FFF; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:6px;">🎮 Replay Game</button>';
+            html += '  </div>';
+          } else {
+            // Bright primary action button: Play & Complete Homework
+            html += '  <button class="btn-play-hw btn-action-primary" onclick="safeAction(function(){ startAssignedHomework(\'' + hw.id + '\'); })" style="background:linear-gradient(135deg, #FF6F00, #FF9800); color:#FFF; border:none; padding:14px 18px; border-radius:16px; font-size:15px; font-weight:900; width:100%; margin:10px 0; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(255,111,0,0.35);">';
+            html += '    <span>🎮 Play &amp; Complete Homework</span>';
+            html += '    <span style="font-size:16px;">➔</span>';
             html += '  </button>';
           }
 
           // Live completion counter
-          html += '  <div style="font-size:11px; font-weight:800; color:#2E7D32; margin-bottom:10px; text-align:center;">';
+          html += '  <div style="font-size:11px; font-weight:800; color:#2E7D32; margin-bottom:6px; text-align:center;">';
           html += '    📈 Live Class Progress: <strong>' + doneCount + ' / ' + totalStudents + ' Students Completed</strong>';
           html += '  </div>';
-
-          // One-Tap Mark Done Action Button
-          html += '  <button class="btn-mark-done" onclick="safeAction(function(){ openParentHomeworkCompleteModal(\'' + hw.id + '\'); })">';
-          html += '    <span>One-Tap: Mark Done ✅</span>';
-          html += '    <span style="font-size:11px; font-weight:700; opacity:0.9;">(Upload Child\'s Worksheet / Note)</span>';
-          html += '  </button>';
 
           html += '</div>';
         } else {
