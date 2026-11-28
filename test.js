@@ -804,6 +804,193 @@ runTest('Homework card renders Play & Complete Homework button and auto-resolves
   assert(html.includes('kids_homework_submissions') && html.includes('completeActiveHomeworkRecord'), 'Submission record missing in completeActiveHomeworkRecord');
 });
 
+// TEST 36: Live Student Points Sync, Floating Point Animation & Repeatable 10 Big Rewards
+runTest('Live Student Points Sync, Floating Point Pop Animation & Repeatable 10 Big Rewards', () => {
+  // 1. Live header points sync functions & DOM badges
+  assert(html.includes('updateHeaderPointBadges'), 'updateHeaderPointBadges helper function missing');
+  assert(html.includes('addStudentLivePoints'), 'addStudentLivePoints helper function missing');
+  assert(html.includes('showPointPopAnimation'), 'showPointPopAnimation helper function missing');
+  assert(html.includes('floating-point-pop'), 'floating-point-pop CSS class missing');
+  assert(html.includes('floatUpFadeOut'), 'floatUpFadeOut CSS keyframe animation missing');
+
+  // 2. Quiz answers & addStar invoke live point update and pop animation
+  assert(html.includes('showPointPopAnimation(earned)'), 'showPointPopAnimation(earned) missing in quiz answer handler');
+  assert(html.includes('updateHeaderPointBadges(stu.points)'), 'updateHeaderPointBadges(stu.points) missing in quiz answer handler');
+
+  // 3. Repeatable reward shelf tracking & persistence
+  assert(html.includes('getStudentRewardCounts'), 'getStudentRewardCounts function missing');
+  assert(html.includes('saveStudentRewardCounts'), 'saveStudentRewardCounts function missing');
+  assert(html.includes("🏆 Earned: ' + count + 'x"), 'Repeatable reward count multiplier badge (e.g. 2x, 3x) missing in shelf modal');
+  assert(html.includes('REWARD EARNED AGAIN!'), 'Repeat reward milestone celebration title missing');
+
+  // 4. Test logic in isolated sandbox
+  const sStart = html.indexOf('<script>');
+  const sEnd = html.lastIndexOf('</script>');
+  const scriptContent = html.substring(sStart + 8, sEnd);
+
+  const testSandbox = new Function(`
+    var createdElements = [];
+    var mockDom = {
+      'star-badge': { style: { display: 'none' } },
+      'star-count': { textContent: '0' },
+      'student-live-points': { textContent: '0' },
+      'header-student-points': { textContent: '0' }
+    };
+    var document = {
+      getElementById: function(id) {
+        return mockDom[id] || null;
+      },
+      createElement: function(tag) {
+        var el = { className: '', innerHTML: '', style: {} };
+        createdElements.push(el);
+        return el;
+      },
+      body: {
+        appendChild: function(el) {}
+      }
+    };
+    var appSession = {
+      type: 'parent',
+      role: 'student',
+      student: {
+        login_id: 'STU101',
+        points: 18.0,
+        stars: 18.0,
+        badges: ['reward_ball'],
+        reward_counts: { reward_ball: 1 }
+      }
+    };
+    var appState = { stars: 18 };
+    var localStorage = {
+      getItem: function() { return null; },
+      setItem: function() {}
+    };
+    function updateLocalStudentAccount() {}
+    function supabaseRest() { return Promise.resolve(); }
+    function playTone() {}
+    function triggerConfetti() {}
+    function speak() {}
+    function showToast() {}
+    function escapeHtml(t) { return t; }
+
+    ${scriptContent.match(/var REWARD_SHELF_CATALOG = \[[\s\S]*?\];/)[0]}
+    ${scriptContent.match(/function renderRewardPicture[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function syncHeaderPointsUI[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function updateHeaderPointBadges[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function showPointPopAnimation[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function addStudentLivePoints[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function getStudentRewardCounts[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function saveStudentRewardCounts[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function saveStudentSessionLocallyAndRemote[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function checkRewardShelfMilestones[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function showRewardUnlockCelebration[\s\S]*?^    \}/m)[0]}
+
+    // 1. Test pop animation
+    showPointPopAnimation(10);
+    var popEl = createdElements[0];
+
+    // 2. Test initial updateHeaderPointBadges
+    updateHeaderPointBadges(18.0);
+    var initSc = mockDom['star-count'].textContent;
+    var initSl = mockDom['student-live-points'].textContent;
+
+    // 3. Test addStudentLivePoints with +2.0 (crosses 20.0 threshold)
+    addStudentLivePoints(2.0, 'Quiz Answer');
+    var finalSc = mockDom['star-count'].textContent;
+    var finalSl = mockDom['student-live-points'].textContent;
+    var finalPoints = appSession.student.points;
+    var finalBallCount = appSession.student.reward_counts.reward_ball;
+
+    return {
+      popText: popEl ? popEl.innerHTML : '',
+      initSc: initSc,
+      initSl: initSl,
+      finalSc: finalSc,
+      finalSl: finalSl,
+      finalPoints: finalPoints,
+      finalBallCount: finalBallCount
+    };
+  `);
+
+  const res = testSandbox();
+  assert(res.popText.includes('10') && res.popText.includes('⭐'), 'showPointPopAnimation must produce +10 ⭐');
+  assert.strictEqual(res.initSc, 18, 'Initial star badge must be 18');
+  assert.strictEqual(res.initSl, 18, 'Initial student live bar must be 18');
+  assert.strictEqual(res.finalPoints, 20.0, 'Student points must increment to 20.0');
+  assert.strictEqual(res.finalSc, 20, 'Star badge must update to 20');
+  assert.strictEqual(res.finalSl, 20, 'Student live bar must update to 20');
+  assert.strictEqual(res.finalBallCount, 2, 'Golden Ball reward must be earned 2x (count = 2) when reaching 20 pts');
+});
+
+// TEST 37: Top-Right Header Gold Star Badge Synchronization with Logged-in Student Points
+runTest('Top-Right Header Gold Star Badge synchronizes cleanly with logged-in student points (e.g. 30.5)', () => {
+  // 1. Verify syncHeaderPointsUI exists in index.html and is hooked across session restore, login, etc.
+  assert(html.includes('syncHeaderPointsUI'), 'syncHeaderPointsUI function missing in index.html');
+  assert(html.includes('syncHeaderPointsUI(appSession.student.points)'), 'syncHeaderPointsUI missing in restoreSession');
+  assert(html.includes('syncHeaderPointsUI()'), 'syncHeaderPointsUI() call missing in index.html');
+
+  // 2. Test execution in isolated sandbox
+  const sStart = html.indexOf('<script>');
+  const sEnd = html.lastIndexOf('</script>');
+  const scriptContent = html.substring(sStart + 8, sEnd);
+
+  const testSyncSandbox = new Function(`
+    var mockDom = {
+      'star-badge': { style: { display: 'none' } },
+      'star-count': { textContent: '0' },
+      'student-live-points': { textContent: '0' },
+      'header-student-points': { textContent: '0' }
+    };
+    var document = {
+      getElementById: function(id) {
+        return mockDom[id] || null;
+      }
+    };
+    var appSession = {
+      type: 'parent',
+      role: 'student',
+      student: {
+        login_id: 'STU101',
+        student_name: 'Aarav Sharma',
+        points: 30.5,
+        stars: 30.5
+      }
+    };
+    var appState = { stars: 0 };
+
+    ${scriptContent.match(/function syncHeaderPointsUI[\s\S]*?^    \}/m)[0]}
+    ${scriptContent.match(/function updateHeaderPointBadges[\s\S]*?^    \}/m)[0]}
+
+    // Before sync: star badge is 0 and hidden
+    var beforeBadge = mockDom['star-count'].textContent;
+    var beforeDisplay = mockDom['star-badge'].style.display;
+
+    // Call syncHeaderPointsUI with student session (points: 30.5)
+    syncHeaderPointsUI();
+
+    var afterBadge = mockDom['star-count'].textContent;
+    var afterDisplay = mockDom['star-badge'].style.display;
+    var afterGreenBar = mockDom['student-live-points'].textContent;
+
+    return {
+      beforeBadge: beforeBadge,
+      beforeDisplay: beforeDisplay,
+      afterBadge: afterBadge,
+      afterDisplay: afterDisplay,
+      afterGreenBar: afterGreenBar,
+      appStateStars: appState.stars
+    };
+  `);
+
+  const res = testSyncSandbox();
+  assert.strictEqual(res.beforeBadge, '0', 'Before sync, star-count should be initial 0');
+  assert.strictEqual(res.beforeDisplay, 'none', 'Before sync, star-badge should be display: none');
+  assert.strictEqual(res.afterBadge, 30.5, 'Top-right header gold star badge must display 30.5 (not 0)');
+  assert.strictEqual(res.afterDisplay, 'flex', 'Top-right header gold star badge must be visible (display: flex)');
+  assert.strictEqual(res.afterGreenBar, 30.5, 'Green student info bar must display 30.5');
+  assert.strictEqual(res.appStateStars, 30, 'appState.stars should synchronize with floor of points');
+});
+
 console.log('\n----------------------------------------------------------------');
 console.log(`TEST SUMMARY: ${passCount} PASSED, ${failCount} FAILED`);
 console.log('----------------------------------------------------------------');
