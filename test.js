@@ -1501,7 +1501,7 @@ runTest('Admin / Principal Portal exposes 5 new UKG Hindi modules & granular Mat
   assert(indexHtml.includes('📖 चित्र देखो, वाक्य चुनो'), 'Module 5 title 📖 चित्र देखो, वाक्य चुनो must be present');
 
   // 7. Verify Cache Busting version
-  assert(/var APP_BUILD_VERSION = "2026\.11\.28-v[234]";/.test(indexHtml), 'APP_BUILD_VERSION must be bumped');
+  assert(/var APP_BUILD_VERSION = "2026\.11\.28-v[2-9]";/.test(indexHtml), 'APP_BUILD_VERSION must be bumped');
 
   // 8. Runtime Sandbox Execution of Principal Curriculum & Send Homework Tab Renderers
   const testSandbox = new Function(`
@@ -1685,6 +1685,41 @@ runTest('UKG Hindi Curriculum: LKG Bina-Matra Words reuse with Question Range, T
   // (d) Principal & Admin Desk exposure
   assert(indexHtml.includes('ukg_hindi_bina_matra') && indexHtml.includes('🔤 बिना मात्रा वाले शब्द'), 'Principal Desk curriculum tab must showcase बिना मात्रा वाले शब्द');
   assert(indexHtml.includes("launchPrincipalCurriculumModule('ukg', 'hindi_bina_matra')") || indexHtml.includes('launchPrincipalCurriculumModule(\\\'ukg\\\', \\\'hindi_bina_matra\\\')'), 'Direct launch button for hindi_bina_matra must be present');
+});
+
+// TEST 44: Hindi Quiz Audio Syllable Speech & Complete Removal of Legacy Jodo Phrasing
+runTest('Hindi Quiz Audio Syllable Speech (Matra & Bina-Matra) & Zero Legacy Jodo Speech', () => {
+  const indexHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+
+  // 1. Zero occurrences of legacy जोड़/जोड़ा/जोड़ो/जमा in speech or quiz prompts in index.html
+  assert(!indexHtml.includes('जोड़ो'), 'No जोड़ो speech should exist in index.html');
+  assert(!indexHtml.includes('जोड़ा'), 'No जोड़ा speech should exist in index.html');
+  assert(!indexHtml.includes('जमा'), 'No जमा speech should exist in index.html');
+  assert(!indexHtml.includes('जोड़कर सही शब्द चुनो'), 'No जोड़कर सही शब्द चुनो prompt should exist');
+
+  // 2. handleMatraAns uses buildHindiClassroomSpeechText
+  assert(indexHtml.includes('buildHindiClassroomSpeechText(full, "matra")'), 'handleMatraAns must use buildHindiClassroomSpeechText for matra speech feedback');
+
+  // 3. LKG and UKG Bina-Matra quiz prompts use buildHindiClassroomSpeechText
+  assert(indexHtml.includes('buildHindiClassroomSpeechText(targetWObj.word, "bina_matra")'), 'LKG/UKG quiz wSpoken must use buildHindiClassroomSpeechText in bina_matra mode');
+
+  // 4. Test execution sandbox for handleMatraAns speech generation
+  const testSandbox = new Function(`
+    ${indexHtml.match(/function parseHindiSyllables[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function buildHindiClassroomSpeechText[\s\S]*?^    \}/m)[0]}
+    return {
+      carSpeech: buildHindiClassroomSpeechText('कार', 'matra'),
+      busSpeech: buildHindiClassroomSpeechText('बस', 'bina_matra'),
+      kalamSpeech: buildHindiClassroomSpeechText('कलम', 'bina_matra')
+    };
+  `);
+  const res = testSandbox();
+  assert(res.carSpeech.includes('आ की मात्रा'), 'कार classroom speech must include आ की मात्रा');
+  assert(res.busSpeech.includes('ब अ') && res.busSpeech.includes('स अ'), 'बस bina_matra speech must include syllable breakdown');
+  assert(res.kalamSpeech.includes('क अ') && res.kalamSpeech.includes('म अ') && res.kalamSpeech.includes('ल अ'), 'कलम bina_matra speech must include syllable breakdown');
+
+  // 5. Version bump verified
+  assert(indexHtml.includes('APP_BUILD_VERSION = "2026.11.28-v5"'), 'APP_BUILD_VERSION must be 2026.11.28-v5');
 });
 
 console.log('\n----------------------------------------------------------------');

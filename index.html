@@ -36911,12 +36911,12 @@ function setNurseryNumSubTab(st) {
           html += '</div>';
 
           if (appState.mode === "learn") {
-            autoSpeak("lkg_w_learn_" + curWordConfig.key, curWordConfig.title + ". कार्ड छूकर उच्चारण और अक्षरों का जोड़ सुनें!", "hi-IN");
-            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + curWordConfig.title + '. कार्ड छूकर सुनें!\', \'hi-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">कार्ड छूकर अक्षरों का जोड़ व उच्चारण सुनें 🔊</div>';
+            autoSpeak("lkg_w_learn_" + curWordConfig.key, curWordConfig.title + ". कार्ड छूकर सही उच्चारण सुनें!", "hi-IN");
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + curWordConfig.title + '. कार्ड छूकर सही उच्चारण सुनें!\', \'hi-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">कार्ड छूकर सही उच्चारण सुनें 🔊</div>';
             html += '<div class="grid-items-container" style="max-height: calc(100vh - 250px); overflow-y: auto;">';
             for (var wdi = 0; wdi < wordsList.length; wdi++) {
               var wObj = wordsList[wdi];
-              var equationSpoken = wObj.letters.join(" जमा ") + " बराबर " + wObj.word;
+              var equationSpoken = buildHindiClassroomSpeechText(wObj.word, "bina_matra");
               html += '<div class="item-chip-card" style="padding: 12px 10px; text-align: center;" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + wObj.word + '\', \'bina_matra\', this); })">';
               html += '  <div class="chip-emoji safe-emoji" style="font-size: 40px;" onclick="event.stopPropagation(); safeAction(function(){ speakHindiWordClassroom(\'' + wObj.word + '\', \'bina_matra\', this); })">' + wObj.emoji + '</div>';
               html += '  <div class="chip-word" style="font-size: 20px; font-weight: 900; color: #E65100; margin-top: 4px;">' + renderColorCodedHindiWord(wObj.word) + '</div>';
@@ -36937,7 +36937,7 @@ function setNurseryNumSubTab(st) {
             });
             var isWAnswered = (quizState.isAnswered && quizState.activeKey === wQuizCacheKey);
 
-            var wSpoken = targetWObj.letters.join(" जमा ") + " से कौन सा शब्द बनता है?";
+            var wSpoken = buildHindiClassroomSpeechText(targetWObj.word, "bina_matra");
             autoSpeak(wQuizCacheKey, wSpoken, "hi-IN");
 
             html += '<div class="flashcard" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + targetWObj.word + '\', \'bina_matra\', this); })">';
@@ -36955,7 +36955,7 @@ function setNurseryNumSubTab(st) {
             html += '  <div class="audio-hint">🔊 ' + buildHindiClassroomSpeechText(targetWObj.word, 'bina_matra') + '</div>';
             html += '</div>';
 
-            html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 8px;">जोड़कर सही शब्द चुनो: 🔊</div>';
+            html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'सही शब्द चुनो\', \'hi-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 8px;">सही शब्द चुनो: 🔊</div>';
 
             html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 14px auto 0;">';
             for (var woi = 0; woi < wQuizOpts.length; woi++) {
@@ -39264,8 +39264,8 @@ function setNurseryNumSubTab(st) {
       html += '</div>';
 
       if (appState.mode === "learn") {
-        autoSpeak("ukg_bm_learn", "बिना मात्रा वाले शब्द। कार्ड छूकर उच्चारण और अक्षरों का जोड़ सुनें!", "hi-IN");
-        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'बिना मात्रा वाले शब्द। कार्ड छूकर सुनें!\', \'hi-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">कार्ड छूकर अक्षरों का जोड़ व उच्चारण सुनें 🔊</div>';
+        autoSpeak("ukg_bm_learn", "बिना मात्रा वाले शब्द। कार्ड छूकर सही उच्चारण सुनें!", "hi-IN");
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'बिना मात्रा वाले शब्द। कार्ड छूकर सही उच्चारण सुनें!\', \'hi-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">कार्ड छूकर सही उच्चारण सुनें 🔊</div>';
         html += '<div class="grid-items-container" style="max-height: calc(100vh - 250px); overflow-y: auto;">';
         for (var wdi = 0; wdi < list.length; wdi++) {
           var wObj = list[wdi];
@@ -39289,7 +39289,7 @@ function setNurseryNumSubTab(st) {
         });
         var isWAnswered = (quizState.isAnswered && quizState.activeKey === wQuizCacheKey);
 
-        var wSpoken = (targetWObj.letters ? targetWObj.letters.join(" जमा ") : targetWObj.word) + " से कौन सा शब्द बनता है?";
+        var wSpoken = buildHindiClassroomSpeechText(targetWObj.word, "bina_matra");
         autoSpeak(wQuizCacheKey, wSpoken, "hi-IN");
 
         html += '<div class="flashcard" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + targetWObj.word + '\', \'bina_matra\', this); })">';
@@ -39309,7 +39309,7 @@ function setNurseryNumSubTab(st) {
         html += '  <div class="audio-hint">🔊 ' + buildHindiClassroomSpeechText(targetWObj.word, 'bina_matra') + '</div>';
         html += '</div>';
 
-        html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 8px;">जोड़कर सही शब्द चुनो: 🔊</div>';
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'सही शब्द चुनो\', \'hi-IN\'); })" style="text-align: center; font-weight: 800; color: #455A64; margin-top: 8px;">सही शब्द चुनो: 🔊</div>';
 
         html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 14px auto 0;">';
         for (var woi = 0; woi < wQuizOpts.length; woi++) {
@@ -39802,10 +39802,11 @@ function setNurseryNumSubTab(st) {
 
     function handleMatraAns(isCorrect, sound, full, emoji) {
       var cacheKey = "matra_" + appState.matraFilter + "_" + appState.quizIndex;
+      var spokenText = buildHindiClassroomSpeechText(full, "matra") + "! बहुत बढ़िया!";
       handleQuizAnswerSubmit(isCorrect, {
         key: cacheKey,
         display: (full || "") + " " + (emoji || ""),
-        spoken: (sound || "") + "! " + (full || "") + "!",
+        spoken: spokenText,
         lang: "hi-IN",
         ansVal: full,
         wrongMsg: "गलत मात्रा, फिर से देखो"
@@ -39975,7 +39976,7 @@ function setNurseryNumSubTab(st) {
     }
 
     // Lightweight App Live Version & Update Checker for Android APK
-    var APP_BUILD_VERSION = "2026.11.28-v4";
+    var APP_BUILD_VERSION = "2026.11.28-v5";
     async function checkForLiveAppUpdate() {
       if (!navigator.onLine) return;
       try {
