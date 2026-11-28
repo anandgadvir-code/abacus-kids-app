@@ -1501,7 +1501,7 @@ runTest('Admin / Principal Portal exposes 5 new UKG Hindi modules & granular Mat
   assert(indexHtml.includes('📖 चित्र देखो, वाक्य चुनो'), 'Module 5 title 📖 चित्र देखो, वाक्य चुनो must be present');
 
   // 7. Verify Cache Busting version
-  assert(indexHtml.includes('var APP_BUILD_VERSION = "2026.11.28-v2";'), 'APP_BUILD_VERSION must be bumped to v2');
+  assert(/var APP_BUILD_VERSION = "2026\.11\.28-v[23]";/.test(indexHtml), 'APP_BUILD_VERSION must be bumped');
 
   // 8. Runtime Sandbox Execution of Principal Curriculum & Send Homework Tab Renderers
   const testSandbox = new Function(`
@@ -1549,6 +1549,51 @@ runTest('Admin / Principal Portal exposes 5 new UKG Hindi modules & granular Mat
   assert.strictEqual(res.hasLaunchBtnInCurr, true, 'Principal curriculum tab must include direct module launch buttons');
   assert.strictEqual(res.hasGranularInSend, true, 'Principal send homework tab must wire granular Matra/CVC and range controls');
   assert.strictEqual(res.hasClassSelectInSend, true, 'Principal send homework tab must allow selecting class');
+});
+
+// TEST 42: Hindi Reading Experience — Classroom Syllable Speech, Color-Coded Matras, Chhoti 'I' Tip & Karaoke
+runTest('Upgraded Hindi Reading Experience (Classroom Syllable Speech, Matra Color-Coding & Chhoti I Tip)', () => {
+  const indexHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+  const testSandbox = new Function(`
+    ${indexHtml.match(/function parseHindiSyllables[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function buildHindiClassroomSpeechText[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function renderColorCodedHindiWord[\s\S]*?^    \}/m)[0]}
+    ${indexHtml.match(/function renderChhotiITipPill[\s\S]*?^    \}/m)[0]}
+
+    return {
+      speechBas: buildHindiClassroomSpeechText('बस', 'bina_matra'),
+      speechKamal: buildHindiClassroomSpeechText('कमल', 'bina_matra'),
+      speechBazar: buildHindiClassroomSpeechText('बाज़ार', 'matra'),
+      speechKagaz: buildHindiClassroomSpeechText('कागज़', 'matra'),
+      colorBazar: renderColorCodedHindiWord('बाज़ार'),
+      chhotiPill: renderChhotiITipPill()
+    };
+  `);
+
+  const res = testSandbox();
+
+  // (a) bina_matra speech breakdown
+  assert.strictEqual(res.speechBas, "ब अ, स अ — बस", "buildHindiClassroomSpeechText('बस', 'bina_matra') must return 'ब अ, स अ — बस'");
+  assert.strictEqual(res.speechKamal, "क अ, म अ, ल अ — कमल", "buildHindiClassroomSpeechText('कमल', 'bina_matra') must return 'क अ, म अ, ल अ — कमल'");
+
+  // (b) matra classroom speech breakdown without 'जोड़ो'
+  assert.strictEqual(res.speechBazar, "ब के आगे आ की मात्रा बा, ज़ के आगे आ की मात्रा ज़ा, र — बाज़ार", "Classroom speech for 'बाज़ार' must match natural syllable phrasing");
+  assert.strictEqual(res.speechBazar.includes("जोड़ो"), false, "Speech text must never include legacy 'जोड़ो'");
+  assert.strictEqual(res.speechKagaz, "क के आगे आ की मात्रा का, ग, ज़ — कागज़", "Classroom speech for 'कागज़' must match natural syllable phrasing");
+
+  // (c) Color coding and syllable chips
+  assert.strictEqual(res.colorBazar.includes("matra-sign-highlight"), true, "renderColorCodedHindiWord must wrap matras in matra-sign-highlight");
+  assert.strictEqual(res.colorBazar.includes("hindi-syllable-chip"), true, "renderColorCodedHindiWord must wrap syllables in hindi-syllable-chip");
+
+  // (d) Chhoti 'I' tip pill
+  assert.strictEqual(res.chhotiPill.includes("💡 ट्रिक: छोटी इ (ि) आगे खड़ी होती है, पर बाद में बोलती है!"), true, "Chhoti 'I' tip pill must match requested text");
+
+  // (e) Universal portal checks and legacy phrasing removal
+  assert.strictEqual(indexHtml.includes("speakHindiWordClassroom"), true, "index.html must include speakHindiWordClassroom");
+  assert.strictEqual(indexHtml.includes("chhoti-i-tip-pill"), true, "index.html must include .chhoti-i-tip-pill styling");
+  assert.strictEqual(indexHtml.includes("karaoke-active"), true, "index.html must include .karaoke-active styling");
+  assert.strictEqual(indexHtml.includes("दोबारा जोड़ें"), false, "index.html must not contain legacy 'दोबारा जोड़ें'");
+  assert.strictEqual(indexHtml.includes("सही मात्रा जोड़ो"), false, "index.html must not contain legacy 'सही मात्रा जोड़ो'");
 });
 
 console.log('\n----------------------------------------------------------------');

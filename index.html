@@ -23,6 +23,66 @@
       --text-dark: #2C3E50;
       --border-radius: 20px;
     }
+
+    /* =========================================================================
+       HINDI READING & KARAOKE SYLLABLE HIGHLIGHTING STYLES
+       ========================================================================= */
+    .matra-sign-highlight {
+      color: #E53935 !important;
+      font-weight: 900;
+    }
+    .hindi-word-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 8px;
+      padding: 2px 4px;
+      vertical-align: middle;
+    }
+    .hindi-syllable-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 6px;
+      padding: 1px 3px;
+      margin: 0 1px;
+    }
+    .hindi-syllable-chip.karaoke-active {
+      background-color: #FFF9C4 !important;
+      color: #D84315 !important;
+      box-shadow: 0 0 10px rgba(255, 214, 0, 0.8), 0 2px 6px rgba(0,0,0,0.12);
+      transform: scale(1.22);
+      z-index: 2;
+    }
+    .hindi-syllable-chip.karaoke-active .matra-sign-highlight {
+      color: #C62828 !important;
+    }
+    .hindi-word-container.karaoke-full-word {
+      background-color: #E8F5E9 !important;
+      box-shadow: 0 0 14px rgba(76, 175, 80, 0.55);
+      transform: scale(1.08);
+    }
+    .chhoti-i-tip-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #FFF8E1;
+      border: 1.5px solid #FFD54F;
+      color: #E65100;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin: 6px auto 10px;
+      box-shadow: 0 2px 6px rgba(255, 193, 7, 0.18);
+      text-align: center;
+      max-width: 95%;
+      animation: fadeIn 0.3s ease-in-out;
+    }
     * {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
@@ -2349,6 +2409,325 @@
       loadVoices();
     }
 
+    // =========================================================================
+    // HINDI SYLLABLE PARSER, CLASSROOM SPEECH & KARAOKE PLAYER
+    // =========================================================================
+    function parseHindiSyllables(word) {
+      if (!word || typeof word !== 'string') return [];
+      var clean = word.trim();
+      var syllables = [];
+      var matraRegex = /^[\u093E-\u094C\u0962\u0963]/;
+      var bindiRegex = /^[\u0901-\u0903]/;
+      var nuktaChar = '\u093C';
+      var viramaChar = '\u094D';
+
+      var i = 0;
+      while (i < clean.length) {
+        var ch = clean[i];
+        var isDevanagari = (ch >= '\u0900' && ch <= '\u097F');
+        if (!isDevanagari) {
+          syllables.push({ text: ch, consonant: ch, matra: '', bindi: '', isPunct: true });
+          i++;
+          continue;
+        }
+
+        var consonant = ch;
+        i++;
+        if (i < clean.length && clean[i] === nuktaChar) {
+          consonant += clean[i];
+          i++;
+        }
+
+        while (i < clean.length && clean[i] === viramaChar) {
+          consonant += clean[i];
+          i++;
+          if (i < clean.length) {
+            consonant += clean[i];
+            i++;
+            if (i < clean.length && clean[i] === nuktaChar) {
+              consonant += clean[i];
+              i++;
+            }
+          }
+        }
+
+        var matra = '';
+        var rem = clean.slice(i);
+        var mM = rem.match(matraRegex);
+        if (mM) {
+          matra = mM[0];
+          i += matra.length;
+        }
+        rem = clean.slice(i);
+        var bM = rem.match(bindiRegex);
+        var bindi = '';
+        if (bM) {
+          bindi = bM[0];
+          i += bindi.length;
+        }
+
+        var fullMatra = matra + bindi;
+        var sylText = consonant + fullMatra;
+        syllables.push({
+          text: sylText,
+          consonant: consonant,
+          matra: matra,
+          bindi: bindi,
+          fullMatra: fullMatra
+        });
+      }
+      return syllables;
+    }
+
+    function buildHindiClassroomSpeechText(word, mode) {
+      if (!word || typeof word !== 'string') return '';
+      var clean = word.trim();
+      var syls = parseHindiSyllables(clean);
+      if (!syls.length) return clean;
+
+      var parts = [];
+      var matraRules = {
+        '\u093E': 'के आगे आ की मात्रा',
+        '\u093F': 'पे छोटी इ की मात्रा',
+        '\u0940': 'पे बड़ी ई की मात्रा',
+        '\u0941': 'के नीचे छोटे उ की मात्रा',
+        '\u0942': 'के नीचे बड़े ऊ की मात्रा',
+        '\u0947': 'पे ए की मात्रा',
+        '\u0948': 'पे ऐ की मात्रा',
+        '\u094B': 'पे ओ की मात्रा',
+        '\u094C': 'पे औ की मात्रा',
+        '\u0902': 'पे अं की बिंदी',
+        '\u0901': 'पे चंद्रबिंदु',
+        '\u0903': 'के आगे अः की बिंदी'
+      };
+
+      if (mode === 'bina_matra') {
+        for (var i = 0; i < syls.length; i++) {
+          var s = syls[i];
+          if (s.isPunct) continue;
+          parts.push(s.consonant + ' अ');
+        }
+        return parts.join(', ') + ' — ' + clean;
+      }
+
+      // mode === 'matra'
+      for (var j = 0; j < syls.length; j++) {
+        var sy = syls[j];
+        if (sy.isPunct) continue;
+        if (sy.matra && matraRules[sy.matra]) {
+          var desc = matraRules[sy.matra];
+          if (sy.bindi) {
+            desc += ' और अं की बिंदी';
+          }
+          parts.push(sy.consonant + ' ' + desc + ' ' + sy.text);
+        } else if (sy.bindi && matraRules[sy.bindi]) {
+          parts.push(sy.consonant + ' ' + matraRules[sy.bindi] + ' ' + sy.text);
+        } else {
+          // Bare consonant inside a matra word
+          parts.push(sy.consonant);
+        }
+      }
+      return parts.join(', ') + ' — ' + clean;
+    }
+
+    function renderColorCodedHindiWord(word, customClass) {
+      if (!word || typeof word !== 'string') return '';
+      var syls = parseHindiSyllables(word);
+      var html = '<span class="hindi-word-container' + (customClass ? ' ' + customClass : '') + '">';
+      for (var i = 0; i < syls.length; i++) {
+        var s = syls[i];
+        if (s.isPunct) {
+          html += s.text;
+          continue;
+        }
+        html += '<span class="hindi-syllable-chip" data-syl-idx="' + i + '">';
+        html += '<span class="consonant-part">' + s.consonant + '</span>';
+        if (s.matra || s.bindi) {
+          html += '<span class="matra-sign-highlight">' + (s.matra + s.bindi) + '</span>';
+        }
+        html += '</span>';
+      }
+      html += '</span>';
+      return html;
+    }
+
+    function renderChhotiITipPill() {
+      return '<div class="chhoti-i-tip-pill">' +
+        '<span>💡 ट्रिक: छोटी इ (ि) आगे खड़ी होती है, पर बाद में बोलती है!</span>' +
+        '</div>';
+    }
+
+    var activeKaraokeTimer = null;
+    function speakHindiWordClassroom(word, mode, el) {
+      if (!appSoundEnabled || !word) return;
+      var clean = String(word).trim();
+      var syls = parseHindiSyllables(clean).filter(function(s) { return !s.isPunct; });
+      if (activeKaraokeTimer) {
+        clearTimeout(activeKaraokeTimer);
+        activeKaraokeTimer = null;
+      }
+
+      var container = null;
+      if (el) {
+        if (el.classList && el.classList.contains("hindi-word-container")) {
+          container = el;
+        } else if (el.querySelector) {
+          container = el.querySelector(".hindi-word-container");
+          if (!container && el.closest) {
+            var parentCard = el.closest(".interactive-card, .item-chip-card, .flashcard, .curriculum-module-card");
+            if (parentCard) container = parentCard.querySelector(".hindi-word-container");
+          }
+        }
+      }
+      if (!container && typeof document !== "undefined") {
+        var allContainers = document.querySelectorAll(".hindi-word-container");
+        for (var ci = 0; ci < allContainers.length; ci++) {
+          if (allContainers[ci].textContent && allContainers[ci].textContent.replace(/\s+/g, '') === clean.replace(/\s+/g, '')) {
+            container = allContainers[ci];
+            break;
+          }
+        }
+      }
+
+      var chips = container ? container.querySelectorAll(".hindi-syllable-chip") : [];
+      function clearHighlights() {
+        if (container) container.classList.remove("karaoke-full-word");
+        if (chips && chips.length) {
+          for (var c = 0; c < chips.length; c++) chips[c].classList.remove("karaoke-active");
+        }
+      }
+      clearHighlights();
+
+      var speechText = buildHindiClassroomSpeechText(clean, mode);
+
+      if (window.speechSynthesis && !((window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.TextToSpeech) || (window.plugins && window.plugins.tts))) {
+        try {
+          window.speechSynthesis.cancel();
+        } catch(e) {}
+
+        var steps = [];
+        var matraRules = {
+          '\u093E': 'के आगे आ की मात्रा',
+          '\u093F': 'पे छोटी इ की मात्रा',
+          '\u0940': 'पे बड़ी ई की मात्रा',
+          '\u0941': 'के नीचे छोटे उ की मात्रा',
+          '\u0942': 'के नीचे बड़े ऊ की मात्रा',
+          '\u0947': 'पे ए की मात्रा',
+          '\u0948': 'पे ऐ की मात्रा',
+          '\u094B': 'पे ओ की मात्रा',
+          '\u094C': 'पे औ की मात्रा',
+          '\u0902': 'पे अं की बिंदी',
+          '\u0901': 'पे चंद्रबिंदु',
+          '\u0903': 'के आगे अः की बिंदी'
+        };
+
+        for (var si = 0; si < syls.length; si++) {
+          var sy = syls[si];
+          var phrase = '';
+          if (mode === 'bina_matra') {
+            phrase = sy.consonant + ' अ';
+          } else {
+            if (sy.matra && matraRules[sy.matra]) {
+              var d = matraRules[sy.matra];
+              if (sy.bindi) d += ' और अं की बिंदी';
+              phrase = sy.consonant + ' ' + d + ' ' + sy.text;
+            } else if (sy.bindi && matraRules[sy.bindi]) {
+              phrase = sy.consonant + ' ' + matraRules[sy.bindi] + ' ' + sy.text;
+            } else {
+              phrase = sy.consonant;
+            }
+          }
+          steps.push({ chipIdx: si, text: phrase });
+        }
+        steps.push({ isFullWord: true, text: clean });
+
+        var stepIdx = 0;
+        function playNextStep() {
+          if (stepIdx >= steps.length) {
+            clearHighlights();
+            return;
+          }
+          var step = steps[stepIdx];
+          clearHighlights();
+          if (step.isFullWord) {
+            if (container) container.classList.add("karaoke-full-word");
+          } else if (chips && chips[step.chipIdx]) {
+            chips[step.chipIdx].classList.add("karaoke-active");
+          }
+
+          var utt = new SpeechSynthesisUtterance(step.text);
+          utt.lang = 'hi-IN';
+          utt.rate = 0.85;
+          utt.pitch = 1.0;
+          if (typeof availableVoices !== "undefined" && availableVoices.length > 0) {
+            var matched = availableVoices.find(function(v) {
+              return v.lang && v.lang.toLowerCase().indexOf('hi') !== -1;
+            });
+            if (matched) utt.voice = matched;
+          }
+
+          var stepDone = false;
+          var safetyTimeout = setTimeout(function() {
+            if (!stepDone) {
+              stepDone = true;
+              stepIdx++;
+              playNextStep();
+            }
+          }, Math.max(1000, step.text.length * 110));
+
+          utt.onend = function() {
+            if (!stepDone) {
+              stepDone = true;
+              clearTimeout(safetyTimeout);
+              stepIdx++;
+              setTimeout(playNextStep, 80);
+            }
+          };
+          utt.onerror = function() {
+            if (!stepDone) {
+              stepDone = true;
+              clearTimeout(safetyTimeout);
+              stepIdx++;
+              playNextStep();
+            }
+          };
+
+          try {
+            window.speechSynthesis.speak(utt);
+          } catch(e) {
+            stepDone = true;
+            clearTimeout(safetyTimeout);
+            stepIdx++;
+            playNextStep();
+          }
+        }
+
+        playNextStep();
+        return;
+      }
+
+      speak(speechText, 'hi-IN');
+      if (chips && chips.length) {
+        var estDurationPerSyllable = (mode === 'bina_matra' ? 750 : 1300);
+        var curStep = 0;
+        function advanceKaraokeVisual() {
+          clearHighlights();
+          if (curStep < chips.length) {
+            chips[curStep].classList.add("karaoke-active");
+            curStep++;
+            activeKaraokeTimer = setTimeout(advanceKaraokeVisual, estDurationPerSyllable);
+          } else if (curStep === chips.length) {
+            if (container) container.classList.add("karaoke-full-word");
+            curStep++;
+            activeKaraokeTimer = setTimeout(clearHighlights, 1200);
+          } else {
+            clearHighlights();
+          }
+        }
+        advanceKaraokeVisual();
+      }
+    }
+
     function containsHindi(str) {
       return /[\u0900-\u097F]/.test(str);
     }
@@ -3876,7 +4255,8 @@
       }
 
       if (!subName && parsed.gameUri) {
-        if (parsed.gameUri.indexOf("hindi_vilom") !== -1) subName = "उल्टा-सीधा खेल (विलोम शब्द)";
+        if (parsed.gameUri.indexOf("hindi_bina_matra") !== -1) subName = "बिना मात्रा वाले शब्द (2, 3, 4 अक्षर)";
+        else if (parsed.gameUri.indexOf("hindi_vilom") !== -1) subName = "उल्टा-सीधा खेल (विलोम शब्द)";
         else if (parsed.gameUri.indexOf("hindi_paheli") !== -1) subName = "बूझो तो जानें! (Hindi Riddles)";
         else if (parsed.gameUri.indexOf("hindi_railgadi") !== -1) subName = "अक्षर रेलगाड़ी (शब्द बनाओ)";
         else if (parsed.gameUri.indexOf("hindi_ekanek") !== -1) subName = "एक – अनेक (One & Many)";
@@ -3906,6 +4286,9 @@
       var sub = String(subject || "").toLowerCase();
 
       // Check UKG Hindi Separate Modules
+      if (key === "ukg_hindi_bina_matra" || key.indexOf("bina_matra") !== -1 || title.indexOf("बिना मात्रा") !== -1 || title.indexOf("bina matra") !== -1) {
+        return "hindi_bina_matra";
+      }
       if (key === "ukg_hindi_vilom" || key.indexOf("vilom") !== -1 || title.indexOf("विलोम") !== -1 || title.indexOf("उल्टा-सीधा") !== -1) {
         return "hindi_vilom";
       }
@@ -3938,6 +4321,7 @@
     }
 
     function getGranularTopicMaxQuestions(type, subKey) {
+      if (type === "hindi_bina_matra") return (typeof DATA_LKG_HINDI_WORDS !== "undefined" ? (DATA_LKG_HINDI_WORDS.words_2.length + DATA_LKG_HINDI_WORDS.words_3.length + DATA_LKG_HINDI_WORDS.words_4.length + DATA_LKG_HINDI_WORDS.words_5.length) : 100);
       if (type === "hindi_vilom") return (typeof DATA_HINDI_VILOM !== "undefined" ? DATA_HINDI_VILOM.length : 20);
       if (type === "hindi_paheli") return (typeof DATA_HINDI_PAHELI !== "undefined" ? DATA_HINDI_PAHELI.length : 15);
       if (type === "hindi_railgadi") return (typeof DATA_HINDI_RAILGADI !== "undefined" ? DATA_HINDI_RAILGADI.length : 20);
@@ -4023,6 +4407,10 @@
       var text = (String(hw.subject || "") + " " + String(hw.title || "") + " " + String(hw.description || "")).toLowerCase();
 
       // Specific UKG Hindi Modules Keyword Matching
+      if (text.indexOf("bina_matra") !== -1 || text.indexOf("बिना मात्रा") !== -1 || text.indexOf("bina matra") !== -1) {
+        var bmMod = modules.find(function(m) { return m.tab === "hindi_bina_matra"; });
+        if (bmMod) return bmMod;
+      }
       if (text.indexOf("vilom") !== -1 || text.indexOf("विलोम") !== -1 || text.indexOf("उल्टा-सीधा") !== -1) {
         var vMod = modules.find(function(m) { return m.tab === "hindi_vilom"; });
         if (vMod) return vMod;
@@ -5932,6 +6320,7 @@
         "Hindi": {
           label: "🪔 Hindi / हिंदी",
           topics: (cls === "UKG") ? [
+            { title: "Hindi Bina-Matra: 🔤 बिना मात्रा वाले शब्द (2, 3, 4 अक्षर)", module_key: "ukg_hindi_bina_matra" },
             { title: "Hindi Vilom: 🔄 उल्टा-सीधा खेल (विलोम शब्द / Opposites)", module_key: "ukg_hindi_vilom" },
             { title: "Hindi Paheli: 🤔 बूझो तो जानें! (Hindi Riddles)", module_key: "ukg_hindi_paheli" },
             { title: "Hindi Railgadi: 🚂 अक्षर रेलगाड़ी (शब्द बनाओ Puzzle)", module_key: "ukg_hindi_railgadi" },
@@ -7157,6 +7546,7 @@
       html += '  </div>';
       html += '  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px;">';
       var ukgHindiPreviewItems = [
+        { key: "ukg_hindi_bina_matra", tab: "hindi_bina_matra", title: "🔤 बिना मात्रा वाले शब्द", sub: "2, 3, 4 अक्षर (100 Qs)" },
         { key: "ukg_hindi_vilom", tab: "hindi_vilom", title: "🔄 उल्टा-सीधा खेल", sub: "विलोम शब्द / Opposites (20 Qs)" },
         { key: "ukg_hindi_paheli", tab: "hindi_paheli", title: "🤔 बूझो तो जानें!", sub: "Hindi Riddles (15 Qs)" },
         { key: "ukg_hindi_railgadi", tab: "hindi_railgadi", title: "🚂 अक्षर रेलगाड़ी", sub: "शब्द बनाओ Puzzle (20 Qs)" },
@@ -7235,6 +7625,7 @@
         html += '  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">';
 
         var ukgHindiMods = [
+          { key: "ukg_hindi_bina_matra", tab: "hindi_bina_matra", label: "🔤 बिना मात्रा वाले शब्द", sub: "2, 3, 4 अक्षर (100 शब्द)", qs: "100 Qs", desc: "Foundational phonics reading & quiz for 2, 3 and 4 letter words without matras" },
           { key: "ukg_hindi_vilom", tab: "hindi_vilom", label: "🔄 उल्टा-सीधा खेल", sub: "विलोम शब्द / Opposites", qs: "20 Qs", desc: "Opposite words pairing with audio hints & pictures" },
           { key: "ukg_hindi_paheli", tab: "hindi_paheli", label: "🤔 बूझो तो जानें!", sub: "Hindi Riddles", qs: "15 Qs", desc: "Interactive rhyming riddles with tap-to-reveal answer" },
           { key: "ukg_hindi_railgadi", tab: "hindi_railgadi", label: "🚂 अक्षर रेलगाड़ी", sub: "शब्द बनाओ Puzzle", qs: "20 Qs", desc: "Train bogie letter sequencing to build 2, 3 & 4 letter words" },
@@ -7688,6 +8079,7 @@
           { key: "ukg_math_addition", title: "Math: Addition Fun (1-10 Quiz)", section: "ukg", tab: "math", mathSubTab: "addition", mode: "quiz" },
           { key: "ukg_math_subtraction", title: "Math: Subtraction Fun (1-10 Quiz)", section: "ukg", tab: "math", mathSubTab: "subtraction", mode: "quiz" },
           { key: "ukg_hindi_matra", title: "Hindi: Matra Quiz (ा, ि, ी, ु, ू)", section: "ukg", tab: "matra", mode: "quiz" },
+          { key: "ukg_hindi_bina_matra", title: "Hindi Bina-Matra: 🔤 बिना मात्रा वाले शब्द (2, 3, 4 अक्षर)", section: "ukg", tab: "hindi_bina_matra", mode: "learn" },
           { key: "ukg_hindi_vilom", title: "Hindi Vilom: 🔄 उल्टा-सीधा खेल (विलोम शब्द / Opposites)", section: "ukg", tab: "hindi_vilom", mode: "quiz" },
           { key: "ukg_hindi_paheli", title: "Hindi Paheli: 🤔 बूझो तो जानें! (Hindi Riddles)", section: "ukg", tab: "hindi_paheli", mode: "quiz" },
           { key: "ukg_hindi_railgadi", title: "Hindi Railgadi: 🚂 अक्षर रेलगाड़ी (शब्द बनाओ Puzzle)", section: "ukg", tab: "hindi_railgadi", mode: "quiz" },
@@ -8004,6 +8396,7 @@
         { key: "grammar", label: "📖 English Grammar" },
         { key: "evs", label: "🌍 EVS Studies" },
         { key: "matra", label: "✍️ हिंदी मात्राएं व शब्द निर्माण" },
+        { key: "hindi_bina_matra", label: "🔤 बिना मात्रा वाले शब्द" },
         { key: "math", label: "➕➖ Math (+ / -)" },
         { key: "gk", label: "🌍 GK (150 Qs)" },
         { key: "hindi_vilom", label: "🔄 उल्टा-सीधा खेल" },
@@ -33914,6 +34307,7 @@ function setNurseryNumSubTab(st) {
             html += '    <span style="font-size:10px; font-weight:800; background:#FFE082; color:#BF360C; padding:2px 8px; border-radius:8px;">UKG Curriculum Ready</span>';
             html += '  </div>';
             html += '  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px;">';
+            html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_bina_matra\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🔤 बिना मात्रा शब्द</button>';
             html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_vilom\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🔄 उल्टा-सीधा खेल</button>';
             html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_paheli\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🤔 बूझो तो जानें!</button>';
             html += '    <button onclick="safeAction(function(){ launchPrincipalCurriculumModule(\'ukg\', \'hindi_railgadi\'); })" style="background:#FF9800; color:#FFF; border:none; padding:8px 10px; border-radius:10px; font-size:11px; font-weight:900; cursor:pointer; box-shadow:0 2px 4px rgba(255,152,0,0.2);">🚂 अक्षर रेलगाड़ी</button>';
@@ -36523,9 +36917,9 @@ function setNurseryNumSubTab(st) {
             for (var wdi = 0; wdi < wordsList.length; wdi++) {
               var wObj = wordsList[wdi];
               var equationSpoken = wObj.letters.join(" जमा ") + " बराबर " + wObj.word;
-              html += '<div class="item-chip-card" style="padding: 12px 10px; text-align: center;" onclick="safeAction(function(){ speak(\'' + wObj.sound + '\', \'hi-IN\'); })">';
-              html += '  <div class="chip-emoji safe-emoji" style="font-size: 40px;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + wObj.word + '\', \'hi-IN\'); })">' + wObj.emoji + '</div>';
-              html += '  <div class="chip-word" style="font-size: 20px; font-weight: 900; color: #E65100; margin-top: 4px;">' + wObj.word + '</div>';
+              html += '<div class="item-chip-card" style="padding: 12px 10px; text-align: center;" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + wObj.word + '\', \'bina_matra\', this); })">';
+              html += '  <div class="chip-emoji safe-emoji" style="font-size: 40px;" onclick="event.stopPropagation(); safeAction(function(){ speakHindiWordClassroom(\'' + wObj.word + '\', \'bina_matra\', this); })">' + wObj.emoji + '</div>';
+              html += '  <div class="chip-word" style="font-size: 20px; font-weight: 900; color: #E65100; margin-top: 4px;">' + renderColorCodedHindiWord(wObj.word) + '</div>';
               html += '  <div style="font-size: 12px; font-weight: 700; color: #795548; margin-top: 2px;">' + wObj.letters.join(" + ") + '</div>';
               html += '</div>';
             }
@@ -36546,8 +36940,8 @@ function setNurseryNumSubTab(st) {
             var wSpoken = targetWObj.letters.join(" जमा ") + " से कौन सा शब्द बनता है?";
             autoSpeak(wQuizCacheKey, wSpoken, "hi-IN");
 
-            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + targetWObj.sound + '\', \'hi-IN\'); })">';
-            html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 60px;" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + targetWObj.word + '\', \'hi-IN\'); })">' + targetWObj.emoji + '</div>';
+            html += '<div class="flashcard" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + targetWObj.word + '\', \'bina_matra\', this); })">';
+            html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 60px;" onclick="event.stopPropagation(); safeAction(function(){ speakHindiWordClassroom(\'' + targetWObj.word + '\', \'bina_matra\', this); })">' + targetWObj.emoji + '</div>';
             html += '  <div style="display:flex; justify-content:center; align-items:center; gap:8px; font-size:24px; font-weight:900; color:#E65100; margin: 8px 0; flex-wrap: wrap;">';
             for (var li = 0; li < targetWObj.letters.length; li++) {
               html += '<span style="background: #FFF3E0; padding: 4px 10px; border-radius: 8px; border: 1px solid #FFE0B2;">' + targetWObj.letters[li] + '</span>';
@@ -36556,9 +36950,9 @@ function setNurseryNumSubTab(st) {
               }
             }
             html += '<span style="color: #FF9800;">=</span>';
-            html += (isWAnswered ? '<span class="dash-blank filled-blank" style="font-size: 26px; color: #2E7D32;">' + targetWObj.word + '</span>' : '<span class="dash-blank" style="font-size: 26px;">___</span>');
+            html += (isWAnswered ? '<span class="dash-blank filled-blank" style="font-size: 26px; color: #2E7D32;">' + renderColorCodedHindiWord(targetWObj.word) + '</span>' : '<span class="dash-blank" style="font-size: 26px;">___</span>');
             html += '  </div>';
-            html += '  <div class="audio-hint">🔊 ' + wSpoken + '</div>';
+            html += '  <div class="audio-hint">🔊 ' + buildHindiClassroomSpeechText(targetWObj.word, 'bina_matra') + '</div>';
             html += '</div>';
 
             html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 8px;">जोड़कर सही शब्द चुनो: 🔊</div>';
@@ -36570,7 +36964,7 @@ function setNurseryNumSubTab(st) {
               if (isWAnswered) {
                 wBtnCls += isWOk ? " correct-choice" : " disabled-choice";
               }
-              html += '<button class="' + wBtnCls + '" style="min-height: 58px; font-size: 1.55rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isWOk + ', { key: \'' + wQuizCacheKey + '\', display: \'' + targetWObj.letters.join(" + ") + ' = ' + targetWObj.word + ' ' + targetWObj.emoji + '\', spoken: \'' + targetWObj.sound + '! बहुत बढ़िया!\', lang: \'hi-IN\', ansVal: \'' + wQuizOpts[woi] + '\', wrongMsg: \'गलत शब्द, फिर से प्रयास करें\' }); })">' + wQuizOpts[woi] + '</button>';
+              html += '<button class="' + wBtnCls + '" style="min-height: 58px; font-size: 1.55rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isWOk + ', { key: \'' + wQuizCacheKey + '\', display: \'' + targetWObj.letters.join(" + ") + ' = ' + targetWObj.word + ' ' + targetWObj.emoji + '\', spoken: \'' + buildHindiClassroomSpeechText(targetWObj.word, 'bina_matra') + '\', lang: \'hi-IN\', ansVal: \'' + wQuizOpts[woi] + '\', wrongMsg: \'गलत शब्द, फिर से प्रयास करें\' }); })">' + renderColorCodedHindiWord(wQuizOpts[woi]) + '</button>';
             }
             html += '</div>';
             html += renderCompletedPreviewCard();
@@ -37627,6 +38021,7 @@ function setNurseryNumSubTab(st) {
         html += '<div class="ukg-hindi-modules-nav" style="background:#FFF3E0; border:2px solid #FFE082; border-radius:14px; padding:10px 12px; margin-bottom:12px;">';
         html += '  <div style="font-size:12px; font-weight:900; color:#E65100; margin-bottom:6px;">🪔 5 New UKG Hindi Modules (Explore &amp; Play):</div>';
         html += '  <div style="display:flex; gap:6px; flex-wrap:wrap;">';
+        html += '    <button onclick="safeAction(function(){ setTab(\'hindi_bina_matra\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔤 बिना मात्रा वाले शब्द</button>';
         html += '    <button onclick="safeAction(function(){ setTab(\'hindi_vilom\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🔄 उल्टा-सीधा खेल</button>';
         html += '    <button onclick="safeAction(function(){ setTab(\'hindi_paheli\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🤔 बूझो तो जानें!</button>';
         html += '    <button onclick="safeAction(function(){ setTab(\'hindi_railgadi\'); })" style="background:#FF9800; color:#FFF; border:none; padding:5px 9px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer;">🚂 अक्षर रेलगाड़ी</button>';
@@ -37661,7 +38056,11 @@ function setNurseryNumSubTab(st) {
           var neededMatras = wbItem.pieces.filter(function(p){ return p.t === "m"; }).map(function(p){ return p.v; });
           var isWbComplete = (appState.matraBuilderSlots && appState.matraBuilderSlots.length >= neededMatras.length);
 
-          autoSpeak("matra_builder_" + appState.matraBuilderIndex, wbItem.word + ". चित्र देखकर सही मात्रा जोड़ो और शब्द बनाओ", "hi-IN");
+          if (appState.matraFilter === "i" || (wbItem.word && wbItem.word.indexOf("ि") !== -1)) {
+            html += renderChhotiITipPill();
+          }
+
+          autoSpeak("matra_builder_" + appState.matraBuilderIndex, wbItem.word + ". चित्र देखकर सही मात्रा चुनो और शब्द पूरा करो", "hi-IN");
 
           // Build Equation Display
           var eqHtml = '<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:14px 0;">';
@@ -37685,20 +38084,20 @@ function setNurseryNumSubTab(st) {
           }
           eqHtml += '</div>';
 
-          html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + wbItem.sound + '\', \'hi-IN\'); })">';
-          html += '  <div class="flashcard-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + wbItem.word + '\', \'hi-IN\'); })">' + wbItem.emoji + '</div>';
+          html += '<div class="flashcard" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + wbItem.word + '\', \'matra\', this); })">';
+          html += '  <div class="flashcard-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speakHindiWordClassroom(\'' + wbItem.word + '\', \'matra\', this); })">' + wbItem.emoji + '</div>';
           html += eqHtml;
-          html += '  <div class="audio-hint">🔊 ' + wbItem.sound + '</div>';
+          html += '  <div class="audio-hint">🔊 ' + buildHindiClassroomSpeechText(wbItem.word, 'matra') + '</div>';
           html += '</div>';
 
           if (isWbComplete) {
             html += '<div class="quiz-completed-card" style="background:#E8F5E9;border:3px solid #4CAF50;border-radius:18px;padding:18px;text-align:center;margin:16px auto;max-width:360px;box-shadow:0 8px 24px rgba(76,175,80,0.2);animation:popIn 0.3s ease-out;">';
             html += '  <div style="font-size:42px;margin-bottom:6px;" class="safe-emoji">' + wbItem.emoji + '</div>';
             html += '  <div style="font-size:20px;font-weight:800;color:#2E7D32;margin-bottom:4px;">✨ बहुत बढ़िया! शब्द पूरा बना! ✨</div>';
-            html += '  <div style="font-size:32px;font-weight:900;color:#1B5E20;letter-spacing:1px;margin:8px 0;">' + wbItem.word + '</div>';
-            html += '  <div style="font-size:14px;font-weight:700;color:#388E3C;margin-bottom:14px;">🔊 ' + wbItem.sound + '</div>';
+            html += '  <div style="font-size:32px;font-weight:900;color:#1B5E20;letter-spacing:1px;margin:8px 0;">' + renderColorCodedHindiWord(wbItem.word) + '</div>';
+            html += '  <div style="font-size:14px;font-weight:700;color:#388E3C;margin-bottom:14px;">🔊 ' + buildHindiClassroomSpeechText(wbItem.word, 'matra') + '</div>';
             html += '  <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">';
-            html += '    <button class="nav-btn" style="background:#43A047;color:#fff;padding:10px 18px;font-size:15px;font-weight:800;border-radius:12px;border:none;cursor:pointer;" onclick="safeAction(function(){ speak(\'' + wbItem.word + '\', \'hi-IN\'); })">🔊 Listen Again</button>';
+            html += '    <button class="nav-btn" style="background:#43A047;color:#fff;padding:10px 18px;font-size:15px;font-weight:800;border-radius:12px;border:none;cursor:pointer;" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + wbItem.word + '\', \'matra\', this); })">🔊 Listen Again</button>';
             html += '    <button class="nav-btn" style="background:#1E88E5;color:#fff;padding:10px 22px;font-size:16px;font-weight:900;border-radius:12px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(30,136,229,0.3);" onclick="safeAction(function(){ advanceMatraWord(); })">Next Word ➔</button>';
             html += '  </div>';
             html += '</div>';
@@ -37763,14 +38162,17 @@ function setNurseryNumSubTab(st) {
           if (appState.mode === "learn") {
             autoSpeak("matra_learn_" + appState.matraFilter, "हिंदी मात्राएं. कार्ड छूकर सही उच्चारण सुनें", "hi-IN");
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'हिंदी मात्राएं. कार्ड छूकर सही उच्चारण सुनें\', \'hi-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">कार्ड छूकर सही उच्चारण सुनें 🔊</div>';
+            if (appState.matraFilter === "i") {
+              html += renderChhotiITipPill();
+            }
             html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: calc(100vh - 250px); overflow-y: auto;">';
             for (var mci = 0; mci < mList.length; mci++) {
               var mItem = mList[mci];
               var mFull = mItem.full || mItem.word || "";
               var mMissing = mItem.missing || mItem.breakdown || "";
-              html += '<div class="interactive-card" style="padding: 12px; text-align: center; border-color: #CE93D8;" onclick="safeAction(function(){ speak(\'' + mItem.sound + '\', \'hi-IN\'); })">';
-              html += '  <div style="font-size: 38px; margin-bottom: 2px;" class="safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + mFull + '\', \'hi-IN\'); })">' + mItem.emoji + '</div>';
-              html += '  <div style="font-size: 22px; font-weight: 900; color: #6A1B9A;">' + mFull + '</div>';
+              html += '<div class="interactive-card" style="padding: 12px; text-align: center; border-color: #CE93D8;" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + mFull + '\', \'matra\', this); })">';
+              html += '  <div style="font-size: 38px; margin-bottom: 2px;" class="safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speakHindiWordClassroom(\'' + mFull + '\', \'matra\', this); })">' + mItem.emoji + '</div>';
+              html += '  <div style="font-size: 22px; font-weight: 900; color: #6A1B9A;">' + renderColorCodedHindiWord(mFull) + '</div>';
               html += '  <div style="font-size: 13px; font-weight: 800; color: #8E24AA; margin-top: 2px;">' + mMissing + '</div>';
               html += '</div>';
             }
@@ -37789,14 +38191,18 @@ function setNurseryNumSubTab(st) {
 
             autoSpeak(matraCacheKey, mqFull + ". इसमें कौन सी मात्रा लगेगी?", "hi-IN");
 
+            if (appState.matraFilter === "i" || (mqFull && mqFull.indexOf("ि") !== -1)) {
+              html += renderChhotiITipPill();
+            }
+
             var promptDisplay = isMatraAnswered
-              ? mqMissing.replace('<span class="dash-blank">___</span>', '<span class="dash-blank filled-blank">' + mqItem.ans + '</span>')
+              ? renderColorCodedHindiWord(mqFull)
               : mqMissing;
 
-            html += '<div class="flashcard" onclick="safeAction(function(){ speak(\'' + mqItem.sound + '\', \'hi-IN\'); })">';
-            html += '  <div class="flashcard-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speak(\'' + mqFull + '\', \'hi-IN\'); })">' + mqItem.emoji + '</div>';
-            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speak(\'' + mqFull + '\', \'hi-IN\'); })" style="font-size: 32px; font-weight: 900; color: #6A1B9A; letter-spacing: 2px;">' + promptDisplay + '</div>';
-            html += '  <div class="audio-hint">🔊 ' + mqItem.sound + '</div>';
+            html += '<div class="flashcard" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + mqFull + '\', \'matra\', this); })">';
+            html += '  <div class="flashcard-emoji safe-emoji" onclick="event.stopPropagation(); safeAction(function(){ speakHindiWordClassroom(\'' + mqFull + '\', \'matra\', this); })">' + mqItem.emoji + '</div>';
+            html += '  <div class="touch-speak-item" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + mqFull + '\', \'matra\', this); })" style="font-size: 32px; font-weight: 900; color: #6A1B9A; letter-spacing: 2px;">' + promptDisplay + '</div>';
+            html += '  <div class="audio-hint">🔊 ' + buildHindiClassroomSpeechText(mqFull, 'matra') + '</div>';
             html += '</div>';
 
             html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'खाली जगह के लिए सही मात्रा चुनो\', \'hi-IN\'); })" style="font-size: 14px; font-weight: 800; color: #546E7A; margin-top: 8px;">खाली जगह के लिए सही मात्रा चुनो: 🔊</div>';
@@ -38485,6 +38891,11 @@ function setNurseryNumSubTab(st) {
         html += renderUkgHindiVakyaView();
       }
 
+      // TAB 12: 🔤 Hindi Bina-Matra (बिना मात्रा वाले शब्द)
+      else if (tabKey === "hindi_bina_matra") {
+        html += renderUkgHindiBinaMatraView();
+      }
+
       view.innerHTML = html;
     }
 
@@ -38781,6 +39192,138 @@ function setNurseryNumSubTab(st) {
       }
       html += '</div>';
       html += renderCompletedPreviewCard();
+      return html;
+    }
+
+    // MODULE 6 (UKG): 🔤 बिना मात्रा वाले शब्द (2, 3, 4, 5 अक्षर शब्द - Reused from LKG)
+    function setUkgBinaMatraSubTab(sub) {
+      appState.ukgBinaMatraSubTab = sub;
+      appState.quizIndex = 0;
+      if (typeof quizState !== "undefined") {
+        quizState.isAnswered = false;
+        quizState.activeKey = null;
+      }
+      renderCurrentView();
+    }
+
+    function renderUkgHindiBinaMatraView() {
+      var filterBar = document.getElementById("filter-pills-bar");
+      var hwSession = appSession.homeworkSession;
+      var isHwActive = !!(appSession.focusedHomeworkQuiz && hwSession);
+
+      if (filterBar) {
+        if (isHwActive) {
+          filterBar.style.display = "none";
+        } else {
+          filterBar.style.display = "flex";
+          var subKeys = [
+            { key: "all", label: "सभी शब्द (100)" },
+            { key: "words_2", label: "दो अक्षर (25)" },
+            { key: "words_3", label: "तीन अक्षर (25)" },
+            { key: "words_4", label: "चार अक्षर (25)" },
+            { key: "words_5", label: "पाँच अक्षर (25)" }
+          ];
+          var curSub = appState.ukgBinaMatraSubTab || "all";
+          var pbarHtml = "";
+          for (var pi = 0; pi < subKeys.length; pi++) {
+            var sk = subKeys[pi];
+            var pCls = "filter-pill" + (curSub === sk.key ? " active" : "");
+            pbarHtml += '<button class="' + pCls + '" onclick="event.stopPropagation(); setUkgBinaMatraSubTab(\'' + sk.key + '\');">' + sk.label + '</button>';
+          }
+          filterBar.innerHTML = pbarHtml;
+        }
+      }
+
+      var allList = [];
+      if (typeof DATA_LKG_HINDI_WORDS !== "undefined") {
+        allList = [].concat(
+          DATA_LKG_HINDI_WORDS.words_2 || [],
+          DATA_LKG_HINDI_WORDS.words_3 || [],
+          DATA_LKG_HINDI_WORDS.words_4 || [],
+          DATA_LKG_HINDI_WORDS.words_5 || []
+        );
+      }
+
+      var list = allList.slice();
+      if (!isHwActive && appState.ukgBinaMatraSubTab && appState.ukgBinaMatraSubTab !== "all") {
+        list = (DATA_LKG_HINDI_WORDS && DATA_LKG_HINDI_WORDS[appState.ukgBinaMatraSubTab]) ? DATA_LKG_HINDI_WORDS[appState.ukgBinaMatraSubTab].slice() : allList.slice();
+      }
+
+      if (isHwActive && hwSession.fromQ && hwSession.toQ && list.length > 0) {
+        var fQ = Math.max(1, hwSession.fromQ);
+        var tQ = Math.min(list.length, hwSession.toQ);
+        if (tQ >= fQ) list = list.slice(fQ - 1, tQ);
+      }
+
+      if (list.length === 0) list = allList.slice(0, 25);
+
+      var html = "";
+      html += '<div class="mode-switch">';
+      html += '  <button class="mode-btn ' + (appState.mode === "learn" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'learn\'); })">📖 शब्द पढ़ना सीखें</button>';
+      html += '  <button class="mode-btn ' + (appState.mode === "quiz" ? "active" : "") + '" onclick="safeAction(function(){ setMode(\'quiz\'); })">🧩 शब्द निर्माण Quiz</button>';
+      html += '</div>';
+
+      if (appState.mode === "learn") {
+        autoSpeak("ukg_bm_learn", "बिना मात्रा वाले शब्द। कार्ड छूकर उच्चारण और अक्षरों का जोड़ सुनें!", "hi-IN");
+        html += '<div class="touch-speak-item" onclick="safeAction(function(){ speak(\'बिना मात्रा वाले शब्द। कार्ड छूकर सुनें!\', \'hi-IN\'); })" style="font-size: 13px; font-weight: bold; color: #546E7A; margin-bottom: 8px; text-align: center; width: 100%;">कार्ड छूकर अक्षरों का जोड़ व उच्चारण सुनें 🔊</div>';
+        html += '<div class="grid-items-container" style="max-height: calc(100vh - 250px); overflow-y: auto;">';
+        for (var wdi = 0; wdi < list.length; wdi++) {
+          var wObj = list[wdi];
+          html += '<div class="item-chip-card" style="padding: 12px 10px; text-align: center;" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + wObj.word + '\', \'bina_matra\', this); })">';
+          html += '  <div class="chip-emoji safe-emoji" style="font-size: 40px;" onclick="event.stopPropagation(); safeAction(function(){ speakHindiWordClassroom(\'' + wObj.word + '\', \'bina_matra\', this); })">' + wObj.emoji + '</div>';
+          html += '  <div class="chip-word" style="font-size: 20px; font-weight: 900; color: #E65100; margin-top: 4px;">' + renderColorCodedHindiWord(wObj.word) + '</div>';
+          html += '  <div style="font-size: 12px; font-weight: 700; color: #795548; margin-top: 2px;">' + (wObj.letters ? wObj.letters.join(" + ") : "") + '</div>';
+          html += '</div>';
+        }
+        html += '</div>';
+      } else {
+        var targetWObj = list[appState.quizIndex % list.length];
+        var wQuizCacheKey = "ukg_bm_q_" + appState.quizIndex;
+        var wQuizOpts = getShuffledOptions(wQuizCacheKey, function() {
+          var wo = [targetWObj.word];
+          while (wo.length < 4) {
+            var rw = allList[Math.floor(Math.random() * allList.length)].word;
+            if (wo.indexOf(rw) === -1) wo.push(rw);
+          }
+          return fisherYatesShuffle(wo);
+        });
+        var isWAnswered = (quizState.isAnswered && quizState.activeKey === wQuizCacheKey);
+
+        var wSpoken = (targetWObj.letters ? targetWObj.letters.join(" जमा ") : targetWObj.word) + " से कौन सा शब्द बनता है?";
+        autoSpeak(wQuizCacheKey, wSpoken, "hi-IN");
+
+        html += '<div class="flashcard" onclick="safeAction(function(){ speakHindiWordClassroom(\'' + targetWObj.word + '\', \'bina_matra\', this); })">';
+        html += '  <div class="flashcard-emoji safe-emoji" style="font-size: 60px;" onclick="event.stopPropagation(); safeAction(function(){ speakHindiWordClassroom(\'' + targetWObj.word + '\', \'bina_matra\', this); })">' + targetWObj.emoji + '</div>';
+        html += '  <div style="display:flex; justify-content:center; align-items:center; gap:8px; font-size:24px; font-weight:900; color:#E65100; margin: 8px 0; flex-wrap: wrap;">';
+        if (targetWObj.letters) {
+          for (var li = 0; li < targetWObj.letters.length; li++) {
+            html += '<span style="background: #FFF3E0; padding: 4px 10px; border-radius: 8px; border: 1px solid #FFE0B2;">' + targetWObj.letters[li] + '</span>';
+            if (li < targetWObj.letters.length - 1) {
+              html += '<span style="color: #FF9800;">+</span>';
+            }
+          }
+          html += '<span style="color: #FF9800;">=</span>';
+        }
+        html += (isWAnswered ? '<span class="dash-blank filled-blank" style="font-size: 26px; color: #2E7D32;">' + renderColorCodedHindiWord(targetWObj.word) + '</span>' : '<span class="dash-blank" style="font-size: 26px;">___</span>');
+        html += '  </div>';
+        html += '  <div class="audio-hint">🔊 ' + buildHindiClassroomSpeechText(targetWObj.word, 'bina_matra') + '</div>';
+        html += '</div>';
+
+        html += '<div style="text-align: center; font-weight: 800; color: #455A64; margin-top: 8px;">जोड़कर सही शब्द चुनो: 🔊</div>';
+
+        html += '<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 420px; margin: 14px auto 0;">';
+        for (var woi = 0; woi < wQuizOpts.length; woi++) {
+          var isWOk = (wQuizOpts[woi] === targetWObj.word);
+          var wBtnCls = "opt-btn";
+          if (isWAnswered) {
+            wBtnCls += isWOk ? " correct-choice" : " disabled-choice";
+          }
+          html += '<button class="' + wBtnCls + '" style="min-height: 58px; font-size: 1.55rem; font-weight: 900; border-radius: 14px;" onclick="safeAction(function(){ handleQuizAnswerSubmit(' + isWOk + ', { key: \'' + wQuizCacheKey + '\', display: \'' + (targetWObj.letters ? targetWObj.letters.join(" + ") : targetWObj.word) + ' = ' + targetWObj.word + ' ' + targetWObj.emoji + '\', spoken: \'' + buildHindiClassroomSpeechText(targetWObj.word, 'bina_matra') + '\', lang: \'hi-IN\', ansVal: \'' + wQuizOpts[woi] + '\', wrongMsg: \'गलत शब्द, फिर से प्रयास करें\' }); })">' + renderColorCodedHindiWord(wQuizOpts[woi]) + '</button>';
+        }
+        html += '</div>';
+        html += renderCompletedPreviewCard();
+      }
+
       return html;
     }
 
@@ -39122,7 +39665,7 @@ function setNurseryNumSubTab(st) {
               }
             });
           } else {
-            markWrong("गलत शब्द बना, दोबारा जोड़ें", "hi-IN");
+            markWrong("गलत शब्द बना, दोबारा प्रयास करें", "hi-IN");
             setTimeout(function() {
               appState.wordSlots = [];
               renderCurrentView();
@@ -39432,7 +39975,7 @@ function setNurseryNumSubTab(st) {
     }
 
     // Lightweight App Live Version & Update Checker for Android APK
-    var APP_BUILD_VERSION = "2026.11.28-v2";
+    var APP_BUILD_VERSION = "2026.11.28-v4";
     async function checkForLiveAppUpdate() {
       if (!navigator.onLine) return;
       try {
